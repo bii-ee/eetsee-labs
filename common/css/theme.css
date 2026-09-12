@@ -1,0 +1,30 @@
+:root {
+    color-scheme: light;
+
+    --font-primary: "Segoe UI", Arial, sans-serif;
+    --font-mono: "Cascadia Code", Consolas, monospace;
+
+    --color-page: #eef3f7;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f6f9fb;
+
+    --color-primary: #12344d;
+    --color-primary-light: #1d5d82;
+    --color-accent: #0b83a5;
+    --color-accent-soft: #dff3f8;
+
+    --color-text: #17232d;
+    --color-text-muted: #5b6b77;
+    --color-border: #d5e0e7;
+
+    --color-warning: #9a5a00;
+    --color-warning-bg: #fff4dc;
+
+    --shadow-card: 0 10px 30px rgba(18, 52, 77, 0.08);
+
+    --radius-small: 8px;
+    --radius-medium: 14px;
+    --radius-large: 20px;
+
+    --content-width: 1180px;
+}

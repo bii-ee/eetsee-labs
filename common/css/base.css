@@ -1,0 +1,90 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--color-page);
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--color-primary);
+    line-height: 1.25;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+var {
+    display: inline-block;
+    margin-inline-end: 0.1em;
+    font-family: "Cambria Math", Cambria, "Times New Roman", serif;
+    font-style: italic;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+sub,
+sup {
+    position: relative;
+    vertical-align: baseline;
+    font-size: 0.72em;
+    line-height: 0;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+sup {
+    top: -0.45em;
+}
+
+.page-container {
+    width: min(calc(100% - 32px), var(--content-width));
+    margin-inline: auto;
+}
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--color-primary);
+    color: #ffffff;
+    transform: translateY(-150%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}

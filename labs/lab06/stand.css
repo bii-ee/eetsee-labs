@@ -1,0 +1,679 @@
+#stand {
+    border-top: 5px solid #1e718e;
+}
+
+.stand-notice {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid #b9d7e2;
+    border-left: 5px solid var(--color-accent);
+    border-radius: var(--radius-medium);
+    background: #eff9fc;
+}
+
+.stand-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+.stand-notice p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+.stand-workspace {
+    position: relative;
+    min-height: 300px;
+}
+
+.stand-lock-overlay {
+    position: absolute;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+.stand-lock-overlay[hidden] {
+    display: none;
+}
+
+.stand-lock-content {
+    max-width: 520px;
+    padding: 26px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+.stand-lock-content strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+.stand-lock-content p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+}
+
+.stand-lock-link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--color-accent);
+    color: #ffffff;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+/* Схема та інформація розміщені одна під одною */
+
+.stand-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+}
+
+.stand-schematic-panel,
+.stand-information,
+.stand-auxiliary-device,
+.stand-component-navigation,
+.stand-progress-panel {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.stand-schematic-panel {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.stand-panel-heading {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--color-border);
+    background: #edf7fa;
+}
+
+.stand-panel-heading p {
+    margin: 0 0 4px;
+    color: var(--color-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.stand-panel-heading h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+
+.stand-power-state {
+    flex: 0 0 auto;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #e5ecef;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+/* SVG повністю вміщується у ширину секції */
+
+.stand-svg-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 14px 18px;
+    background: #ffffff;
+}
+
+.stand-schematic {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.stand-wire {
+    fill: none;
+    stroke: #456678;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.stand-wire-control {
+    stroke: #6e8795;
+    stroke-width: 3;
+}
+
+.stand-wire-measurement {
+    stroke: #688492;
+    stroke-width: 3;
+}
+
+.stand-node {
+    fill: #183f58;
+}
+
+.stand-component {
+    cursor: pointer;
+    outline: none;
+}
+
+.stand-device-body {
+    fill: #ffffff;
+    stroke: #456678;
+    stroke-width: 4;
+    transition:
+        fill 160ms ease,
+        stroke 160ms ease,
+        filter 160ms ease;
+}
+
+.stand-component:hover .stand-device-body,
+.stand-component:focus .stand-device-body,
+.stand-auxiliary-device:hover,
+.stand-auxiliary-device:focus {
+    fill: #eefafd;
+    border-color: var(--color-accent);
+}
+
+.stand-component.is-selected .stand-device-body {
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent);
+    filter: drop-shadow(
+        0 4px 5px rgba(17, 111, 143, 0.2)
+    );
+}
+
+.stand-component.is-visited .stand-device-body {
+    stroke: #32815a;
+}
+
+.stand-component.is-selected.is-visited .stand-device-body {
+    stroke: var(--color-accent);
+}
+
+.stand-switch-line,
+.stand-controller-symbol,
+.stand-heater-symbol {
+    fill: none;
+    stroke: #183f58;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.stand-switch-link {
+    fill: none;
+    stroke: #78909c;
+    stroke-width: 2.5;
+    stroke-dasharray: 8 7;
+}
+
+.stand-terminal,
+.stand-supply-terminal {
+    fill: #183f58;
+}
+
+.stand-device-label,
+.stand-meter-code,
+.stand-meter-value,
+.stand-device-caption,
+.stand-circuit-label,
+.stand-supply-label,
+.stand-network-label {
+    fill: #12344d;
+    font-family: Arial, sans-serif;
+    text-anchor: middle;
+}
+
+.stand-device-label {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.stand-device-caption {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.stand-device-caption-secondary {
+    fill: #5b7180;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.stand-meter-code {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.stand-meter-value {
+    fill: #177b9d;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.stand-circuit-label {
+    fill: #5b7180;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stand-supply-label {
+    font-size: 18px;
+    font-weight: 800;
+    text-anchor: end;
+}
+
+.stand-network-label {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.stand-schematic-caption {
+    margin: 0;
+    padding: 14px 20px 18px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.86rem;
+}
+
+/* Інформаційна панель */
+
+.stand-information {
+    display: grid;
+    grid-template-columns:
+        minmax(280px, 1.1fr)
+        minmax(0, 1.9fr);
+    gap: 22px;
+    padding: 22px;
+    background: #ffffff;
+}
+
+.stand-information-main {
+    min-width: 0;
+}
+
+.stand-information-label {
+    margin: 0 0 8px;
+    color: var(--color-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.stand-information h3,
+.stand-auxiliary-device h3 {
+    margin: 0 0 10px;
+    color: var(--color-primary);
+}
+
+.stand-information-main > p:not(
+    .stand-information-label
+) {
+    margin-bottom: 0;
+    color: var(--color-text-muted);
+}
+
+.stand-properties {
+    display: grid;
+    grid-template-columns: repeat(
+        3,
+        minmax(0, 1fr)
+    );
+    gap: 10px;
+    margin: 0;
+}
+
+.stand-properties div {
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+}
+
+.stand-properties dt {
+    margin-bottom: 5px;
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+}
+
+.stand-properties dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+/* Додатковий аналізатор SATEC */
+
+.stand-auxiliary-device {
+    display: grid;
+    grid-template-columns:
+        minmax(150px, 0.45fr)
+        minmax(280px, 1.7fr)
+        auto;
+    gap: 20px;
+    align-items: center;
+    margin-top: 18px;
+    padding: 20px;
+    background: #f4f9fb;
+    cursor: pointer;
+    outline: none;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease;
+}
+
+.stand-auxiliary-device.is-selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+}
+
+.stand-auxiliary-device.is-visited {
+    border-color: #32815a;
+}
+
+.stand-auxiliary-device.is-selected.is-visited {
+    border-color: var(--color-accent);
+}
+
+.stand-auxiliary-code {
+    display: grid;
+    gap: 2px;
+    padding: 15px;
+    border: 2px dashed var(--color-accent);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.stand-auxiliary-code span {
+    color: var(--color-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.stand-auxiliary-code strong {
+    font-size: 1.05rem;
+}
+
+.stand-auxiliary-content p:last-child {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+.stand-auxiliary-status {
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #e5eef2;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Кнопки елементів */
+
+.stand-component-navigation {
+    margin-top: 18px;
+    padding: 20px;
+}
+
+.stand-component-navigation h3 {
+    margin: 0 0 14px;
+    color: var(--color-primary);
+}
+
+.stand-component-buttons {
+    display: grid;
+    grid-template-columns: repeat(
+        4,
+        minmax(0, 1fr)
+    );
+    gap: 10px;
+}
+
+.stand-component-buttons button {
+    min-height: 44px;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-primary);
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.stand-component-buttons button:hover,
+.stand-component-buttons button:focus {
+    border-color: var(--color-accent);
+    background: #eefafd;
+}
+
+.stand-component-buttons button.is-selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+}
+
+.stand-component-buttons button.is-visited::after {
+    margin-left: 5px;
+    color: #32815a;
+    content: "✓";
+    font-weight: 800;
+}
+
+/* Прогрес ознайомлення */
+
+.stand-progress-panel {
+    margin-top: 18px;
+    padding: 20px;
+}
+
+.stand-progress-heading {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stand-progress-heading h3 {
+    margin: 0 0 4px;
+    color: var(--color-primary);
+}
+
+.stand-progress-heading p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.stand-progress-heading strong {
+    color: var(--color-accent);
+    font-size: 1.25rem;
+}
+
+.stand-progress-track {
+    height: 12px;
+    margin: 16px 0;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dce7ec;
+}
+
+.stand-progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-accent);
+    transition: width 180ms ease;
+}
+
+.stand-progress-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stand-ready-button,
+.stand-reset-button {
+    min-height: 43px;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.stand-ready-button {
+    border: 0;
+    background: var(--color-accent);
+    color: #ffffff;
+}
+
+.stand-ready-button:disabled {
+    background: #9dafb8;
+    cursor: not-allowed;
+}
+
+.stand-reset-button {
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+    color: var(--color-primary);
+}
+
+.stand-status {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border-radius: var(--radius-small);
+    background: #eaf1f5;
+    color: var(--color-text-muted);
+}
+
+.stand-status-ready {
+    background: #e8f5f8;
+    color: #175c72;
+}
+
+.stand-status-success {
+    background: #e8f6ee;
+    color: #286b43;
+    font-weight: 700;
+}
+
+/* Адаптивність */
+
+@media (max-width: 1000px) {
+    .stand-information {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-properties {
+        grid-template-columns: repeat(
+            3,
+            minmax(0, 1fr)
+        );
+    }
+
+    .stand-auxiliary-device {
+        grid-template-columns:
+            minmax(140px, 0.5fr)
+            minmax(0, 1.5fr);
+    }
+
+    .stand-auxiliary-status {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+
+    .stand-component-buttons {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    }
+}
+
+@media (max-width: 760px) {
+    .stand-svg-container {
+        overflow-x: auto;
+        padding: 12px;
+    }
+
+    /*
+        На вузькому екрані схема прокручується,
+        щоб позначення залишалися читабельними.
+    */
+
+    .stand-schematic {
+        width: 820px;
+        min-width: 820px;
+        max-width: none;
+    }
+
+    .stand-properties {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-auxiliary-device {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-auxiliary-status {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .stand-panel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stand-component-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-progress-heading {
+        align-items: flex-start;
+    }
+
+    .stand-progress-actions {
+        flex-direction: column;
+    }
+
+    .stand-ready-button,
+    .stand-reset-button {
+        width: 100%;
+    }
+}

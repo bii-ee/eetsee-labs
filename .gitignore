@@ -1,0 +1,34 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Редактори
+.vscode/
+.idea/
+*.code-workspace
+
+# Тимчасові та резервні файли
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Архіви
+*.zip
+*.rar
+*.7z
+
+# Секретні та службові файли
+.env
+.env.*
+service-account.json
+credentials.json
+*.key
+*.pem
+
+# Службові інструменти
+/tools/

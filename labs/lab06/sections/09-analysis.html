@@ -1,0 +1,161 @@
+<section id="analysis" class="content-section">
+    <p class="section-number">Аналіз результатів</p>
+
+    <h2>Графічне подання експериментальних даних</h2>
+
+    <p class="lead">
+        Побудуйте та проаналізуйте залежності повної потужності,
+        коефіцієнта зсуву першої гармоніки та напруги на
+        навантаженні від положення тиристорного регулятора.
+    </p>
+
+    <div id="analysis-readiness" class="analysis-readiness">
+        <div>
+            <strong id="analysis-readiness-title">
+                Перевірка розрахункових даних
+            </strong>
+
+            <p id="analysis-readiness-text">
+                Для побудови графіків потрібно правильно виконати
+                всі розрахунки в таблиці 6.1.
+            </p>
+        </div>
+
+        <a href="#calculations" class="analysis-back-link">
+            До розрахунків
+        </a>
+    </div>
+
+    <div id="analysis-workspace" hidden>
+        <div class="analysis-source-note">
+            <strong>Джерело даних:</strong>
+            графіки побудовано за перевіреними значеннями,
+            введеними студентом у таблицю 6.1.
+        </div>
+
+        <div class="analysis-chart-grid">
+            <article class="analysis-chart-card">
+                <div class="analysis-chart-heading">
+                    <div>
+                        <p class="section-number">Графік 1</p>
+                        <h3>Повна потужність S</h3>
+                    </div>
+                    <span>В·А</span>
+                </div>
+
+                <div
+                    id="chart-apparent-power"
+                    class="analysis-chart"
+                ></div>
+            </article>
+
+            <article class="analysis-chart-card">
+                <div class="analysis-chart-heading">
+                    <div>
+                        <p class="section-number">Графік 2</p>
+                        <h3>Коефіцієнт зсуву cosφ₁p</h3>
+                    </div>
+                    <span>в. о.</span>
+                </div>
+
+                <div
+                    id="chart-displacement-factor"
+                    class="analysis-chart"
+                ></div>
+            </article>
+
+            <article class="analysis-chart-card">
+                <div class="analysis-chart-heading">
+                    <div>
+                        <p class="section-number">Графік 3</p>
+                        <h3>Напруга навантаження U₂</h3>
+                    </div>
+                    <span>В</span>
+                </div>
+
+                <div
+                    id="chart-load-voltage"
+                    class="analysis-chart"
+                ></div>
+            </article>
+        </div>
+
+        <form id="analysis-form" class="analysis-form">
+            <div class="analysis-form-heading">
+                <p class="section-number">Самостійна робота</p>
+                <h3>Висновки за результатами досліду</h3>
+                <p>
+                    Сформулюйте висновки за виглядом отриманих
+                    залежностей. У кожному полі введіть щонайменше
+                    20 символів.
+                </p>
+            </div>
+
+            <label class="analysis-question">
+                <span>
+                    1. Як змінюється напруга U₂ зі збільшенням
+                    кута керування α?
+                </span>
+                <textarea
+                    name="loadVoltageConclusion"
+                    rows="4"
+                    minlength="20"
+                    required
+                ></textarea>
+            </label>
+
+            <label class="analysis-question">
+                <span>
+                    2. Як змінюється повна потужність S при
+                    переході від положення 1 до положення 3?
+                </span>
+                <textarea
+                    name="apparentPowerConclusion"
+                    rows="4"
+                    minlength="20"
+                    required
+                ></textarea>
+            </label>
+
+            <label class="analysis-question">
+                <span>
+                    3. Як кут керування впливає на cosφ₁p та
+                    показники якості електроенергії?
+                </span>
+                <textarea
+                    name="powerQualityConclusion"
+                    rows="4"
+                    minlength="20"
+                    required
+                ></textarea>
+            </label>
+
+            <div class="analysis-actions">
+                <button
+                    class="analysis-button analysis-button-primary"
+                    type="submit"
+                >
+                    Зберегти висновки
+                </button>
+
+                <button
+                    id="reset-analysis"
+                    class="analysis-button analysis-button-danger"
+                    type="button"
+                >
+                    Очистити висновки
+                </button>
+            </div>
+
+            <p
+                id="analysis-message"
+                class="analysis-message"
+                data-type="default"
+                role="status"
+                aria-live="polite"
+            >
+                Проаналізуйте графіки та заповніть усі три поля.
+            </p>
+        </form>
+    </div>
+</section>

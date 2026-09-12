@@ -1,0 +1,224 @@
+<section id="calculations" class="content-section">
+    <p class="section-number">Оброблення результатів</p>
+
+    <h2>Розрахунок енергетичних показників</h2>
+
+    <p class="lead">
+        Виконайте розрахунки для кожного режиму самостійно та
+        введіть отримані значення в таблицю. Система перевіряє
+        правильність із урахуванням допустимого округлення.
+    </p>
+
+    <div
+        id="calculation-readiness"
+        class="calculation-readiness"
+    >
+        <div>
+            <strong id="calculation-readiness-title">
+                Перевірка експериментальних даних
+            </strong>
+
+            <p id="calculation-readiness-text">
+                Перевіряється наявність трьох записаних режимів.
+            </p>
+        </div>
+
+        <a
+            href="#experiment"
+            class="calculation-back-link"
+        >
+            До таблиці вимірювань
+        </a>
+    </div>
+
+    <details class="calculation-demo">
+        <summary>Демонстраційний приклад розрахунку</summary>
+
+        <div class="calculation-demo-content">
+            <p>
+                Цей приклад використовує окремі вихідні дані
+                й не містить відповідей для основних трьох режимів.
+            </p>
+
+            <div class="calculation-demo-data">
+                <span><strong>α</strong> = 45°</span>
+                <span><strong>U₁</strong> = 230 В</span>
+                <span><strong>I</strong> = 4,4 А</span>
+                <span><strong>P</strong> = 720 Вт</span>
+                <span><strong>U₂</strong> = 185 В</span>
+            </div>
+
+            <ol class="calculation-demo-steps">
+                <li>
+                    <strong>Переведення кута в радіани:</strong>
+                    α = 45 × π / 180 = 0,7854 рад.
+                </li>
+
+                <li>
+                    <strong>Коефіцієнт регулювання напруги:</strong>
+                    kU = 185 / 230 = 0,804.
+                </li>
+
+                <li>
+                    <strong>Повна потужність:</strong>
+                    S = 230 × 4,4 = 1012 В·А.
+                </li>
+
+                <li>
+                    <strong>Теоретичні коефіцієнти:</strong>
+                    cosφ₁p = 0,985; νp = 0,968; χp = 0,953.
+                </li>
+
+                <li>
+                    <strong>Перша гармоніка струму:</strong>
+                    I₁ = 720 / (230 × 0,985) = 3,178 А.
+                </li>
+
+                <li>
+                    <strong>Реактивна потужність:</strong>
+                    Q = 126,0 вар.
+                </li>
+
+                <li>
+                    <strong>Потужність спотворення:</strong>
+                    T = 699,9 В·А.
+                </li>
+
+                <li>
+                    <strong>Експериментальні коефіцієнти:</strong>
+                    ν = 0,722; χ = 0,711; kI = 0,958.
+                </li>
+            </ol>
+        </div>
+    </details>
+
+    <div id="calculation-workspace" hidden>
+        <div class="calculation-instructions">
+            <h3>Правила заповнення</h3>
+
+            <ul>
+                <li>
+                    коефіцієнти вводьте десятковим дробом,
+                    наприклад <strong>0,818</strong>;
+                </li>
+
+                <li>
+                    для десяткового роздільника можна
+                    використовувати кому або крапку;
+                </li>
+
+                <li>
+                    потужності округлюйте до 0,1 В·А або вар;
+                </li>
+
+                <li>
+                    kI вводьте як безрозмірний коефіцієнт,
+                    не у відсотках.
+                </li>
+            </ul>
+        </div>
+
+        <div class="student-calculation-panel">
+            <div class="student-calculation-heading">
+                <div>
+                    <p class="section-number">Таблиця 6.1</p>
+
+                    <h3>
+                        Експериментальні та розрахункові дані
+                    </h3>
+                </div>
+
+                <span>33 розрахункові поля</span>
+            </div>
+
+            <div class="calculation-table-scroll">
+                <table class="student-calculation-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" scope="col">
+                                Режим
+                            </th>
+
+                            <th rowspan="2" scope="col">
+                                α, град
+                            </th>
+
+                            <th colspan="4" scope="colgroup">
+                                Вимірювання
+                            </th>
+
+                            <th colspan="11" scope="colgroup">
+                                Розрахунки студента
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <th scope="col">U₁, В</th>
+                            <th scope="col">I, А</th>
+                            <th scope="col">P, Вт</th>
+                            <th scope="col">U₂, В</th>
+                            <th scope="col">kU</th>
+                            <th scope="col">S, В·А</th>
+                            <th scope="col">cosφ₁p</th>
+                            <th scope="col">νp</th>
+                            <th scope="col">χp</th>
+                            <th scope="col">I₁, А</th>
+                            <th scope="col">Q, вар</th>
+                            <th scope="col">T, В·А</th>
+                            <th scope="col">ν</th>
+                            <th scope="col">χ</th>
+                            <th scope="col">kI</th>
+                        </tr>
+                    </thead>
+
+                    <tbody
+                        id="student-calculation-table-body"
+                    ></tbody>
+                </table>
+            </div>
+
+            <p class="calculation-scroll-hint">
+                Для перегляду всіх стовпців прокручуйте таблицю
+                горизонтально. Виміряні значення заповнюються
+                автоматично, розрахункові поля заповнює студент.
+            </p>
+
+            <div class="calculation-actions">
+                <button
+                    id="save-calculation-draft"
+                    class="calculation-button calculation-button-secondary"
+                    type="button"
+                >
+                    Зберегти чернетку
+                </button>
+
+                <button
+                    id="check-calculations"
+                    class="calculation-button calculation-button-primary"
+                    type="button"
+                >
+                    Перевірити розрахунки
+                </button>
+
+                <button
+                    id="reset-calculations"
+                    class="calculation-button calculation-button-danger"
+                    type="button"
+                >
+                    Очистити поля
+                </button>
+            </div>
+
+            <p
+                id="calculation-result-message"
+                class="calculation-result-message"
+                data-type="default"
+                role="status"
+                aria-live="polite"
+            >
+                Заповніть таблицю та натисніть
+                «Перевірити розрахунки».
+            </p>
+        </div>
+    </div>
+</section>
