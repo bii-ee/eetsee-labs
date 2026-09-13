@@ -1,3 +1,27 @@
+/* Окрема шапка лабораторної роботи №7 */
+
+.site-header {
+    background:
+        linear-gradient(
+            135deg,
+            #321a35 0%,
+            #4c2a4f 58%,
+            #633b61 100%
+        );
+}
+
+.course-label {
+    color: #f4c88f;
+}
+
+.header-status {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Кольорові позначення розділів */
+
 #overview {
     border-top: 5px solid var(--color-accent);
 }
@@ -13,6 +37,9 @@
 #theory {
     border-top: 5px solid #265f7d;
 }
+
+
+/* Схема послідовності процесу */
 
 .energy-flow {
     display: grid;
@@ -78,6 +105,9 @@
     font-weight: 800;
 }
 
+
+/* Теоретичні панелі */
+
 .theory-accordion {
     display: grid;
     gap: 14px;
@@ -138,6 +168,9 @@
 .theory-panel-content > :last-child {
     margin-bottom: 0;
 }
+
+
+/* Інформаційні сітки */
 
 .classification-grid,
 .regulation-grid,
@@ -210,6 +243,7 @@
     color: var(--color-primary);
 }
 
+
 /* Формули */
 
 .formula-grid {
@@ -221,9 +255,9 @@
 
 .formula-card {
     display: grid;
+    min-width: 0;
     align-content: start;
     gap: 14px;
-    min-width: 0;
     padding: 20px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-medium);
@@ -243,9 +277,9 @@
 
 .formula-expression {
     display: flex;
+    min-height: 82px;
     align-items: center;
     justify-content: center;
-    min-height: 82px;
     padding: 14px;
     overflow-x: auto;
     border: 1px solid #c8d8e1;
@@ -254,17 +288,16 @@
     color: #102f45;
 }
 
-/*
-    Компактний режим MathML зменшує вертикальне
-    розтягування знаків кореня через верхні індекси.
-*/
-
 .formula-expression math {
     display: block;
     max-width: 100%;
     margin: 0;
     color: #102f45;
-    font-family: "Cambria Math", Cambria, "Times New Roman", serif;
+    font-family:
+        "Cambria Math",
+        Cambria,
+        "Times New Roman",
+        serif;
     font-size: clamp(1.3rem, 2.7vw, 1.65rem);
     line-height: normal;
     math-style: compact;
@@ -284,6 +317,21 @@
 .theory-list li {
     padding-left: 5px;
 }
+
+
+/* Захист від виходу вмісту за межі сторінки */
+
+.lab-layout > main,
+#main-content,
+#sections-root,
+.section-stack,
+.content-section {
+    min-width: 0;
+    max-width: 100%;
+}
+
+
+/* Адаптивне відображення */
 
 @media (max-width: 1080px) {
     .energy-flow {
@@ -329,12 +377,4 @@
     .formula-expression math {
         font-size: 1.25rem;
     }
-}
-.lab-layout > main,
-#main-content,
-#sections-root,
-.section-stack,
-.content-section {
-    min-width: 0;
-    max-width: 100%;
 }
