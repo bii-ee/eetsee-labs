@@ -1,0 +1,627 @@
+<section id="theory" class="content-section">
+    <p class="section-number">Розділ 6.3</p>
+
+    <h2>Основні теоретичні відомості</h2>
+
+    <p class="lead">
+        Електрична піч опору перетворює електричну енергію на теплову.
+        Кількість теплоти, що виділяється у нагрівальному елементі,
+        залежить від струму, електричного опору та тривалості нагрівання.
+    </p>
+
+    <div class="energy-flow" role="img"
+        aria-label="Послідовність передавання енергії від мережі через тиристорний регулятор до нагрівального елемента">
+        <div class="flow-node">
+            <span class="flow-number">1</span>
+            <strong>Електрична мережа</strong>
+            <small>Напруга живлення U₁</small>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">→</span>
+
+        <div class="flow-node flow-node-accent">
+            <span class="flow-number">2</span>
+            <strong>Тиристорний регулятор</strong>
+            <small>Кут керування α</small>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">→</span>
+
+        <div class="flow-node">
+            <span class="flow-number">3</span>
+            <strong>Нагрівальний елемент</strong>
+            <small>Напруга навантаження U₂</small>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">→</span>
+
+        <div class="flow-node">
+            <span class="flow-number">4</span>
+            <strong>Теплова енергія</strong>
+            <small>Нагрівання печі</small>
+        </div>
+    </div>
+
+    <div class="theory-accordion">
+        <details class="theory-panel" open>
+            <summary>Принцип електричного нагрівання</summary>
+
+            <div class="theory-panel-content">
+                <p>
+                    В електричній печі опору перетворення електричної
+                    енергії на теплову відбувається в нагрівальному
+                    елементі або безпосередньо в деталі, через яку
+                    проходить електричний струм.
+                </p>
+
+                <div class="classification-grid">
+                    <article>
+                        <h3>Непряме нагрівання</h3>
+
+                        <p>
+                            Теплота виділяється в нагрівальному елементі,
+                            після чого передається виробу теплопровідністю,
+                            конвекцією або випромінюванням.
+                        </p>
+                    </article>
+
+                    <article>
+                        <h3>Пряме нагрівання</h3>
+
+                        <p>
+                            Електричний струм проходить безпосередньо
+                            через деталь або матеріал, що нагрівається.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="notice">
+                    <p>
+                        Відповідно до закону Джоуля-Ленца кількість теплоти
+                        пропорційна квадрату струму, електричному опору
+                        провідника та часу проходження струму.
+                    </p>
+                </div>
+            </div>
+        </details>
+
+        <details class="theory-panel">
+            <summary>Класифікація печей опору</summary>
+
+            <div class="theory-panel-content">
+                <div class="classification-grid">
+                    <article>
+                        <h3>Печі періодичної дії</h3>
+
+                        <p>
+                            Оброблення виконується окремими партіями.
+                            Робочий цикл містить завантаження, нагрівання,
+                            витримку та вивантаження виробів.
+                        </p>
+                    </article>
+
+                    <article>
+                        <h3>Печі безперервної дії</h3>
+
+                        <p>
+                            Вироби послідовно переміщуються через робочу
+                            зону, а технологічний процес має безперервний
+                            характер.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="temperature-scale">
+                    <article>
+                        <strong>До 600-700 °C</strong>
+                        <span>Низькотемпературні</span>
+                    </article>
+
+                    <article>
+                        <strong>700-1200 °C</strong>
+                        <span>Середньотемпературні</span>
+                    </article>
+
+                    <article>
+                        <strong>Понад 1200-1250 °C</strong>
+                        <span>Високотемпературні</span>
+                    </article>
+                </div>
+
+                <p>
+                    Характер електричного навантаження залежить від типу
+                    печі, технологічного процесу та способу регулювання
+                    температури. Для печей періодичної дії графік
+                    навантаження переважно циклічний, а для печей
+                    безперервної дії переважно безперервний.
+                </p>
+            </div>
+        </details>
+
+        <details class="theory-panel">
+            <summary>Тиристорне регулювання потужності</summary>
+
+            <div class="theory-panel-content">
+                <p>
+                    Для точного підтримання температурного режиму
+                    застосовують керовані тиристорні джерела живлення.
+                    У лабораторній установці їхню роботу імітує
+                    фазоімпульсний регулятор потужності.
+                </p>
+
+                <p>
+                    Силовий блок регулятора містить зустрічно-паралельно
+                    з’єднані тиристори. Блок керування формує імпульси,
+                    які визначають кут керування <var>α</var>.
+                </p>
+
+                <div class="regulation-grid">
+                    <article>
+                        <span>Кут α зменшується</span>
+                        <strong>Тиристори відкриваються раніше</strong>
+
+                        <p>
+                            Збільшуються тривалість провідного стану,
+                            напруга <var>U<sub>2</sub></var> і потужність
+                            навантаження.
+                        </p>
+                    </article>
+
+                    <article>
+                        <span>Кут α збільшується</span>
+                        <strong>Тиристори відкриваються пізніше</strong>
+
+                        <p>
+                            Зменшуються тривалість провідного стану,
+                            напруга <var>U<sub>2</sub></var> і потужність
+                            навантаження.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="notice">
+                    <p>
+                        Фазове регулювання змінює форму кривої струму.
+                        Тому навіть за активного навантаження виникають
+                        реактивна потужність і потужність спотворення.
+                    </p>
+                </div>
+            </div>
+        </details>
+
+        <details class="theory-panel">
+            <summary>Потужності та показники якості електроенергії</summary>
+
+            <div class="theory-panel-content">
+                <p>
+                    Для оброблення експериментальних даних використовують
+                    виміряні значення
+                    <var>U<sub>1</sub></var>,
+                    <var>I</var>,
+                    <var>P</var>,
+                    <var>U<sub>2</sub></var>
+                    та теоретичний коефіцієнт зсуву першої гармоніки
+                    струму.
+                </p>
+
+                <div class="formula-grid">
+                    <article class="formula-card">
+                        <h3>Перша гармоніка струму</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="I один дорівнює P, поділеному на U один, помножене на косинус фі один p">
+                                <mrow>
+                                    <msub>
+                                        <mi>I</mi>
+                                        <mn>1</mn>
+                                    </msub>
+
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <mi>P</mi>
+
+                                        <mrow>
+                                            <msub>
+                                                <mi>U</mi>
+                                                <mn>1</mn>
+                                            </msub>
+
+                                            <mi mathvariant="normal">cos</mi>
+
+                                            <msub>
+                                                <mi>φ</mi>
+                                                <mrow>
+                                                    <mn>1</mn>
+                                                    <mi mathvariant="normal">p</mi>
+                                                </mrow>
+                                            </msub>
+                                        </mrow>
+                                    </mfrac>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Визначає діюче значення першої гармоніки
+                            споживаного струму.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Синус кута зсуву</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="Синус фі один p дорівнює квадратному кореню з одиниці мінус косинус у квадраті фі один p">
+                                <mrow>
+                                    <mi mathvariant="normal">sin</mi>
+                                    <mi mathvariant="italic">φ₁ₚ</mi>
+
+                                    <mo>=</mo>
+
+                                    <msqrt>
+                                        <mrow>
+                                            <mn>1</mn>
+                                            <mo>−</mo>
+
+                                            <msup>
+                                                <mi mathvariant="normal">cos</mi>
+                                                <mn>2</mn>
+                                            </msup>
+
+                                            <mi mathvariant="italic">φ₁ₚ</mi>
+                                        </mrow>
+                                    </msqrt>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Використовується для визначення реактивної
+                            потужності першої гармоніки.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Реактивна потужність</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="Q дорівнює U один, помноженому на I один та синус фі один p">
+                                <mrow>
+                                    <mi>Q</mi>
+                                    <mo>=</mo>
+
+                                    <msub>
+                                        <mi>U</mi>
+                                        <mn>1</mn>
+                                    </msub>
+
+                                    <msub>
+                                        <mi>I</mi>
+                                        <mn>1</mn>
+                                    </msub>
+
+                                    <mi mathvariant="normal">sin</mi>
+
+                                    <msub>
+                                        <mi>φ</mi>
+                                        <mrow>
+                                            <mn>1</mn>
+                                            <mi mathvariant="normal">p</mi>
+                                        </mrow>
+                                    </msub>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Одиниця вимірювання:
+                            <strong>вар</strong>.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Потужність спотворення</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="T дорівнює U один, помноженому на квадратний корінь з I у квадраті мінус I один у квадраті">
+                                <mrow>
+                                    <mi>T</mi>
+                                    <mo>=</mo>
+
+                                    <msub>
+                                        <mi>U</mi>
+                                        <mn>1</mn>
+                                    </msub>
+
+                                    <msqrt>
+                                        <mrow>
+                                            <msup>
+                                                <mi>I</mi>
+                                                <mn>2</mn>
+                                            </msup>
+
+                                            <mo>−</mo>
+
+                                            <msup>
+                                                <mi mathvariant="italic">I₁</mi>
+                                                <mn>2</mn>
+                                            </msup>
+                                        </mrow>
+                                    </msqrt>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Характеризує вплив вищих гармонік струму.
+                            Одиниця вимірювання: <strong>В·А</strong>.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Повна потужність</h3>
+
+                        <div class="formula-expression">
+                            <math display="block" aria-label="S дорівнює U один, помноженому на I">
+                                <mrow>
+                                    <mi>S</mi>
+                                    <mo>=</mo>
+
+                                    <msub>
+                                        <mi>U</mi>
+                                        <mn>1</mn>
+                                    </msub>
+
+                                    <mi>I</mi>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Визначається за діючими значеннями напруги
+                            та струму. Одиниця вимірювання:
+                            <strong>В·А</strong>.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Перевірка балансу потужностей</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="S дорівнює квадратному кореню із суми квадратів P, Q та T">
+                                <mrow>
+                                    <mi>S</mi>
+                                    <mo>=</mo>
+
+                                    <msqrt>
+                                        <mrow>
+                                            <msup>
+                                                <mi>P</mi>
+                                                <mn>2</mn>
+                                            </msup>
+
+                                            <mo>+</mo>
+
+                                            <msup>
+                                                <mi>Q</mi>
+                                                <mn>2</mn>
+                                            </msup>
+
+                                            <mo>+</mo>
+
+                                            <msup>
+                                                <mi>T</mi>
+                                                <mn>2</mn>
+                                            </msup>
+                                        </mrow>
+                                    </msqrt>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Співвідношення використовується для перевірки
+                            правильності розрахунків.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Коефіцієнт спотворення струму</h3>
+
+                        <div class="formula-expression">
+                            <math display="block" aria-label="Ню дорівнює I один, поділеному на I">
+                                <mrow>
+                                    <mi>ν</mi>
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <msub>
+                                            <mi>I</mi>
+                                            <mn>1</mn>
+                                        </msub>
+
+                                        <mi>I</mi>
+                                    </mfrac>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Показує частку першої гармоніки у повному
+                            діючому значенні струму.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Результуючий коефіцієнт потужності</h3>
+
+                        <div class="formula-expression formula-expression-wide">
+                            <math display="block"
+                                aria-label="Хі дорівнює P поділеному на S, дорівнює P поділеному на U один I, дорівнює ню косинус фі один p">
+                                <mrow>
+                                    <mi>χ</mi>
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <mi>P</mi>
+                                        <mi>S</mi>
+                                    </mfrac>
+
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <mi>P</mi>
+
+                                        <mrow>
+                                            <msub>
+                                                <mi>U</mi>
+                                                <mn>1</mn>
+                                            </msub>
+
+                                            <mi>I</mi>
+                                        </mrow>
+                                    </mfrac>
+
+                                    <mo>=</mo>
+
+                                    <mi>ν</mi>
+                                    <mi mathvariant="normal">cos</mi>
+
+                                    <msub>
+                                        <mi>φ</mi>
+                                        <mrow>
+                                            <mn>1</mn>
+                                            <mi mathvariant="normal">p</mi>
+                                        </mrow>
+                                    </msub>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Враховує одночасно фазовий зсув і спотворення
+                            форми струму.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Коефіцієнт регулювання напруги</h3>
+
+                        <div class="formula-expression">
+                            <math display="block" aria-label="k U дорівнює U два, поділеному на U один">
+                                <mrow>
+                                    <msub>
+                                        <mi>k</mi>
+                                        <mi mathvariant="normal">U</mi>
+                                    </msub>
+
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <msub>
+                                            <mi>U</mi>
+                                            <mn>2</mn>
+                                        </msub>
+
+                                        <msub>
+                                            <mi>U</mi>
+                                            <mn>1</mn>
+                                        </msub>
+                                    </mfrac>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Показує відношення напруги навантаження
+                            до напруги живлення.
+                        </p>
+                    </article>
+
+                    <article class="formula-card">
+                        <h3>Коефіцієнт гармонічних спотворень струму</h3>
+
+                        <div class="formula-expression">
+                            <math display="block"
+                                aria-label="k I дорівнює квадратному кореню з одиниці мінус ню у квадраті, поділеному на ню">
+                                <mrow>
+                                    <msub>
+                                        <mi>k</mi>
+                                        <mi mathvariant="normal">I</mi>
+                                    </msub>
+
+                                    <mo>=</mo>
+
+                                    <mfrac>
+                                        <msqrt>
+                                            <mrow>
+                                                <mn>1</mn>
+                                                <mo>−</mo>
+
+                                                <msup>
+                                                    <mi>ν</mi>
+                                                    <mn>2</mn>
+                                                </msup>
+                                            </mrow>
+                                        </msqrt>
+
+                                        <mi>ν</mi>
+                                    </mfrac>
+                                </mrow>
+                            </math>
+                        </div>
+
+                        <p>
+                            Коефіцієнт є безрозмірним. Для подання
+                            у відсотках отримане значення множать на 100%.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </details>
+
+        <details class="theory-panel">
+            <summary>6.3.1 Особливості досліджуваного обладнання</summary>
+
+            <div class="theory-panel-content">
+                <p>
+                    У лабораторній роботі кероване тиристорне джерело
+                    живлення моделюється фазоімпульсним регулятором
+                    потужності. Регулятор забезпечує плавну зміну діючого
+                    значення напруги та активної потужності навантаження.
+                </p>
+
+                <ul class="theory-list">
+                    <li>
+                        Поглиблення фазового регулювання зменшує
+                        результуючий коефіцієнт потужності.
+                    </li>
+
+                    <li>
+                        Зі збільшенням кута керування зростає вплив
+                        вищих гармонік струму.
+                    </li>
+
+                    <li>
+                        Для вимірювання несинусоїдальних струмів і напруг
+                        необхідно використовувати прилади, придатні для
+                        вимірювання діючих значень несинусоїдальних сигналів.
+                    </li>
+
+                    <li>
+                        Безпосередньо виміряні SATEC PM172EH показники
+                        гармонічних спотворень потрібно записувати окремо,
+                        зазначаючи, до якої величини вони належать:
+                        струму або напруги.
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</section>

@@ -1,0 +1,417 @@
+#lab-print-root {
+    display: none;
+}
+
+@page {
+    size: A4 landscape;
+    margin: 9mm;
+}
+
+@media print {
+    html,
+    body {
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-family: Arial, sans-serif;
+        font-size: 9pt;
+        line-height: 1.35;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /*
+     * Друкується лише спеціально створена копія звіту.
+     */
+    body.lab-report-print-mode
+    > *:not(#lab-print-root) {
+        display: none !important;
+    }
+
+    body.lab-report-print-mode
+    > #lab-print-root {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #lab-print-root
+    .report-document {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    /*
+     * Загальні правила поділу сторінок.
+     */
+    #lab-print-root
+    .report-document-header,
+    #lab-print-root
+    .report-meta,
+    #lab-print-root
+    .report-purpose,
+    #lab-print-root
+    .report-scheme-section,
+    #lab-print-root
+    .report-table-wrapper,
+    #lab-print-root
+    .report-chart,
+    #lab-print-root
+    .report-conclusions section,
+    #lab-print-root
+    .report-final-status {
+        break-inside: avoid-page !important;
+        page-break-inside: avoid !important;
+    }
+
+    #lab-print-root h3,
+    #lab-print-root h4,
+    #lab-print-root figcaption {
+        break-after: avoid-page;
+        page-break-after: avoid;
+    }
+
+    #lab-print-root p {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /*
+     * Заголовок звіту.
+     */
+    #lab-print-root
+    .report-document-header {
+        padding-bottom: 3mm;
+        border-bottom: 1.5pt solid #000000;
+        text-align: center;
+    }
+
+    #lab-print-root
+    .report-document-header p {
+        margin: 0 0 1.5mm;
+        color: #000000;
+        font-size: 10pt;
+    }
+
+    #lab-print-root
+    .report-document-header h3 {
+        max-width: none;
+        margin: 0;
+        color: #000000;
+        font-size: 15pt;
+        line-height: 1.2;
+    }
+
+    /*
+     * Дані студента.
+     */
+    #lab-print-root
+    .report-meta {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 2.5mm;
+        margin: 3.5mm 0;
+    }
+
+    #lab-print-root
+    .report-meta div {
+        min-width: 0;
+        padding: 2mm;
+        border: 0.7pt solid #777777;
+        border-radius: 0;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-meta dt {
+        margin: 0 0 0.8mm;
+        color: #444444;
+        font-size: 7.5pt;
+    }
+
+    #lab-print-root
+    .report-meta dd {
+        margin: 0;
+        color: #000000;
+        font-size: 9pt;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    /*
+     * Мета роботи.
+     */
+    #lab-print-root
+    .report-purpose {
+        margin-top: 3mm;
+        padding: 2.5mm 3mm;
+        border: 0.7pt solid #777777;
+        border-left: 2pt solid #000000;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-purpose h3 {
+        margin: 0 0 1mm;
+        color: #000000;
+        font-size: 10.5pt;
+    }
+
+    #lab-print-root
+    .report-purpose p {
+        margin: 0;
+        color: #000000;
+        font-size: 8.5pt;
+        line-height: 1.3;
+    }
+
+    /*
+     * Розділи звіту.
+     */
+    #lab-print-root
+    .report-section {
+        margin-top: 3.5mm;
+    }
+
+    #lab-print-root
+    .report-section h3 {
+        margin: 0 0 2mm;
+        color: #000000;
+        font-size: 11.5pt;
+    }
+
+    /*
+     * Принципова схема.
+     */
+    #lab-print-root
+    .report-scheme-section {
+        margin-top: 3.5mm;
+    }
+
+    #lab-print-root
+    .report-schematic {
+        display: grid;
+        width: 100%;
+        height: 88mm;
+        min-height: 0;
+        padding: 1.5mm;
+        place-items: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        border: 0.7pt solid #777777;
+        border-radius: 0;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-schematic svg {
+        display: block;
+        width: 100% !important;
+        height: 84mm !important;
+        max-width: 100% !important;
+        max-height: 84mm !important;
+    }
+
+    /*
+     * Таблиці починаються з нової сторінки.
+     */
+    #lab-print-root
+    .report-data-section {
+        break-before: page;
+        page-break-before: always;
+        margin-top: 0;
+    }
+
+    #lab-print-root
+    .report-table-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    #lab-print-root
+    .report-table-wrapper
+    + .report-table-wrapper {
+        margin-top: 2.5mm;
+    }
+
+    #lab-print-root
+    .report-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        background: #ffffff;
+        font-size: 7.8pt;
+    }
+
+    #lab-print-root
+    .report-table thead {
+        display: table-header-group;
+    }
+
+    #lab-print-root
+    .report-table tr {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    #lab-print-root
+    .report-table th,
+    #lab-print-root
+    .report-table td {
+        padding: 1.6mm 0.8mm;
+        border: 0.7pt solid #555555;
+        color: #000000;
+        text-align: center;
+        vertical-align: middle;
+        overflow-wrap: anywhere;
+    }
+
+    #lab-print-root
+    .report-table thead th {
+        background: #e6edf1 !important;
+        color: #000000 !important;
+        font-weight: 700;
+    }
+
+    #lab-print-root
+    .report-table tbody th {
+        background: #f2f4f5 !important;
+        color: #000000 !important;
+        font-weight: 700;
+    }
+
+    /*
+     * Графіки починаються з нової сторінки.
+     */
+    #lab-print-root
+    .report-charts-section {
+        break-before: page;
+        page-break-before: always;
+        margin-top: 0;
+    }
+
+    #lab-print-root
+    .report-chart-list {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+        gap: 3mm;
+    }
+
+    #lab-print-root
+    .report-chart {
+        min-width: 0;
+        margin: 0;
+        padding: 2mm;
+        box-sizing: border-box;
+        border: 0.7pt solid #777777;
+        border-radius: 0;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-chart:nth-child(3) {
+        grid-column: 1 / -1;
+        width: calc(50% - 1.5mm);
+        justify-self: center;
+    }
+
+    #lab-print-root
+    .report-chart figcaption {
+        margin: 0 0 1mm;
+        color: #000000;
+        font-size: 8.5pt;
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+    #lab-print-root
+    .report-chart svg {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: 70mm !important;
+    }
+
+    /*
+     * Висновки починаються з нової сторінки.
+     */
+    #lab-print-root
+    .report-conclusions-section {
+        break-before: page;
+        page-break-before: always;
+        margin-top: 0;
+    }
+
+    #lab-print-root
+    .report-conclusions {
+        display: grid;
+        gap: 3mm;
+    }
+
+    #lab-print-root
+    .report-conclusions section {
+        padding: 3mm;
+        border: 0.7pt solid #777777;
+        border-left: 2pt solid #000000;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-conclusions h4 {
+        margin: 0 0 1.5mm;
+        color: #000000;
+        font-size: 9.5pt;
+    }
+
+    #lab-print-root
+    .report-conclusions p {
+        margin: 0;
+        color: #000000;
+        font-size: 8.5pt;
+        line-height: 1.35;
+        white-space: pre-wrap;
+    }
+
+    /*
+     * Підсумковий блок.
+     */
+    #lab-print-root
+    .report-final-status {
+        display: flex;
+        gap: 4mm;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 4mm;
+        padding: 2.5mm 3mm;
+        border: 0.7pt solid #777777;
+        border-left: 2pt solid #000000;
+        border-radius: 0;
+        background: #ffffff;
+    }
+
+    #lab-print-root
+    .report-final-status,
+    #lab-print-root
+    .report-final-status strong {
+        color: #000000;
+        font-size: 8.5pt;
+    }
+}

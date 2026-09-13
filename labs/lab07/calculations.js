@@ -1,0 +1,821 @@
+import {
+    LAB07_EXPERIMENT_MODES,
+    LAB07_EXPERIMENT_STORAGE_KEY,
+    LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY
+} from "./data.js";
+
+import {
+    calculateExpectedValues
+} from "./model.js";
+
+import {
+    createStorage
+} from "../../common/js/storage.js";
+
+const CALCULATION_STORAGE_KEY =
+    "eetsee.lab07.calculations.v1";
+
+const CALCULATION_COMPLETED_KEY =
+    "eetsee.lab07.calculations.completed.v1";
+
+
+
+const CALCULATION_FIELDS = [
+    {
+        key: "voltageRegulation",
+        tolerance: 0.005
+    },
+    {
+        key: "apparentPower",
+        tolerance: 2
+    },
+    {
+        key: "cosPhi1p",
+        tolerance: 0.005
+    },
+    {
+        key: "nuP",
+        tolerance: 0.005
+    },
+    {
+        key: "chiP",
+        tolerance: 0.005
+    },
+    {
+        key: "firstHarmonicCurrent",
+        tolerance: 0.02
+    },
+    {
+        key: "reactivePower",
+        tolerance: 2
+    },
+    {
+        key: "distortionPower",
+        tolerance: 2
+    },
+    {
+        key: "currentDistortionFactor",
+        tolerance: 0.005
+    },
+    {
+        key: "powerFactor",
+        tolerance: 0.005
+    },
+    {
+        key: "harmonicDistortionFactor",
+        tolerance: 0.02
+    }
+];
+
+
+function parseStudentNumber(value) {
+    const normalizedValue = value
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(",", ".");
+
+    if (normalizedValue === "") {
+        return null;
+    }
+
+    const number = Number(normalizedValue);
+
+    return Number.isFinite(number)
+        ? number
+        : null;
+}
+
+function formatNumber(value, digits = 2) {
+    return new Intl.NumberFormat("uk-UA", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: digits
+    }).format(value);
+}
+
+function escapeAttribute(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+}
+
+function readJsonStorage(key, fallback = {}) {
+    try {
+        const storedValue = localStorage.getItem(key);
+
+        return storedValue
+            ? JSON.parse(storedValue)
+            : fallback;
+    } catch (error) {
+        console.warn(
+            "Помилка читання локальних даних.",
+            error
+        );
+
+        return fallback;
+    }
+}
+
+function writeJsonStorage(key, value) {
+    try {
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+    } catch (error) {
+        console.warn(
+            "Помилка збереження локальних даних.",
+            error
+        );
+    }
+}
+
+
+
+function isValueCorrect(
+    studentValue,
+    expectedValue,
+    tolerance
+) {
+    return (
+        Number.isFinite(studentValue) &&
+        Math.abs(
+            studentValue - expectedValue
+        ) <= tolerance
+    );
+}
+
+export function initializeCalculations({
+    namespace = "lab07"
+} = {}) {
+    const section =
+        document.querySelector("#calculations");
+
+    if (!section) {
+        return;
+    }
+
+    const standStorage = createStorage(
+        `${namespace}:stand`
+    );
+
+    const readiness = section.querySelector(
+        "#calculation-readiness"
+    );
+
+    const readinessTitle = section.querySelector(
+        "#calculation-readiness-title"
+    );
+
+    const readinessText = section.querySelector(
+        "#calculation-readiness-text"
+    );
+
+    const workspace = section.querySelector(
+        "#calculation-workspace"
+    );
+
+    const tableBody = section.querySelector(
+        "#student-calculation-table-body"
+    );
+
+    const saveButton = section.querySelector(
+        "#save-calculation-draft"
+    );
+
+    const checkButton = section.querySelector(
+        "#check-calculations"
+    );
+
+    const resetButton = section.querySelector(
+        "#reset-calculations"
+    );
+
+    const resultMessage = section.querySelector(
+        "#calculation-result-message"
+    );
+
+    let experimentRecords = {};
+
+    let studentDraft = readJsonStorage(
+        CALCULATION_STORAGE_KEY,
+        {}
+    );
+
+    function isStandReady() {
+        const progress = standStorage.get(
+            "progress",
+            {}
+        );
+
+        return progress.ready === true;
+    }
+
+    function getCompletedExperimentCount() {
+        return LAB07_EXPERIMENT_MODES.filter(
+            (mode) =>
+                Boolean(
+                    experimentRecords[mode.id]
+                )
+        ).length;
+    }
+
+    function renderReadiness() {
+        experimentRecords = readJsonStorage(
+            LAB07_EXPERIMENT_STORAGE_KEY,
+            {}
+        );
+
+        const completedCount =
+            getCompletedExperimentCount();
+
+        const standReady =
+            isStandReady();
+
+        const experimentCompleted =
+            completedCount ===
+            LAB07_EXPERIMENT_MODES.length;
+
+        const isReady =
+            standReady &&
+            experimentCompleted;
+
+        readiness.classList.toggle(
+            "is-ready",
+            isReady
+        );
+
+        if (!standReady) {
+            readinessTitle.textContent =
+                "Спочатку завершіть роботу зі стендом";
+
+            readinessText.textContent =
+                "Перегляньте всі елементи віртуального стенда та підтвердьте його готовність.";
+        } else if (!experimentCompleted) {
+            readinessTitle.textContent =
+                "Спочатку завершіть вимірювання";
+
+            readinessText.textContent =
+                `Записано ${completedCount} із 3 режимів. Поверніться до розділу 7.`;
+        } else {
+            readinessTitle.textContent =
+                "Вимірювання готові до оброблення";
+
+            readinessText.textContent =
+                "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно.";
+        }
+
+        workspace.hidden = !isReady;
+
+        if (isReady) {
+            renderTable();
+        }
+    }
+
+    function createInput(modeId, fieldKey) {
+        const storedValue =
+            studentDraft[modeId]?.[fieldKey] ??
+            "";
+
+        return `
+            <input
+                class="calculation-input"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                data-mode-id="${modeId}"
+                data-field="${fieldKey}"
+                value="${escapeAttribute(storedValue)}"
+                placeholder="0,000"
+                aria-label="Введіть розраховане значення"
+            >
+        `;
+    }
+
+    function renderTable() {
+        tableBody.innerHTML =
+            LAB07_EXPERIMENT_MODES.map(
+                (mode) => {
+                    const record =
+                        experimentRecords[mode.id];
+
+                    return `
+                        <tr>
+                            <th scope="row">
+                                ${mode.position}
+                            </th>
+
+                            <td>
+                                ${formatNumber(
+                        record.alpha ??
+                        mode.alpha,
+                        0
+                    )}
+                            </td>
+
+                            <td>
+                                ${formatNumber(
+                        record.u1,
+                        1
+                    )}
+                            </td>
+
+                            <td>
+                                ${formatNumber(
+                        record.current,
+                        2
+                    )}
+                            </td>
+
+                            <td>
+                                ${formatNumber(
+                        record.power,
+                        1
+                    )}
+                            </td>
+
+                            <td>
+                                ${formatNumber(
+                        record.u2,
+                        1
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "voltageRegulation"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "apparentPower"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "cosPhi1p"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "nuP"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "chiP"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "firstHarmonicCurrent"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "reactivePower"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "distortionPower"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "currentDistortionFactor"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "powerFactor"
+                    )}
+                            </td>
+
+                            <td>
+                                ${createInput(
+                        mode.id,
+                        "harmonicDistortionFactor"
+                    )}
+                            </td>
+                        </tr>
+                    `;
+                }
+            ).join("");
+    }
+
+    function collectDraft() {
+        const draft = {};
+
+        tableBody.querySelectorAll(
+            ".calculation-input"
+        ).forEach((input) => {
+            const modeId =
+                input.dataset.modeId;
+
+            const field =
+                input.dataset.field;
+
+            draft[modeId] ??= {};
+
+            draft[modeId][field] =
+                input.value.trim();
+        });
+
+        studentDraft = draft;
+
+        writeJsonStorage(
+            CALCULATION_STORAGE_KEY,
+            draft
+        );
+
+        return draft;
+    }
+
+    function clearValidationStyles() {
+        tableBody.querySelectorAll(
+            ".calculation-input"
+        ).forEach((input) => {
+            input.classList.remove(
+                "is-correct",
+                "is-incorrect"
+            );
+
+            input.removeAttribute(
+                "aria-invalid"
+            );
+        });
+    }
+    function invalidateVerifiedCalculations() {
+        localStorage.removeItem(
+            CALCULATION_COMPLETED_KEY
+        );
+
+        localStorage.removeItem(
+            LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY
+        );
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "lab07:calculations-invalidated"
+            )
+        );
+    }
+    function saveDraft() {
+        collectDraft();
+        clearValidationStyles();
+
+        resultMessage.dataset.type =
+            "saved";
+
+        resultMessage.textContent =
+            "Чернетку розрахунків збережено у браузері.";
+    }
+
+    function checkCalculations() {
+        collectDraft();
+
+        let correctCount = 0;
+        let filledCount = 0;
+
+        const totalCount =
+            LAB07_EXPERIMENT_MODES.length *
+            CALCULATION_FIELDS.length;
+
+        const expectedByMode = {};
+
+        try {
+            LAB07_EXPERIMENT_MODES.forEach(
+                (mode) => {
+                    const record =
+                        experimentRecords[
+                        mode.id
+                        ];
+
+                    expectedByMode[
+                        mode.id
+                    ] =
+                        calculateExpectedValues(
+                            mode,
+                            record
+                        );
+                }
+            );
+        } catch (error) {
+            invalidateVerifiedCalculations();
+
+            resultMessage.dataset.type =
+                "error";
+
+            resultMessage.textContent =
+                error.message;
+
+            return;
+        }
+
+        LAB07_EXPERIMENT_MODES.forEach(
+            (mode) => {
+                const expected =
+                    expectedByMode[
+                    mode.id
+                    ];
+
+                CALCULATION_FIELDS.forEach(
+                    (field) => {
+                        const input =
+                            tableBody.querySelector(
+                                `[data-mode-id="${mode.id}"][data-field="${field.key}"]`
+                            );
+
+                        const studentValue =
+                            parseStudentNumber(
+                                input.value
+                            );
+
+                        const isFilled =
+                            studentValue !==
+                            null;
+
+                        const isCorrect =
+                            isValueCorrect(
+                                studentValue,
+                                expected[
+                                field.key
+                                ],
+                                field.tolerance
+                            );
+
+                        if (isFilled) {
+                            filledCount += 1;
+                        }
+
+                        if (isCorrect) {
+                            correctCount += 1;
+                        }
+
+                        input.classList.toggle(
+                            "is-correct",
+                            isCorrect
+                        );
+
+                        input.classList.toggle(
+                            "is-incorrect",
+                            isFilled &&
+                            !isCorrect
+                        );
+
+                        if (
+                            isFilled &&
+                            !isCorrect
+                        ) {
+                            input.setAttribute(
+                                "aria-invalid",
+                                "true"
+                            );
+                        } else {
+                            input.removeAttribute(
+                                "aria-invalid"
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+        const allCorrect =
+            correctCount === totalCount;
+
+        if (allCorrect) {
+            const verifiedCalculations =
+                Object.fromEntries(
+                    LAB07_EXPERIMENT_MODES.map(
+                        (mode) => {
+                            const record =
+                                experimentRecords[
+                                mode.id
+                                ];
+
+                            return [
+                                mode.id,
+
+                                {
+                                    position:
+                                        Number(
+                                            record.position ??
+                                            mode.position
+                                        ),
+
+                                    alpha:
+                                        Number(
+                                            record.alpha ??
+                                            mode.alpha
+                                        ),
+
+                                    u1:
+                                        Number(
+                                            record.u1
+                                        ),
+
+                                    current:
+                                        Number(
+                                            record.current
+                                        ),
+
+                                    power:
+                                        Number(
+                                            record.power
+                                        ),
+
+                                    u2:
+                                        Number(
+                                            record.u2
+                                        ),
+
+                                    ...expectedByMode[
+                                    mode.id
+                                    ]
+                                }
+                            ];
+                        }
+                    )
+                );
+
+            writeJsonStorage(
+                LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY,
+                verifiedCalculations
+            );
+
+            localStorage.setItem(
+                CALCULATION_COMPLETED_KEY,
+                "true"
+            );
+
+            resultMessage.dataset.type =
+                "success";
+
+            resultMessage.textContent =
+                `Усі ${totalCount} значення розраховано правильно.`;
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "lab07:calculations-completed",
+                    {
+                        detail: {
+                            calculations:
+                                verifiedCalculations
+                        }
+                    }
+                )
+            );
+
+            return;
+        }
+
+        invalidateVerifiedCalculations();
+
+        resultMessage.dataset.type =
+            "error";
+
+        if (filledCount < totalCount) {
+            resultMessage.textContent =
+                `Заповнено ${filledCount} із ${totalCount} полів. Правильних значень: ${correctCount}.`;
+        } else {
+            resultMessage.textContent =
+                `Правильних значень: ${correctCount} із ${totalCount}. Перевірте поля, позначені червоним.`;
+        }
+    }
+
+    function resetCalculations() {
+        const shouldReset =
+            window.confirm(
+                "Очистити всі введені розрахункові значення?"
+            );
+
+        if (!shouldReset) {
+            return;
+        }
+
+        studentDraft = {};
+
+        localStorage.removeItem(
+            CALCULATION_STORAGE_KEY
+        );
+
+        invalidateVerifiedCalculations();
+
+        renderTable();
+
+        resultMessage.dataset.type =
+            "default";
+
+        resultMessage.textContent =
+            "Розрахункові поля очищено.";
+    }
+
+    tableBody.addEventListener(
+        "input",
+        (event) => {
+            if (
+                !event.target.matches(
+                    ".calculation-input"
+                )
+            ) {
+                return;
+            }
+
+            event.target.classList.remove(
+                "is-correct",
+                "is-incorrect"
+            );
+
+            event.target.removeAttribute(
+                "aria-invalid"
+            );
+
+            invalidateVerifiedCalculations();
+
+            resultMessage.dataset.type =
+                "default";
+
+            resultMessage.textContent =
+                "Значення змінено. Виконайте повторну перевірку розрахунків.";
+        }
+    );
+
+    saveButton.addEventListener(
+        "click",
+        saveDraft
+    );
+
+    checkButton.addEventListener(
+        "click",
+        checkCalculations
+    );
+
+    resetButton.addEventListener(
+        "click",
+        resetCalculations
+    );
+
+    window.addEventListener(
+        "lab07:experiment-completed",
+        renderReadiness
+    );
+
+    function handleStandProgressChange(event) {
+        if (
+            event?.detail?.namespace &&
+            event.detail.namespace !== namespace
+        ) {
+            return;
+        }
+
+        renderReadiness();
+    }
+
+    document.addEventListener(
+        "laboratory:stand-ready",
+        handleStandProgressChange
+    );
+
+    document.addEventListener(
+        "laboratory:stand-reset",
+        handleStandProgressChange
+    );
+    function handleExperimentChange() {
+        invalidateVerifiedCalculations();
+
+        renderReadiness();
+    }
+
+    window.addEventListener(
+        "lab07:experiment-updated",
+        handleExperimentChange
+    );
+
+    window.addEventListener(
+        "lab07:experiment-reset",
+        handleExperimentChange
+    );
+    renderReadiness();
+}
