@@ -14,8 +14,8 @@ import {
     initializeCalculations
 } from "./calculations.js";
 
-import { 
-    initializeAnalysis 
+import {
+    initializeAnalysis
 } from "./charts.js";
 
 import {
@@ -25,6 +25,8 @@ import {
 import {
     initializeReport
 } from "./report.js";
+
+const LAB_NAMESPACE = "lab06";
 
 const sectionFiles = [
     "./sections/01-overview.html",
@@ -109,10 +111,21 @@ async function loadLaboratoryContent() {
             sectionContent.join("");
 
         initializeNavigation();
-        initializeSafetyModule();
-        initializeStand();
-        initializeExperiment();
-        initializeCalculations();
+
+        initializeSafetyModule({
+            namespace: LAB_NAMESPACE
+        });
+
+        initializeStand({
+            namespace: LAB_NAMESPACE
+        });
+
+        initializeExperiment({
+            namespace: LAB_NAMESPACE
+        });
+        initializeCalculations({
+            namespace: LAB_NAMESPACE
+        });
         initializeAnalysis();
         initializeQuiz();
         initializeReport();

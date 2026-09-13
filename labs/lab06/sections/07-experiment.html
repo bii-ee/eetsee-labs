@@ -9,276 +9,218 @@
         вимірювальних приладів.
     </p>
 
-    <div class="experiment-status-panel">
-        <div>
-            <span class="experiment-status-label">
-                Стан установки
-            </span>
+    <div class="experiment-access-shell">
+        <div id="experiment-lock-overlay" class="experiment-lock-overlay" role="status">
+            <div class="experiment-lock-card">
+                <strong>
+                    Доступ до проведення досліду заблоковано
+                </strong>
 
-            <strong
-                id="experiment-power-state"
-                class="experiment-power-state"
-            >
-                Вимкнена
-            </strong>
+                <p>
+                    Спочатку перегляньте всі елементи віртуального
+                    стенда та підтвердьте його готовність.
+                </p>
+
+                <a class="button-primary experiment-lock-link" href="#stand">
+                    Перейти до віртуального стенда
+                </a>
+            </div>
         </div>
 
-        <button
-            id="experiment-power-button"
-            class="experiment-power-button"
-            type="button"
-        >
-            Увімкнути установку
-        </button>
-    </div>
+        <div id="experiment-interactive-area">
 
-    <div class="experiment-layout">
-        <div class="experiment-control-panel">
-            <h3>Положення регулятора</h3>
-
-            <p>
-                Виберіть положення регулятора, після чого виконайте
-                вимірювання.
-            </p>
-
-            <div
-                class="experiment-modes"
-                role="group"
-                aria-label="Положення тиристорного регулятора"
-            >
-                <button
-                    class="experiment-mode-button is-selected"
-                    type="button"
-                    data-mode-id="mode-1"
-                    aria-pressed="true"
-                >
-                    <span>Положення 1</span>
-                    <strong>α = 0°</strong>
-                </button>
-
-                <button
-                    class="experiment-mode-button"
-                    type="button"
-                    data-mode-id="mode-2"
-                    aria-pressed="false"
-                >
-                    <span>Положення 2</span>
-                    <strong>α = 60°</strong>
-                </button>
-
-                <button
-                    class="experiment-mode-button"
-                    type="button"
-                    data-mode-id="mode-3"
-                    aria-pressed="false"
-                >
-                    <span>Положення 3</span>
-                    <strong>α = 90°</strong>
-                </button>
-            </div>
-
-            <div class="experiment-actions">
-                <button
-                    id="experiment-measure-button"
-                    class="button-primary"
-                    type="button"
-                    disabled
-                >
-                    Зняти покази
-                </button>
-
-                <button
-                    id="experiment-record-button"
-                    class="button-secondary"
-                    type="button"
-                    disabled
-                >
-                    Записати в таблицю
-                </button>
-            </div>
-
-            <p
-                id="experiment-message"
-                class="experiment-message"
-                role="status"
-                aria-live="polite"
-            >
-                Спочатку увімкніть установку.
-            </p>
-        </div>
-
-        <div class="experiment-visual-panel">
-            <div class="experiment-visual-header">
+            <div class="experiment-status-panel">
                 <div>
-                    <span>Форма напруги на навантаженні</span>
+                    <span class="experiment-status-label">
+                        Стан установки
+                    </span>
 
-                    <strong id="experiment-alpha-label">
-                        α = 0°
+                    <strong id="experiment-power-state" class="experiment-power-state">
+                        Вимкнена
                     </strong>
+                </div>
+
+                <button id="experiment-power-button" class="experiment-power-button" type="button">
+                    Увімкнути установку
+                </button>
+            </div>
+
+            <div class="experiment-layout">
+                <div class="experiment-control-panel">
+                    <h3>Положення регулятора</h3>
+
+                    <p>
+                        Виберіть положення регулятора, після чого виконайте
+                        вимірювання.
+                    </p>
+
+                    <div class="experiment-modes" role="group" aria-label="Положення тиристорного регулятора">
+                        <button class="experiment-mode-button is-selected" type="button" data-mode-id="mode-1"
+                            aria-pressed="true">
+                            <span>Положення 1</span>
+                            <strong>α = 0°</strong>
+                        </button>
+
+                        <button class="experiment-mode-button" type="button" data-mode-id="mode-2" aria-pressed="false">
+                            <span>Положення 2</span>
+                            <strong>α = 60°</strong>
+                        </button>
+
+                        <button class="experiment-mode-button" type="button" data-mode-id="mode-3" aria-pressed="false">
+                            <span>Положення 3</span>
+                            <strong>α = 90°</strong>
+                        </button>
+                    </div>
+
+                    <div class="experiment-actions">
+                        <button id="experiment-measure-button" class="button-primary" type="button" disabled>
+                            Зняти покази
+                        </button>
+
+                        <button id="experiment-record-button" class="button-secondary" type="button" disabled>
+                            Записати в таблицю
+                        </button>
+                    </div>
+
+                    <p id="experiment-message" class="experiment-message" role="status" aria-live="polite">
+                        Спочатку увімкніть установку.
+                    </p>
+                </div>
+
+                <div class="experiment-visual-panel">
+                    <div class="experiment-visual-header">
+                        <div>
+                            <span>Форма напруги на навантаженні</span>
+
+                            <strong id="experiment-alpha-label">
+                                α = 0°
+                            </strong>
+                        </div>
+                    </div>
+
+                    <svg class="experiment-waveform" viewBox="0 0 640 180" role="img"
+                        aria-label="Форма напруги на виході тиристорного регулятора">
+                        <line class="wave-axis" x1="0" y1="90" x2="640" y2="90"></line>
+
+                        <line class="wave-grid" x1="160" y1="15" x2="160" y2="165"></line>
+
+                        <line class="wave-grid" x1="320" y1="15" x2="320" y2="165"></line>
+
+                        <line class="wave-grid" x1="480" y1="15" x2="480" y2="165"></line>
+
+                        <path id="experiment-reference-waveform" class="wave-reference" d=""></path>
+
+                        <path id="experiment-waveform-path" class="wave-output" d=""></path>
+                    </svg>
+
+                    <div class="experiment-wave-legend">
+                        <span class="legend-reference">
+                            Напруга мережі
+                        </span>
+
+                        <span class="legend-output">
+                            Напруга навантаження
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <svg
-                class="experiment-waveform"
-                viewBox="0 0 640 180"
-                role="img"
-                aria-label="Форма напруги на виході тиристорного регулятора"
-            >
-                <line
-                    class="wave-axis"
-                    x1="0"
-                    y1="90"
-                    x2="640"
-                    y2="90"
-                ></line>
+            <div class="measurement-panel">
+                <div class="measurement-panel-header">
+                    <div>
+                        <p class="section-number">Покази приладів</p>
+                        <h3>Результати поточного вимірювання</h3>
+                    </div>
 
-                <line
-                    class="wave-grid"
-                    x1="160"
-                    y1="15"
-                    x2="160"
-                    y2="165"
-                ></line>
+                    <span id="experiment-current-mode">
+                        Положення 1
+                    </span>
+                </div>
 
-                <line
-                    class="wave-grid"
-                    x1="320"
-                    y1="15"
-                    x2="320"
-                    y2="165"
-                ></line>
+                <div class="measurement-grid">
+                    <article class="measurement-card">
+                        <span>PV1</span>
+                        <strong>
+                            <output data-reading="u1">—</output>
+                            <small>В</small>
+                        </strong>
+                        <p>Напруга живлення U₁</p>
+                    </article>
 
-                <line
-                    class="wave-grid"
-                    x1="480"
-                    y1="15"
-                    x2="480"
-                    y2="165"
-                ></line>
+                    <article class="measurement-card">
+                        <span>PA</span>
+                        <strong>
+                            <output data-reading="current">—</output>
+                            <small>А</small>
+                        </strong>
+                        <p>Струм установки I</p>
+                    </article>
 
-                <path
-                    id="experiment-reference-waveform"
-                    class="wave-reference"
-                    d=""
-                ></path>
+                    <article class="measurement-card">
+                        <span>PW</span>
+                        <strong>
+                            <output data-reading="power">—</output>
+                            <small>Вт</small>
+                        </strong>
+                        <p>Активна потужність P</p>
+                    </article>
 
-                <path
-                    id="experiment-waveform-path"
-                    class="wave-output"
-                    d=""
-                ></path>
-            </svg>
-
-            <div class="experiment-wave-legend">
-                <span class="legend-reference">
-                    Напруга мережі
-                </span>
-
-                <span class="legend-output">
-                    Напруга навантаження
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="measurement-panel">
-        <div class="measurement-panel-header">
-            <div>
-                <p class="section-number">Покази приладів</p>
-                <h3>Результати поточного вимірювання</h3>
+                    <article class="measurement-card">
+                        <span>PV2</span>
+                        <strong>
+                            <output data-reading="u2">—</output>
+                            <small>В</small>
+                        </strong>
+                        <p>Напруга навантаження U₂</p>
+                    </article>
+                </div>
             </div>
 
-            <span id="experiment-current-mode">
-                Положення 1
-            </span>
-        </div>
+            <div class="experiment-table-panel">
+                <div class="experiment-table-header">
+                    <div>
+                        <p class="section-number">Таблиця вимірювань</p>
+                        <h3>Експериментальні дані</h3>
+                    </div>
 
-        <div class="measurement-grid">
-            <article class="measurement-card">
-                <span>PV1</span>
-                <strong>
-                    <output data-reading="u1">—</output>
-                    <small>В</small>
-                </strong>
-                <p>Напруга живлення U₁</p>
-            </article>
+                    <div class="experiment-progress">
+                        Записано:
+                        <strong id="experiment-progress-value">0 із 3</strong>
+                    </div>
+                </div>
 
-            <article class="measurement-card">
-                <span>PA</span>
-                <strong>
-                    <output data-reading="current">—</output>
-                    <small>А</small>
-                </strong>
-                <p>Струм установки I</p>
-            </article>
+                <div class="table-scroll">
+                    <table class="experiment-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Положення</th>
+                                <th scope="col">α, град</th>
+                                <th scope="col">U₁, В</th>
+                                <th scope="col">I, А</th>
+                                <th scope="col">P, Вт</th>
+                                <th scope="col">U₂, В</th>
+                                <th scope="col">Стан</th>
+                            </tr>
+                        </thead>
 
-            <article class="measurement-card">
-                <span>PW</span>
-                <strong>
-                    <output data-reading="power">—</output>
-                    <small>Вт</small>
-                </strong>
-                <p>Активна потужність P</p>
-            </article>
+                        <tbody id="experiment-table-body"></tbody>
+                    </table>
+                </div>
 
-            <article class="measurement-card">
-                <span>PV2</span>
-                <strong>
-                    <output data-reading="u2">—</output>
-                    <small>В</small>
-                </strong>
-                <p>Напруга навантаження U₂</p>
-            </article>
-        </div>
-    </div>
-
-    <div class="experiment-table-panel">
-        <div class="experiment-table-header">
-            <div>
-                <p class="section-number">Таблиця вимірювань</p>
-                <h3>Експериментальні дані</h3>
+                <div class="experiment-table-actions">
+                    <button id="experiment-reset-button" class="button-danger-soft" type="button">
+                        Очистити результати
+                    </button>
+                </div>
             </div>
 
-            <div class="experiment-progress">
-                Записано:
-                <strong id="experiment-progress-value">0 із 3</strong>
+            <div class="notice">
+                <p>
+                    Покази цього навчального макета задаються у файлі
+                    <code>data.js</code>. Надалі в ньому можна створити окремі
+                    набори даних для різних бригад.
+                </p>
             </div>
         </div>
-
-        <div class="table-scroll">
-            <table class="experiment-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Положення</th>
-                        <th scope="col">α, град</th>
-                        <th scope="col">U₁, В</th>
-                        <th scope="col">I, А</th>
-                        <th scope="col">P, Вт</th>
-                        <th scope="col">U₂, В</th>
-                        <th scope="col">Стан</th>
-                    </tr>
-                </thead>
-
-                <tbody id="experiment-table-body"></tbody>
-            </table>
-        </div>
-
-        <div class="experiment-table-actions">
-            <button
-                id="experiment-reset-button"
-                class="button-danger-soft"
-                type="button"
-            >
-                Очистити результати
-            </button>
-        </div>
-    </div>
-
-    <div class="notice">
-        <p>
-            Покази цього навчального макета задаються у файлі
-            <code>data.js</code>. Надалі в ньому можна створити окремі
-            набори даних для різних бригад.
-        </p>
     </div>
 </section>

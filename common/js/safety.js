@@ -206,7 +206,13 @@ export function initializeSafetyModule({
         resetButton.hidden = true;
 
         storage.remove("progress");
-
+        document.dispatchEvent(
+            new CustomEvent("laboratory:safety-reset", {
+                detail: {
+                    namespace
+                }
+            })
+        );
         updateReadiness();
     }
 

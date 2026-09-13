@@ -368,13 +368,23 @@ export function initializeStand({
         updateComponentAppearance();
         updateProgress();
         saveProgress();
-    });
 
+        document.dispatchEvent(
+            new CustomEvent("laboratory:stand-reset", {
+                detail: {
+                    namespace
+                }
+            })
+        );
+    });
     document.addEventListener(
         "laboratory:safety-passed",
         updateAccess
     );
-
+    document.addEventListener(
+        "laboratory:safety-reset",
+        updateAccess
+    );
     updateAccess();
     updateComponentAppearance();
 

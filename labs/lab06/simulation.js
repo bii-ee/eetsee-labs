@@ -4,6 +4,10 @@ import {
     getExperimentMode
 } from "./data.js";
 
+import {
+    createStorage
+} from "../../common/js/storage.js";
+
 const EMPTY_READING = "—";
 
 function createSineWavePath({
@@ -92,13 +96,34 @@ function formatReading(value, digits = 1) {
     }).format(value);
 }
 
-export function initializeExperiment() {
+export function initializeExperiment({
+    namespace = "lab06"
+} = {}) {
     const experimentSection = document.querySelector("#experiment");
 
     if (!experimentSection) {
         return;
     }
 
+    const interactiveArea = experimentSection.querySelector(
+        "#experiment-interactive-area"
+    );
+
+    const lockOverlay = experimentSection.querySelector(
+        "#experiment-lock-overlay"
+    );
+
+    if (!interactiveArea || !lockOverlay) {
+        console.warn(
+            "Не знайдено елементи блокування експерименту."
+        );
+
+        return;
+    }
+
+    const standStorage = createStorage(
+        `${namespace}:stand`
+    );
     const powerButton = experimentSection.querySelector(
         "#experiment-power-button"
     );
@@ -183,6 +208,33 @@ export function initializeExperiment() {
         isMeasuring: false
     };
 
+    function isStandReady() {
+        const standProgress = standStorage.get(
+            "progress",
+            {}
+        );
+
+        return standProgress.ready === true;
+    }
+
+    function updateExperimentAccess(event) {
+        if (
+            event?.detail?.namespace &&
+            event.detail.namespace !== namespace
+        ) {
+            return;
+        }
+
+        const accessGranted = isStandReady();
+
+        lockOverlay.hidden = accessGranted;
+        interactiveArea.inert = !accessGranted;
+
+        experimentSection.classList.toggle(
+            "experiment-access-granted",
+            accessGranted
+        );
+    }
     function getSelectedMode() {
         return getExperimentMode(state.selectedModeId);
     }
@@ -544,9 +596,20 @@ export function initializeExperiment() {
         resetExperiment
     );
 
+    document.addEventListener(
+        "laboratory:stand-ready",
+        updateExperimentAccess
+    );
+
+    document.addEventListener(
+        "laboratory:stand-reset",
+        updateExperimentAccess
+    );
+
     renderReferenceWaveform();
     renderSelectedMode();
     renderPowerState();
     renderCurrentMeasurement();
     renderTable();
+    updateExperimentAccess();
 }

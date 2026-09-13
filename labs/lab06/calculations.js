@@ -3,6 +3,10 @@ import {
     LAB06_EXPERIMENT_STORAGE_KEY
 } from "./data.js";
 
+import {
+    createStorage
+} from "../../common/js/storage.js";
+
 const CALCULATION_STORAGE_KEY =
     "eetsee.lab06.calculations.v1";
 
@@ -262,13 +266,19 @@ function isValueCorrect(
     );
 }
 
-export function initializeCalculations() {
+export function initializeCalculations({
+    namespace = "lab06"
+} = {}) {
     const section =
         document.querySelector("#calculations");
 
     if (!section) {
         return;
     }
+
+    const standStorage = createStorage(
+        `${namespace}:stand`
+    );
 
     const readiness = section.querySelector(
         "#calculation-readiness"
@@ -313,6 +323,15 @@ export function initializeCalculations() {
         {}
     );
 
+    function isStandReady() {
+        const progress = standStorage.get(
+            "progress",
+            {}
+        );
+
+        return progress.ready === true;
+    }
+
     function getCompletedExperimentCount() {
         return LAB06_EXPERIMENT_MODES.filter(
             (mode) =>
@@ -331,22 +350,41 @@ export function initializeCalculations() {
         const completedCount =
             getCompletedExperimentCount();
 
-        const isReady =
+        const standReady =
+            isStandReady();
+
+        const experimentCompleted =
             completedCount ===
             LAB06_EXPERIMENT_MODES.length;
+
+        const isReady =
+            standReady &&
+            experimentCompleted;
 
         readiness.classList.toggle(
             "is-ready",
             isReady
         );
 
-        readinessTitle.textContent = isReady
-            ? "Вимірювання готові до оброблення"
-            : "Спочатку завершіть вимірювання";
+        if (!standReady) {
+            readinessTitle.textContent =
+                "Спочатку завершіть роботу зі стендом";
 
-        readinessText.textContent = isReady
-            ? "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно."
-            : `Записано ${completedCount} із 3 режимів. Поверніться до розділу 7.`;
+            readinessText.textContent =
+                "Перегляньте всі елементи віртуального стенда та підтвердьте його готовність.";
+        } else if (!experimentCompleted) {
+            readinessTitle.textContent =
+                "Спочатку завершіть вимірювання";
+
+            readinessText.textContent =
+                `Записано ${completedCount} із 3 режимів. Поверніться до розділу 7.`;
+        } else {
+            readinessTitle.textContent =
+                "Вимірювання готові до оброблення";
+
+            readinessText.textContent =
+                "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно.";
+        }
 
         workspace.hidden = !isReady;
 
@@ -390,115 +428,115 @@ export function initializeCalculations() {
 
                             <td>
                                 ${formatNumber(
-                        record.alpha ??
-                        mode.alpha,
-                        0
-                    )}
+                                    record.alpha ??
+                                    mode.alpha,
+                                    0
+                                )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                        record.u1,
-                        1
-                    )}
+                                    record.u1,
+                                    1
+                                )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                        record.current,
-                        2
-                    )}
+                                    record.current,
+                                    2
+                                )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                        record.power,
-                        1
-                    )}
+                                    record.power,
+                                    1
+                                )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                        record.u2,
-                        1
-                    )}
+                                    record.u2,
+                                    1
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "voltageRegulation"
-                    )}
+                                    mode.id,
+                                    "voltageRegulation"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "apparentPower"
-                    )}
+                                    mode.id,
+                                    "apparentPower"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "cosPhi1p"
-                    )}
+                                    mode.id,
+                                    "cosPhi1p"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "nuP"
-                    )}
+                                    mode.id,
+                                    "nuP"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "chiP"
-                    )}
+                                    mode.id,
+                                    "chiP"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "firstHarmonicCurrent"
-                    )}
+                                    mode.id,
+                                    "firstHarmonicCurrent"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "reactivePower"
-                    )}
+                                    mode.id,
+                                    "reactivePower"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "distortionPower"
-                    )}
+                                    mode.id,
+                                    "distortionPower"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "currentDistortionFactor"
-                    )}
+                                    mode.id,
+                                    "currentDistortionFactor"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "powerFactor"
-                    )}
+                                    mode.id,
+                                    "powerFactor"
+                                )}
                             </td>
 
                             <td>
                                 ${createInput(
-                        mode.id,
-                        "harmonicDistortionFactor"
-                    )}
+                                    mode.id,
+                                    "harmonicDistortionFactor"
+                                )}
                             </td>
                         </tr>
                     `;
@@ -519,6 +557,7 @@ export function initializeCalculations() {
                 input.dataset.field;
 
             draft[modeId] ??= {};
+
             draft[modeId][field] =
                 input.value.trim();
         });
@@ -666,6 +705,7 @@ export function initializeCalculations() {
         localStorage.removeItem(
             CALCULATION_COMPLETED_KEY
         );
+
         window.dispatchEvent(
             new CustomEvent(
                 "lab06:calculations-invalidated"
@@ -769,6 +809,27 @@ export function initializeCalculations() {
     window.addEventListener(
         "lab06:experiment-completed",
         renderReadiness
+    );
+
+    function handleStandProgressChange(event) {
+        if (
+            event?.detail?.namespace &&
+            event.detail.namespace !== namespace
+        ) {
+            return;
+        }
+
+        renderReadiness();
+    }
+
+    document.addEventListener(
+        "laboratory:stand-ready",
+        handleStandProgressChange
+    );
+
+    document.addEventListener(
+        "laboratory:stand-reset",
+        handleStandProgressChange
     );
 
     renderReadiness();
