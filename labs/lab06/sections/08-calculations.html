@@ -9,10 +9,7 @@
         правильність із урахуванням допустимого округлення.
     </p>
 
-    <div
-        id="calculation-readiness"
-        class="calculation-readiness"
-    >
+    <div id="calculation-readiness" class="calculation-readiness">
         <div>
             <strong id="calculation-readiness-title">
                 Перевірка експериментальних даних
@@ -23,10 +20,7 @@
             </p>
         </div>
 
-        <a
-            href="#experiment"
-            class="calculation-back-link"
-        >
+        <a href="#experiment" class="calculation-back-link">
             До таблиці вимірювань
         </a>
     </div>
@@ -98,8 +92,32 @@
 
             <ul>
                 <li>
+                    напруги вводьте у вольтах, струми в амперах;
+                </li>
+
+                <li>
+                    активну потужність вводьте у ватах,
+                    реактивну потужність у варах,
+                    повну потужність і потужність спотворення
+                    у вольт-амперах;
+                </li>
+
+                <li>
+                    коефіцієнти
+                    k<sub>U</sub>,
+                    cosφ₁p,
+                    ν<sub>p</sub>,
+                    χ<sub>p</sub>,
+                    ν,
+                    χ та
+                    k<sub>I</sub>
+                    вводьте у відносних одиницях;
+                </li>
+
+                <li>
                     коефіцієнти вводьте десятковим дробом,
-                    наприклад <strong>0,818</strong>;
+                    наприклад <strong>0,818</strong>, а не
+                    <strong>81,8 %</strong>;
                 </li>
 
                 <li>
@@ -108,12 +126,9 @@
                 </li>
 
                 <li>
-                    потужності округлюйте до 0,1 В·А або вар;
-                </li>
-
-                <li>
-                    kI вводьте як безрозмірний коефіцієнт,
-                    не у відсотках.
+                    потужності рекомендовано округлювати
+                    до 0,1 В·А, Вт або вар, а коефіцієнти
+                    до трьох або чотирьох знаків після коми.
                 </li>
             </ul>
         </div>
@@ -153,27 +168,69 @@
                         </tr>
 
                         <tr>
-                            <th scope="col">U₁, В</th>
-                            <th scope="col">I, А</th>
-                            <th scope="col">P, Вт</th>
-                            <th scope="col">U₂, В</th>
-                            <th scope="col">kU</th>
-                            <th scope="col">S, В·А</th>
-                            <th scope="col">cosφ₁p</th>
-                            <th scope="col">νp</th>
-                            <th scope="col">χp</th>
-                            <th scope="col">I₁, А</th>
-                            <th scope="col">Q, вар</th>
-                            <th scope="col">T, В·А</th>
-                            <th scope="col">ν</th>
-                            <th scope="col">χ</th>
-                            <th scope="col">kI</th>
+                            <th scope="col">
+                                U₁, В
+                            </th>
+
+                            <th scope="col">
+                                I, А
+                            </th>
+
+                            <th scope="col">
+                                P, Вт
+                            </th>
+
+                            <th scope="col">
+                                U₂, В
+                            </th>
+
+                            <th scope="col">
+                                k<sub>U</sub>, в. о.
+                            </th>
+
+                            <th scope="col">
+                                S, В·А
+                            </th>
+
+                            <th scope="col">
+                                cosφ₁p, в. о.
+                            </th>
+
+                            <th scope="col">
+                                ν<sub>p</sub>, в. о.
+                            </th>
+
+                            <th scope="col">
+                                χ<sub>p</sub>, в. о.
+                            </th>
+
+                            <th scope="col">
+                                I₁, А
+                            </th>
+
+                            <th scope="col">
+                                Q, вар
+                            </th>
+
+                            <th scope="col">
+                                T, В·А
+                            </th>
+
+                            <th scope="col">
+                                ν, в. о.
+                            </th>
+
+                            <th scope="col">
+                                χ, в. о.
+                            </th>
+
+                            <th scope="col">
+                                k<sub>I</sub>, в. о.
+                            </th>
                         </tr>
                     </thead>
 
-                    <tbody
-                        id="student-calculation-table-body"
-                    ></tbody>
+                    <tbody id="student-calculation-table-body"></tbody>
                 </table>
             </div>
 
@@ -184,38 +241,22 @@
             </p>
 
             <div class="calculation-actions">
-                <button
-                    id="save-calculation-draft"
-                    class="calculation-button calculation-button-secondary"
-                    type="button"
-                >
+                <button id="save-calculation-draft" class="calculation-button calculation-button-secondary"
+                    type="button">
                     Зберегти чернетку
                 </button>
 
-                <button
-                    id="check-calculations"
-                    class="calculation-button calculation-button-primary"
-                    type="button"
-                >
+                <button id="check-calculations" class="calculation-button calculation-button-primary" type="button">
                     Перевірити розрахунки
                 </button>
 
-                <button
-                    id="reset-calculations"
-                    class="calculation-button calculation-button-danger"
-                    type="button"
-                >
+                <button id="reset-calculations" class="calculation-button calculation-button-danger" type="button">
                     Очистити поля
                 </button>
             </div>
 
-            <p
-                id="calculation-result-message"
-                class="calculation-result-message"
-                data-type="default"
-                role="status"
-                aria-live="polite"
-            >
+            <p id="calculation-result-message" class="calculation-result-message" data-type="default" role="status"
+                aria-live="polite">
                 Заповніть таблицю та натисніть
                 «Перевірити розрахунки».
             </p>

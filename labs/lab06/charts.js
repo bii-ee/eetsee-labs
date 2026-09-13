@@ -1,10 +1,8 @@
 import {
     LAB06_EXPERIMENT_MODES,
-    LAB06_EXPERIMENT_STORAGE_KEY
+    LAB06_EXPERIMENT_STORAGE_KEY,
+    LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY
 } from "./data.js";
-
-const CALCULATION_STORAGE_KEY =
-    "eetsee.lab06.calculations.v1";
 
 const CALCULATION_COMPLETED_KEY =
     "eetsee.lab06.calculations.completed.v1";
@@ -421,18 +419,42 @@ function renderLineChart(
         )
     );
 
+    const alphaValues =
+        options.points.map(
+            (point) =>
+                Number(point.alpha)
+        );
+
+    const minimumAlpha =
+        Math.min(
+            ...alphaValues
+        );
+
+    const maximumAlpha =
+        Math.max(
+            ...alphaValues
+        );
+
+    const alphaRange =
+        maximumAlpha -
+        minimumAlpha;
+
     const coordinates =
         options.points.map(
-            (point, index) => {
+            (point) => {
+                const alpha =
+                    Number(
+                        point.alpha
+                    );
+
                 const ratio =
-                    options.points
-                        .length === 1
+                    alphaRange <= 0
                         ? 0.5
-                        : index /
-                        (
-                            options.points
-                                .length - 1
-                        );
+                        : (
+                            alpha -
+                            minimumAlpha
+                        ) /
+                        alphaRange;
 
                 return {
                     ...point,
@@ -565,7 +587,7 @@ function renderLineChart(
 
     appendText(
         svg,
-        "Положення регулятора",
+        "Кут керування α, град",
         {
             x:
                 (
@@ -594,43 +616,49 @@ function getAnalysisData() {
             {}
         );
 
-    const calculations =
+    const verifiedCalculations =
         readJsonStorage(
-            CALCULATION_STORAGE_KEY,
+            LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY,
             {}
         );
 
     return LAB06_EXPERIMENT_MODES.map(
         (mode, index) => {
             const record =
-                records[mode.id];
+                records[
+                mode.id
+                ];
 
             const calculation =
-                calculations[mode.id];
+                verifiedCalculations[
+                mode.id
+                ];
 
             if (
                 !record ||
                 !calculation
             ) {
                 throw new Error(
-                    "Не знайдено дані одного з режимів."
+                    "Не знайдено перевірені дані одного з режимів."
                 );
             }
 
             const apparentPower =
-                parseStoredNumber(
+                Number(
                     calculation
                         .apparentPower
                 );
 
             const cosPhi1p =
-                parseStoredNumber(
+                Number(
                     calculation
                         .cosPhi1p
                 );
 
             const loadVoltage =
-                Number(record.u2);
+                Number(
+                    record.u2
+                );
 
             const alpha =
                 Number(
@@ -639,8 +667,12 @@ function getAnalysisData() {
                 );
 
             if (
-                apparentPower === null ||
-                cosPhi1p === null ||
+                !Number.isFinite(
+                    apparentPower
+                ) ||
+                !Number.isFinite(
+                    cosPhi1p
+                ) ||
                 !Number.isFinite(
                     loadVoltage
                 ) ||
@@ -649,7 +681,7 @@ function getAnalysisData() {
                 )
             ) {
                 throw new Error(
-                    "Розрахункові дані мають неправильний формат."
+                    "Перевірені розрахункові дані мають неправильний формат."
                 );
             }
 
@@ -661,8 +693,11 @@ function getAnalysisData() {
                     ),
 
                 alpha,
+
                 apparentPower,
+
                 cosPhi1p,
+
                 loadVoltage
             };
         }
@@ -842,7 +877,7 @@ export function initializeAnalysis() {
                     "Залежність коефіцієнта зсуву першої гармоніки від положення регулятора",
 
                 unit:
-                    "cosφ₁p",
+                    "cosφ₁p, в. о.",
 
                 yMaximum:
                     1.05,

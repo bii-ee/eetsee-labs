@@ -1,7 +1,12 @@
 import {
     LAB06_EXPERIMENT_MODES,
-    LAB06_EXPERIMENT_STORAGE_KEY
+    LAB06_EXPERIMENT_STORAGE_KEY,
+    LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY
 } from "./data.js";
+
+import {
+    calculateExpectedValues
+} from "./model.js";
 
 import {
     createStorage
@@ -13,7 +18,7 @@ const CALCULATION_STORAGE_KEY =
 const CALCULATION_COMPLETED_KEY =
     "eetsee.lab06.calculations.completed.v1";
 
-const EPSILON = 1e-9;
+
 
 const CALCULATION_FIELDS = [
     {
@@ -62,9 +67,6 @@ const CALCULATION_FIELDS = [
     }
 ];
 
-function degreesToRadians(degrees) {
-    return (degrees * Math.PI) / 180;
-}
 
 function parseStudentNumber(value) {
     const normalizedValue = value
@@ -129,129 +131,7 @@ function writeJsonStorage(key, value) {
     }
 }
 
-function calculateExpectedValues(mode, record) {
-    const alphaDegrees =
-        Number.isFinite(Number(record.alpha))
-            ? Number(record.alpha)
-            : mode.alpha;
 
-    const alpha = degreesToRadians(alphaDegrees);
-    const u1 = Number(record.u1);
-    const current = Number(record.current);
-    const power = Number(record.power);
-    const u2 = Number(record.u2);
-
-    const phaseTerm =
-        Math.PI -
-        alpha +
-        Math.sin(2 * alpha) / 2;
-
-    const coefficientTerm =
-        Math.sin(alpha) ** 4 +
-        phaseTerm ** 2;
-
-    if (
-        [u1, current, power, u2].some(
-            (value) =>
-                !Number.isFinite(value) ||
-                value < 0
-        ) ||
-        u1 <= EPSILON ||
-        current <= EPSILON ||
-        phaseTerm <= EPSILON ||
-        coefficientTerm <= EPSILON
-    ) {
-        throw new Error(
-            `Некоректні вихідні дані для режиму ${mode.position}.`
-        );
-    }
-
-    const cosPhi1p =
-        phaseTerm /
-        Math.sqrt(coefficientTerm);
-
-    const nuP = Math.sqrt(
-        coefficientTerm /
-        (Math.PI * phaseTerm)
-    );
-
-    const chiP = Math.sqrt(
-        phaseTerm / Math.PI
-    );
-
-    const apparentPower =
-        u1 * current;
-
-    const voltageRegulation =
-        u2 / u1;
-
-    const firstHarmonicCurrent =
-        power /
-        (u1 * cosPhi1p);
-
-    if (
-        firstHarmonicCurrent >
-        current + 1e-6
-    ) {
-        throw new Error(
-            `Для режиму ${mode.position} отримано I₁ > I. Перевірте експериментальні дані.`
-        );
-    }
-
-    const sinPhi1p = Math.sqrt(
-        Math.max(
-            0,
-            1 - cosPhi1p ** 2
-        )
-    );
-
-    const reactivePower =
-        u1 *
-        firstHarmonicCurrent *
-        sinPhi1p;
-
-    const distortionPower =
-        u1 *
-        Math.sqrt(
-            Math.max(
-                0,
-                current ** 2 -
-                firstHarmonicCurrent ** 2
-            )
-        );
-
-    const currentDistortionFactor =
-        firstHarmonicCurrent /
-        current;
-
-    const powerFactor =
-        power /
-        apparentPower;
-
-    const harmonicDistortionFactor =
-        Math.sqrt(
-            Math.max(
-                0,
-                1 -
-                currentDistortionFactor ** 2
-            )
-        ) /
-        currentDistortionFactor;
-
-    return {
-        voltageRegulation,
-        apparentPower,
-        cosPhi1p,
-        nuP,
-        chiP,
-        firstHarmonicCurrent,
-        reactivePower,
-        distortionPower,
-        currentDistortionFactor,
-        powerFactor,
-        harmonicDistortionFactor
-    };
-}
 
 function isValueCorrect(
     studentValue,
@@ -428,115 +308,115 @@ export function initializeCalculations({
 
                             <td>
                                 ${formatNumber(
-                                    record.alpha ??
-                                    mode.alpha,
-                                    0
-                                )}
+                        record.alpha ??
+                        mode.alpha,
+                        0
+                    )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.u1,
-                                    1
-                                )}
+                        record.u1,
+                        1
+                    )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.current,
-                                    2
-                                )}
+                        record.current,
+                        2
+                    )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.power,
-                                    1
-                                )}
+                        record.power,
+                        1
+                    )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.u2,
-                                    1
-                                )}
+                        record.u2,
+                        1
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "voltageRegulation"
-                                )}
+                        mode.id,
+                        "voltageRegulation"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "apparentPower"
-                                )}
+                        mode.id,
+                        "apparentPower"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "cosPhi1p"
-                                )}
+                        mode.id,
+                        "cosPhi1p"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "nuP"
-                                )}
+                        mode.id,
+                        "nuP"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "chiP"
-                                )}
+                        mode.id,
+                        "chiP"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "firstHarmonicCurrent"
-                                )}
+                        mode.id,
+                        "firstHarmonicCurrent"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "reactivePower"
-                                )}
+                        mode.id,
+                        "reactivePower"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "distortionPower"
-                                )}
+                        mode.id,
+                        "distortionPower"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "currentDistortionFactor"
-                                )}
+                        mode.id,
+                        "currentDistortionFactor"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "powerFactor"
-                                )}
+                        mode.id,
+                        "powerFactor"
+                    )}
                             </td>
 
                             <td>
                                 ${createInput(
-                                    mode.id,
-                                    "harmonicDistortionFactor"
-                                )}
+                        mode.id,
+                        "harmonicDistortionFactor"
+                    )}
                             </td>
                         </tr>
                     `;
@@ -586,7 +466,21 @@ export function initializeCalculations({
             );
         });
     }
+    function invalidateVerifiedCalculations() {
+        localStorage.removeItem(
+            CALCULATION_COMPLETED_KEY
+        );
 
+        localStorage.removeItem(
+            LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY
+        );
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "lab06:calculations-invalidated"
+            )
+        );
+    }
     function saveDraft() {
         collectDraft();
         clearValidationStyles();
@@ -608,16 +502,43 @@ export function initializeCalculations({
             LAB06_EXPERIMENT_MODES.length *
             CALCULATION_FIELDS.length;
 
+        const expectedByMode = {};
+
+        try {
+            LAB06_EXPERIMENT_MODES.forEach(
+                (mode) => {
+                    const record =
+                        experimentRecords[
+                        mode.id
+                        ];
+
+                    expectedByMode[
+                        mode.id
+                    ] =
+                        calculateExpectedValues(
+                            mode,
+                            record
+                        );
+                }
+            );
+        } catch (error) {
+            invalidateVerifiedCalculations();
+
+            resultMessage.dataset.type =
+                "error";
+
+            resultMessage.textContent =
+                error.message;
+
+            return;
+        }
+
         LAB06_EXPERIMENT_MODES.forEach(
             (mode) => {
-                const record =
-                    experimentRecords[mode.id];
-
                 const expected =
-                    calculateExpectedValues(
-                        mode,
-                        record
-                    );
+                    expectedByMode[
+                    mode.id
+                    ];
 
                 CALCULATION_FIELDS.forEach(
                     (field) => {
@@ -632,12 +553,15 @@ export function initializeCalculations({
                             );
 
                         const isFilled =
-                            studentValue !== null;
+                            studentValue !==
+                            null;
 
                         const isCorrect =
                             isValueCorrect(
                                 studentValue,
-                                expected[field.key],
+                                expected[
+                                field.key
+                                ],
                                 field.tolerance
                             );
 
@@ -682,6 +606,65 @@ export function initializeCalculations({
             correctCount === totalCount;
 
         if (allCorrect) {
+            const verifiedCalculations =
+                Object.fromEntries(
+                    LAB06_EXPERIMENT_MODES.map(
+                        (mode) => {
+                            const record =
+                                experimentRecords[
+                                mode.id
+                                ];
+
+                            return [
+                                mode.id,
+
+                                {
+                                    position:
+                                        Number(
+                                            record.position ??
+                                            mode.position
+                                        ),
+
+                                    alpha:
+                                        Number(
+                                            record.alpha ??
+                                            mode.alpha
+                                        ),
+
+                                    u1:
+                                        Number(
+                                            record.u1
+                                        ),
+
+                                    current:
+                                        Number(
+                                            record.current
+                                        ),
+
+                                    power:
+                                        Number(
+                                            record.power
+                                        ),
+
+                                    u2:
+                                        Number(
+                                            record.u2
+                                        ),
+
+                                    ...expectedByMode[
+                                    mode.id
+                                    ]
+                                }
+                            ];
+                        }
+                    )
+                );
+
+            writeJsonStorage(
+                LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY,
+                verifiedCalculations
+            );
+
             localStorage.setItem(
                 CALCULATION_COMPLETED_KEY,
                 "true"
@@ -695,22 +678,20 @@ export function initializeCalculations({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab06:calculations-completed"
+                    "lab06:calculations-completed",
+                    {
+                        detail: {
+                            calculations:
+                                verifiedCalculations
+                        }
+                    }
                 )
             );
 
             return;
         }
 
-        localStorage.removeItem(
-            CALCULATION_COMPLETED_KEY
-        );
-
-        window.dispatchEvent(
-            new CustomEvent(
-                "lab06:calculations-invalidated"
-            )
-        );
+        invalidateVerifiedCalculations();
 
         resultMessage.dataset.type =
             "error";
@@ -740,9 +721,7 @@ export function initializeCalculations({
             CALCULATION_STORAGE_KEY
         );
 
-        localStorage.removeItem(
-            CALCULATION_COMPLETED_KEY
-        );
+        invalidateVerifiedCalculations();
 
         renderTable();
 
@@ -773,15 +752,7 @@ export function initializeCalculations({
                 "aria-invalid"
             );
 
-            localStorage.removeItem(
-                CALCULATION_COMPLETED_KEY
-            );
-
-            window.dispatchEvent(
-                new CustomEvent(
-                    "lab06:calculations-invalidated"
-                )
-            );
+            invalidateVerifiedCalculations();
 
             resultMessage.dataset.type =
                 "default";
@@ -831,6 +802,20 @@ export function initializeCalculations({
         "laboratory:stand-reset",
         handleStandProgressChange
     );
+    function handleExperimentChange() {
+        invalidateVerifiedCalculations();
 
+        renderReadiness();
+    }
+
+    window.addEventListener(
+        "lab06:experiment-updated",
+        handleExperimentChange
+    );
+
+    window.addEventListener(
+        "lab06:experiment-reset",
+        handleExperimentChange
+    );
     renderReadiness();
 }

@@ -520,22 +520,56 @@ export function initializeExperiment({
     }
 
     function recordCurrentMeasurement() {
-        const measurement = state.currentMeasurement;
+        const measurement =
+            state.currentMeasurement;
 
         if (!measurement) {
             return;
         }
 
-        state.records[measurement.modeId] = {
-            position: measurement.position,
-            alpha: measurement.alpha,
-            u1: measurement.u1,
-            current: measurement.current,
-            power: measurement.power,
-            u2: measurement.u2
+        state.records[
+            measurement.modeId
+        ] = {
+            position:
+                measurement.position,
+
+            alpha:
+                measurement.alpha,
+
+            u1:
+                measurement.u1,
+
+            current:
+                measurement.current,
+
+            power:
+                measurement.power,
+
+            u2:
+                measurement.u2
         };
 
-        saveStoredRecords(state.records);
+        saveStoredRecords(
+            state.records
+        );
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "lab06:experiment-updated",
+                {
+                    detail: {
+                        modeId:
+                            measurement.modeId,
+
+                        record:
+                            state.records[
+                            measurement.modeId
+                            ]
+                    }
+                }
+            )
+        );
+
         renderTable();
 
         setMessage(
@@ -547,22 +581,32 @@ export function initializeExperiment({
     }
 
     function resetExperiment() {
-        const shouldReset = window.confirm(
-            "Очистити всі записані результати досліду?"
-        );
+        const shouldReset =
+            window.confirm(
+                "Очистити всі записані результати досліду?"
+            );
 
         if (!shouldReset) {
             return;
         }
 
         state.records = {};
-        state.currentMeasurement = null;
+
+        state.currentMeasurement =
+            null;
 
         localStorage.removeItem(
             LAB06_EXPERIMENT_STORAGE_KEY
         );
 
+        window.dispatchEvent(
+            new CustomEvent(
+                "lab06:experiment-reset"
+            )
+        );
+
         clearCurrentMeasurement();
+
         renderTable();
 
         setMessage(
