@@ -1,161 +1,269 @@
 <section id="analysis" class="content-section">
-    <p class="section-number">Аналіз результатів</p>
+    <p class="section-number">Аналітичний модуль</p>
 
-    <h2>Графічне подання експериментальних даних</h2>
+    <h2>Аналіз результатів експерименту</h2>
 
     <p class="lead">
-        Побудуйте та проаналізуйте залежності повної потужності,
-        коефіцієнта зсуву першої гармоніки та напруги на
-        навантаженні від положення тиристорного регулятора.
+        Порівняйте циклічні режими роботи конфорки для трьох
+        положень регулятора. Проаналізуйте тривалості увімкненого
+        та вимкненого станів, відносну тривалість увімкнення і
+        температурні межі циклів.
     </p>
 
-    <div id="analysis-readiness" class="analysis-readiness">
-        <div>
-            <strong id="analysis-readiness-title">
-                Перевірка розрахункових даних
-            </strong>
+    <div class="analysis-access-shell">
+        <div
+            id="analysis-lock-overlay"
+            class="analysis-lock-overlay"
+            role="status"
+        >
+            <div class="analysis-lock-card">
+                <strong>Доступ до аналізу заблоковано</strong>
 
-            <p id="analysis-readiness-text">
-                Для побудови графіків потрібно правильно виконати
-                всі розрахунки в таблиці 6.1.
-            </p>
-        </div>
-
-        <a href="#calculations" class="analysis-back-link">
-            До розрахунків
-        </a>
-    </div>
-
-    <div id="analysis-workspace" hidden>
-        <div class="analysis-source-note">
-            <strong>Джерело даних:</strong>
-            графіки побудовано за перевіреними значеннями,
-            введеними студентом у таблицю 6.1.
-        </div>
-
-        <div class="analysis-chart-grid">
-            <article class="analysis-chart-card">
-                <div class="analysis-chart-heading">
-                    <div>
-                        <p class="section-number">Графік 1</p>
-                        <h3>Повна потужність S</h3>
-                    </div>
-                    <span>В·А</span>
-                </div>
-
-                <div
-                    id="chart-apparent-power"
-                    class="analysis-chart"
-                ></div>
-            </article>
-
-            <article class="analysis-chart-card">
-                <div class="analysis-chart-heading">
-                    <div>
-                        <p class="section-number">Графік 2</p>
-                        <h3>Коефіцієнт зсуву cosφ₁p</h3>
-                    </div>
-                    <span>в. о.</span>
-                </div>
-
-                <div
-                    id="chart-displacement-factor"
-                    class="analysis-chart"
-                ></div>
-            </article>
-
-            <article class="analysis-chart-card">
-                <div class="analysis-chart-heading">
-                    <div>
-                        <p class="section-number">Графік 3</p>
-                        <h3>Напруга навантаження U₂</h3>
-                    </div>
-                    <span>В</span>
-                </div>
-
-                <div
-                    id="chart-load-voltage"
-                    class="analysis-chart"
-                ></div>
-            </article>
-        </div>
-
-        <form id="analysis-form" class="analysis-form">
-            <div class="analysis-form-heading">
-                <p class="section-number">Самостійна робота</p>
-                <h3>Висновки за результатами досліду</h3>
                 <p>
-                    Сформулюйте висновки за виглядом отриманих
-                    залежностей. У кожному полі введіть щонайменше
-                    20 символів.
+                    Спочатку правильно виконайте та перевірте всі
+                    розрахунки в розділі 8.
+                </p>
+
+                <a class="analysis-lock-link" href="#calculations">
+                    Перейти до розрахунків
+                </a>
+            </div>
+        </div>
+
+        <div id="analysis-interactive-area">
+            <div class="analysis-source-note">
+                <div>
+                    <strong>Джерело даних</strong>
+
+                    <p>
+                        Графіки будуються автоматично за результатами
+                        дев’яти експериментальних циклів і перевірених
+                        розрахунків.
+                    </p>
+                </div>
+
+                <span id="analysis-burner-label">
+                    Конфорка не визначена
+                </span>
+            </div>
+
+            <div class="analysis-summary-grid">
+                <article>
+                    <span>Положення 1</span>
+                    <strong id="analysis-duty-mode-1">—</strong>
+                    <small>середнє ТВ, %</small>
+                </article>
+
+                <article>
+                    <span>Положення 2</span>
+                    <strong id="analysis-duty-mode-2">—</strong>
+                    <small>середнє ТВ, %</small>
+                </article>
+
+                <article>
+                    <span>Положення 3</span>
+                    <strong id="analysis-duty-mode-3">—</strong>
+                    <small>середнє ТВ, %</small>
+                </article>
+
+                <article>
+                    <span>Опрацьовано</span>
+                    <strong id="analysis-cycle-count">0 із 9</strong>
+                    <small>експериментальних циклів</small>
+                </article>
+            </div>
+
+            <div class="analysis-chart-grid">
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 1</p>
+                            <h3>Відносна тривалість увімкнення</h3>
+                        </div>
+
+                        <span>ТВ, %</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Середня частка часу, протягом якого конфорка
+                        була увімкнена в кожному режимі.
+                    </p>
+
+                    <div
+                        id="chart-duty-cycle"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 2</p>
+                            <h3>Складові циклу роботи</h3>
+                        </div>
+
+                        <span>t, с</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Середні тривалості нагрівання, охолодження та
+                        повного циклу для трьох положень регулятора.
+                    </p>
+
+                    <div
+                        id="chart-cycle-duration"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card analysis-chart-card-wide">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 3</p>
+                            <h3>Температурні межі циклів</h3>
+                        </div>
+
+                        <span>τ, °C</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Температури поверхні конфорки наприкінці
+                        нагрівання та наприкінці охолодження в кожному
+                        експериментальному циклі.
+                    </p>
+
+                    <div
+                        id="chart-cycle-temperature"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+            </div>
+
+            <div class="analysis-observation-note">
+                <strong>Орієнтир для аналізу</strong>
+
+                <p>
+                    Зіставте зміну ТВ зі співвідношенням
+                    <i>t</i><sub>н</sub> і <i>t</i><sub>о</sub>, а також
+                    визначте, як перехід до наступного положення
+                    регулятора впливає на температурний режим конфорки.
                 </p>
             </div>
 
-            <label class="analysis-question">
-                <span>
-                    1. Як змінюється напруга U₂ зі збільшенням
-                    кута керування α?
-                </span>
-                <textarea
-                    name="loadVoltageConclusion"
-                    rows="4"
-                    minlength="20"
-                    required
-                ></textarea>
-            </label>
+            <form id="analysis-form" class="analysis-form">
+                <div class="analysis-form-heading">
+                    <p class="section-number">Самостійна робота</p>
 
-            <label class="analysis-question">
-                <span>
-                    2. Як змінюється повна потужність S при
-                    переході від положення 1 до положення 3?
-                </span>
-                <textarea
-                    name="apparentPowerConclusion"
-                    rows="4"
-                    minlength="20"
-                    required
-                ></textarea>
-            </label>
+                    <h3>Висновки за результатами досліду</h3>
 
-            <label class="analysis-question">
-                <span>
-                    3. Як кут керування впливає на cosφ₁p та
-                    показники якості електроенергії?
-                </span>
-                <textarea
-                    name="powerQualityConclusion"
-                    rows="4"
-                    minlength="20"
-                    required
-                ></textarea>
-            </label>
+                    <p>
+                        Сформулюйте три змістовні висновки. У кожному
+                        полі потрібно ввести щонайменше 30 символів.
+                    </p>
+                </div>
 
-            <div class="analysis-actions">
-                <button
-                    class="analysis-button analysis-button-primary"
-                    type="submit"
+                <label class="analysis-question">
+                    <span>
+                        1. Як змінюється відносна тривалість увімкнення
+                        при переході від положення 1 до положення 3?
+                    </span>
+
+                    <textarea
+                        name="dutyCycleConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="dutyCycleConclusion">0</strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        2. Як змінюється співвідношення тривалостей
+                        нагрівання та охолодження в трьох режимах?
+                    </span>
+
+                    <textarea
+                        name="cycleDurationConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="cycleDurationConclusion">0</strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        3. Як положення регулятора впливає на
+                        температури нагрівання та охолодження конфорки?
+                    </span>
+
+                    <textarea
+                        name="temperatureConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="temperatureConclusion">0</strong>
+                    </small>
+                </label>
+
+                <div class="analysis-actions">
+                    <button
+                        id="analysis-save-button"
+                        class="analysis-button analysis-button-primary"
+                        type="submit"
+                    >
+                        Зберегти висновки
+                    </button>
+
+                    <button
+                        id="reset-analysis"
+                        class="analysis-button analysis-button-danger"
+                        type="button"
+                    >
+                        Очистити висновки
+                    </button>
+                </div>
+
+                <p
+                    id="analysis-message"
+                    class="analysis-message"
+                    data-state="default"
+                    role="status"
+                    aria-live="polite"
                 >
-                    Зберегти висновки
-                </button>
+                    Проаналізуйте графіки та заповніть усі три поля.
+                </p>
+            </form>
 
-                <button
-                    id="reset-analysis"
-                    class="analysis-button analysis-button-danger"
-                    type="button"
-                >
-                    Очистити висновки
-                </button>
-            </div>
-
-            <p
-                id="analysis-message"
-                class="analysis-message"
-                data-type="default"
-                role="status"
-                aria-live="polite"
+            <div
+                id="analysis-complete-panel"
+                class="analysis-complete-panel"
+                hidden
             >
-                Проаналізуйте графіки та заповніть усі три поля.
-            </p>
-        </form>
+                <strong>Аналіз результатів завершено</strong>
+
+                <p>
+                    Висновки збережено. Можна переходити до
+                    контрольних питань.
+                </p>
+
+                <a href="#questions">
+                    Перейти до контрольних питань
+                </a>
+            </div>
+        </div>
     </div>
 </section>

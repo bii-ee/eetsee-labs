@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,6 +65,33 @@
     h2 {
       margin: 0 0 16px;
       font-size: 24px;
+    }
+
+    .lab-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .lab-card-planned {
+      background: #f9fbfc;
+    }
+
+    .lab-card-planned .lab-number {
+      color: #607080;
+      background: #e9eef2;
+    }
+
+    .button-secondary {
+      border: 1px solid #aebdc7;
+      background: #ffffff;
+      color: #314b5c;
+    }
+
+    .button-secondary:hover,
+    .button-secondary:focus-visible {
+      border-color: #1d4ed8;
+      background: #eef4ff;
+      color: #173fae;
     }
 
     .lab-card {
@@ -152,26 +180,91 @@
     <section aria-labelledby="labs-title">
       <h2 id="labs-title">Лабораторні роботи</h2>
 
-      <article class="lab-card">
-        <div>
-          <span class="lab-number">ЛР №6</span>
+      <div class="lab-list">
+        <article class="lab-card lab-card-planned">
+          <div>
+            <span class="lab-number">ЛР №5</span>
 
-          <h3>
-            Дослідження енергетичних характеристик печей опору
-            з тиристорними джерелами живлення
-          </h3>
+            <h3>
+              Дослідження енергетичних характеристик
+              електродного нагрівача
+            </h3>
 
-          <p>
-            Теоретичні відомості, інтерактивний дослід, розрахунки,
-            графіки, контрольні питання та формування звіту.
-          </p>
-        </div>
+            <p>
+              Інтерактивні матеріали лабораторної роботи
+              перебувають на етапі підготовки.
+            </p>
+          </div>
 
-        <a class="button" href="./labs/lab06/">
-          Відкрити ЛР №6
-        </a>
-      </article>
+          <a class="button button-secondary" href="./labs/lab05/">
+            Переглянути ЛР №5
+          </a>
+        </article>
+
+        <article class="lab-card">
+          <div>
+            <span class="lab-number">ЛР №6</span>
+
+            <h3>
+              Дослідження енергетичних характеристик печей
+              опору з тиристорними джерелами живлення
+            </h3>
+
+            <p>
+              Теоретичні відомості, інтерактивний дослід,
+              розрахунки, графіки, контрольні питання та
+              формування звіту.
+            </p>
+          </div>
+
+          <a class="button" href="./labs/lab06/">
+            Відкрити ЛР №6
+          </a>
+        </article>
+
+        <article class="lab-card">
+          <div>
+            <span class="lab-number">ЛР №7</span>
+
+            <h3>
+              Дослідження параметрів роботи побутових
+              двоконфоркових електроплит із біметалевим
+              регулятором потужності
+            </h3>
+
+            <p>
+              Віртуальний стенд, циклічні режими роботи,
+              вимірювання температури, розрахунки, графіки,
+              контрольні питання та формування звіту.
+            </p>
+          </div>
+
+          <a class="button" href="./labs/lab07/">
+            Відкрити ЛР №7
+          </a>
+        </article>
+
+        <article class="lab-card lab-card-planned">
+          <div>
+            <span class="lab-number">ЛР №8</span>
+
+            <h3>
+              Лабораторна робота №8
+            </h3>
+
+            <p>
+              Інтерактивні матеріали лабораторної роботи
+              перебувають на етапі підготовки.
+            </p>
+          </div>
+
+          <a class="button button-secondary" href="./labs/lab08/">
+            Переглянути ЛР №8
+          </a>
+        </article>
+      </div>
     </section>
   </main>
 </body>
+
 </html>

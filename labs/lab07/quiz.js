@@ -1,374 +1,332 @@
-const ANALYSIS_COMPLETED_KEY =
-    "eetsee.lab07.analysis.completed.v1";
-
-const QUIZ_STORAGE_KEY =
-    "eetsee.lab07.quiz.v1";
-
-const QUIZ_COMPLETED_KEY =
-    "eetsee.lab07.quiz.completed.v1";
+import {
+    createStorage
+} from "../../common/js/storage.js";
 
 const PASSING_SCORE = 6;
 
 const QUESTIONS = [
     {
         id: "q1",
-        text: "Що характеризує непряме електричне нагрівання?",
-        hint: "Зверніть увагу, де спочатку виділяється теплота.",
+        text:
+            "Яку функцію виконує біметалевий регулятор потужності електроплити?",
+        hint:
+            "Зверніть увагу на періодичне замикання та розмикання кола нагрівального елемента.",
         correct: "B",
         options: [
             {
                 value: "A",
-                label: "Струм проходить безпосередньо через виріб",
+                label:
+                    "Безперервно змінює частоту напруги живлення",
                 feedback:
-                    "Це ознака прямого електричного нагрівання."
+                    "Частота мережі біметалевим регулятором не змінюється."
             },
             {
                 value: "B",
                 label:
-                    "Теплота виділяється в нагрівальному елементі й передається виробу",
+                    "Періодично вмикає і вимикає нагрівальний елемент",
                 feedback:
-                    "За непрямого нагрівання теплота спочатку виділяється в нагрівачі."
+                    "Біметалевий регулятор забезпечує циклічне замикання та розмикання кола нагрівача."
             },
             {
                 value: "C",
                 label:
-                    "Виріб нагрівається тільки сонячним випромінюванням",
+                    "Вимірює струм у колі нагрівального елемента",
                 feedback:
-                    "Такий процес не належить до електричного нагрівання печі опору."
+                    "Струм вимірює амперметр, а не біметалевий регулятор."
             },
             {
                 value: "D",
                 label:
-                    "Нагрівання відбувається без перетворення електричної енергії",
+                    "Вимірює температуру поверхні конфорки",
                 feedback:
-                    "У печі опору електрична енергія перетворюється на теплову."
+                    "Температуру поверхні вимірюють пірометром."
             }
         ]
     },
     {
         id: "q2",
         text:
-            "На які основні групи поділяють печі опору за режимом роботи?",
+            "Що позначає тривалість tн у дослідженні циклічного режиму?",
         hint:
-            "Класифікація враховує характер переміщення та оброблення виробів.",
-        correct: "C",
+            "Цей інтервал відлічують, коли коло нагрівального елемента замкнене.",
+        correct: "A",
         options: [
             {
                 value: "A",
-                label: "Однофазні та трифазні",
+                label:
+                    "Тривалість увімкненого стану конфорки",
                 feedback:
-                    "Це класифікація за системою живлення, а не за режимом роботи."
+                    "tн є тривалістю інтервалу нагрівання, протягом якого конфорка підключена до мережі."
             },
             {
                 value: "B",
-                label: "Відкриті та закриті",
+                label:
+                    "Тривалість вимкненого стану конфорки",
                 feedback:
-                    "Такий поділ не визначає режим роботи печі."
+                    "Тривалість вимкненого стану позначають tо."
             },
             {
                 value: "C",
-                label: "Періодичної та безперервної дії",
+                label:
+                    "Початкову температуру поверхні конфорки",
                 feedback:
-                    "За режимом роботи печі поділяють на періодичні та безперервні."
+                    "Початкову температуру позначають τ₀ і вимірюють у градусах Цельсія."
             },
             {
                 value: "D",
-                label: "Активні та реактивні",
+                label:
+                    "Середню тривалість трьох повних циклів",
                 feedback:
-                    "Активність і реактивність характеризують електричні величини, а не режим печі."
+                    "tн визначають окремо для кожного інтервалу нагрівання."
             }
         ]
     },
     {
         id: "q3",
         text:
-            "Які печі опору належать до високотемпературних?",
+            "Що позначає тривалість tо в одному циклі роботи конфорки?",
         hint:
-            "Це найвищий температурний діапазон у наведеній класифікації.",
-        correct: "D",
+            "Упродовж цього інтервалу індикатор нагрівання не світиться.",
+        correct: "C",
         options: [
             {
                 value: "A",
-                label: "До 300 °C",
+                label:
+                    "Час до першого увімкнення лабораторного стенда",
                 feedback:
-                    "Ця температура належить до низькотемпературного діапазону."
+                    "Цей підготовчий інтервал не є складовою записаного циклу."
             },
             {
                 value: "B",
-                label: "До 600-700 °C",
+                label:
+                    "Час вимірювання температури пірометром",
                 feedback:
-                    "До 600-700 °C працюють низькотемпературні печі."
+                    "tо характеризує стан конфорки, а не тривалість роботи приладу."
             },
             {
                 value: "C",
-                label: "Від 700 до 1200 °C",
+                label:
+                    "Тривалість вимкненого стану та охолодження",
                 feedback:
-                    "Це середньотемпературний діапазон."
+                    "tо є тривалістю інтервалу, коли нагрівальний елемент відключений від мережі."
             },
             {
                 value: "D",
-                label: "Понад 1200-1250 °C",
+                label:
+                    "Повну тривалість нагрівання трьох режимів",
                 feedback:
-                    "Печі з температурою понад 1200-1250 °C належать до високотемпературних."
+                    "tо визначають для кожного окремого циклу."
             }
         ]
     },
     {
         id: "q4",
         text:
-            "Чим визначаються вимоги до надійності електропостачання печі опору?",
+            "Як визначають повну тривалість одного циклу Tц?",
         hint:
-            "Враховують особливості обладнання та наслідки переривання процесу.",
-        correct: "A",
+            "Повний цикл охоплює увімкнений і вимкнений стани.",
+        correct: "D",
         options: [
             {
                 value: "A",
-                label:
-                    "Конструкцією печі та особливостями технологічного процесу",
+                label: "Tц = tн − tо",
                 feedback:
-                    "Надійність визначають з урахуванням конструкції печі й допустимості перерв у процесі."
+                    "Віднімання не враховує повної тривалості двох послідовних інтервалів."
             },
             {
                 value: "B",
-                label:
-                    "Тільки номінальною напругою мережі",
+                label: "Tц = tн · tо",
                 feedback:
-                    "Номінальна напруга не визначає наслідки аварійного переривання технологічного процесу."
+                    "Добуток двох тривалостей не має фізичного змісту повного часу циклу."
             },
             {
                 value: "C",
-                label:
-                    "Тільки кількістю вимірювальних приладів",
+                label: "Tц = tн / tо",
                 feedback:
-                    "Кількість приладів не визначає категорію надійності електропостачання."
+                    "Відношення є безрозмірним і не визначає тривалість циклу."
             },
             {
                 value: "D",
-                label:
-                    "Виключно температурою приміщення",
+                label: "Tц = tн + tо",
                 feedback:
-                    "Температура приміщення не є основним критерієм надійності живлення печі."
+                    "Повна тривалість циклу дорівнює сумі інтервалів нагрівання та охолодження."
             }
         ]
     },
     {
         id: "q5",
         text:
-            "Чому необхідно регулювати потужність печі опору?",
+            "Яка формула визначає відносну тривалість увімкнення ТВ?",
         hint:
-            "Пригадайте головний технологічний параметр нагрівального процесу.",
+            "Потрібно визначити частку повного циклу, протягом якої конфорка була увімкнена.",
         correct: "B",
         options: [
             {
                 value: "A",
-                label:
-                    "Щоб збільшувати частоту живильної мережі",
+                label: "ТВ = tо / Tц · 100%",
                 feedback:
-                    "Регулятор потужності не змінює частоту мережі."
+                    "Ця формула визначає частку вимкненого стану."
             },
             {
                 value: "B",
-                label:
-                    "Щоб підтримувати або програмно змінювати задану температуру",
+                label: "ТВ = tн / Tц · 100%",
                 feedback:
-                    "Плавне регулювання потужності забезпечує необхідний температурний режим."
+                    "ТВ показує відсоткову частку повного циклу, протягом якої конфорка була увімкнена."
             },
             {
                 value: "C",
-                label:
-                    "Щоб повністю усунути активну потужність",
+                label: "ТВ = Tц / tн · 100%",
                 feedback:
-                    "Активна потужність потрібна для утворення теплоти."
+                    "У цій формулі чисельник і знаменник поміняно місцями."
             },
             {
                 value: "D",
-                label:
-                    "Щоб вимкнути всі вимірювальні прилади",
+                label: "ТВ = tн + tо · 100%",
                 feedback:
-                    "Вимірювальні прилади необхідні для контролю режиму установки."
+                    "Для визначення відносної величини потрібне відношення тривалостей."
             }
         ]
     },
     {
         id: "q6",
         text:
-            "Який елемент установки є основною причиною появи вищих гармонік струму та напруги?",
+            "Як за результатами досліду змінюється режим роботи при переході від положення 1 до положення 3?",
         hint:
-            "Цей елемент змінює момент відкривання силових напівпровідників.",
+            "Порівняйте середні значення ТВ і температурні межі трьох режимів.",
         correct: "C",
         options: [
             {
                 value: "A",
-                label: "Вольтметр PV1",
+                label:
+                    "ТВ і температурні межі залишаються незмінними",
                 feedback:
-                    "Вольтметр вимірює напругу і не виконує фазового регулювання."
+                    "Експериментальні значення істотно відрізняються для трьох положень."
             },
             {
                 value: "B",
-                label: "Амперметр PA",
+                label:
+                    "ТВ збільшується, а температури зменшуються",
                 feedback:
-                    "Амперметр лише вимірює струм установки."
+                    "Збільшення часу увімкнення супроводжується підвищенням температурного рівня."
             },
             {
                 value: "C",
                 label:
-                    "Тиристорний регулятор потужності",
+                    "ТВ і температурні межі конфорки збільшуються",
                 feedback:
-                    "Фазове керування тиристорами спотворює форму струму та напруги."
+                    "У вищому положенні регулятора конфорка довше увімкнена і працює за вищих температур."
             },
             {
                 value: "D",
                 label:
-                    "Автоматичний вимикач QF",
+                    "Змінюється лише номер циклу, а режим не змінюється",
                 feedback:
-                    "Автоматичний вимикач забезпечує комутацію та захист, а не фазове регулювання."
+                    "Положення регулятора визначає співвідношення інтервалів нагрівання та охолодження."
             }
         ]
     },
     {
         id: "q7",
         text:
-            "Що відбувається зі збільшенням кута керування α?",
+            "Для чого під час досліду використовують пірометр?",
         hint:
-            "Більша затримка відкривання скорочує провідний інтервал тиристора.",
+            "Прилад спрямовують на поверхню вибраної конфорки.",
         correct: "A",
         options: [
             {
                 value: "A",
                 label:
-                    "Зменшуються напруга U₂ та потужність навантаження",
+                    "Для безконтактного вимірювання температури поверхні",
                 feedback:
-                    "Збільшення α скорочує провідний інтервал і зменшує діючу напругу навантаження."
+                    "Пірометр дає змогу безконтактно визначати температуру поверхні конфорки."
             },
             {
                 value: "B",
                 label:
-                    "Напруга U₂ та потужність навантаження збільшуються",
+                    "Для вимірювання сили струму в нагрівальному елементі",
                 feedback:
-                    "За більшого α тиристори відкриваються пізніше, тому потужність не збільшується."
+                    "Силу струму вимірюють амперметром."
             },
             {
                 value: "C",
                 label:
-                    "Змінюється тільки частота мережі",
+                    "Для визначення тривалості інтервалів циклу",
                 feedback:
-                    "Частота мережі залишається сталою, змінюється форма та діюче значення напруги."
+                    "Тривалість інтервалів визначають секундоміром."
             },
             {
                 value: "D",
                 label:
-                    "Усі електричні величини залишаються незмінними",
+                    "Для перемикання положення регулятора",
                 feedback:
-                    "Експеримент показує зменшення U₂, струму й потужності."
+                    "Пірометр є вимірювальним приладом і не керує регулятором."
             }
         ]
     },
     {
         id: "q8",
         text:
-            "Які засоби застосовують для вимірювання температури печей опору?",
+            "Яка послідовність початку експериментального дослідження є правильною?",
         hint:
-            "Потрібні прилади, які безпосередньо або безконтактно визначають температуру.",
+            "Початкову температуру потрібно визначити до подавання живлення.",
         correct: "D",
         options: [
             {
                 value: "A",
                 label:
-                    "Тільки амперметри та ватметри",
+                    "Увімкнути установку, а потім вибрати конфорку",
                 feedback:
-                    "Ці прилади вимірюють електричні величини, а не температуру."
+                    "Досліджувану конфорку потрібно вибрати до початку першого режиму."
             },
             {
                 value: "B",
                 label:
-                    "Тільки лічильники електричної енергії",
+                    "Спочатку змінити положення регулятора на третє",
                 feedback:
-                    "Лічильник визначає спожиту електроенергію, а не температуру печі."
+                    "Режими виконують послідовно, починаючи з положення 1."
             },
             {
                 value: "C",
                 label:
-                    "Тільки вольтметри електромагнітної системи",
+                    "Виміряти τ₀ після завершення трьох циклів",
                 feedback:
-                    "Вольтметр вимірює напругу і не замінює температурний датчик."
+                    "τ₀ є початковою температурою і вимірюється до початку циклів."
             },
             {
                 value: "D",
                 label:
-                    "Термопари, пірометри, терморезистори та контактні термометри",
+                    "Вибрати конфорку, виміряти τ₀ при вимкненій установці, потім подати живлення",
                 feedback:
-                    "Ці засоби охоплюють контактні й безконтактні методи вимірювання температури."
+                    "Така послідовність забезпечує правильне початкове вимірювання та подальше виконання циклів."
             }
         ]
     }
 ];
 
-function readQuizState() {
-    try {
-        const value = localStorage.getItem(
-            QUIZ_STORAGE_KEY
-        );
+function renderQuestion(question, number, selectedAnswer) {
+    const options = question.options.map((option) => `
+        <label class="quiz-option">
+            <input
+                type="radio"
+                name="${question.id}"
+                value="${option.value}"
+                ${selectedAnswer === option.value ? "checked" : ""}
+            >
 
-        return value
-            ? JSON.parse(value)
-            : { answers: {} };
-    } catch (error) {
-        console.warn(
-            "Помилка читання результатів тесту.",
-            error
-        );
+            <span class="quiz-option-letter">
+                ${option.value}
+            </span>
 
-        return { answers: {} };
-    }
-}
-
-function saveQuizState(state) {
-    localStorage.setItem(
-        QUIZ_STORAGE_KEY,
-        JSON.stringify(state)
-    );
-}
-
-function renderQuestion(
-    question,
-    number,
-    selectedAnswer
-) {
-    const options = question.options
-        .map(
-            (option) => `
-                <label class="quiz-option">
-                    <input
-                        type="radio"
-                        name="${question.id}"
-                        value="${option.value}"
-                        ${
-                            selectedAnswer === option.value
-                                ? "checked"
-                                : ""
-                        }
-                    >
-
-                    <span class="quiz-option-letter">
-                        ${option.value}
-                    </span>
-
-                    <span>
-                        ${option.label}
-                    </span>
-                </label>
-            `
-        )
-        .join("");
+            <span>${option.label}</span>
+        </label>
+    `).join("");
 
     return `
         <fieldset
             class="quiz-question"
             data-question-id="${question.id}"
         >
-            <legend>
-                ${number}. ${question.text}
-            </legend>
+            <legend>${number}. ${question.text}</legend>
 
             <div class="quiz-options">
                 ${options}
@@ -379,383 +337,368 @@ function renderQuestion(
                 <p>${question.hint}</p>
             </details>
 
-            <p
-                class="quiz-feedback"
-                hidden
-            ></p>
+            <p class="quiz-feedback" hidden></p>
         </fieldset>
     `;
 }
 
-export function initializeQuiz() {
-    const section =
-        document.querySelector("#questions");
+export function initializeQuiz({
+    root = document,
+    namespace = "lab07"
+} = {}) {
+    const section = root.querySelector("#questions");
 
-    if (!section) {
+    if (!section || section.dataset.quizInitialized === "true") {
         return;
     }
 
-    const readiness =
-        section.querySelector("#quiz-readiness");
+    const elements = {
+        lockOverlay: section.querySelector("#quiz-lock-overlay"),
+        interactiveArea: section.querySelector(
+            "#quiz-interactive-area"
+        ),
+        form: section.querySelector("#quiz-form"),
+        list: section.querySelector("#quiz-list"),
+        result: section.querySelector("#quiz-result"),
+        resetButton: section.querySelector("#reset-quiz"),
+        answeredCount: section.querySelector(
+            "#quiz-answered-count"
+        ),
+        progressTrack: section.querySelector(
+            ".quiz-progress-track"
+        ),
+        progressBar: section.querySelector("#quiz-progress-bar")
+    };
 
-    const readinessTitle =
-        section.querySelector(
-            "#quiz-readiness-title"
+    if (Object.values(elements).some((element) => !element)) {
+        console.warn(
+            "Не знайдено елементи контрольного тесту ЛР7."
         );
+        return;
+    }
 
-    const readinessText =
-        section.querySelector(
-            "#quiz-readiness-text"
+    section.dataset.quizInitialized = "true";
+
+    const analysisStorage = createStorage(`${namespace}:analysis`);
+    const quizStorage = createStorage(`${namespace}:quiz`);
+
+    let analysisSignature = "";
+    let state = {
+        answers: {},
+        score: null,
+        passed: false,
+        checkedAt: null,
+        analysisSignature: ""
+    };
+
+    function setResult(text, resultState = "default") {
+        elements.result.textContent = text;
+        elements.result.dataset.state = resultState;
+    }
+
+    function readState(signature) {
+        const stored = quizStorage.get("progress", {});
+
+        if (
+            !stored ||
+            typeof stored !== "object" ||
+            stored.analysisSignature !== signature
+        ) {
+            return {
+                answers: {},
+                score: null,
+                passed: false,
+                checkedAt: null,
+                analysisSignature: signature
+            };
+        }
+
+        return {
+            answers:
+                stored.answers && typeof stored.answers === "object"
+                    ? stored.answers
+                    : {},
+            score: Number.isFinite(Number(stored.score))
+                ? Number(stored.score)
+                : null,
+            passed: stored.passed === true,
+            checkedAt: stored.checkedAt ?? null,
+            analysisSignature: signature
+        };
+    }
+
+    function saveState() {
+        quizStorage.set("progress", state);
+    }
+
+    function dispatchInvalidated() {
+        window.dispatchEvent(
+            new CustomEvent(`${namespace}:quiz-invalidated`)
         );
-
-    const workspace =
-        section.querySelector("#quiz-workspace");
-
-    const form =
-        section.querySelector("#quiz-form");
-
-    const list =
-        section.querySelector("#quiz-list");
-
-    const result =
-        section.querySelector("#quiz-result");
-
-    const resetButton =
-        section.querySelector("#reset-quiz");
-
-    let state = readQuizState();
-
-    if (
-        !state.answers ||
-        typeof state.answers !== "object"
-    ) {
-        state.answers = {};
     }
 
     function renderQuestions() {
-        list.innerHTML = QUESTIONS
-            .map((question, index) =>
-                renderQuestion(
-                    question,
-                    index + 1,
-                    state.answers[question.id]
-                )
+        elements.list.innerHTML = QUESTIONS.map(
+            (question, index) => renderQuestion(
+                question,
+                index + 1,
+                state.answers[question.id]
             )
-            .join("");
+        ).join("");
+    }
+
+    function getAnsweredCount() {
+        return QUESTIONS.filter(
+            (question) => Boolean(state.answers[question.id])
+        ).length;
+    }
+
+    function updateProgress() {
+        const answered = getAnsweredCount();
+        const percentage = answered / QUESTIONS.length * 100;
+
+        elements.answeredCount.textContent =
+            `${answered} із ${QUESTIONS.length}`;
+        elements.progressBar.style.width = `${percentage}%`;
+        elements.progressTrack.setAttribute(
+            "aria-valuenow",
+            String(answered)
+        );
     }
 
     function clearEvaluation() {
-        list
-            .querySelectorAll(".quiz-question")
-            .forEach((questionElement) => {
+        elements.list.querySelectorAll(".quiz-question").forEach(
+            (questionElement) => {
                 questionElement.classList.remove(
                     "is-correct",
                     "is-incorrect"
                 );
 
-                const feedback =
-                    questionElement.querySelector(
-                        ".quiz-feedback"
-                    );
-
+                const feedback = questionElement.querySelector(
+                    ".quiz-feedback"
+                );
                 feedback.hidden = true;
                 feedback.textContent = "";
-            });
+            }
+        );
     }
 
-    function evaluateAnswers(
-        saveResult = true
-    ) {
+    function evaluateAnswers({ saveResult = true } = {}) {
         let score = 0;
 
         QUESTIONS.forEach((question) => {
-            const selectedValue =
-                state.answers[question.id];
+            const selectedValue = state.answers[question.id];
+            const selectedOption = question.options.find(
+                (option) => option.value === selectedValue
+            );
+            const correctOption = question.options.find(
+                (option) => option.value === question.correct
+            );
+            const questionElement = elements.list.querySelector(
+                `[data-question-id="${question.id}"]`
+            );
+            const feedback = questionElement.querySelector(
+                ".quiz-feedback"
+            );
+            const correct = selectedValue === question.correct;
 
-            const selectedOption =
-                question.options.find(
-                    (option) =>
-                        option.value === selectedValue
-                );
-
-            const correctOption =
-                question.options.find(
-                    (option) =>
-                        option.value === question.correct
-                );
-
-            const questionElement =
-                list.querySelector(
-                    `[data-question-id="${question.id}"]`
-                );
-
-            const feedback =
-                questionElement.querySelector(
-                    ".quiz-feedback"
-                );
-
-            const isCorrect =
-                selectedValue === question.correct;
-
-            if (isCorrect) {
+            if (correct) {
                 score += 1;
             }
 
-            questionElement.classList.toggle(
-                "is-correct",
-                isCorrect
-            );
-
-            questionElement.classList.toggle(
-                "is-incorrect",
-                !isCorrect
-            );
-
+            questionElement.classList.toggle("is-correct", correct);
+            questionElement.classList.toggle("is-incorrect", !correct);
             feedback.hidden = false;
 
-            if (isCorrect) {
-                feedback.textContent =
-                    selectedOption.feedback;
+            if (correct) {
+                feedback.textContent = selectedOption.feedback;
             } else {
                 feedback.textContent =
-                    `${selectedOption.feedback} ` +
-                    `Правильна відповідь: ` +
-                    `${correctOption.label}.`;
+                    `${selectedOption?.feedback ?? "Відповідь неправильна."} ` +
+                    `Правильна відповідь: ${correctOption.label}.`;
             }
         });
 
-        const passed =
-            score >= PASSING_SCORE;
+        const passed = score >= PASSING_SCORE;
 
-        result.dataset.type =
-            passed ? "success" : "error";
-
-        if (passed) {
-            result.textContent =
-                `Тест пройдено: ${score} із ` +
-                `${QUESTIONS.length}. ` +
-                `Лабораторну роботу завершено.`;
-
-            localStorage.setItem(
-                QUIZ_COMPLETED_KEY,
-                "true"
-            );
-        } else {
-            result.textContent =
-                `Результат: ${score} із ` +
-                `${QUESTIONS.length}. ` +
-                `Для проходження потрібно ` +
-                `щонайменше ${PASSING_SCORE} ` +
-                `правильних відповідей.`;
-
-            localStorage.removeItem(
-                QUIZ_COMPLETED_KEY
-            );
-        }
+        state.score = score;
+        state.passed = passed;
 
         if (saveResult) {
-            state.score = score;
-            state.passed = passed;
-            state.checkedAt =
-                new Date().toISOString();
-
-            saveQuizState(state);
+            state.checkedAt = new Date().toISOString();
+            saveState();
         }
-    }
 
-    function renderReadiness() {
-        const analysisCompleted =
-            localStorage.getItem(
-                ANALYSIS_COMPLETED_KEY
-            ) === "true";
+        if (passed) {
+            setResult(
+                `Тест пройдено: ${score} із ${QUESTIONS.length}. ` +
+                "Відкрито формування підсумкового звіту.",
+                "success"
+            );
 
-        readiness.classList.toggle(
-            "is-ready",
-            analysisCompleted
-        );
-
-        workspace.hidden =
-            !analysisCompleted;
-
-        if (analysisCompleted) {
-            readinessTitle.textContent =
-                "Можна переходити до тесту";
-
-            readinessText.textContent =
-                "Висновки збережено. " +
-                "Дайте відповідь на всі " +
-                "контрольні питання.";
+            if (saveResult) {
+                window.dispatchEvent(
+                    new CustomEvent(`${namespace}:quiz-completed`, {
+                        detail: {
+                            score,
+                            total: QUESTIONS.length,
+                            answers: state.answers
+                        }
+                    })
+                );
+            }
         } else {
-            readinessTitle.textContent =
-                "Спочатку завершіть аналіз";
+            setResult(
+                `Результат: ${score} із ${QUESTIONS.length}. ` +
+                `Для проходження потрібно щонайменше ${PASSING_SCORE} правильних відповідей.`,
+                "error"
+            );
 
-            readinessText.textContent =
-                "Заповніть і збережіть три " +
-                "висновки в розділі 9.";
+            if (saveResult) {
+                dispatchInvalidated();
+            }
         }
     }
 
-    form.addEventListener(
-        "change",
-        (event) => {
-            const target = event.target;
+    function invalidateQuiz() {
+        const wasPassed = state.passed;
 
-            if (
-                !target.matches(
-                    'input[type="radio"]'
-                )
-            ) {
-                return;
-            }
+        state.score = null;
+        state.passed = false;
+        state.checkedAt = null;
+        saveState();
 
-            state.answers[target.name] =
-                target.value;
-
-            delete state.score;
-            delete state.passed;
-            delete state.checkedAt;
-
-            saveQuizState(state);
-
-            localStorage.removeItem(
-                QUIZ_COMPLETED_KEY
-            );
-
-            const questionElement =
-                target.closest(
-                    ".quiz-question"
-                );
-
-            questionElement.classList.remove(
-                "is-correct",
-                "is-incorrect"
-            );
-
-            const feedback =
-                questionElement.querySelector(
-                    ".quiz-feedback"
-                );
-
-            feedback.hidden = true;
-            feedback.textContent = "";
-
-            result.dataset.type = "default";
-            result.textContent =
-                "Відповідь змінено. " +
-                "Після завершення перевірте тест.";
+        if (wasPassed) {
+            dispatchInvalidated();
         }
-    );
+    }
 
-    form.addEventListener(
-        "submit",
-        (event) => {
-            event.preventDefault();
+    function updateAccess() {
+        const analysis = analysisStorage.get("progress", {});
+        const ready =
+            analysis?.completed === true &&
+            typeof analysis.signature === "string" &&
+            analysis.signature !== "";
 
-            const answeredCount =
-                QUESTIONS.filter(
-                    (question) =>
-                        Boolean(
-                            state.answers[
-                                question.id
-                            ]
-                        )
-                ).length;
+        elements.lockOverlay.hidden = ready;
+        elements.interactiveArea.inert = !ready;
 
-            if (
-                answeredCount <
-                QUESTIONS.length
-            ) {
-                result.dataset.type = "error";
-
-                result.textContent =
-                    `Дано відповідей: ` +
-                    `${answeredCount} із ` +
-                    `${QUESTIONS.length}. ` +
-                    `Заповніть усі питання.`;
-
-                const unanswered =
-                    QUESTIONS.find(
-                        (question) =>
-                            !state.answers[
-                                question.id
-                            ]
-                    );
-
-                const unansweredElement =
-                    list.querySelector(
-                        `[data-question-id="${unanswered.id}"]`
-                    );
-
-                unansweredElement.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-                return;
-            }
-
-            evaluateAnswers();
+        if (!ready) {
+            invalidateQuiz();
+            return;
         }
-    );
 
-    resetButton.addEventListener(
-        "click",
-        () => {
-            const shouldReset =
-                window.confirm(
-                    "Почати тест заново?"
-                );
-
-            if (!shouldReset) {
-                return;
-            }
-
-            state = {
-                answers: {}
-            };
-
-            localStorage.removeItem(
-                QUIZ_STORAGE_KEY
-            );
-
-            localStorage.removeItem(
-                QUIZ_COMPLETED_KEY
-            );
-
+        if (analysis.signature !== analysisSignature) {
+            analysisSignature = analysis.signature;
+            state = readState(analysisSignature);
             renderQuestions();
+            updateProgress();
             clearEvaluation();
 
-            result.dataset.type = "default";
-            result.textContent =
-                "Дайте відповідь на всі 8 запитань.";
+            if (
+                state.checkedAt &&
+                getAnsweredCount() === QUESTIONS.length
+            ) {
+                evaluateAnswers({ saveResult: false });
+            } else {
+                setResult("Дайте відповідь на всі 8 запитань.");
+            }
         }
-    );
+    }
+
+    elements.form.addEventListener("change", (event) => {
+        const input = event.target.closest('input[type="radio"]');
+
+        if (!input) {
+            return;
+        }
+
+        const wasPassed = state.passed;
+
+        state.answers[input.name] = input.value;
+        state.score = null;
+        state.passed = false;
+        state.checkedAt = null;
+        saveState();
+        updateProgress();
+        clearEvaluation();
+
+        if (wasPassed) {
+            dispatchInvalidated();
+        }
+
+        setResult(
+            "Відповідь збережено. Після заповнення тесту натисніть «Перевірити відповіді»."
+        );
+    });
+
+    elements.form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const answered = getAnsweredCount();
+
+        if (answered < QUESTIONS.length) {
+            setResult(
+                `Надано відповідей: ${answered} із ${QUESTIONS.length}. Заповніть усі питання.`,
+                "error"
+            );
+
+            const unanswered = QUESTIONS.find(
+                (question) => !state.answers[question.id]
+            );
+            const unansweredElement = elements.list.querySelector(
+                `[data-question-id="${unanswered.id}"]`
+            );
+            unansweredElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+            return;
+        }
+
+        evaluateAnswers();
+    });
+
+    elements.resetButton.addEventListener("click", () => {
+        const hasAnswers = getAnsweredCount() > 0;
+
+        if (
+            hasAnswers &&
+            !window.confirm("Очистити всі відповіді та почати тест заново?")
+        ) {
+            return;
+        }
+
+        const wasPassed = state.passed;
+
+        state = {
+            answers: {},
+            score: null,
+            passed: false,
+            checkedAt: null,
+            analysisSignature
+        };
+        saveState();
+        renderQuestions();
+        updateProgress();
+        clearEvaluation();
+        setResult("Дайте відповідь на всі 8 запитань.");
+
+        if (wasPassed) {
+            dispatchInvalidated();
+        }
+    });
 
     window.addEventListener(
-        "lab07:analysis-completed",
-        renderReadiness
+        `${namespace}:analysis-completed`,
+        updateAccess
     );
-
     window.addEventListener(
-        "lab07:analysis-invalidated",
-        renderReadiness
+        `${namespace}:analysis-invalidated`,
+        updateAccess
     );
 
     renderQuestions();
-    renderReadiness();
-
-    const allAnswersSaved =
-        QUESTIONS.every(
-            (question) =>
-                Boolean(
-                    state.answers[question.id]
-                )
-        );
-
-    if (
-        state.checkedAt &&
-        allAnswersSaved
-    ) {
-        evaluateAnswers(false);
-    }
+    updateProgress();
+    updateAccess();
 }

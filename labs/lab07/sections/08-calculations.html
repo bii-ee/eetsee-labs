@@ -1,265 +1,396 @@
 <section id="calculations" class="content-section">
-    <p class="section-number">Оброблення результатів</p>
+    <p class="section-number">Розрахунковий модуль</p>
 
-    <h2>Розрахунок енергетичних показників</h2>
+    <h2>Оброблення результатів експерименту</h2>
 
     <p class="lead">
-        Виконайте розрахунки для кожного режиму самостійно та
-        введіть отримані значення в таблицю. Система перевіряє
-        правильність із урахуванням допустимого округлення.
+        Для кожного циклу визначте повну тривалість циклу та
+        відносну тривалість увімкнення конфорки. Після цього
+        розрахуйте середнє значення відносної тривалості
+        увімкнення для кожного режиму.
     </p>
 
-    <div id="calculation-readiness" class="calculation-readiness">
-        <div>
-            <strong id="calculation-readiness-title">
-                Перевірка експериментальних даних
-            </strong>
+    <div class="calculations-access-shell">
+        <div id="calculations-lock-overlay" class="calculations-lock-overlay" role="status">
+            <div class="calculations-lock-card">
+                <strong>
+                    Доступ до розрахунків заблоковано
+                </strong>
 
-            <p id="calculation-readiness-text">
-                Перевіряється наявність трьох записаних режимів.
-            </p>
+                <p>
+                    Спочатку завершіть усі дев’ять циклів
+                    у розділі «Проведення досліду».
+                </p>
+
+                <a class="calculations-lock-link" href="#experiment">
+                    Перейти до проведення досліду
+                </a>
+            </div>
         </div>
 
-        <a href="#experiment" class="calculation-back-link">
-            До таблиці вимірювань
-        </a>
-    </div>
+        <div id="calculations-interactive-area">
+            <div class="calculations-formulas">
+                <article class="calculation-formula-card">
+                    <span>Формула 1</span>
 
-    <details class="calculation-demo">
-        <summary>Демонстраційний приклад розрахунку</summary>
+                    <h3>Повна тривалість циклу</h3>
 
-        <div class="calculation-demo-content">
-            <p>
-                Цей приклад використовує окремі вихідні дані
-                й не містить відповідей для основних трьох режимів.
-            </p>
+                    <div class="calculation-formula">
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                            <mrow>
+                                <msub>
+                                    <mi>T</mi>
+                                    <mrow>
+                                        <mtext>ц</mtext>
+                                        <mo>,</mo>
+                                        <mi>i</mi>
+                                        <mi>j</mi>
+                                    </mrow>
+                                </msub>
 
-            <div class="calculation-demo-data">
-                <span><strong>α</strong> = 45°</span>
-                <span><strong>U₁</strong> = 230 В</span>
-                <span><strong>I</strong> = 4,4 А</span>
-                <span><strong>P</strong> = 720 Вт</span>
-                <span><strong>U₂</strong> = 185 В</span>
+                                <mo>=</mo>
+
+                                <msub>
+                                    <mi>t</mi>
+                                    <mrow>
+                                        <mtext>н</mtext>
+                                        <mo>,</mo>
+                                        <mi>i</mi>
+                                        <mi>j</mi>
+                                    </mrow>
+                                </msub>
+
+                                <mo>+</mo>
+
+                                <msub>
+                                    <mi>t</mi>
+                                    <mrow>
+                                        <mtext>о</mtext>
+                                        <mo>,</mo>
+                                        <mi>i</mi>
+                                        <mi>j</mi>
+                                    </mrow>
+                                </msub>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Повна тривалість складається з тривалості
+                        увімкненого та вимкненого станів конфорки.
+                    </p>
+                </article>
+
+                <article class="calculation-formula-card">
+                    <span>Формула 2</span>
+
+                    <h3>Відносна тривалість увімкнення</h3>
+
+                    <div class="calculation-formula">
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                            <mrow>
+                                <msub>
+                                    <mtext>ТВ</mtext>
+                                    <mrow>
+                                        <mi>i</mi>
+                                        <mi>j</mi>
+                                    </mrow>
+                                </msub>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <msub>
+                                        <mi>t</mi>
+                                        <mrow>
+                                            <mtext>н</mtext>
+                                            <mo>,</mo>
+                                            <mi>i</mi>
+                                            <mi>j</mi>
+                                        </mrow>
+                                    </msub>
+
+                                    <mrow>
+                                        <msub>
+                                            <mi>t</mi>
+                                            <mrow>
+                                                <mtext>н</mtext>
+                                                <mo>,</mo>
+                                                <mi>i</mi>
+                                                <mi>j</mi>
+                                            </mrow>
+                                        </msub>
+
+                                        <mo>+</mo>
+
+                                        <msub>
+                                            <mi>t</mi>
+                                            <mrow>
+                                                <mtext>о</mtext>
+                                                <mo>,</mo>
+                                                <mi>i</mi>
+                                                <mi>j</mi>
+                                            </mrow>
+                                        </msub>
+                                    </mrow>
+                                </mfrac>
+
+                                <mo>·</mo>
+                                <mn>100</mn>
+                                <mo>%</mo>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Показник характеризує частку часу, протягом
+                        якого конфорка була увімкнена.
+                    </p>
+                </article>
+
+                <article class="calculation-formula-card">
+                    <span>Формула 3</span>
+
+                    <h3>Середнє значення для режиму</h3>
+
+                    <div class="calculation-formula">
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                            <mrow>
+                                <msub>
+                                    <mtext>ТВ</mtext>
+                                    <mrow>
+                                        <mi>i</mi>
+                                        <mo>,</mo>
+                                        <mtext>сер</mtext>
+                                    </mrow>
+                                </msub>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <mrow>
+                                        <msub>
+                                            <mtext>ТВ</mtext>
+                                            <mrow>
+                                                <mi>i</mi>
+                                                <mn>1</mn>
+                                            </mrow>
+                                        </msub>
+
+                                        <mo>+</mo>
+
+                                        <msub>
+                                            <mtext>ТВ</mtext>
+                                            <mrow>
+                                                <mi>i</mi>
+                                                <mn>2</mn>
+                                            </mrow>
+                                        </msub>
+
+                                        <mo>+</mo>
+
+                                        <msub>
+                                            <mtext>ТВ</mtext>
+                                            <mrow>
+                                                <mi>i</mi>
+                                                <mn>3</mn>
+                                            </mrow>
+                                        </msub>
+                                    </mrow>
+
+                                    <mn>3</mn>
+                                </mfrac>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Середнє значення визначають за результатами
+                        трьох циклів відповідного режиму.
+                    </p>
+                </article>
             </div>
 
-            <ol class="calculation-demo-steps">
-                <li>
-                    <strong>Переведення кута в радіани:</strong>
-                    α = 45 × π / 180 = 0,7854 рад.
-                </li>
+            <div class="calculations-instruction">
+                <strong>Порядок виконання</strong>
 
-                <li>
-                    <strong>Коефіцієнт регулювання напруги:</strong>
-                    kU = 185 / 230 = 0,804.
-                </li>
+                <ol>
+                    <li>
+                        Перенесіть тривалості
+                        <i>t</i><sub>н</sub> і
+                        <i>t</i><sub>о</sub> з експерименту.
+                    </li>
 
-                <li>
-                    <strong>Повна потужність:</strong>
-                    S = 230 × 4,4 = 1012 В·А.
-                </li>
+                    <li>
+                        Самостійно обчисліть
+                        <i>T</i><sub>ц</sub> і
+                        <i>ТВ</i> для кожного циклу.
+                    </li>
 
-                <li>
-                    <strong>Теоретичні коефіцієнти:</strong>
-                    cosφ₁p = 0,985; νp = 0,968; χp = 0,953.
-                </li>
+                    <li>
+                        Введіть результати в поля та виконайте
+                        перевірку.
+                    </li>
 
-                <li>
-                    <strong>Перша гармоніка струму:</strong>
-                    I₁ = 720 / (230 × 0,985) = 3,178 А.
-                </li>
+                    <li>
+                        Розрахуйте середнє значення
+                        <i>ТВ</i><sub>i,сер</sub>
+                        для кожного режиму.
+                    </li>
+                </ol>
+            </div>
 
-                <li>
-                    <strong>Реактивна потужність:</strong>
-                    Q = 126,0 вар.
-                </li>
-
-                <li>
-                    <strong>Потужність спотворення:</strong>
-                    T = 699,9 В·А.
-                </li>
-
-                <li>
-                    <strong>Експериментальні коефіцієнти:</strong>
-                    ν = 0,722; χ = 0,711; kI = 0,958.
-                </li>
-            </ol>
-        </div>
-    </details>
-
-    <div id="calculation-workspace" hidden>
-        <div class="calculation-instructions">
-            <h3>Правила заповнення</h3>
-
-            <ul>
-                <li>
-                    напруги вводьте у вольтах, струми в амперах;
-                </li>
-
-                <li>
-                    активну потужність вводьте у ватах,
-                    реактивну потужність у варах,
-                    повну потужність і потужність спотворення
-                    у вольт-амперах;
-                </li>
-
-                <li>
-                    коефіцієнти
-                    k<sub>U</sub>,
-                    cosφ₁p,
-                    ν<sub>p</sub>,
-                    χ<sub>p</sub>,
-                    ν,
-                    χ та
-                    k<sub>I</sub>
-                    вводьте у відносних одиницях;
-                </li>
-
-                <li>
-                    коефіцієнти вводьте десятковим дробом,
-                    наприклад <strong>0,818</strong>, а не
-                    <strong>81,8 %</strong>;
-                </li>
-
-                <li>
-                    для десяткового роздільника можна
-                    використовувати кому або крапку;
-                </li>
-
-                <li>
-                    потужності рекомендовано округлювати
-                    до 0,1 В·А, Вт або вар, а коефіцієнти
-                    до трьох або чотирьох знаків після коми.
-                </li>
-            </ul>
-        </div>
-
-        <div class="student-calculation-panel">
-            <div class="student-calculation-heading">
+            <div class="calculations-source-status">
                 <div>
-                    <p class="section-number">Таблиця 6.1</p>
+                    <span>Досліджувана конфорка</span>
 
-                    <h3>
-                        Експериментальні та розрахункові дані
-                    </h3>
+                    <strong id="calculations-burner">
+                        —
+                    </strong>
                 </div>
 
-                <span>33 розрахункові поля</span>
+                <div>
+                    <span>Отримано циклів</span>
+
+                    <strong id="calculations-cycle-count">
+                        0 із 9
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Стан розрахунків</span>
+
+                    <strong id="calculations-progress">
+                        Не розпочато
+                    </strong>
+                </div>
             </div>
 
-            <div class="calculation-table-scroll">
-                <table class="student-calculation-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" scope="col">
-                                Режим
-                            </th>
+            <div class="calculations-table-panel">
+                <div class="calculations-table-heading">
+                    <div>
+                        <p class="section-number">
+                            Розрахунок за циклами
+                        </p>
 
-                            <th rowspan="2" scope="col">
-                                α, град
-                            </th>
+                        <h3>
+                            Повна та відносна тривалість увімкнення
+                        </h3>
+                    </div>
 
-                            <th colspan="4" scope="colgroup">
-                                Вимірювання
-                            </th>
+                    <p>
+                        Вихідні значення заповнюються автоматично.
+                        Розрахункові значення вводить студент.
+                    </p>
+                </div>
 
-                            <th colspan="11" scope="colgroup">
-                                Розрахунки студента
-                            </th>
-                        </tr>
+                <div class="table-scroll">
+                    <table class="calculations-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Режим</th>
+                                <th scope="col">Цикл</th>
+                                <th scope="col">
+                                    <i>t</i><sub>н</sub>, с
+                                </th>
+                                <th scope="col">
+                                    <i>t</i><sub>о</sub>, с
+                                </th>
+                                <th scope="col">
+                                    <i>T</i><sub>ц</sub>, с
+                                </th>
+                                <th scope="col">
+                                    <i>ТВ</i>, %
+                                </th>
+                                <th scope="col">Перевірка</th>
+                            </tr>
+                        </thead>
 
-                        <tr>
-                            <th scope="col">
-                                U₁, В
-                            </th>
-
-                            <th scope="col">
-                                I, А
-                            </th>
-
-                            <th scope="col">
-                                P, Вт
-                            </th>
-
-                            <th scope="col">
-                                U₂, В
-                            </th>
-
-                            <th scope="col">
-                                k<sub>U</sub>, в. о.
-                            </th>
-
-                            <th scope="col">
-                                S, В·А
-                            </th>
-
-                            <th scope="col">
-                                cosφ₁p, в. о.
-                            </th>
-
-                            <th scope="col">
-                                ν<sub>p</sub>, в. о.
-                            </th>
-
-                            <th scope="col">
-                                χ<sub>p</sub>, в. о.
-                            </th>
-
-                            <th scope="col">
-                                I₁, А
-                            </th>
-
-                            <th scope="col">
-                                Q, вар
-                            </th>
-
-                            <th scope="col">
-                                T, В·А
-                            </th>
-
-                            <th scope="col">
-                                ν, в. о.
-                            </th>
-
-                            <th scope="col">
-                                χ, в. о.
-                            </th>
-
-                            <th scope="col">
-                                k<sub>I</sub>, в. о.
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="student-calculation-table-body"></tbody>
-                </table>
+                        <tbody id="calculations-table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <p class="calculation-scroll-hint">
-                Для перегляду всіх стовпців прокручуйте таблицю
-                горизонтально. Виміряні значення заповнюються
-                автоматично, розрахункові поля заповнює студент.
+            <div class="calculations-summary-panel">
+                <div class="calculations-table-heading">
+                    <div>
+                        <p class="section-number">
+                            Таблиця 7.2
+                        </p>
+
+                        <h3>
+                            Середні значення відносної тривалості
+                            увімкнення
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="calculations-summary-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Режим</th>
+                                <th scope="col">
+                                    <i>ТВ</i><sub>i1</sub>, %
+                                </th>
+                                <th scope="col">
+                                    <i>ТВ</i><sub>i2</sub>, %
+                                </th>
+                                <th scope="col">
+                                    <i>ТВ</i><sub>i3</sub>, %
+                                </th>
+                                <th scope="col">
+                                    <i>ТВ</i><sub>i,сер</sub>, %
+                                </th>
+                                <th scope="col">Перевірка</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="calculations-summary-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="calculations-actions">
+                <div>
+                    <strong>Перевірка результатів</strong>
+
+                    <p>
+                        Значення відносної тривалості та середні
+                        значення вводьте з точністю до 0,1%.
+                    </p>
+                </div>
+
+                <div class="calculations-action-buttons">
+                    <button id="calculations-check-button" class="calculations-check-button" type="button">
+                        Перевірити розрахунки
+                    </button>
+
+                    <button id="calculations-reset-button" class="calculations-reset-button" type="button">
+                        Очистити розрахунки
+                    </button>
+                </div>
+            </div>
+
+            <p id="calculations-message" class="calculations-message" role="status" aria-live="polite">
+                Введіть результати розрахунків у таблиці.
             </p>
 
-            <div class="calculation-actions">
-                <button id="save-calculation-draft" class="calculation-button calculation-button-secondary"
-                    type="button">
-                    Зберегти чернетку
-                </button>
+            <div id="calculations-complete-panel" class="calculations-complete-panel" hidden>
+                <strong>
+                    Розрахунки виконано правильно
+                </strong>
 
-                <button id="check-calculations" class="calculation-button calculation-button-primary" type="button">
-                    Перевірити розрахунки
-                </button>
+                <p>
+                    Повну та відносну тривалість увімкнення
+                    визначено для всіх режимів. Можна переходити
+                    до побудови й аналізу температурних графіків.
+                </p>
 
-                <button id="reset-calculations" class="calculation-button calculation-button-danger" type="button">
-                    Очистити поля
-                </button>
+                <a href="#analysis">
+                    Перейти до аналізу результатів
+                </a>
             </div>
-
-            <p id="calculation-result-message" class="calculation-result-message" data-type="default" role="status"
-                aria-live="polite">
-                Заповніть таблицю та натисніть
-                «Перевірити розрахунки».
-            </p>
         </div>
     </div>
 </section>

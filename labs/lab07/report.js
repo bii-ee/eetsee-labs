@@ -1,1133 +1,645 @@
 import {
-    LAB07_EXPERIMENT_STORAGE_KEY
-} from "./data.js";
+    createStorage
+} from "../../common/js/storage.js";
 
-const STORAGE_KEYS = {
-    experiment:
-        LAB07_EXPERIMENT_STORAGE_KEY,
-
-    calculations:
-        "eetsee.lab07.calculations.v1",
-
-    calculationsCompleted:
-        "eetsee.lab07.calculations.completed.v1",
-
-    analysis:
-        "eetsee.lab07.analysis.v1",
-
-    analysisCompleted:
-        "eetsee.lab07.analysis.completed.v1",
-
-    quiz:
-        "eetsee.lab07.quiz.v1",
-
-    quizCompleted:
-        "eetsee.lab07.quiz.completed.v1",
-
-    student:
-        "eetsee.lab07.report.student.v1"
-};
-
-const CALCULATION_GROUPS = {
-    energy: [
-        ["voltageRegulation", "kU"],
-        ["apparentPower", "S, В·А"],
-        ["cosPhi1p", "cosφ₁p"],
-        ["nuP", "νp"],
-        ["chiP", "χp"],
-        ["firstHarmonicCurrent", "I₁, А"]
-    ],
-
-    quality: [
-        ["reactivePower", "Q, вар"],
-        ["distortionPower", "T, В·А"],
-        ["currentDistortionFactor", "ν"],
-        ["powerFactor", "χ"],
-        ["harmonicDistortionFactor", "kI"]
-    ]
-};
-
-const CONCLUSION_TITLES = [
-    "Зміна напруги U₂ зі збільшенням кута керування α",
-    "Зміна повної потужності S",
-    "Вплив кута керування на cosφ₁p та якість електроенергії"
+const MODES = [
+    { id: "mode-1", position: 1 },
+    { id: "mode-2", position: 2 },
+    { id: "mode-3", position: 3 }
 ];
 
-function readJson(
-    key,
-    fallback = {}
-) {
-    try {
-        const value =
-            localStorage.getItem(key);
+const CYCLES_PER_MODE = 3;
+const QUIZ_TOTAL = 8;
 
-        return value
-            ? JSON.parse(value)
-            : fallback;
-    } catch (error) {
-        console.warn(
-            `Не вдалося прочитати ${key}.`,
-            error
-        );
-
-        return fallback;
+const CHARTS = [
+    {
+        selector: "#chart-duty-cycle",
+        caption: "Рисунок 1. Відносна тривалість увімкнення"
+    },
+    {
+        selector: "#chart-cycle-duration",
+        caption: "Рисунок 2. Складові циклу роботи"
+    },
+    {
+        selector: "#chart-cycle-temperature",
+        caption: "Рисунок 3. Температурні межі циклів"
     }
-}
+];
 
-function writeJson(
-    key,
-    value
-) {
-    try {
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
-        );
-    } catch (error) {
-        console.warn(
-            `Не вдалося зберегти ${key}.`,
-            error
-        );
+const CONCLUSIONS = [
+    {
+        key: "dutyCycleConclusion",
+        title: "Відносна тривалість увімкнення"
+    },
+    {
+        key: "cycleDurationConclusion",
+        title: "Співвідношення тривалостей циклу"
+    },
+    {
+        key: "temperatureConclusion",
+        title: "Температурний режим конфорки"
     }
+];
+
+function isFiniteNumber(value) {
+    return Number.isFinite(Number(value));
 }
 
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-function formatNumber(
-    value,
-    digits = 2
-) {
+function formatNumber(value, digits = 1) {
     const number = Number(value);
 
     if (!Number.isFinite(number)) {
-        return "Не вказано";
+        return "—";
     }
 
-    return new Intl.NumberFormat(
-        "uk-UA",
-        {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: digits
+    return new Intl.NumberFormat("uk-UA", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: digits
+    }).format(number);
+}
+
+function average(values) {
+    return values.reduce((sum, value) => sum + value, 0) /
+        values.length;
+}
+
+function normalizeExperiment(value) {
+    const normalized = {
+        burner: value?.burner === 2 ? 2 : 1,
+        records: {}
+    };
+
+    MODES.forEach((mode) => {
+        const source = value?.records?.[mode.id];
+
+        if (!source || typeof source !== "object") {
+            return;
         }
-    ).format(number);
+
+        const cycles = Array.isArray(source.cycles)
+            ? source.cycles
+                .filter(
+                    (cycle) =>
+                        isFiniteNumber(cycle?.tOn) &&
+                        isFiniteNumber(cycle?.tOff) &&
+                        isFiniteNumber(cycle?.tauOn) &&
+                        isFiniteNumber(cycle?.tauOff)
+                )
+                .slice(0, CYCLES_PER_MODE)
+                .map((cycle) => ({
+                    tOn: Number(cycle.tOn),
+                    tOff: Number(cycle.tOff),
+                    tauOn: Number(cycle.tauOn),
+                    tauOff: Number(cycle.tauOff)
+                }))
+            : [];
+
+        normalized.records[mode.id] = {
+            position: mode.position,
+            tau0: isFiniteNumber(source.tau0)
+                ? Number(source.tau0)
+                : null,
+            cycles
+        };
+    });
+
+    return normalized;
 }
 
-function displayStudentValue(value) {
-    const text =
-        String(value ?? "").trim();
+function isExperimentComplete(progress) {
+    return MODES.every((mode) => {
+        const record = progress.records[mode.id];
 
-    return text || "Не вказано";
+        return (
+            isFiniteNumber(record?.tau0) &&
+            record.cycles.length === CYCLES_PER_MODE
+        );
+    });
 }
 
-function extractPositionNumber(
-    record,
-    index
-) {
-    const match =
-        String(
-            record.position ?? ""
-        ).match(/\d+/);
-
-    return match
-        ? Number(match[0])
-        : index + 1;
+function createCalculationSignature(progress) {
+    return JSON.stringify({
+        burner: progress.burner,
+        records: MODES.map((mode) => ({
+            id: mode.id,
+            cycles: (progress.records[mode.id]?.cycles ?? [])
+                .map(({ tOn, tOff }) => ({ tOn, tOff }))
+        }))
+    });
 }
 
-function getReportData() {
-    const records =
-        readJson(
-            STORAGE_KEYS.experiment
-        );
+function createAnalysisSignature(progress) {
+    return JSON.stringify({
+        burner: progress.burner,
+        records: MODES.map((mode) => ({
+            id: mode.id,
+            tau0: progress.records[mode.id]?.tau0 ?? null,
+            cycles: progress.records[mode.id]?.cycles ?? []
+        }))
+    });
+}
 
-    const calculations =
-        readJson(
-            STORAGE_KEYS.calculations
-        );
-
-    const conclusions =
-        readJson(
-            STORAGE_KEYS.analysis
-        );
-
-    const quiz =
-        readJson(
-            STORAGE_KEYS.quiz
-        );
-
-    const rows =
-        Object.entries(records)
-            .map(
-                (
-                    [modeId, record],
-                    index
-                ) => ({
-                    modeId,
-
-                    position:
-                        extractPositionNumber(
-                            record,
-                            index
-                        ),
-
-                    record,
-
-                    calculation:
-                        calculations[modeId]
-                })
-            )
-            .filter(
-                (row) =>
-                    row.record &&
-                    row.calculation
-            )
-            .sort(
-                (first, second) => {
-                    const alphaDifference =
-                        Number(
-                            first.record.alpha
-                        ) -
-                        Number(
-                            second.record.alpha
-                        );
-
-                    return Number.isFinite(
-                        alphaDifference
-                    )
-                        ? alphaDifference
-                        : first.position -
-                        second.position;
-                }
-            );
+function getCycleValues(cycle) {
+    const duration = cycle.tOn + cycle.tOff;
 
     return {
-        rows,
-
-        conclusions:
-            Object.values(conclusions)
-                .map(
-                    (value) =>
-                        String(value).trim()
-                )
-                .filter(Boolean),
-
-        quiz
+        duration,
+        duty: duration > 0 ? cycle.tOn / duration * 100 : 0
     };
 }
 
-function isWorkCompleted() {
-    return (
-        localStorage.getItem(
-            STORAGE_KEYS
-                .calculationsCompleted
-        ) === "true" &&
+function buildReportData(progress) {
+    return MODES.map((mode) => {
+        const record = progress.records[mode.id];
+        const cycles = record.cycles.map((cycle) => ({
+            ...cycle,
+            ...getCycleValues(cycle)
+        }));
 
-        localStorage.getItem(
-            STORAGE_KEYS
-                .analysisCompleted
-        ) === "true" &&
-
-        localStorage.getItem(
-            STORAGE_KEYS
-                .quizCompleted
-        ) === "true"
-    );
-}
-
-function createMeasuredRows(rows) {
-    return rows
-        .map(
-            ({
-                position,
-                record
-            }) => `
-                <tr>
-                    <th scope="row">
-                        ${position}
-                    </th>
-
-                    <td>
-                        ${escapeHtml(
-                formatNumber(
-                    record.alpha,
-                    0
-                )
-            )
-                }
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                    formatNumber(
-                        record.u1,
-                        1
-                    )
-                )
-                }
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                    formatNumber(
-                        record.current,
-                        2
-                    )
-                )
-                }
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                    formatNumber(
-                        record.power,
-                        1
-                    )
-                )
-                }
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                    formatNumber(
-                        record.u2,
-                        1
-                    )
-                )
-                }
-                    </td>
-                </tr>
-            `
-        )
-        .join("");
-}
-
-function createCalculationRows(
-    rows,
-    fields
-) {
-    return rows
-        .map(
-            ({
-                position,
-                calculation
-            }) => `
-                <tr>
-                    <th scope="row">
-                        ${position}
-                    </th>
-
-                    ${fields
-                    .map(
-                        ([key]) => `
-                                    <td>
-                                        ${escapeHtml(
-                            displayStudentValue(
-                                calculation[
-                                key
-                                ]
-                            )
-                        )
-                            }
-                                    </td>
-                                `
-                    )
-                    .join("")
-                }
-                </tr>
-            `
-        )
-        .join("");
-}
-
-function cloneChart(
-    sourceSelector,
-    target,
-    title
-) {
-    const source =
-        document.querySelector(
-            sourceSelector
-        );
-
-    const svg =
-        source?.querySelector("svg");
-
-    if (!svg) {
-        return;
-    }
-
-    const figure =
-        document.createElement(
-            "figure"
-        );
-
-    const caption =
-        document.createElement(
-            "figcaption"
-        );
-
-    const clonedSvg =
-        svg.cloneNode(true);
-
-    figure.className =
-        "report-chart";
-
-    caption.textContent =
-        title;
-
-    clonedSvg.removeAttribute(
-        "width"
-    );
-
-    clonedSvg.removeAttribute(
-        "height"
-    );
-
-    clonedSvg.setAttribute(
-        "preserveAspectRatio",
-        "xMidYMid meet"
-    );
-
-    figure.append(
-        caption,
-        clonedSvg
-    );
-
-    target.append(figure);
-}
-
-export function initializeReport() {
-    const panel =
-        document.querySelector(
-            "#final-report-panel"
-        );
-
-    if (!panel) {
-        return;
-    }
-
-    const form =
-        panel.querySelector(
-            "#student-report-form"
-        );
-
-    const readiness =
-        panel.querySelector(
-            "#report-readiness"
-        );
-
-    const documentBlock =
-        panel.querySelector(
-            "#report-document"
-        );
-
-    const printButton =
-        panel.querySelector(
-            "#print-report"
-        );
-
-    const resetButton =
-        panel.querySelector(
-            "#reset-lab"
-        );
-
-    const measuredBody =
-        panel.querySelector(
-            "#report-measured-body"
-        );
-
-    const energyBody =
-        panel.querySelector(
-            "#report-energy-body"
-        );
-
-    const qualityBody =
-        panel.querySelector(
-            "#report-quality-body"
-        );
-
-    const conclusionsList =
-        panel.querySelector(
-            "#report-conclusions"
-        );
-
-    const charts =
-        panel.querySelector(
-            "#report-charts"
-        );
-
-    const schematic =
-        panel.querySelector(
-            "#report-schematic"
-        );
-
-    if (
-        !form ||
-        !readiness ||
-        !documentBlock ||
-        !printButton ||
-        !resetButton ||
-        !measuredBody ||
-        !energyBody ||
-        !qualityBody ||
-        !conclusionsList ||
-        !charts ||
-        !schematic
-    ) {
-        console.warn(
-            "Не знайдено елементи підсумкового звіту."
-        );
-
-        return;
-    }
-
-    const storedStudent =
-        readJson(
-            STORAGE_KEYS.student
-        );
-
-    [
-        "studentName",
-        "studentGroup",
-        "studentBrigade"
-    ].forEach((name) => {
-        const field =
-            form.elements.namedItem(
-                name
-            );
-
-        if (
-            field &&
-            storedStudent[name]
-        ) {
-            field.value =
-                storedStudent[name];
-        }
-    });
-
-    function refreshAvailability() {
-        const completed =
-            isWorkCompleted();
-
-        panel.hidden =
-            !completed;
-
-        if (completed) {
-            readiness.dataset.type =
-                "success";
-
-            readiness.textContent =
-                "Усі етапи виконано. Заповніть дані студента та сформуйте звіт.";
-        }
-    }
-
-    function renderConclusions(values) {
-        conclusionsList.replaceChildren();
-
-        values.forEach(
-            (value, index) => {
-                const item =
-                    document.createElement(
-                        "section"
-                    );
-
-                const heading =
-                    document.createElement(
-                        "h4"
-                    );
-
-                const paragraph =
-                    document.createElement(
-                        "p"
-                    );
-
-                heading.textContent =
-                    CONCLUSION_TITLES[
-                    index
-                    ] ??
-                    `Висновок ${index + 1}`;
-
-                paragraph.textContent =
-                    value;
-
-                item.append(
-                    heading,
-                    paragraph
-                );
-
-                conclusionsList.append(
-                    item
-                );
+        return {
+            id: mode.id,
+            position: mode.position,
+            tau0: record.tau0,
+            cycles,
+            averages: {
+                tOn: average(cycles.map((cycle) => cycle.tOn)),
+                tOff: average(cycles.map((cycle) => cycle.tOff)),
+                duration: average(
+                    cycles.map((cycle) => cycle.duration)
+                ),
+                duty: average(cycles.map((cycle) => cycle.duty))
             }
-        );
-    }
-    function renderSchematic() {
-        const source =
-            document.querySelector(
-                ".stand-schematic"
-            );
+        };
+    });
+}
 
-        if (!source) {
-            schematic.textContent =
-                "Принципову схему не знайдено.";
+function createFunctionalScheme() {
+    return `
+        <svg
+            viewBox="0 45 920 245"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Функціональна схема лабораторної установки"
+        >
+            <defs>
+                <marker
+                    id="report-arrow"
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto-start-reverse"
+                >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#397a95" />
+                </marker>
+            </defs>
 
+            <style>
+                .scheme-box { fill: #f3f8fa; stroke: #397a95; stroke-width: 2; }
+                .scheme-meter { fill: #ffffff; stroke: #0e87a8; stroke-width: 2; }
+                .scheme-line { fill: none; stroke: #397a95; stroke-width: 3; marker-end: url(#report-arrow); }
+                .scheme-branch { fill: none; stroke: #7896a4; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#report-arrow); }
+                .scheme-title { fill: #15384d; font: 700 18px Arial, sans-serif; text-anchor: middle; }
+                .scheme-label { fill: #526b7b; font: 14px Arial, sans-serif; text-anchor: middle; }
+            </style>
+
+            <rect class="scheme-box" x="30" y="70" width="150" height="86" rx="12" />
+            <text class="scheme-title" x="105" y="106">Мережа 220 В</text>
+            <text class="scheme-label" x="105" y="133">живлення стенда</text>
+
+            <rect class="scheme-box" x="245" y="70" width="170" height="86" rx="12" />
+            <text class="scheme-title" x="330" y="106">K1 / K2</text>
+            <text class="scheme-label" x="330" y="133">вимикач конфорки</text>
+
+            <rect class="scheme-box" x="480" y="70" width="180" height="86" rx="12" />
+            <text class="scheme-title" x="570" y="106">R1, B1 / R2, B2</text>
+            <text class="scheme-label" x="570" y="133">біметалевий регулятор</text>
+
+            <rect class="scheme-box" x="725" y="70" width="165" height="86" rx="12" />
+            <text class="scheme-title" x="807" y="106">ТЕН1 / ТЕН2</text>
+            <text class="scheme-label" x="807" y="133">нагрівання конфорки</text>
+
+            <path class="scheme-line" d="M 180 113 H 237" />
+            <path class="scheme-line" d="M 415 113 H 472" />
+            <path class="scheme-line" d="M 660 113 H 717" />
+
+            <rect class="scheme-meter" x="260" y="218" width="160" height="58" rx="12" />
+            <text class="scheme-title" x="340" y="243">PA, секундомір</text>
+            <text class="scheme-label" x="340" y="265">струм і тривалість</text>
+
+            <rect class="scheme-meter" x="620" y="218" width="160" height="58" rx="12" />
+            <text class="scheme-title" x="700" y="243">Пірометр</text>
+            <text class="scheme-label" x="700" y="265">температура τ</text>
+
+            <path class="scheme-branch" d="M 570 156 V 190 H 340 V 210" />
+            <path class="scheme-branch" d="M 807 156 V 190 H 700 V 210" />
+        </svg>
+    `;
+}
+
+function cloneReportCharts(target) {
+    target.replaceChildren();
+
+    CHARTS.forEach(({ selector, caption }) => {
+        const source = document.querySelector(selector);
+        const svg = source?.querySelector("svg");
+
+        if (!svg) {
             return;
         }
 
-        const clonedSvg =
-            source.cloneNode(true);
+        const figure = document.createElement("figure");
+        const figureCaption = document.createElement("figcaption");
+        const clonedSvg = svg.cloneNode(true);
 
-        clonedSvg.removeAttribute(
-            "width"
+        figure.className = "report-chart";
+        figureCaption.textContent = caption;
+        clonedSvg.removeAttribute("width");
+        clonedSvg.removeAttribute("height");
+        figure.append(figureCaption, clonedSvg);
+        target.append(figure);
+    });
+}
+
+function createPrintCopy(reportDocument) {
+    document.querySelector("#lab-print-root")?.remove();
+
+    const printRoot = document.createElement("div");
+    const reportCopy = reportDocument.cloneNode(true);
+
+    printRoot.id = "lab-print-root";
+    reportCopy.hidden = false;
+    reportCopy.removeAttribute("hidden");
+    printRoot.append(reportCopy);
+    document.body.append(printRoot);
+
+    return printRoot;
+}
+
+export function initializeReport({
+    root = document,
+    namespace = "lab07"
+} = {}) {
+    const section = root.querySelector("#questions");
+
+    if (!section || section.dataset.reportInitialized === "true") {
+        return;
+    }
+
+    const elements = {
+        panel: section.querySelector("#final-report-panel"),
+        readiness: section.querySelector("#report-readiness"),
+        form: section.querySelector("#student-report-form"),
+        generateButton: section.querySelector("#generate-report"),
+        printButton: section.querySelector("#print-report"),
+        resetButton: section.querySelector("#reset-lab"),
+        document: section.querySelector("#report-document"),
+        studentName: section.querySelector("#report-student-name"),
+        studentGroup: section.querySelector("#report-student-group"),
+        studentBrigade: section.querySelector(
+            "#report-student-brigade"
+        ),
+        date: section.querySelector("#report-date"),
+        schematic: section.querySelector("#report-schematic"),
+        burner: section.querySelector("#report-burner"),
+        experimentBody: section.querySelector(
+            "#report-experiment-body"
+        ),
+        calculationBody: section.querySelector(
+            "#report-calculation-body"
+        ),
+        summaryBody: section.querySelector("#report-summary-body"),
+        charts: section.querySelector("#report-charts"),
+        conclusions: section.querySelector("#report-conclusions"),
+        quizScore: section.querySelector("#report-quiz-score")
+    };
+
+    if (Object.values(elements).some((element) => !element)) {
+        console.warn("Не знайдено елементи підсумкового звіту ЛР7.");
+        return;
+    }
+
+    section.dataset.reportInitialized = "true";
+
+    const experimentStorage = createStorage(
+        `${namespace}:cyclic-experiment`
+    );
+    const calculationsStorage = createStorage(
+        `${namespace}:calculations`
+    );
+    const analysisStorage = createStorage(`${namespace}:analysis`);
+    const quizStorage = createStorage(`${namespace}:quiz`);
+    const reportStorage = createStorage(`${namespace}:report`);
+
+    const studentInputs = {
+        name: elements.form.elements.namedItem("studentName"),
+        group: elements.form.elements.namedItem("studentGroup"),
+        brigade: elements.form.elements.namedItem("studentBrigade")
+    };
+
+    let currentData = null;
+
+    function setReadiness(text, state = "default") {
+        elements.readiness.textContent = text;
+        elements.readiness.dataset.state = state;
+    }
+
+    function getStateSnapshot() {
+        const experiment = normalizeExperiment(
+            experimentStorage.get("progress", {})
+        );
+        const calculations = calculationsStorage.get("progress", {});
+        const analysis = analysisStorage.get("progress", {});
+        const quiz = quizStorage.get("progress", {});
+        const calculationSignature = createCalculationSignature(
+            experiment
+        );
+        const analysisSignature = createAnalysisSignature(experiment);
+
+        return {
+            experiment,
+            calculations,
+            analysis,
+            quiz,
+            calculationSignature,
+            analysisSignature,
+            ready:
+                isExperimentComplete(experiment) &&
+                calculations?.completed === true &&
+                calculations?.signature === calculationSignature &&
+                analysis?.completed === true &&
+                analysis?.signature === analysisSignature &&
+                quiz?.passed === true &&
+                quiz?.analysisSignature === analysisSignature
+        };
+    }
+
+    function restoreStudentData() {
+        const stored = reportStorage.get("progress", {});
+
+        studentInputs.name.value = stored?.student?.name ?? "";
+        studentInputs.group.value = stored?.student?.group ?? "";
+        studentInputs.brigade.value = stored?.student?.brigade ?? "";
+    }
+
+    function updateStudentFieldValidity(input) {
+        const value = input.value.trim();
+
+        input.setCustomValidity("");
+
+        if (input === studentInputs.name) {
+            if (value === "") {
+                input.setCustomValidity(
+                    "Введіть прізвище, ім’я та по батькові."
+                );
+            } else if (value.length < 5) {
+                input.setCustomValidity(
+                    "ПІБ має містити щонайменше 5 символів."
+                );
+            }
+        }
+
+        if (input === studentInputs.group && value === "") {
+            input.setCustomValidity(
+                "Введіть назву навчальної групи."
+            );
+        }
+    }
+
+    function validateStudentFields() {
+        [studentInputs.name, studentInputs.group].forEach(
+            updateStudentFieldValidity
         );
 
-        clonedSvg.removeAttribute(
-            "height"
-        );
+        return elements.form.reportValidity();
+    }
+    function hideGeneratedReport() {
+        currentData = null;
+        elements.document.hidden = true;
+        elements.printButton.disabled = true;
+    }
 
-        clonedSvg.setAttribute(
-            "viewBox",
-            "0 50 1160 520"
-        );
+    function updateAccess() {
+        const snapshot = getStateSnapshot();
 
-        clonedSvg.setAttribute(
-            "preserveAspectRatio",
-            "xMidYMid meet"
-        );
+        elements.panel.hidden = !snapshot.ready;
 
-        clonedSvg.setAttribute(
-            "aria-label",
-            "Принципова схема лабораторної установки"
-        );
+        if (!snapshot.ready) {
+            hideGeneratedReport();
+            return;
+        }
 
-        schematic.replaceChildren(
-            clonedSvg
+        setReadiness(
+            `Тест пройдено: ${snapshot.quiz.score} із ${QUIZ_TOTAL}. ` +
+            "Введіть дані студента та сформуйте звіт.",
+            "success"
         );
     }
-    function renderCharts() {
-        charts.replaceChildren();
 
-        cloneChart(
-            "#chart-apparent-power",
-            charts,
-            "Залежність повної потужності S від положення регулятора"
-        );
+    function renderExperimentTable(data) {
+        elements.experimentBody.innerHTML = data.map((mode) =>
+            mode.cycles.map((cycle, cycleIndex) => `
+                <tr>
+                    ${cycleIndex === 0
+                    ? `<th scope="rowgroup" rowspan="3">${mode.position}</th>`
+                    : ""}
+                    <th scope="row">${cycleIndex + 1}</th>
+                    <td>${formatNumber(mode.tau0, 0)}</td>
+                    <td>${formatNumber(cycle.tOn, 0)}</td>
+                    <td>${formatNumber(cycle.tauOn, 0)}</td>
+                    <td>${formatNumber(cycle.tOff, 0)}</td>
+                    <td>${formatNumber(cycle.tauOff, 0)}</td>
+                </tr>
+            `).join("")
+        ).join("");
+    }
 
-        cloneChart(
-            "#chart-displacement-factor",
-            charts,
-            "Залежність коефіцієнта зсуву cosφ₁p від положення регулятора"
-        );
+    function renderCalculationTable(data) {
+        elements.calculationBody.innerHTML = data.map((mode) =>
+            mode.cycles.map((cycle, cycleIndex) => `
+                <tr>
+                    ${cycleIndex === 0
+                    ? `<th scope="rowgroup" rowspan="3">${mode.position}</th>`
+                    : ""}
+                    <th scope="row">${cycleIndex + 1}</th>
+                    <td>${formatNumber(cycle.duration, 0)}</td>
+                    <td>${formatNumber(cycle.duty, 1)}</td>
+                </tr>
+            `).join("")
+        ).join("");
 
-        cloneChart(
-            "#chart-load-voltage",
-            charts,
-            "Залежність напруги навантаження U₂ від положення регулятора"
-        );
+        elements.summaryBody.innerHTML = data.map((mode) => `
+            <tr>
+                <th scope="row">${mode.position}</th>
+                <td>${formatNumber(mode.averages.tOn, 1)}</td>
+                <td>${formatNumber(mode.averages.tOff, 1)}</td>
+                <td>${formatNumber(mode.averages.duration, 1)}</td>
+                <td>${formatNumber(mode.averages.duty, 1)}</td>
+            </tr>
+        `).join("");
+    }
+
+    function renderConclusions(conclusions) {
+        elements.conclusions.replaceChildren();
+
+        CONCLUSIONS.forEach(({ key, title }, index) => {
+            const container = document.createElement("section");
+            const heading = document.createElement("h4");
+            const paragraph = document.createElement("p");
+
+            heading.textContent = `${index + 1}. ${title}`;
+            paragraph.textContent = conclusions[key] ?? "";
+            container.append(heading, paragraph);
+            elements.conclusions.append(container);
+        });
     }
 
     function generateReport() {
-        if (
-            !form.reportValidity()
-        ) {
-            return;
-        }
+        const snapshot = getStateSnapshot();
 
-        if (!isWorkCompleted()) {
-            refreshAvailability();
-            return;
-        }
-
-        const student =
-            Object.fromEntries(
-                new FormData(
-                    form
-                ).entries()
+        if (!snapshot.ready) {
+            setReadiness(
+                "Дані попередніх етапів змінилися. Повторно завершіть тест.",
+                "error"
             );
-
-        const data =
-            getReportData();
-
-        if (
-            data.rows.length !== 3 ||
-            data.conclusions.length < 3
-        ) {
-            readiness.dataset.type =
-                "error";
-
-            readiness.textContent =
-                "Не вдалося зібрати всі результати. Перевірте розділи 7–9.";
-
+            updateAccess();
             return;
         }
 
-        writeJson(
-            STORAGE_KEYS.student,
-            student
+        const student = {
+            name: studentInputs.name.value.trim(),
+            group: studentInputs.group.value.trim(),
+            brigade: studentInputs.brigade.value.trim()
+        };
+        const data = buildReportData(snapshot.experiment);
+
+        elements.studentName.textContent = student.name;
+        elements.studentGroup.textContent = student.group;
+        elements.studentBrigade.textContent =
+            student.brigade || "Не вказано";
+        elements.date.textContent = new Intl.DateTimeFormat("uk-UA", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }).format(new Date());
+        elements.burner.textContent = `Конфорка ${snapshot.experiment.burner}`;
+        elements.schematic.innerHTML = createFunctionalScheme();
+        elements.quizScore.textContent =
+            `${snapshot.quiz.score} із ${QUIZ_TOTAL}`;
+
+        renderExperimentTable(data);
+        renderCalculationTable(data);
+        renderConclusions(snapshot.analysis.conclusions ?? {});
+        cloneReportCharts(elements.charts);
+
+        currentData = {
+            student,
+            generatedAt: new Date().toISOString(),
+            signature: snapshot.analysisSignature
+        };
+
+        reportStorage.set("progress", currentData);
+        elements.document.hidden = false;
+        elements.printButton.disabled = false;
+        setReadiness(
+            "Звіт сформовано. Перевірте його та скористайтеся кнопкою друку або збереження у PDF.",
+            "success"
         );
-
-        panel.querySelector(
-            "#report-student-name"
-        ).textContent =
-            student.studentName;
-
-        panel.querySelector(
-            "#report-student-group"
-        ).textContent =
-            student.studentGroup;
-
-        panel.querySelector(
-            "#report-student-brigade"
-        ).textContent =
-            student.studentBrigade ||
-            "Не вказано";
-
-        panel.querySelector(
-            "#report-date"
-        ).textContent =
-            new Intl.DateTimeFormat(
-                "uk-UA",
-                {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric"
-                }
-            ).format(
-                new Date()
-            );
-
-        const quizScore =
-            Number(
-                data.quiz.score
-            );
-
-        panel.querySelector(
-            "#report-quiz-score"
-        ).textContent =
-            Number.isFinite(
-                quizScore
-            )
-                ? `${quizScore} із 8`
-                : "Тест пройдено";
-
-        measuredBody.innerHTML =
-            createMeasuredRows(
-                data.rows
-            );
-
-        energyBody.innerHTML =
-            createCalculationRows(
-                data.rows,
-                CALCULATION_GROUPS.energy
-            );
-
-        qualityBody.innerHTML =
-            createCalculationRows(
-                data.rows,
-                CALCULATION_GROUPS.quality
-            );
-
-        renderConclusions(
-            data.conclusions
-        );
-
-        renderSchematic();
-        renderCharts();
-
-        documentBlock.hidden =
-            false;
-
-        printButton.disabled =
-            false;
-
-        readiness.dataset.type =
-            "success";
-
-        readiness.textContent =
-            "Звіт сформовано. Перевірте його та збережіть у PDF.";
-
-        documentBlock.scrollIntoView({
+        elements.document.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
     }
 
-    form.addEventListener(
-        "submit",
-        (event) => {
-            event.preventDefault();
-            generateReport();
-        }
-    );
+    elements.form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-    async function collectCurrentStyles() {
-        const printCssUrl =
-            new URL(
-                "../../common/css/print.css",
-                window.location.href
-            ).href;
-
-        const styleNodes = [
-            ...document.querySelectorAll(
-                'link[rel~="stylesheet"], style'
-            )
-        ];
-
-        const regularStyleNodes =
-            styleNodes.filter(
-                (node) => {
-                    if (
-                        node.tagName ===
-                        "STYLE"
-                    ) {
-                        return true;
-                    }
-
-                    return (
-                        node.href !==
-                        printCssUrl
-                    );
-                }
+        if (!validateStudentFields()) {
+            setReadiness(
+                "Заповніть прізвище, ім’я та навчальну групу.",
+                "error"
             );
-
-        const regularStyles =
-            await Promise.all(
-                regularStyleNodes.map(
-                    async (node) => {
-                        if (
-                            node.tagName ===
-                            "STYLE"
-                        ) {
-                            return (
-                                node.textContent ||
-                                ""
-                            );
-                        }
-
-                        try {
-                            const response =
-                                await fetch(
-                                    node.href,
-                                    {
-                                        cache:
-                                            "no-store"
-                                    }
-                                );
-
-                            if (!response.ok) {
-                                throw new Error(
-                                    `HTTP ${response.status}`
-                                );
-                            }
-
-                            return await response.text();
-                        } catch (error) {
-                            console.warn(
-                                "Не вдалося завантажити CSS:",
-                                node.href,
-                                error
-                            );
-
-                            return "";
-                        }
-                    }
-                )
-            );
-
-        const printResponse =
-            await fetch(
-                printCssUrl,
-                {
-                    cache: "no-store"
-                }
-            );
-
-        if (!printResponse.ok) {
-            throw new Error(
-                `Не вдалося завантажити print.css: HTTP ${printResponse.status}`
-            );
-        }
-
-        const printStyles =
-            await printResponse.text();
-
-        return [
-            ...regularStyles,
-            printStyles
-        ].join("\n");
-    }
-
-    async function openPrintableReport() {
-        if (documentBlock.hidden) {
-            generateReport();
-        }
-
-        if (documentBlock.hidden) {
             return;
         }
 
-        const printWindow =
-            window.open(
-                "",
-                "lab07-print-report",
-                "width=1280,height=900"
-            );
+        generateReport();
+    });
 
-        if (!printWindow) {
-            window.alert(
-                "Браузер заблокував вікно звіту. Дозвольте спливаючі вікна для цього сайту."
-            );
+    elements.form.addEventListener("input", (event) => {
+        if (event.target.matches("input")) {
+            updateStudentFieldValidity(event.target);
+        }
 
+        if (currentData) {
+            elements.printButton.disabled = true;
+
+            setReadiness(
+                "Дані студента змінено. Сформуйте звіт повторно.",
+                "default"
+            );
+        }
+    });
+
+    elements.printButton.addEventListener("click", () => {
+        if (!currentData || elements.document.hidden) {
             return;
         }
 
-        const temporaryDocument =
-            printWindow.document;
+        const printRoot = createPrintCopy(elements.document);
+        let cleaned = false;
 
-        temporaryDocument.open();
-
-        temporaryDocument.write(`
-        <!DOCTYPE html>
-
-        <html lang="uk">
-            <head>
-                <meta charset="UTF-8">
-
-                <title>
-                    Формування звіту
-                </title>
-
-                <style>
-                    body {
-                        display: grid;
-                        min-height: 100vh;
-                        margin: 0;
-                        place-items: center;
-                        font-family: Arial, sans-serif;
-                        color: #12344d;
-                        background: #eef4f7;
-                    }
-                </style>
-            </head>
-
-            <body>
-                Формування звіту...
-            </body>
-        </html>
-    `);
-
-        temporaryDocument.close();
-
-        let currentStyles;
-
-        try {
-            currentStyles =
-                await collectCurrentStyles();
-        } catch (error) {
-            console.error(error);
-
-            printWindow.close();
-
-            window.alert(
-                "Не вдалося завантажити стилі друку. Перевірте файл common/css/print.css."
-            );
-
-            return;
-        }
-
-        if (printWindow.closed) {
-            return;
-        }
-
-        const reportCopy =
-            documentBlock.cloneNode(
-                true
-            );
-
-        reportCopy.hidden =
-            false;
-
-        reportCopy.removeAttribute(
-            "id"
-        );
-
-        const safeStyles =
-            currentStyles.replace(
-                /<\/style/gi,
-                "<\\/style"
-            );
-
-        const printDocument =
-            printWindow.document;
-
-        printDocument.open();
-
-        printDocument.write(`
-        <!DOCTYPE html>
-
-        <html lang="uk">
-            <head>
-                <meta charset="UTF-8">
-
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                >
-
-                <base href="${document.baseURI}">
-
-                <title>
-                    Звіт до лабораторної роботи №6
-                </title>
-
-                <style>
-                    ${safeStyles}
-                </style>
-
-                <style>
-                    @media screen {
-                        html,
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            background: #eef4f7;
-                        }
-
-                        #lab-print-root {
-                            display: block !important;
-                            width: min(
-                                1120px,
-                                calc(100% - 32px)
-                            );
-                            margin: 24px auto;
-                        }
-
-                        #lab-print-root
-                        .report-document {
-                            display: block !important;
-                            margin: 0;
-                        }
-                    }
-                </style>
-            </head>
-
-            <body class="lab-report-print-mode">
-                <div id="lab-print-root">
-                    ${reportCopy.outerHTML}
-                </div>
-            </body>
-        </html>
-    `);
-
-        printDocument.close();
-
-        const fontsReady =
-            printDocument.fonts
-                ? printDocument.fonts.ready
-                : Promise.resolve();
-
-        Promise.resolve(
-            fontsReady
-        ).then(() => {
-            window.setTimeout(
-                () => {
-                    if (printWindow.closed) {
-                        return;
-                    }
-
-                    printWindow.focus();
-                    printWindow.print();
-                },
-                500
-            );
-        });
-    }
-
-    printButton.addEventListener(
-        "click",
-        () => {
-            openPrintableReport();
-        }
-    );
-
-
-
-
-
-    resetButton.addEventListener(
-        "click",
-        () => {
-            const confirmed =
-                window.confirm(
-                    "Очистити всі результати лабораторної роботи на цьому пристрої?"
-                );
-
-            if (!confirmed) {
+        const cleanup = () => {
+            if (cleaned) {
                 return;
             }
 
-            Object.keys(
-                localStorage
-            )
-                .filter(
-                    (key) =>
-                        key.startsWith(
-                            "eetsee.lab07."
-                        )
-                )
-                .forEach(
-                    (key) =>
-                        localStorage.removeItem(
-                            key
-                        )
-                );
+            cleaned = true;
+            document.body.classList.remove("lab-report-print-mode");
+            printRoot.remove();
+            window.removeEventListener("afterprint", cleanup);
+        };
 
-            window.location.reload();
-        }
-    );
-
-    [
-        "lab07:quiz-completed",
-        "lab07:quiz-invalidated",
-        "lab07:analysis-invalidated",
-        "lab07:calculations-invalidated"
-    ].forEach((eventName) => {
-        window.addEventListener(
-            eventName,
-            refreshAvailability
-        );
+        document.body.classList.add("lab-report-print-mode");
+        window.addEventListener("afterprint", cleanup);
+        window.print();
+        window.setTimeout(cleanup, 1500);
     });
 
-    const quizForm =
-        document.querySelector(
-            "#quiz-form"
-        );
-
-    quizForm?.addEventListener(
-        "submit",
-        () => {
-            window.setTimeout(
-                refreshAvailability,
-                0
-            );
+    elements.resetButton.addEventListener("click", () => {
+        if (!window.confirm(
+            "Очистити результати всіх етапів лабораторної роботи №7?"
+        )) {
+            return;
         }
-    );
 
-    quizForm?.addEventListener(
-        "change",
-        () => {
-            window.setTimeout(
-                refreshAvailability,
-                0
-            );
-        }
-    );
+        [
+            "safety",
+            "stand",
+            "cyclic-experiment",
+            "calculations",
+            "analysis",
+            "quiz",
+            "report"
+        ].forEach((storageNamespace) => {
+            createStorage(`${namespace}:${storageNamespace}`).clear();
+        });
 
-    refreshAvailability();
+        window.location.reload();
+    });
+
+    [
+        `${namespace}:quiz-completed`,
+        `${namespace}:quiz-invalidated`,
+        `${namespace}:analysis-completed`,
+        `${namespace}:analysis-invalidated`,
+        `${namespace}:calculations-completed`,
+        `${namespace}:calculations-invalidated`,
+        `${namespace}:cyclic-experiment-reset`
+    ].forEach((eventName) => {
+        window.addEventListener(eventName, updateAccess);
+    });
+
+    restoreStudentData();
+    updateAccess();
 }

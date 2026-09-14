@@ -1,821 +1,778 @@
 import {
-    LAB07_EXPERIMENT_MODES,
-    LAB07_EXPERIMENT_STORAGE_KEY,
-    LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY
-} from "./data.js";
-
-import {
-    calculateExpectedValues
-} from "./model.js";
-
-import {
     createStorage
 } from "../../common/js/storage.js";
 
-const CALCULATION_STORAGE_KEY =
-    "eetsee.lab07.calculations.v1";
-
-const CALCULATION_COMPLETED_KEY =
-    "eetsee.lab07.calculations.completed.v1";
-
-
-
-const CALCULATION_FIELDS = [
-    {
-        key: "voltageRegulation",
-        tolerance: 0.005
-    },
-    {
-        key: "apparentPower",
-        tolerance: 2
-    },
-    {
-        key: "cosPhi1p",
-        tolerance: 0.005
-    },
-    {
-        key: "nuP",
-        tolerance: 0.005
-    },
-    {
-        key: "chiP",
-        tolerance: 0.005
-    },
-    {
-        key: "firstHarmonicCurrent",
-        tolerance: 0.02
-    },
-    {
-        key: "reactivePower",
-        tolerance: 2
-    },
-    {
-        key: "distortionPower",
-        tolerance: 2
-    },
-    {
-        key: "currentDistortionFactor",
-        tolerance: 0.005
-    },
-    {
-        key: "powerFactor",
-        tolerance: 0.005
-    },
-    {
-        key: "harmonicDistortionFactor",
-        tolerance: 0.02
-    }
+const MODES = [
+    { id: "mode-1", position: 1 },
+    { id: "mode-2", position: 2 },
+    { id: "mode-3", position: 3 }
 ];
 
+const CYCLES_PER_MODE = 3;
+const TOTAL_FIELDS = 21;
+const DURATION_TOLERANCE = 0.11;
+const PERCENT_TOLERANCE = 0.16;
 
 function parseStudentNumber(value) {
-    const normalizedValue = value
+    const normalized = String(value ?? "")
         .trim()
         .replace(/\s+/g, "")
         .replace(",", ".");
 
-    if (normalizedValue === "") {
+    if (normalized === "") {
         return null;
     }
 
-    const number = Number(normalizedValue);
+    const number = Number(normalized);
 
-    return Number.isFinite(number)
-        ? number
-        : null;
+    return Number.isFinite(number) ? number : null;
 }
 
-function formatNumber(value, digits = 2) {
+function formatNumber(value, digits = 1) {
     return new Intl.NumberFormat("uk-UA", {
         minimumFractionDigits: 0,
         maximumFractionDigits: digits
     }).format(value);
 }
 
-function escapeAttribute(value) {
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;");
+function isFiniteNumber(value) {
+    return Number.isFinite(Number(value));
 }
 
-function readJsonStorage(key, fallback = {}) {
-    try {
-        const storedValue = localStorage.getItem(key);
-
-        return storedValue
-            ? JSON.parse(storedValue)
-            : fallback;
-    } catch (error) {
-        console.warn(
-            "Помилка читання локальних даних.",
-            error
-        );
-
-        return fallback;
-    }
-}
-
-function writeJsonStorage(key, value) {
-    try {
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
-        );
-    } catch (error) {
-        console.warn(
-            "Помилка збереження локальних даних.",
-            error
-        );
-    }
-}
-
-
-
-function isValueCorrect(
-    studentValue,
-    expectedValue,
-    tolerance
-) {
+function isClose(value, expected, tolerance) {
     return (
-        Number.isFinite(studentValue) &&
-        Math.abs(
-            studentValue - expectedValue
-        ) <= tolerance
+        Number.isFinite(value) &&
+        Math.abs(value - expected) <= tolerance
     );
+}
+
+function normalizeExperimentProgress(value) {
+    const normalized = {
+        burner: value?.burner === 2 ? 2 : 1,
+        records: {}
+    };
+
+    MODES.forEach((mode) => {
+        const source = value?.records?.[mode.id];
+
+        if (!source || typeof source !== "object") {
+            return;
+        }
+
+        const cycles = Array.isArray(source.cycles)
+            ? source.cycles
+                .filter(
+                    (cycle) =>
+                        isFiniteNumber(cycle?.tOn) &&
+                        isFiniteNumber(cycle?.tOff)
+                )
+                .slice(0, CYCLES_PER_MODE)
+                .map((cycle) => ({
+                    tOn: Number(cycle.tOn),
+                    tOff: Number(cycle.tOff)
+                }))
+            : [];
+
+        normalized.records[mode.id] = {
+            position: mode.position,
+            cycles
+        };
+    });
+
+    return normalized;
+}
+
+function getCompletedCycleCount(progress) {
+    return MODES.reduce(
+        (total, mode) =>
+            total +
+            Math.min(
+                progress.records[mode.id]?.cycles.length ?? 0,
+                CYCLES_PER_MODE
+            ),
+        0
+    );
+}
+
+function isExperimentComplete(progress) {
+    return MODES.every(
+        (mode) =>
+            progress.records[mode.id]?.cycles.length ===
+            CYCLES_PER_MODE
+    );
+}
+
+function createExperimentSignature(progress) {
+    return JSON.stringify({
+        burner: progress.burner,
+        records: MODES.map((mode) => ({
+            id: mode.id,
+            cycles: (
+                progress.records[mode.id]?.cycles ?? []
+            ).map(({ tOn, tOff }) => ({ tOn, tOff }))
+        }))
+    });
+}
+
+function expectedCycleValues(cycle) {
+    const duration = cycle.tOn + cycle.tOff;
+    const dutyCycle = duration > 0
+        ? cycle.tOn / duration * 100
+        : 0;
+
+    return {
+        duration,
+        dutyCycle
+    };
+}
+
+function durationField(modeId, cycleIndex) {
+    return `${modeId}-cycle-${cycleIndex + 1}-duration`;
+}
+
+function dutyField(modeId, cycleIndex) {
+    return `${modeId}-cycle-${cycleIndex + 1}-duty`;
+}
+
+function averageField(modeId) {
+    return `${modeId}-average-duty`;
 }
 
 export function initializeCalculations({
+    root = document,
     namespace = "lab07"
 } = {}) {
-    const section =
-        document.querySelector("#calculations");
+    const section = root.querySelector("#calculations");
 
-    if (!section) {
+    if (!section || section.dataset.initialized === "true") {
         return;
     }
 
-    const standStorage = createStorage(
-        `${namespace}:stand`
-    );
+    const elements = {
+        lockOverlay: section.querySelector(
+            "#calculations-lock-overlay"
+        ),
+        interactiveArea: section.querySelector(
+            "#calculations-interactive-area"
+        ),
+        burner: section.querySelector("#calculations-burner"),
+        cycleCount: section.querySelector(
+            "#calculations-cycle-count"
+        ),
+        progress: section.querySelector(
+            "#calculations-progress"
+        ),
+        tableBody: section.querySelector(
+            "#calculations-table-body"
+        ),
+        summaryBody: section.querySelector(
+            "#calculations-summary-body"
+        ),
+        checkButton: section.querySelector(
+            "#calculations-check-button"
+        ),
+        resetButton: section.querySelector(
+            "#calculations-reset-button"
+        ),
+        message: section.querySelector(
+            "#calculations-message"
+        ),
+        completePanel: section.querySelector(
+            "#calculations-complete-panel"
+        )
+    };
 
-    const readiness = section.querySelector(
-        "#calculation-readiness"
-    );
-
-    const readinessTitle = section.querySelector(
-        "#calculation-readiness-title"
-    );
-
-    const readinessText = section.querySelector(
-        "#calculation-readiness-text"
-    );
-
-    const workspace = section.querySelector(
-        "#calculation-workspace"
-    );
-
-    const tableBody = section.querySelector(
-        "#student-calculation-table-body"
-    );
-
-    const saveButton = section.querySelector(
-        "#save-calculation-draft"
-    );
-
-    const checkButton = section.querySelector(
-        "#check-calculations"
-    );
-
-    const resetButton = section.querySelector(
-        "#reset-calculations"
-    );
-
-    const resultMessage = section.querySelector(
-        "#calculation-result-message"
-    );
-
-    let experimentRecords = {};
-
-    let studentDraft = readJsonStorage(
-        CALCULATION_STORAGE_KEY,
-        {}
-    );
-
-    function isStandReady() {
-        const progress = standStorage.get(
-            "progress",
-            {}
+    if (Object.values(elements).some((element) => !element)) {
+        console.warn(
+            "Не знайдено елементи розділу розрахунків ЛР7."
         );
-
-        return progress.ready === true;
+        return;
     }
 
-    function getCompletedExperimentCount() {
-        return LAB07_EXPERIMENT_MODES.filter(
-            (mode) =>
-                Boolean(
-                    experimentRecords[mode.id]
-                )
-        ).length;
-    }
+    section.dataset.initialized = "true";
 
-    function renderReadiness() {
-        experimentRecords = readJsonStorage(
-            LAB07_EXPERIMENT_STORAGE_KEY,
-            {}
-        );
+    const experimentStorage = createStorage(
+        `${namespace}:cyclic-experiment`
+    );
 
-        const completedCount =
-            getCompletedExperimentCount();
+    const calculationsStorage = createStorage(
+        `${namespace}:calculations`
+    );
 
-        const standReady =
-            isStandReady();
+    let experimentProgress = normalizeExperimentProgress(
+        experimentStorage.get("progress", {})
+    );
 
-        const experimentCompleted =
-            completedCount ===
-            LAB07_EXPERIMENT_MODES.length;
+    let experimentSignature = "";
+    let draft = {
+        values: {},
+        completed: false,
+        signature: ""
+    };
 
-        const isReady =
-            standReady &&
-            experimentCompleted;
+    function readSavedDraft(signature) {
+        const saved = calculationsStorage.get("progress", {});
 
-        readiness.classList.toggle(
-            "is-ready",
-            isReady
-        );
-
-        if (!standReady) {
-            readinessTitle.textContent =
-                "Спочатку завершіть роботу зі стендом";
-
-            readinessText.textContent =
-                "Перегляньте всі елементи віртуального стенда та підтвердьте його готовність.";
-        } else if (!experimentCompleted) {
-            readinessTitle.textContent =
-                "Спочатку завершіть вимірювання";
-
-            readinessText.textContent =
-                `Записано ${completedCount} із 3 режимів. Поверніться до розділу 7.`;
-        } else {
-            readinessTitle.textContent =
-                "Вимірювання готові до оброблення";
-
-            readinessText.textContent =
-                "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно.";
+        if (
+            !saved ||
+            typeof saved !== "object" ||
+            saved.signature !== signature
+        ) {
+            return {
+                values: {},
+                completed: false,
+                signature
+            };
         }
 
-        workspace.hidden = !isReady;
-
-        if (isReady) {
-            renderTable();
-        }
+        return {
+            values:
+                saved.values && typeof saved.values === "object"
+                    ? saved.values
+                    : {},
+            completed: saved.completed === true,
+            signature
+        };
     }
 
-    function createInput(modeId, fieldKey) {
-        const storedValue =
-            studentDraft[modeId]?.[fieldKey] ??
-            "";
+    function saveDraft() {
+        calculationsStorage.set("progress", draft);
+    }
 
+    function setMessage(text, state = "default") {
+        elements.message.textContent = text;
+        elements.message.dataset.state = state;
+    }
+
+    function setStatus(status, text, state = "pending") {
+        status.textContent = text;
+        status.dataset.state = state;
+    }
+
+    function getExpectedModeValues(modeId) {
+        const record = experimentProgress.records[modeId];
+        const cycles = record.cycles.map(expectedCycleValues);
+
+        return {
+            cycles,
+            averageDutyCycle:
+                cycles.reduce(
+                    (sum, cycle) => sum + cycle.dutyCycle,
+                    0
+                ) / cycles.length
+        };
+    }
+
+    function createInputMarkup(field, label) {
         return `
             <input
                 class="calculation-input"
                 type="text"
                 inputmode="decimal"
                 autocomplete="off"
-                data-mode-id="${modeId}"
-                data-field="${fieldKey}"
-                value="${escapeAttribute(storedValue)}"
-                placeholder="0,000"
-                aria-label="Введіть розраховане значення"
+                data-field="${field}"
+                aria-label="${label}"
             >
         `;
     }
 
-    function renderTable() {
-        tableBody.innerHTML =
-            LAB07_EXPERIMENT_MODES.map(
-                (mode) => {
-                    const record =
-                        experimentRecords[mode.id];
+    function renderCalculationTable() {
+        const rows = [];
 
-                    return `
-                        <tr>
-                            <th scope="row">
-                                ${mode.position}
-                            </th>
+        MODES.forEach((mode) => {
+            const record = experimentProgress.records[mode.id];
 
-                            <td>
-                                ${formatNumber(
-                        record.alpha ??
-                        mode.alpha,
-                        0
-                    )}
-                            </td>
-
-                            <td>
-                                ${formatNumber(
-                        record.u1,
-                        1
-                    )}
-                            </td>
-
-                            <td>
-                                ${formatNumber(
-                        record.current,
-                        2
-                    )}
-                            </td>
-
-                            <td>
-                                ${formatNumber(
-                        record.power,
-                        1
-                    )}
-                            </td>
-
-                            <td>
-                                ${formatNumber(
-                        record.u2,
-                        1
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "voltageRegulation"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "apparentPower"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "cosPhi1p"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "nuP"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "chiP"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "firstHarmonicCurrent"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "reactivePower"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "distortionPower"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "currentDistortionFactor"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "powerFactor"
-                    )}
-                            </td>
-
-                            <td>
-                                ${createInput(
-                        mode.id,
-                        "harmonicDistortionFactor"
-                    )}
-                            </td>
-                        </tr>
-                    `;
-                }
-            ).join("");
-    }
-
-    function collectDraft() {
-        const draft = {};
-
-        tableBody.querySelectorAll(
-            ".calculation-input"
-        ).forEach((input) => {
-            const modeId =
-                input.dataset.modeId;
-
-            const field =
-                input.dataset.field;
-
-            draft[modeId] ??= {};
-
-            draft[modeId][field] =
-                input.value.trim();
-        });
-
-        studentDraft = draft;
-
-        writeJsonStorage(
-            CALCULATION_STORAGE_KEY,
-            draft
-        );
-
-        return draft;
-    }
-
-    function clearValidationStyles() {
-        tableBody.querySelectorAll(
-            ".calculation-input"
-        ).forEach((input) => {
-            input.classList.remove(
-                "is-correct",
-                "is-incorrect"
-            );
-
-            input.removeAttribute(
-                "aria-invalid"
-            );
-        });
-    }
-    function invalidateVerifiedCalculations() {
-        localStorage.removeItem(
-            CALCULATION_COMPLETED_KEY
-        );
-
-        localStorage.removeItem(
-            LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY
-        );
-
-        window.dispatchEvent(
-            new CustomEvent(
-                "lab07:calculations-invalidated"
-            )
-        );
-    }
-    function saveDraft() {
-        collectDraft();
-        clearValidationStyles();
-
-        resultMessage.dataset.type =
-            "saved";
-
-        resultMessage.textContent =
-            "Чернетку розрахунків збережено у браузері.";
-    }
-
-    function checkCalculations() {
-        collectDraft();
-
-        let correctCount = 0;
-        let filledCount = 0;
-
-        const totalCount =
-            LAB07_EXPERIMENT_MODES.length *
-            CALCULATION_FIELDS.length;
-
-        const expectedByMode = {};
-
-        try {
-            LAB07_EXPERIMENT_MODES.forEach(
-                (mode) => {
-                    const record =
-                        experimentRecords[
-                        mode.id
-                        ];
-
-                    expectedByMode[
-                        mode.id
-                    ] =
-                        calculateExpectedValues(
-                            mode,
-                            record
-                        );
-                }
-            );
-        } catch (error) {
-            invalidateVerifiedCalculations();
-
-            resultMessage.dataset.type =
-                "error";
-
-            resultMessage.textContent =
-                error.message;
-
-            return;
-        }
-
-        LAB07_EXPERIMENT_MODES.forEach(
-            (mode) => {
-                const expected =
-                    expectedByMode[
-                    mode.id
-                    ];
-
-                CALCULATION_FIELDS.forEach(
-                    (field) => {
-                        const input =
-                            tableBody.querySelector(
-                                `[data-mode-id="${mode.id}"][data-field="${field.key}"]`
-                            );
-
-                        const studentValue =
-                            parseStudentNumber(
-                                input.value
-                            );
-
-                        const isFilled =
-                            studentValue !==
-                            null;
-
-                        const isCorrect =
-                            isValueCorrect(
-                                studentValue,
-                                expected[
-                                field.key
-                                ],
-                                field.tolerance
-                            );
-
-                        if (isFilled) {
-                            filledCount += 1;
-                        }
-
-                        if (isCorrect) {
-                            correctCount += 1;
-                        }
-
-                        input.classList.toggle(
-                            "is-correct",
-                            isCorrect
-                        );
-
-                        input.classList.toggle(
-                            "is-incorrect",
-                            isFilled &&
-                            !isCorrect
-                        );
-
-                        if (
-                            isFilled &&
-                            !isCorrect
-                        ) {
-                            input.setAttribute(
-                                "aria-invalid",
-                                "true"
-                            );
-                        } else {
-                            input.removeAttribute(
-                                "aria-invalid"
-                            );
-                        }
-                    }
+            record.cycles.forEach((cycle, cycleIndex) => {
+                const durationKey = durationField(
+                    mode.id,
+                    cycleIndex
                 );
+                const dutyKey = dutyField(
+                    mode.id,
+                    cycleIndex
+                );
+                const cycleNumber = cycleIndex + 1;
+
+                rows.push(`
+                    <tr>
+                        ${cycleIndex === 0
+                            ? `<th rowspan="3" scope="rowgroup">Режим ${mode.position}</th>`
+                            : ""
+                        }
+                        <th scope="row">${cycleNumber}</th>
+                        <td>
+                            <span class="calculation-source-value">
+                                ${formatNumber(cycle.tOn)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="calculation-source-value">
+                                ${formatNumber(cycle.tOff)}
+                            </span>
+                        </td>
+                        <td>
+                            ${createInputMarkup(
+                                durationKey,
+                                `Тривалість циклу: режим ${mode.position}, цикл ${cycleNumber}`
+                            )}
+                        </td>
+                        <td>
+                            ${createInputMarkup(
+                                dutyKey,
+                                `Відносна тривалість увімкнення: режим ${mode.position}, цикл ${cycleNumber}`
+                            )}
+                        </td>
+                        <td>
+                            <span
+                                class="calculation-status"
+                                data-cycle-status="${mode.id}-${cycleNumber}"
+                                data-state="pending"
+                            >
+                                Очікується
+                            </span>
+                        </td>
+                    </tr>
+                `);
+            });
+        });
+
+        elements.tableBody.innerHTML = rows.join("");
+    }
+
+    function renderSummaryTable() {
+        elements.summaryBody.innerHTML = MODES.map((mode) => {
+            const values = [0, 1, 2].map(
+                (cycleIndex) => `
+                    <td>
+                        <span
+                            class="calculation-summary-value"
+                            data-summary-field="${dutyField(
+                                mode.id,
+                                cycleIndex
+                            )}"
+                        >—</span>
+                    </td>
+                `
+            ).join("");
+
+            return `
+                <tr>
+                    <th scope="row">Режим ${mode.position}</th>
+                    ${values}
+                    <td>
+                        ${createInputMarkup(
+                            averageField(mode.id),
+                            `Середня відносна тривалість увімкнення для режиму ${mode.position}`
+                        )}
+                    </td>
+                    <td>
+                        <span
+                            class="calculation-status"
+                            data-mode-status="${mode.id}"
+                            data-state="pending"
+                        >
+                            Очікується
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    function restoreDraftValues() {
+        section.querySelectorAll("[data-field]").forEach(
+            (input) => {
+                const value = draft.values[input.dataset.field];
+
+                if (value !== undefined && value !== null) {
+                    input.value = String(value);
+                }
             }
         );
 
-        const allCorrect =
-            correctCount === totalCount;
+        updateSummaryValues();
+        updateFilledProgress();
+    }
 
-        if (allCorrect) {
-            const verifiedCalculations =
-                Object.fromEntries(
-                    LAB07_EXPERIMENT_MODES.map(
-                        (mode) => {
-                            const record =
-                                experimentRecords[
-                                mode.id
-                                ];
+    function updateSummaryValues() {
+        section.querySelectorAll("[data-summary-field]").forEach(
+            (output) => {
+                const input = section.querySelector(
+                    `[data-field="${output.dataset.summaryField}"]`
+                );
+                const value = parseStudentNumber(input?.value);
 
-                            return [
-                                mode.id,
+                output.textContent = value === null
+                    ? "—"
+                    : `${formatNumber(value, 2)} %`;
+            }
+        );
+    }
 
-                                {
-                                    position:
-                                        Number(
-                                            record.position ??
-                                            mode.position
-                                        ),
+    function getInputs() {
+        return [...section.querySelectorAll("[data-field]")];
+    }
 
-                                    alpha:
-                                        Number(
-                                            record.alpha ??
-                                            mode.alpha
-                                        ),
+    function updateFilledProgress() {
+        const filled = getInputs().filter(
+            (input) => parseStudentNumber(input.value) !== null
+        ).length;
 
-                                    u1:
-                                        Number(
-                                            record.u1
-                                        ),
+        elements.progress.textContent = draft.completed
+            ? "Розрахунки завершено"
+            : `${filled} із ${TOTAL_FIELDS} значень введено`;
+    }
 
-                                    current:
-                                        Number(
-                                            record.current
-                                        ),
+    function clearValidationStyles() {
+        getInputs().forEach((input) => {
+            input.classList.remove("is-correct", "is-incorrect");
+        });
 
-                                    power:
-                                        Number(
-                                            record.power
-                                        ),
+        section.querySelectorAll(".calculation-status").forEach(
+            (status) => setStatus(status, "Очікується")
+        );
+    }
 
-                                    u2:
-                                        Number(
-                                            record.u2
-                                        ),
+    function invalidateCompletion() {
+        if (!draft.completed) {
+            return;
+        }
 
-                                    ...expectedByMode[
-                                    mode.id
-                                    ]
-                                }
-                            ];
-                        }
-                    )
+        draft.completed = false;
+        elements.completePanel.hidden = true;
+
+        window.dispatchEvent(
+            new CustomEvent(
+                `${namespace}:calculations-invalidated`
+            )
+        );
+    }
+
+    function handleInput(event) {
+        const input = event.target.closest("[data-field]");
+
+        if (!input) {
+            return;
+        }
+
+        invalidateCompletion();
+        input.classList.remove("is-correct", "is-incorrect");
+        draft.values[input.dataset.field] = input.value;
+
+        const row = input.closest("tr");
+        const status = row?.querySelector(".calculation-status");
+
+        if (status) {
+            setStatus(status, "Змінено", "partial");
+        }
+
+        updateSummaryValues();
+        updateFilledProgress();
+        saveDraft();
+
+        setMessage(
+            "Після заповнення всіх полів натисніть «Перевірити розрахунки»."
+        );
+    }
+
+    function validateInput(input, expected, tolerance) {
+        const value = parseStudentNumber(input.value);
+        const correct = isClose(value, expected, tolerance);
+
+        input.classList.toggle("is-correct", correct);
+        input.classList.toggle(
+            "is-incorrect",
+            value !== null && !correct
+        );
+
+        return {
+            filled: value !== null,
+            correct
+        };
+    }
+
+    function checkCalculations() {
+        if (!isExperimentComplete(experimentProgress)) {
+            setMessage(
+                "Спочатку завершіть усі дев’ять циклів у розділі 7.",
+                "warning"
+            );
+            return;
+        }
+
+        let allFilled = true;
+        let allCorrect = true;
+
+        MODES.forEach((mode) => {
+            const expected = getExpectedModeValues(mode.id);
+            let modeCorrect = true;
+            let modeFilled = true;
+
+            expected.cycles.forEach((cycle, cycleIndex) => {
+                const durationInput = section.querySelector(
+                    `[data-field="${durationField(
+                        mode.id,
+                        cycleIndex
+                    )}"]`
+                );
+                const dutyInput = section.querySelector(
+                    `[data-field="${dutyField(
+                        mode.id,
+                        cycleIndex
+                    )}"]`
+                );
+                const durationResult = validateInput(
+                    durationInput,
+                    cycle.duration,
+                    DURATION_TOLERANCE
+                );
+                const dutyResult = validateInput(
+                    dutyInput,
+                    cycle.dutyCycle,
+                    PERCENT_TOLERANCE
+                );
+                const cycleFilled =
+                    durationResult.filled && dutyResult.filled;
+                const cycleCorrect =
+                    durationResult.correct && dutyResult.correct;
+                const status = section.querySelector(
+                    `[data-cycle-status="${mode.id}-${cycleIndex + 1}"]`
                 );
 
-            writeJsonStorage(
-                LAB07_VERIFIED_CALCULATIONS_STORAGE_KEY,
-                verifiedCalculations
+                setStatus(
+                    status,
+                    cycleCorrect
+                        ? "Правильно"
+                        : cycleFilled
+                            ? "Перевірте"
+                            : "Не заповнено",
+                    cycleCorrect
+                        ? "correct"
+                        : cycleFilled
+                            ? "incorrect"
+                            : "partial"
+                );
+
+                modeFilled = modeFilled && cycleFilled;
+                modeCorrect = modeCorrect && cycleCorrect;
+            });
+
+            const averageInput = section.querySelector(
+                `[data-field="${averageField(mode.id)}"]`
+            );
+            const averageResult = validateInput(
+                averageInput,
+                expected.averageDutyCycle,
+                PERCENT_TOLERANCE
+            );
+            const summaryStatus = section.querySelector(
+                `[data-mode-status="${mode.id}"]`
+            );
+            const summaryCorrect =
+                modeCorrect && averageResult.correct;
+            const summaryFilled =
+                modeFilled && averageResult.filled;
+
+            setStatus(
+                summaryStatus,
+                summaryCorrect
+                    ? "Правильно"
+                    : summaryFilled
+                        ? "Перевірте"
+                        : "Не завершено",
+                summaryCorrect
+                    ? "correct"
+                    : summaryFilled
+                        ? "incorrect"
+                        : "partial"
             );
 
-            localStorage.setItem(
-                CALCULATION_COMPLETED_KEY,
-                "true"
+            allFilled = allFilled && summaryFilled;
+            allCorrect = allCorrect && summaryCorrect;
+        });
+
+        draft.completed = allCorrect;
+        draft.values = Object.fromEntries(
+            getInputs().map((input) => [
+                input.dataset.field,
+                input.value
+            ])
+        );
+        saveDraft();
+        updateFilledProgress();
+
+        if (allCorrect) {
+            elements.completePanel.hidden = false;
+            setMessage(
+                "Усі розрахунки правильні. Можна переходити до аналізу результатів.",
+                "success"
             );
-
-            resultMessage.dataset.type =
-                "success";
-
-            resultMessage.textContent =
-                `Усі ${totalCount} значення розраховано правильно.`;
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab07:calculations-completed",
+                    `${namespace}:calculations-completed`,
                     {
                         detail: {
-                            calculations:
-                                verifiedCalculations
+                            burner: experimentProgress.burner,
+                            records: experimentProgress.records,
+                            values: draft.values
                         }
                     }
                 )
             );
-
-            return;
-        }
-
-        invalidateVerifiedCalculations();
-
-        resultMessage.dataset.type =
-            "error";
-
-        if (filledCount < totalCount) {
-            resultMessage.textContent =
-                `Заповнено ${filledCount} із ${totalCount} полів. Правильних значень: ${correctCount}.`;
+        } else if (!allFilled) {
+            elements.completePanel.hidden = true;
+            setMessage(
+                "Заповніть усі поля таблиць і повторіть перевірку.",
+                "warning"
+            );
         } else {
-            resultMessage.textContent =
-                `Правильних значень: ${correctCount} із ${totalCount}. Перевірте поля, позначені червоним.`;
+            elements.completePanel.hidden = true;
+            setMessage(
+                "Деякі значення обчислено неправильно. Перевірте позначені поля.",
+                "error"
+            );
         }
     }
 
     function resetCalculations() {
-        const shouldReset =
-            window.confirm(
-                "Очистити всі введені розрахункові значення?"
-            );
+        const hasValues = getInputs().some(
+            (input) => input.value.trim() !== ""
+        );
 
-        if (!shouldReset) {
+        if (
+            hasValues &&
+            !window.confirm(
+                "Очистити всі введені розрахунки?"
+            )
+        ) {
             return;
         }
 
-        studentDraft = {};
+        getInputs().forEach((input) => {
+            input.value = "";
+        });
 
-        localStorage.removeItem(
-            CALCULATION_STORAGE_KEY
+        draft = {
+            values: {},
+            completed: false,
+            signature: experimentSignature
+        };
+
+        clearValidationStyles();
+        updateSummaryValues();
+        updateFilledProgress();
+        elements.completePanel.hidden = true;
+        saveDraft();
+
+        window.dispatchEvent(
+            new CustomEvent(
+                `${namespace}:calculations-invalidated`
+            )
         );
 
-        invalidateVerifiedCalculations();
-
-        renderTable();
-
-        resultMessage.dataset.type =
-            "default";
-
-        resultMessage.textContent =
-            "Розрахункові поля очищено.";
+        setMessage(
+            "Розрахунки очищено. Заповніть таблиці повторно."
+        );
     }
 
-    tableBody.addEventListener(
-        "input",
-        (event) => {
-            if (
-                !event.target.matches(
-                    ".calculation-input"
-                )
-            ) {
-                return;
-            }
+    function renderReadyWorkspace() {
+        const signature = createExperimentSignature(
+            experimentProgress
+        );
 
-            event.target.classList.remove(
-                "is-correct",
-                "is-incorrect"
-            );
-
-            event.target.removeAttribute(
-                "aria-invalid"
-            );
-
-            invalidateVerifiedCalculations();
-
-            resultMessage.dataset.type =
-                "default";
-
-            resultMessage.textContent =
-                "Значення змінено. Виконайте повторну перевірку розрахунків.";
+        if (signature !== experimentSignature) {
+            experimentSignature = signature;
+            draft = readSavedDraft(signature);
+            renderCalculationTable();
+            renderSummaryTable();
+            restoreDraftValues();
+            clearValidationStyles();
         }
-    );
 
-    saveButton.addEventListener(
-        "click",
-        saveDraft
-    );
+        elements.completePanel.hidden = !draft.completed;
 
-    checkButton.addEventListener(
+        if (draft.completed) {
+            elements.progress.textContent =
+                "Розрахунки завершено";
+            setMessage(
+                "Розрахунки вже перевірено. Можна переходити до аналізу результатів.",
+                "success"
+            );
+        }
+    }
+
+    function updateAccess() {
+        experimentProgress = normalizeExperimentProgress(
+            experimentStorage.get("progress", {})
+        );
+
+        const completedCycles = getCompletedCycleCount(
+            experimentProgress
+        );
+        const ready = isExperimentComplete(
+            experimentProgress
+        );
+
+        elements.burner.textContent = ready
+            ? `Конфорка ${experimentProgress.burner}`
+            : "Не визначено";
+        elements.cycleCount.textContent =
+            `${completedCycles} із 9`;
+        elements.lockOverlay.hidden = ready;
+        elements.interactiveArea.inert = !ready;
+        elements.checkButton.disabled = !ready;
+        elements.resetButton.disabled = !ready;
+
+        if (ready) {
+            renderReadyWorkspace();
+        } else {
+            experimentSignature = "";
+            elements.progress.textContent =
+                "Очікування завершення досліду";
+            elements.completePanel.hidden = true;
+        }
+    }
+
+    function handleExperimentReset() {
+        calculationsStorage.remove("progress");
+        draft = {
+            values: {},
+            completed: false,
+            signature: ""
+        };
+
+        window.dispatchEvent(
+            new CustomEvent(
+                `${namespace}:calculations-invalidated`
+            )
+        );
+
+        updateAccess();
+    }
+
+    section.addEventListener("input", handleInput);
+    elements.checkButton.addEventListener(
         "click",
         checkCalculations
     );
-
-    resetButton.addEventListener(
+    elements.resetButton.addEventListener(
         "click",
         resetCalculations
     );
 
     window.addEventListener(
-        "lab07:experiment-completed",
-        renderReadiness
+        "lab07:cyclic-experiment-updated",
+        updateAccess
     );
-
-    function handleStandProgressChange(event) {
-        if (
-            event?.detail?.namespace &&
-            event.detail.namespace !== namespace
-        ) {
-            return;
-        }
-
-        renderReadiness();
-    }
-
-    document.addEventListener(
-        "laboratory:stand-ready",
-        handleStandProgressChange
-    );
-
-    document.addEventListener(
-        "laboratory:stand-reset",
-        handleStandProgressChange
-    );
-    function handleExperimentChange() {
-        invalidateVerifiedCalculations();
-
-        renderReadiness();
-    }
-
     window.addEventListener(
-        "lab07:experiment-updated",
-        handleExperimentChange
+        "lab07:cyclic-experiment-completed",
+        updateAccess
+    );
+    window.addEventListener(
+        "lab07:cyclic-experiment-reset",
+        handleExperimentReset
     );
 
-    window.addEventListener(
-        "lab07:experiment-reset",
-        handleExperimentChange
-    );
-    renderReadiness();
+    updateAccess();
 }
