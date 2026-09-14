@@ -4,29 +4,34 @@
     <h2>Віртуальний лабораторний стенд</h2>
 
     <p class="lead">
-        Принципова схема відтворює підключення вимірювальних
-        приладів, фазоімпульсного регулятора та активного
-        навантаження, яке імітує електричну піч опору.
+        Інтерактивний макет відтворює основні елементи стенда для
+        дослідження циклічного режиму роботи двоконфоркової електроплити.
+        У цьому розділі установка залишається вимкненою: необхідно
+        ознайомитися з призначенням її елементів і вимірювальних приладів.
     </p>
 
     <div class="stand-notice">
         <strong>Завдання ознайомлення</strong>
 
         <p>
-            Послідовно виберіть усі елементи схеми та ознайомтеся
-            з їхнім призначенням. Після перегляду всіх компонентів
-            підтвердьте готовність стенда.
+            Послідовно виберіть сім груп елементів стенда. Після
+            перегляду всіх компонентів підтвердьте готовність до
+            проведення досліду.
         </p>
     </div>
 
     <div class="stand-workspace">
-        <div id="stand-lock-overlay" class="stand-lock-overlay" role="status">
+        <div
+            id="stand-lock-overlay"
+            class="stand-lock-overlay"
+            role="status"
+        >
             <div class="stand-lock-content">
                 <strong>Доступ до стенда заблоковано</strong>
 
                 <p>
-                    Спочатку пройдіть перевірку знань
-                    у розділі «Техніка безпеки».
+                    Спочатку пройдіть перевірку знань у розділі
+                    «Техніка безпеки».
                 </p>
 
                 <a href="#safety" class="stand-lock-link">
@@ -37,13 +42,14 @@
 
         <div id="stand-interactive-area">
             <div class="stand-layout">
-                <div class="stand-schematic-panel">
+                <div class="stand-visual-panel">
                     <div class="stand-panel-heading">
                         <div>
-                            <p>Принципова схема</p>
+                            <p>Навчальний макет</p>
 
                             <h3>
-                                Електричне коло лабораторної установки
+                                Двоконфоркова електроплита та
+                                вимірювальні прилади
                             </h3>
                         </div>
 
@@ -52,243 +58,171 @@
                         </span>
                     </div>
 
-                    <div class="stand-svg-container">
-                        <svg class="stand-schematic" viewBox="0 0 1200 600" role="img"
-                            aria-labelledby="stand-svg-title stand-svg-description">
-                            <title id="stand-svg-title">
-                                Принципова схема лабораторного стенда
-                            </title>
-
-                            <desc id="stand-svg-description">
-                                Двополюсний автоматичний вимикач,
-                                вольтметр PV1, амперметр PA,
-                                ватметр PW, чотириполюсний тиристорний
-                                регулятор, вольтметр PV2 та піч опору.
-                            </desc>
-
-                            <g class="stand-wires" aria-hidden="true">
-                                <path class="stand-wire" d="M55 165 H112" />
-
-                                <path class="stand-wire" d="M55 410 H112" />
-
-                                <path class="stand-wire" d="M185 165 H400" />
-
-                                <path class="stand-wire" d="M185 410 H552" />
-
-                                <path class="stand-wire" d="M500 165 H650 V260 H735" />
-
-                                <path class="stand-wire" d="M668 410 H695 V335 H735" />
-
-                                <path class="stand-wire" d="M910 260 H950 V165 H1060" />
-
-                                <path class="stand-wire" d="M910 335 H950 V410 H1060" />
-
-                                <path class="stand-wire" d="M1135 165 V410" />
-
-                                <path class="stand-wire" d="M285 165 V225" />
-
-                                <path class="stand-wire" d="M285 335 V410" />
-
-                                <path class="stand-wire" d="M990 165 V225" />
-
-                                <path class="stand-wire" d="M990 335 V410" />
-
-                                <path class="stand-wire stand-wire-measurement" d="M610 165 V352" />
-
-                                <path class="stand-wire stand-wire-measurement" d="M520 410 V500 H610 V468" />
-                            </g>
-
-                            <g aria-hidden="true">
-                                <circle class="stand-node" cx="285" cy="165" r="6" />
-
-                                <circle class="stand-node" cx="285" cy="410" r="6" />
-
-                                <circle class="stand-node" cx="610" cy="165" r="6" />
-
-                                <circle class="stand-node" cx="520" cy="410" r="6" />
-
-                                <circle class="stand-node" cx="950" cy="165" r="6" />
-
-                                <circle class="stand-node" cx="950" cy="410" r="6" />
-
-                                <circle class="stand-node" cx="990" cy="165" r="6" />
-
-                                <circle class="stand-node" cx="990" cy="410" r="6" />
-                            </g>
-
-                            <g class="stand-component" data-stand-component="qf" tabindex="0" role="button"
-                                aria-label="Двополюсний автоматичний вимикач QF">
-                                <rect class="stand-device-body" x="100" y="92" width="98" height="392" rx="14" />
-
-                                <circle class="stand-terminal" cx="112" cy="165" r="6" />
-
-                                <circle class="stand-terminal" cx="185" cy="165" r="6" />
-
-                                <circle class="stand-terminal" cx="112" cy="410" r="6" />
-
-                                <circle class="stand-terminal" cx="185" cy="410" r="6" />
-
-                                <line class="stand-switch-line" x1="112" y1="165" x2="176" y2="128" />
-
-                                <line class="stand-switch-line" x1="112" y1="410" x2="176" y2="373" />
-
-                                <line class="stand-switch-link" x1="176" y1="140" x2="176" y2="360" />
-
-                                <text class="stand-device-label" x="149" y="72">
-                                    QF
-                                </text>
-
-                                <text class="stand-device-caption" x="149" y="526">
-                                    Автоматичний вимикач
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="pv1" tabindex="0" role="button"
-                                aria-label="Вольтметр живлення PV1">
-                                <circle class="stand-device-body" cx="285" cy="280" r="55" />
-
-                                <text class="stand-meter-code" x="285" y="274">
-                                    PV1
-                                </text>
-
-                                <text class="stand-meter-value" x="285" y="305">
-                                    U₁
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="pa" tabindex="0" role="button"
-                                aria-label="Амперметр PA">
-                                <circle class="stand-device-body" cx="450" cy="165" r="50" />
-
-                                <text class="stand-meter-code" x="450" y="159">
-                                    PA
-                                </text>
-
-                                <text class="stand-meter-value" x="450" y="189">
-                                    I
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="pw" tabindex="0" role="button"
-                                aria-label="Ватметр PW зі струмовим та напруговим колами">
-                                <circle class="stand-device-body" cx="610" cy="410" r="58" />
-
-                                <text class="stand-meter-code" x="610" y="404">
-                                    PW
-                                </text>
-
-                                <text class="stand-meter-value" x="610" y="435">
-                                    P
-                                </text>
-
-                                <text class="stand-circuit-label" x="610" y="545">
-                                    Струмове і напругове кола
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="controller" tabindex="0" role="button"
-                                aria-label="Чотириполюсний фазоімпульсний тиристорний регулятор">
-                                <rect class="stand-device-body" x="735" y="205" width="175" height="185" rx="12" />
-
-                                <circle class="stand-terminal" cx="735" cy="260" r="6" />
-
-                                <circle class="stand-terminal" cx="735" cy="335" r="6" />
-
-                                <circle class="stand-terminal" cx="910" cy="260" r="6" />
-
-                                <circle class="stand-terminal" cx="910" cy="335" r="6" />
-
-                                <path class="stand-controller-symbol" d="M775 322
-                                       L802 285
-                                       L802 322
-                                       L838 285
-                                       L838 322
-                                       L870 285" />
-
-                                <text class="stand-device-label" x="822" y="188">
-                                    ТР
-                                </text>
-
-                                <text class="stand-device-caption" x="822" y="424">
-                                    Регулятор
-                                </text>
-
-                                <text class="stand-device-caption stand-device-caption-secondary" x="822" y="448">
-                                    Кут керування α
-                                </text>
-
-                                <text class="stand-circuit-label" x="757" y="247">
-                                    Вхід
-                                </text>
-
-                                <text class="stand-circuit-label" x="888" y="247">
-                                    Вихід
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="pv2" tabindex="0" role="button"
-                                aria-label="Вольтметр навантаження PV2">
-                                <circle class="stand-device-body" cx="990" cy="280" r="55" />
-
-                                <text class="stand-meter-code" x="990" y="274">
-                                    PV2
-                                </text>
-
-                                <text class="stand-meter-value" x="990" y="305">
-                                    U₂
-                                </text>
-                            </g>
-
-                            <g class="stand-component" data-stand-component="furnace" tabindex="0" role="button"
-                                aria-label="Активне навантаження, піч опору">
-                                <rect class="stand-device-body" x="1060" y="165" width="75" height="245" rx="8" />
-
-                                <path class="stand-heater-symbol" d="M1098 198
-                                       L1077 222
-                                       L1118 249
-                                       L1077 276
-                                       L1118 303
-                                       L1077 330
-                                       L1118 357
-                                       L1098 390" />
-
-                                <text class="stand-device-label" x="1098" y="137">
-                                    Піч
-                                </text>
-
-                                <text class="stand-device-caption" x="1098" y="449">
-                                    R
-                                </text>
-                            </g>
-
-                            <g aria-hidden="true">
-                                <circle class="stand-supply-terminal" cx="55" cy="165" r="8" />
-
-                                <circle class="stand-supply-terminal" cx="55" cy="410" r="8" />
-
-                                <text class="stand-supply-label" x="30" y="171">
-                                    L
-                                </text>
-
-                                <text class="stand-supply-label" x="30" y="416">
-                                    N
-                                </text>
-
-                                <text class="stand-network-label" x="16" y="288" text-anchor="middle"
-                                    transform="rotate(-90 16 288)">
-                                    Мережа 220 В
-                                </text>
-                            </g>
-                        </svg>
+                    <div class="stand-bench">
+                        <div class="stand-electrical-panel">
+                            <button
+                                class="stand-meter"
+                                type="button"
+                                data-stand-component="ammeter"
+                                aria-label="Амперметр PA"
+                            >
+                                <span class="stand-device-code">PA</span>
+
+                                <span class="stand-meter-display">
+                                    0,00 А
+                                </span>
+
+                                <small>Амперметр</small>
+                            </button>
+
+                            <div class="stand-supply-label">
+                                <span class="stand-supply-dot"></span>
+                                Живлення стенда вимкнено
+                            </div>
+                        </div>
+
+                        <div
+                            class="stand-stove"
+                            aria-label="Макет двоконфоркової електроплити"
+                        >
+                            <div class="stand-stove-top">
+                                <button
+                                    class="stand-hotplate"
+                                    type="button"
+                                    data-stand-component="heaters"
+                                    aria-label="Нагрівальний елемент ТЕН1 першої конфорки"
+                                >
+                                    <span class="stand-hotplate-coil"></span>
+                                    <strong>Конфорка 1</strong>
+                                    <small>ТЕН1</small>
+                                </button>
+
+                                <button
+                                    class="stand-hotplate"
+                                    type="button"
+                                    data-stand-component="heaters"
+                                    aria-label="Нагрівальний елемент ТЕН2 другої конфорки"
+                                >
+                                    <span class="stand-hotplate-coil"></span>
+                                    <strong>Конфорка 2</strong>
+                                    <small>ТЕН2</small>
+                                </button>
+                            </div>
+
+                            <div class="stand-control-panel">
+                                <div class="stand-control-group">
+                                    <button
+                                        class="stand-switch"
+                                        type="button"
+                                        data-stand-component="switches"
+                                        aria-label="Вимикач K1 першої конфорки"
+                                    >
+                                        <span>K1</span>
+                                        <strong>0</strong>
+                                    </button>
+
+                                    <button
+                                        class="stand-regulator"
+                                        type="button"
+                                        data-stand-component="regulators"
+                                        aria-label="Регулятор R1 і B1 першої конфорки"
+                                    >
+                                        <span class="stand-knob"></span>
+                                        <small>R1, B1</small>
+                                    </button>
+
+                                    <button
+                                        class="stand-indicator"
+                                        type="button"
+                                        data-stand-component="indicators"
+                                        aria-label="Світловий індикатор L1 першої конфорки"
+                                    >
+                                        <span class="stand-lamp"></span>
+                                        <small>L1</small>
+                                    </button>
+                                </div>
+
+                                <div class="stand-control-group">
+                                    <button
+                                        class="stand-switch"
+                                        type="button"
+                                        data-stand-component="switches"
+                                        aria-label="Вимикач K2 другої конфорки"
+                                    >
+                                        <span>K2</span>
+                                        <strong>0</strong>
+                                    </button>
+
+                                    <button
+                                        class="stand-regulator"
+                                        type="button"
+                                        data-stand-component="regulators"
+                                        aria-label="Регулятор R2 і B2 другої конфорки"
+                                    >
+                                        <span class="stand-knob"></span>
+                                        <small>R2, B2</small>
+                                    </button>
+
+                                    <button
+                                        class="stand-indicator"
+                                        type="button"
+                                        data-stand-component="indicators"
+                                        aria-label="Світловий індикатор L2 другої конфорки"
+                                    >
+                                        <span class="stand-lamp"></span>
+                                        <small>L2</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stand-instruments">
+                            <button
+                                class="stand-tool stand-pyrometer"
+                                type="button"
+                                data-stand-component="pyrometer"
+                            >
+                                <span class="stand-tool-icon" aria-hidden="true">
+                                    °C
+                                </span>
+
+                                <span>
+                                    <strong>Пірометр</strong>
+                                    <small>Вимірювання температури</small>
+                                </span>
+                            </button>
+
+                            <button
+                                class="stand-tool stand-stopwatch"
+                                type="button"
+                                data-stand-component="stopwatch"
+                            >
+                                <span class="stand-tool-icon" aria-hidden="true">
+                                    00:00
+                                </span>
+
+                                <span>
+                                    <strong>Секундомір</strong>
+                                    <small>Вимірювання тривалості</small>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="stand-functional-path">
+                            <span>K1, K2</span>
+                            <b aria-hidden="true">→</b>
+                            <span>R1, R2 та B1, B2</span>
+                            <b aria-hidden="true">→</b>
+                            <span>ТЕН1, ТЕН2</span>
+                            <b aria-hidden="true">→</b>
+                            <span>Нагрівання конфорки</span>
+                        </div>
                     </div>
 
-                    <p class="stand-schematic-caption">
-                        Рисунок 6.1. Принципова схема лабораторного
-                        стенда. Тиристорний регулятор має два вхідні
-                        та два вихідні силові виводи. PV1 вимірює
-                        напругу живлення, PA струм установки,
-                        PW активну потужність, а PV2 напругу
-                        на навантаженні.
+                    <p class="stand-visual-caption">
+                        Макет показує функціональний склад стенда.
+                        Натискання на елементи в цьому розділі не подає
+                        напругу і не запускає нагрівання.
                     </p>
                 </div>
 
@@ -299,12 +233,12 @@
                         </p>
 
                         <h3 id="stand-component-title">
-                            Оберіть елемент схеми
+                            Оберіть елемент стенда
                         </h3>
 
                         <p id="stand-component-description">
-                            Натисніть на прилад або елемент схеми,
-                            щоб переглянути його призначення.
+                            Натисніть на елемент макета або його назву,
+                            щоб переглянути призначення.
                         </p>
                     </div>
 
@@ -320,7 +254,7 @@
                         </div>
 
                         <div>
-                            <dt>Контрольована величина</dt>
+                            <dt>Пов’язана величина або стан</dt>
                             <dd id="stand-component-value">-</dd>
                         </div>
                     </dl>
@@ -331,74 +265,43 @@
                 <h3>Елементи лабораторного стенда</h3>
 
                 <div class="stand-component-buttons">
-                    <button type="button" data-stand-component="qf">
-                        Автомат QF
+                    <button type="button" data-stand-component="switches">
+                        Вимикачі K1, K2
                     </button>
 
-                    <button type="button" data-stand-component="pv1">
-                        Вольтметр PV1
+                    <button type="button" data-stand-component="regulators">
+                        Регулятори R1, R2 та B1, B2
                     </button>
 
-                    <button type="button" data-stand-component="pa">
+                    <button type="button" data-stand-component="indicators">
+                        Індикатори L1, L2
+                    </button>
+
+                    <button type="button" data-stand-component="heaters">
+                        Нагрівальні елементи ТЕН1, ТЕН2
+                    </button>
+
+                    <button type="button" data-stand-component="ammeter">
                         Амперметр PA
                     </button>
 
-                    <button type="button" data-stand-component="pw">
-                        Ватметр PW
+                    <button type="button" data-stand-component="pyrometer">
+                        Пірометр
                     </button>
 
-                    <button type="button" data-stand-component="controller">
-                        Регулятор
-                    </button>
-
-                    <button type="button" data-stand-component="pv2">
-                        Вольтметр PV2
-                    </button>
-
-                    <button type="button" data-stand-component="furnace">
-                        Піч опору
-                    </button>
-
-                    <button type="button" data-stand-component="satec">
-                        SATEC PM172EH
+                    <button type="button" data-stand-component="stopwatch">
+                        Секундомір
                     </button>
                 </div>
             </div>
 
-            <article class="stand-auxiliary-device" data-stand-component="satec" tabindex="0" role="button"
-                aria-label="Додатковий аналізатор якості електроенергії SATEC PM172EH">
-                <div class="stand-auxiliary-code">
-                    <span>SATEC</span>
-                    <strong>PM172EH</strong>
-                </div>
-
-                <div class="stand-auxiliary-content">
-                    <p class="stand-information-label">
-                        Додатковий вимірювальний прилад
-                    </p>
-
-                    <h3>Аналізатор якості електроенергії</h3>
-
-                    <p>
-                        У принципову схему рисунка 6.1 прилад не
-                        включено. За наявності він використовується
-                        для вимірювання показників гармонічних
-                        спотворень струму та напруги.
-                    </p>
-                </div>
-
-                <span class="stand-auxiliary-status">
-                    За наявності
-                </span>
-            </article>
-
             <div class="stand-progress-panel">
                 <div class="stand-progress-heading">
                     <div>
-                        <h3>Готовність стенда</h3>
+                        <h3>Готовність до роботи зі стендом</h3>
 
                         <p id="stand-progress-text">
-                            Переглянуто 0 із 8 елементів
+                            Переглянуто 0 із 7 груп елементів
                         </p>
                     </div>
 
@@ -407,23 +310,43 @@
                     </strong>
                 </div>
 
-                <div class="stand-progress-track" role="progressbar" aria-label="Прогрес ознайомлення зі стендом"
-                    aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
+                <div
+                    class="stand-progress-track"
+                    role="progressbar"
+                    aria-label="Прогрес ознайомлення зі стендом"
+                    aria-valuemin="0"
+                    aria-valuemax="7"
+                    aria-valuenow="0"
+                >
                     <span id="stand-progress-bar"></span>
                 </div>
 
                 <div class="stand-progress-actions">
-                    <button id="stand-ready-button" class="stand-ready-button" type="button" disabled>
+                    <button
+                        id="stand-ready-button"
+                        class="stand-ready-button"
+                        type="button"
+                        disabled
+                    >
                         Підтвердити готовність стенда
                     </button>
 
-                    <button id="stand-reset-button" class="stand-reset-button" type="button">
+                    <button
+                        id="stand-reset-button"
+                        class="stand-reset-button"
+                        type="button"
+                    >
                         Скинути ознайомлення
                     </button>
                 </div>
 
-                <p id="stand-status" class="stand-status" role="status" aria-live="polite">
-                    Послідовно виберіть усі елементи схеми.
+                <p
+                    id="stand-status"
+                    class="stand-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Послідовно виберіть усі групи елементів стенда.
                 </p>
             </div>
         </div>

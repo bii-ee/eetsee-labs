@@ -26,7 +26,73 @@ import {
     initializeReport
 } from "./report.js";
 
+import {
+    createStorage
+} from "../../common/js/storage.js";
+
 const LAB_NAMESPACE = "lab07";
+
+function initializeExperimentAccess() {
+    const lockOverlay = document.querySelector(
+        "#experiment-lock-overlay"
+    );
+
+    const interactiveArea = document.querySelector(
+        "#experiment-interactive-area"
+    );
+
+    if (!lockOverlay || !interactiveArea) {
+        console.warn(
+            "Не знайдено елементи блокування розділу 7."
+        );
+
+        return;
+    }
+
+    const standStorage = createStorage(
+        `${LAB_NAMESPACE}:stand`
+    );
+
+    function updateExperimentAccess(event) {
+        if (
+            event?.detail?.namespace &&
+            event.detail.namespace !== LAB_NAMESPACE
+        ) {
+            return;
+        }
+
+        const standProgress = standStorage.get(
+            "progress",
+            {}
+        );
+
+        const accessGranted =
+            standProgress.ready === true;
+
+        lockOverlay.hidden = accessGranted;
+        interactiveArea.inert = !accessGranted;
+
+        const experimentSection =
+            document.querySelector("#experiment");
+
+        experimentSection?.classList.toggle(
+            "experiment-access-granted",
+            accessGranted
+        );
+    }
+
+    document.addEventListener(
+        "laboratory:stand-ready",
+        updateExperimentAccess
+    );
+
+    document.addEventListener(
+        "laboratory:stand-reset",
+        updateExperimentAccess
+    );
+
+    updateExperimentAccess();
+}
 
 const sectionFiles = [
     "./sections/01-overview.html",
@@ -120,9 +186,12 @@ async function loadLaboratoryContent() {
             namespace: LAB_NAMESPACE
         });
 
+        initializeExperimentAccess();
+
         initializeExperiment({
             namespace: LAB_NAMESPACE
         });
+
         initializeCalculations({
             namespace: LAB_NAMESPACE
         });

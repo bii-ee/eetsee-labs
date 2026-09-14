@@ -3,76 +3,67 @@ import {
 } from "../../common/js/storage.js";
 
 const componentInformation = {
-    qf: {
-        title: "Автоматичний вимикач",
+    switches: {
+        title: "Вимикачі конфорок",
         description:
-            "Забезпечує комутацію живлення лабораторної установки та її відключення у разі аварійного режиму.",
-        code: "QF",
-        function: "Увімкнення та захист кола",
-        value: "Стан електричного кола"
+            "Вимикачі K1 і K2 підключають до кола відповідно першу та другу конфорки. Перед подаванням напруги вони повинні бути вимкнені.",
+        code: "K1, K2",
+        function: "Комутація кіл першої та другої конфорок",
+        value: "Увімкнений або вимкнений стан конфорки"
     },
 
-    pv1: {
-        title: "Вольтметр живлення",
+    regulators: {
+        title: "Регулятори потужності",
         description:
-            "Підключений паралельно до входу установки та вимірює діюче значення напруги живлення.",
-        code: "PV1",
-        function: "Вимірювання вхідної напруги",
-        value: "U₁, В"
+            "Регулятори R1, R2 і біметалеві елементи B1, B2 забезпечують автоматичне циклічне вмикання та вимикання конфорок. Положення ручки змінює співвідношення тривалості нагрівання й охолодження.",
+        code: "R1, R2; B1, B2",
+        function: "Циклічне регулювання теплового режиму",
+        value: "Тривалості tн і tо та відносна тривалість увімкнення ТВ"
     },
 
-    pa: {
+    indicators: {
+        title: "Світлові індикатори",
+        description:
+            "Індикаторні лампи L1 і L2 відображають стан відповідної конфорки. Зміна стану індикатора допомагає визначити моменти автоматичного ввімкнення та вимкнення.",
+        code: "L1, L2",
+        function: "Візуальний контроль стану конфорок",
+        value: "Моменти початку і завершення інтервалів tн та tо"
+    },
+
+    heaters: {
+        title: "Нагрівальні елементи конфорок",
+        description:
+            "Нагрівальні елементи ТЕН1 і ТЕН2 перетворюють електричну енергію на теплову. У досліді температуру поверхні вибраної конфорки вимірюють на початку режиму та наприкінці інтервалів нагрівання й охолодження.",
+        code: "ТЕН1, ТЕН2",
+        function: "Нагрівання робочої поверхні конфорок",
+        value: "Температури τ0, τн і τо, °C"
+    },
+
+    ammeter: {
         title: "Амперметр",
         description:
-            "Увімкнений послідовно з навантаженням та вимірює діюче значення струму установки.",
+            "Амперметр увімкнений у спільне коло стенда. Разом зі світловим індикатором його покази використовують для визначення моментів автоматичного ввімкнення та вимкнення конфорки.",
         code: "PA",
-        function: "Вимірювання струму",
-        value: "I, А"
+        function: "Контроль проходження струму через установку",
+        value: "Наявність або відсутність струму, А"
     },
 
-    pw: {
-        title: "Ватметр",
+    pyrometer: {
+        title: "Пірометр",
         description:
-            "Вимірює активну потужність, яку установка споживає з електричної мережі.",
-        code: "PW",
-        function: "Вимірювання активної потужності",
-        value: "P, Вт"
+            "Пірометр безконтактно вимірює температуру поверхні вибраної конфорки. Вимірювання виконують із безпечної відстані перед початком режиму та в моменти завершення нагрівання й охолодження.",
+        code: "Пірометр",
+        function: "Безконтактне вимірювання температури",
+        value: "τ0, τн, τо, °C"
     },
 
-    controller: {
-        title: "Тиристорний регулятор",
+    stopwatch: {
+        title: "Секундомір",
         description:
-            "Змінює тривалість провідного стану тиристорів. Зміна кута керування впливає на напругу, струм і потужність навантаження.",
-        code: "ТР",
-        function: "Фазоімпульсне регулювання",
-        value: "Кут керування α"
-    },
-
-    pv2: {
-        title: "Вольтметр навантаження",
-        description:
-            "Підключений паралельно до печі опору та вимірює діюче значення напруги на навантаженні.",
-        code: "PV2",
-        function: "Вимірювання вихідної напруги",
-        value: "U₂, В"
-    },
-
-    furnace: {
-        title: "Активне навантаження",
-        description:
-            "Нагрівальний елемент імітує електричну піч опору та перетворює електричну енергію на теплову.",
-        code: "R",
-        function: "Імітація печі опору",
-        value: "Електрична і теплова потужність"
-    },
-
-    satec: {
-        title: "Аналізатор якості електроенергії",
-        description:
-            "За наявності використовується для контролю гармонічних складових і показників якості електричної енергії.",
-        code: "SATEC PM172EH",
-        function: "Аналіз форми струму та гармонік",
-        value: "Показники гармонічних спотворень"
+            "Секундомір використовують для окремого визначення тривалості увімкненого стану tн і вимкненого стану tо в кожному з трьох циклів досліджуваного режиму.",
+        code: "Секундомір",
+        function: "Вимірювання часових інтервалів циклу",
+        value: "tн, tо та Tц, с"
     }
 };
 
@@ -82,7 +73,10 @@ export function initializeStand({
 } = {}) {
     const section = root.querySelector("#stand");
 
-    if (!section || section.dataset.initialized === "true") {
+    if (
+        !section ||
+        section.dataset.initialized === "true"
+    ) {
         return;
     }
 
@@ -93,9 +87,10 @@ export function initializeStand({
         "#stand-lock-overlay"
     );
     const componentElements = Array.from(
-        section.querySelectorAll("[data-stand-component]")
+        section.querySelectorAll(
+            "[data-stand-component]"
+        )
     );
-
     const titleElement = section.querySelector(
         "#stand-component-title"
     );
@@ -111,7 +106,6 @@ export function initializeStand({
     const valueElement = section.querySelector(
         "#stand-component-value"
     );
-
     const progressText = section.querySelector(
         "#stand-progress-text"
     );
@@ -138,10 +132,20 @@ export function initializeStand({
         !interactiveArea ||
         !lockOverlay ||
         !titleElement ||
-        !readyButton
+        !descriptionElement ||
+        !codeElement ||
+        !functionElement ||
+        !valueElement ||
+        !progressText ||
+        !progressPercent ||
+        !progressTrack ||
+        !progressBar ||
+        !readyButton ||
+        !resetButton ||
+        !statusElement
     ) {
         console.warn(
-            "Не знайдено елементи віртуального стенда."
+            "Не знайдено елементи віртуального стенда ЛР7."
         );
 
         return;
@@ -155,25 +159,37 @@ export function initializeStand({
     const standStorage = createStorage(
         `${namespace}:stand`
     );
-
-    const savedProgress = standStorage.get("progress", {
-        visited: [],
-        selected: null,
-        ready: false
-    });
-
-    const visitedComponents = new Set(
-        Array.isArray(savedProgress.visited)
-            ? savedProgress.visited
-            : []
-    );
-
     const componentIds = Object.keys(
         componentInformation
     );
+    const componentIdSet = new Set(componentIds);
+    const savedProgress = standStorage.get(
+        "progress",
+        {
+            visited: [],
+            selected: null,
+            ready: false
+        }
+    );
+    const savedVisited = Array.isArray(
+        savedProgress.visited
+    )
+        ? savedProgress.visited
+        : [];
+    const visitedComponents = new Set(
+        savedVisited.filter((componentId) =>
+            componentIdSet.has(componentId)
+        )
+    );
 
-    let selectedComponent = savedProgress.selected;
-    let standReady = savedProgress.ready === true;
+    let selectedComponent = componentIdSet.has(
+        savedProgress.selected
+    )
+        ? savedProgress.selected
+        : null;
+    let standReady =
+        savedProgress.ready === true &&
+        visitedComponents.size === componentIds.length;
 
     function isSafetyPassed() {
         const safetyProgress = safetyStorage.get(
@@ -204,7 +220,10 @@ export function initializeStand({
         });
     }
 
-    function setStatus(message, type = "neutral") {
+    function setStatus(
+        message,
+        type = "neutral"
+    ) {
         statusElement.textContent = message;
         statusElement.className =
             `stand-status stand-status-${type}`;
@@ -214,16 +233,26 @@ export function initializeStand({
         componentElements.forEach((element) => {
             const componentId =
                 element.dataset.standComponent;
+            const isSelected =
+                componentId === selectedComponent;
+            const isVisited =
+                visitedComponents.has(componentId);
 
             element.classList.toggle(
                 "is-selected",
-                componentId === selectedComponent
+                isSelected
             );
-
             element.classList.toggle(
                 "is-visited",
-                visitedComponents.has(componentId)
+                isVisited
             );
+
+            if (element.matches("button")) {
+                element.setAttribute(
+                    "aria-pressed",
+                    String(isSelected)
+                );
+            }
         });
     }
 
@@ -235,11 +264,14 @@ export function initializeStand({
         );
 
         progressText.textContent =
-            `Переглянуто ${visitedCount} із ${totalCount} елементів`;
-
+            `Переглянуто ${visitedCount} із ${totalCount} груп елементів`;
         progressPercent.textContent = `${percentage}%`;
         progressBar.style.width = `${percentage}%`;
 
+        progressTrack.setAttribute(
+            "aria-valuemax",
+            String(totalCount)
+        );
         progressTrack.setAttribute(
             "aria-valuenow",
             String(visitedCount)
@@ -265,17 +297,22 @@ export function initializeStand({
 
         if (visitedCount === totalCount) {
             setStatus(
-                "Усі елементи переглянуто. Підтвердьте готовність стенда.",
+                "Усі групи елементів переглянуто. Підтвердьте готовність до роботи зі стендом.",
                 "ready"
             );
-        } else {
-            setStatus(
-                "Послідовно виберіть усі елементи схеми."
-            );
+
+            return;
         }
+
+        setStatus(
+            "Послідовно виберіть усі групи елементів стенда."
+        );
     }
 
-    function showComponent(componentId, markVisited = true) {
+    function showComponent(
+        componentId,
+        markVisited = true
+    ) {
         const information =
             componentInformation[componentId];
 
@@ -287,7 +324,6 @@ export function initializeStand({
 
         if (markVisited) {
             visitedComponents.add(componentId);
-            standReady = false;
         }
 
         titleElement.textContent = information.title;
@@ -315,16 +351,6 @@ export function initializeStand({
             "click",
             handleComponentActivation
         );
-
-        element.addEventListener("keydown", (event) => {
-            if (
-                event.key === "Enter" ||
-                event.key === " "
-            ) {
-                event.preventDefault();
-                handleComponentActivation(event);
-            }
-        });
     });
 
     readyButton.addEventListener("click", () => {
@@ -341,11 +367,14 @@ export function initializeStand({
         saveProgress();
 
         document.dispatchEvent(
-            new CustomEvent("laboratory:stand-ready", {
-                detail: {
-                    namespace
+            new CustomEvent(
+                "laboratory:stand-ready",
+                {
+                    detail: {
+                        namespace
+                    }
                 }
-            })
+            )
         );
     });
 
@@ -356,11 +385,9 @@ export function initializeStand({
         standReady = false;
 
         titleElement.textContent =
-            "Оберіть елемент схеми";
-
+            "Оберіть елемент стенда";
         descriptionElement.textContent =
-            "Натисніть на прилад або елемент схеми, щоб переглянути його призначення.";
-
+            "Натисніть на елемент макета або його назву, щоб переглянути призначення.";
         codeElement.textContent = "-";
         functionElement.textContent = "-";
         valueElement.textContent = "-";
@@ -370,13 +397,17 @@ export function initializeStand({
         saveProgress();
 
         document.dispatchEvent(
-            new CustomEvent("laboratory:stand-reset", {
-                detail: {
-                    namespace
+            new CustomEvent(
+                "laboratory:stand-reset",
+                {
+                    detail: {
+                        namespace
+                    }
                 }
-            })
+            )
         );
     });
+
     document.addEventListener(
         "laboratory:safety-passed",
         updateAccess
@@ -385,14 +416,15 @@ export function initializeStand({
         "laboratory:safety-reset",
         updateAccess
     );
+
     updateAccess();
     updateComponentAppearance();
 
-    if (
-        selectedComponent &&
-        componentInformation[selectedComponent]
-    ) {
-        showComponent(selectedComponent, false);
+    if (selectedComponent) {
+        showComponent(
+            selectedComponent,
+            false
+        );
     } else {
         updateProgress();
     }

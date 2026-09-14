@@ -1,13 +1,24 @@
 <section id="experiment" class="content-section">
-    <p class="section-number">Розділ 6.4</p>
+    <p class="section-number">Інтерактивний модуль</p>
 
     <h2>Проведення досліду</h2>
 
     <p class="lead">
-        Увімкніть лабораторну установку, послідовно встановіть три
-        положення тиристорного регулятора та запишіть покази
-        вимірювальних приладів.
+        Для трьох положень регулятора виконайте по три цикли
+        нагрівання й охолодження. У кожному циклі зафіксуйте
+        тривалості увімкненого та вимкненого станів, а також
+        температури поверхні конфорки.
     </p>
+
+    <div class="experiment-model-notice">
+        <strong>Навчальна модель</strong>
+
+        <p>
+            Час у симуляції прискорено. Числові значення є
+            відтворюваними модельними даними, призначеними для
+            опанування послідовності вимірювань і розрахунків ЛР7.
+        </p>
+    </div>
 
     <div class="experiment-access-shell">
         <div id="experiment-lock-overlay" class="experiment-lock-overlay" role="status">
@@ -18,17 +29,16 @@
 
                 <p>
                     Спочатку перегляньте всі елементи віртуального
-                    стенда та підтвердьте його готовність.
+                    стенда та підтвердьте готовність до роботи.
                 </p>
 
-                <a class="button-primary experiment-lock-link" href="#stand">
+                <a class="experiment-lock-link" href="#stand">
                     Перейти до віртуального стенда
                 </a>
             </div>
         </div>
 
         <div id="experiment-interactive-area">
-
             <div class="experiment-status-panel">
                 <div>
                     <span class="experiment-status-label">
@@ -40,160 +50,327 @@
                     </strong>
                 </div>
 
-                <button id="experiment-power-button" class="experiment-power-button" type="button">
+                <div class="experiment-status-details">
+                    <span>Поточний етап</span>
+
+                    <strong id="experiment-phase-label">
+                        Підготовка до вимірювань
+                    </strong>
+                </div>
+
+                <button id="experiment-power-button" class="experiment-power-button" type="button" disabled>
                     Увімкнути установку
                 </button>
             </div>
 
             <div class="experiment-layout">
                 <div class="experiment-control-panel">
-                    <h3>Положення регулятора</h3>
+                    <div class="experiment-control-section">
+                        <h3>1. Досліджувана конфорка</h3>
 
-                    <p>
-                        Виберіть положення регулятора, після чого виконайте
-                        вимірювання.
-                    </p>
+                        <p>
+                            Виберіть конфорку до початку першого
+                            режиму. Після запису даних змінити вибір
+                            буде неможливо.
+                        </p>
 
-                    <div class="experiment-modes" role="group" aria-label="Положення тиристорного регулятора">
-                        <button class="experiment-mode-button is-selected" type="button" data-mode-id="mode-1"
-                            aria-pressed="true">
-                            <span>Положення 1</span>
-                            <strong>α = 0°</strong>
-                        </button>
+                        <div class="experiment-burner-buttons" role="group" aria-label="Вибір досліджуваної конфорки">
+                            <button class="experiment-burner-button is-selected" type="button" data-burner="1"
+                                aria-pressed="true">
+                                Конфорка 1
+                            </button>
 
-                        <button class="experiment-mode-button" type="button" data-mode-id="mode-2" aria-pressed="false">
-                            <span>Положення 2</span>
-                            <strong>α = 60°</strong>
-                        </button>
-
-                        <button class="experiment-mode-button" type="button" data-mode-id="mode-3" aria-pressed="false">
-                            <span>Положення 3</span>
-                            <strong>α = 90°</strong>
-                        </button>
+                            <button class="experiment-burner-button" type="button" data-burner="2" aria-pressed="false">
+                                Конфорка 2
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="experiment-actions">
-                        <button id="experiment-measure-button" class="button-primary" type="button" disabled>
-                            Зняти покази
-                        </button>
+                    <div class="experiment-control-section">
+                        <h3>2. Положення регулятора</h3>
 
-                        <button id="experiment-record-button" class="button-secondary" type="button" disabled>
-                            Записати в таблицю
-                        </button>
+                        <p>
+                            Режими виконуються послідовно. Наступне
+                            положення відкривається після завершення
+                            трьох циклів поточного режиму.
+                        </p>
+
+                        <div class="experiment-modes" role="group" aria-label="Положення регулятора">
+                            <button class="experiment-mode-button is-selected" type="button" data-mode-id="mode-1"
+                                aria-pressed="true">
+                                <span>Положення 1</span>
+                                <strong>Режим 1</strong>
+                            </button>
+
+                            <button class="experiment-mode-button" type="button" data-mode-id="mode-2"
+                                aria-pressed="false" disabled>
+                                <span>Положення 2</span>
+                                <strong>Режим 2</strong>
+                            </button>
+
+                            <button class="experiment-mode-button" type="button" data-mode-id="mode-3"
+                                aria-pressed="false" disabled>
+                                <span>Положення 3</span>
+                                <strong>Режим 3</strong>
+                            </button>
+                        </div>
                     </div>
+
+                    <div class="experiment-current-task">
+                        <span>Поточне завдання</span>
+
+                        <strong id="experiment-task-title">
+                            Виміряйте початкову температуру τ₀
+                        </strong>
+
+                        <p id="experiment-task-description">
+                            Установка має бути вимкнена. Наведіть
+                            пірометр на вибрану конфорку та зафіксуйте
+                            початкову температуру поверхні.
+                        </p>
+                    </div>
+
+                    <button id="experiment-action-button" class="experiment-action-button" type="button">
+                        Виміряти τ₀
+                    </button>
 
                     <p id="experiment-message" class="experiment-message" role="status" aria-live="polite">
-                        Спочатку увімкніть установку.
+                        Оберіть конфорку та виконайте початкове
+                        вимірювання.
                     </p>
                 </div>
 
                 <div class="experiment-visual-panel">
                     <div class="experiment-visual-header">
                         <div>
-                            <span>Форма напруги на навантаженні</span>
+                            <span>Віртуальна установка</span>
 
-                            <strong id="experiment-alpha-label">
-                                α = 0°
+                            <strong id="experiment-current-mode">
+                                Положення 1, цикл 1
                             </strong>
+                        </div>
+
+                        <span id="experiment-regulator-label">
+                            Регулятор: 1
+                        </span>
+                    </div>
+
+                    <div class="experiment-stove">
+                        <div class="experiment-stove-top">
+                            <button class="experiment-hotplate is-selected" type="button" data-visual-burner="1"
+                                aria-label="Конфорка 1">
+                                <span class="experiment-coil"></span>
+                                <strong>Конфорка 1</strong>
+                                <small>ТЕН1</small>
+                            </button>
+
+                            <button class="experiment-hotplate" type="button" data-visual-burner="2"
+                                aria-label="Конфорка 2">
+                                <span class="experiment-coil"></span>
+                                <strong>Конфорка 2</strong>
+                                <small>ТЕН2</small>
+                            </button>
+                        </div>
+
+                        <div class="experiment-stove-controls">
+                            <div class="experiment-knob-group">
+                                <span class="experiment-knob"></span>
+                                <small>R1, B1</small>
+                            </div>
+
+                            <div class="experiment-indicator-group">
+                                <span id="experiment-indicator" class="experiment-indicator"></span>
+
+                                <small id="experiment-indicator-label">
+                                    L1: вимкнено
+                                </small>
+                            </div>
+
+                            <div class="experiment-switch-group">
+                                <span id="experiment-switch">0</span>
+                                <small id="experiment-switch-label">
+                                    K1
+                                </small>
+                            </div>
                         </div>
                     </div>
 
-                    <svg class="experiment-waveform" viewBox="0 0 640 180" role="img"
-                        aria-label="Форма напруги на виході тиристорного регулятора">
-                        <line class="wave-axis" x1="0" y1="90" x2="640" y2="90"></line>
+                    <div class="experiment-instruments" aria-label="Контрольні вимірювальні прилади">
+                        <article>
+                            <span class="instrument-code">PA</span>
 
-                        <line class="wave-grid" x1="160" y1="15" x2="160" y2="165"></line>
+                            <strong>
+                                <span id="experiment-current-reading">0</span>
+                                А
+                            </strong>
 
-                        <line class="wave-grid" x1="320" y1="15" x2="320" y2="165"></line>
+                            <small>Амперметр</small>
 
-                        <line class="wave-grid" x1="480" y1="15" x2="480" y2="165"></line>
+                            <small id="experiment-current-note" class="experiment-instrument-note">
+                                Струм через конфорку відсутній
+                            </small>
+                        </article>
 
-                        <path id="experiment-reference-waveform" class="wave-reference" d=""></path>
+                        <article>
+                            <span class="instrument-code">t</span>
 
-                        <path id="experiment-waveform-path" class="wave-output" d=""></path>
-                    </svg>
+                            <strong>
+                                <span id="experiment-stopwatch-reading">0</span>
+                                с
+                            </strong>
 
-                    <div class="experiment-wave-legend">
-                        <span class="legend-reference">
-                            Напруга мережі
-                        </span>
+                            <small>Секундомір</small>
 
-                        <span class="legend-output">
-                            Напруга навантаження
-                        </span>
+                            <small id="experiment-stopwatch-note" class="experiment-instrument-note">
+                                Очікування початку інтервалу
+                            </small>
+                        </article>
+
+                        <article>
+                            <span class="instrument-code">τ</span>
+
+                            <strong>
+                                <span id="experiment-temperature-reading">—</span>
+                                °C
+                            </strong>
+
+                            <small>Пірометр</small>
+
+                            <small id="experiment-temperature-note" class="experiment-instrument-note">
+                                Значення ще не зафіксовано
+                            </small>
+                        </article>
                     </div>
 
-                    <p class="experiment-wave-note">
-                        Графік показує ідеалізовану нормовану форму миттєвої
-                        напруги для активного навантаження. Покази приладів
-                        відтворюють експериментальні дані студентського протоколу
-                        та можуть відрізнятися від значень ідеальної математичної
-                        моделі.
-                    </p>
-                </div>
-            </div>
+                    <div class="experiment-cycle-progress">
+                        <div>
+                            <span>Інтервал циклу</span>
 
-            <div class="measurement-panel">
-                <div class="measurement-panel-header">
-                    <div>
-                        <p class="section-number">Покази приладів</p>
-                        <h3>Результати поточного вимірювання</h3>
+                            <strong id="experiment-interval-label">
+                                Очікується
+                            </strong>
+                        </div>
+
+                        <div class="experiment-cycle-track" role="progressbar" aria-label="Перебіг поточного інтервалу"
+                            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                            <span id="experiment-cycle-bar"></span>
+                        </div>
                     </div>
 
-                    <span id="experiment-current-mode">
-                        Положення 1
-                    </span>
-                </div>
+                    <div class="experiment-live-chart">
+                        <div class="experiment-live-chart-header">
+                            <div>
+                                <strong>Температурна крива режиму</strong>
 
-                <div class="measurement-grid">
-                    <article class="measurement-card">
-                        <span>PV1</span>
-                        <strong>
-                            <output data-reading="u1">—</output>
-                            <small>В</small>
-                        </strong>
-                        <p>Напруга живлення U₁</p>
-                    </article>
+                                <small id="experiment-chart-status">
+                                    Початкове вимірювання
+                                </small>
+                            </div>
 
-                    <article class="measurement-card">
-                        <span>PA</span>
-                        <strong>
-                            <output data-reading="current">—</output>
-                            <small>А</small>
-                        </strong>
-                        <p>Струм установки I</p>
-                    </article>
+                            <span>τ = f(t)</span>
+                        </div>
 
-                    <article class="measurement-card">
-                        <span>PW</span>
-                        <strong>
-                            <output data-reading="power">—</output>
-                            <small>Вт</small>
-                        </strong>
-                        <p>Активна потужність P</p>
-                    </article>
+                        <svg viewBox="0 0 680 260" role="img"
+                            aria-label="Поточна модельна залежність температури поверхні конфорки від часу">
+                            <rect class="temperature-plot-background" x="64" y="24" width="584" height="174" rx="4">
+                            </rect>
 
-                    <article class="measurement-card">
-                        <span>PV2</span>
-                        <strong>
-                            <output data-reading="u2">—</output>
-                            <small>В</small>
-                        </strong>
-                        <p>Напруга навантаження U₂</p>
-                    </article>
+                            <g class="temperature-grid">
+                                <!-- Горизонтальна сітка -->
+
+                                <line x1="64" y1="24" x2="648" y2="24"></line>
+                                <line x1="64" y1="67.5" x2="648" y2="67.5"></line>
+                                <line x1="64" y1="111" x2="648" y2="111"></line>
+                                <line x1="64" y1="154.5" x2="648" y2="154.5"></line>
+                                <line x1="64" y1="198" x2="648" y2="198"></line>
+
+                                <!-- Вертикальна сітка -->
+
+                                <line x1="64" y1="24" x2="64" y2="198"></line>
+                                <line x1="210" y1="24" x2="210" y2="198"></line>
+                                <line x1="356" y1="24" x2="356" y2="198"></line>
+                                <line x1="502" y1="24" x2="502" y2="198"></line>
+                                <line x1="648" y1="24" x2="648" y2="198"></line>
+                            </g>
+
+                            <!-- Осі координат -->
+
+                            <line class="temperature-axis" x1="64" y1="198" x2="648" y2="198"></line>
+
+                            <line class="temperature-axis" x1="64" y1="24" x2="64" y2="198"></line>
+
+                            <!-- Значення шкали температури -->
+
+                            <text id="experiment-chart-y-max" class="temperature-axis-value" x="53" y="29"
+                                text-anchor="end">
+                                100
+                            </text>
+
+                            <text id="experiment-chart-y-min" class="temperature-axis-value" x="53" y="202"
+                                text-anchor="end">
+                                0
+                            </text>
+
+                            <!-- Значення шкали часу -->
+
+                            <text class="temperature-axis-value" x="64" y="219" text-anchor="middle">
+                                0
+                            </text>
+
+                            <text id="experiment-chart-x-max" class="temperature-axis-value" x="648" y="219"
+                                text-anchor="end">
+                                0
+                            </text>
+
+                            <!-- Назви осей -->
+
+                            <text class="temperature-axis-title temperature-axis-title-y" x="20" y="111"
+                                text-anchor="middle" transform="rotate(-90 20 111)">
+                                τ, °C
+                            </text>
+
+                            <text class="temperature-axis-title temperature-axis-title-x" x="356" y="247"
+                                text-anchor="middle">
+                                t, с
+                            </text>
+
+                            <!-- Інтерактивна температурна крива -->
+
+                            <polyline id="experiment-temperature-line" class="temperature-line" points=""></polyline>
+
+                            <circle id="experiment-temperature-point" class="temperature-point" cx="64" cy="198" r="5"
+                                hidden></circle>
+                        </svg>
+
+                        <div class="experiment-chart-legend">
+                            <span>
+                                <i class="experiment-chart-line-sample"></i>
+
+                                Температура поверхні конфорки
+                            </span>
+
+                            <span>
+                                Часова шкала поточного режиму
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <div class="experiment-table-panel">
                 <div class="experiment-table-header">
                     <div>
-                        <p class="section-number">Таблиця вимірювань</p>
+                        <p class="section-number">Таблиця 7.1</p>
+
                         <h3>Експериментальні дані</h3>
                     </div>
 
                     <div class="experiment-progress">
-                        Записано:
-                        <strong id="experiment-progress-value">0 із 3</strong>
+                        Завершено циклів:
+                        <strong id="experiment-progress-value">
+                            0 із 9
+                        </strong>
                     </div>
                 </div>
 
@@ -201,13 +378,27 @@
                     <table class="experiment-table">
                         <thead>
                             <tr>
-                                <th scope="col">Положення</th>
-                                <th scope="col">α, град</th>
-                                <th scope="col">U₁, В</th>
-                                <th scope="col">I, А</th>
-                                <th scope="col">P, Вт</th>
-                                <th scope="col">U₂, В</th>
-                                <th scope="col">Стан</th>
+                                <th rowspan="2" scope="col">Режим</th>
+                                <th rowspan="2" scope="col">τ₀, °C</th>
+                                <th colspan="4" scope="colgroup">Цикл 1</th>
+                                <th colspan="4" scope="colgroup">Цикл 2</th>
+                                <th colspan="4" scope="colgroup">Цикл 3</th>
+                                <th rowspan="2" scope="col">Стан</th>
+                            </tr>
+
+                            <tr>
+                                <th scope="col">tн, с</th>
+                                <th scope="col">τн, °C</th>
+                                <th scope="col">tо, с</th>
+                                <th scope="col">τо, °C</th>
+                                <th scope="col">tн, с</th>
+                                <th scope="col">τн, °C</th>
+                                <th scope="col">tо, с</th>
+                                <th scope="col">τо, °C</th>
+                                <th scope="col">tн, с</th>
+                                <th scope="col">τн, °C</th>
+                                <th scope="col">tо, с</th>
+                                <th scope="col">τо, °C</th>
                             </tr>
                         </thead>
 
@@ -216,18 +407,15 @@
                 </div>
 
                 <div class="experiment-table-actions">
-                    <button id="experiment-reset-button" class="button-danger-soft" type="button">
+                    <p>
+                        Для переходу до розрахунків необхідно
+                        завершити всі дев’ять циклів.
+                    </p>
+
+                    <button id="experiment-reset-button" class="experiment-reset-button" type="button">
                         Очистити результати
                     </button>
                 </div>
-            </div>
-
-            <div class="notice">
-                <p>
-                    Покази цього навчального макета задаються у файлі
-                    <code>data.js</code>. Надалі в ньому можна створити окремі
-                    набори даних для різних бригад.
-                </p>
             </div>
         </div>
     </div>
