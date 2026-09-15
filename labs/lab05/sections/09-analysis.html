@@ -1,0 +1,332 @@
+<section id="analysis" class="content-section">
+    <p class="section-number">Аналітичний модуль</p>
+
+    <h2>Аналіз результатів експерименту</h2>
+
+    <p class="lead">
+        Порівняйте роботу двох електродних нагрівальних елементів
+        за напруги 100, 150 і 200 В. Проаналізуйте зміну сили струму,
+        активної потужності, тривалості нагрівання води та витрат
+        електричної енергії.
+    </p>
+
+    <div class="analysis-access-shell">
+        <div
+            id="analysis-lock-overlay"
+            class="analysis-lock-overlay"
+            role="status"
+        >
+            <div class="analysis-lock-card">
+                <strong>Доступ до аналізу заблоковано</strong>
+
+                <p>
+                    Спочатку правильно виконайте та перевірте всі
+                    розрахунки в розділі 8.
+                </p>
+
+                <a class="analysis-lock-link" href="#calculations">
+                    Перейти до розрахунків
+                </a>
+            </div>
+        </div>
+
+        <div id="analysis-interactive-area">
+            <div class="analysis-source-note">
+                <div>
+                    <strong>Джерело даних</strong>
+
+                    <p>
+                        Графіки будуються автоматично за результатами
+                        шести завершених дослідів і перевірених
+                        розрахунків витрат електричної енергії.
+                    </p>
+                </div>
+
+                <span id="analysis-data-label">
+                    Очікування даних
+                </span>
+            </div>
+
+            <div class="analysis-summary-grid">
+                <article>
+                    <span>Опрацьовано</span>
+
+                    <strong id="analysis-experiment-count">
+                        0 із 6
+                    </strong>
+
+                    <small>завершених дослідів</small>
+                </article>
+
+                <article>
+                    <span>Максимальна потужність</span>
+
+                    <strong id="analysis-max-power">—</strong>
+
+                    <small id="analysis-max-power-mode">
+                        Режим не визначено
+                    </small>
+                </article>
+
+                <article>
+                    <span>Мінімальний час нагрівання</span>
+
+                    <strong id="analysis-min-time">—</strong>
+
+                    <small id="analysis-min-time-mode">
+                        Режим не визначено
+                    </small>
+                </article>
+
+                <article>
+                    <span>Найменші витрати енергії</span>
+
+                    <strong id="analysis-min-energy">—</strong>
+
+                    <small id="analysis-min-energy-mode">
+                        Режим не визначено
+                    </small>
+                </article>
+            </div>
+
+            <div class="analysis-chart-grid">
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 1</p>
+
+                            <h3>
+                                Залежність сили струму від напруги
+                            </h3>
+                        </div>
+
+                        <span>I = f(U)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Порівняння сили струму двох нагрівальних
+                        елементів за трьох рівнів напруги.
+                    </p>
+
+                    <div
+                        id="chart-current-voltage"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 2</p>
+
+                            <h3>
+                                Залежність активної потужності
+                                від напруги
+                            </h3>
+                        </div>
+
+                        <span>P = f(U)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Зміна активної потужності нагрівачів зі
+                        збільшенням прикладеної напруги.
+                    </p>
+
+                    <div
+                        id="chart-power-voltage"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 3</p>
+
+                            <h3>Тривалість нагрівання води</h3>
+                        </div>
+
+                        <span>t = f(U)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Час нагрівання однакового об’єму води від
+                        початкової температури до температури кипіння.
+                    </p>
+
+                    <div
+                        id="chart-time-voltage"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 4</p>
+
+                            <h3>Витрати електричної енергії</h3>
+                        </div>
+
+                        <span>
+                            W<sub>ел</sub> = f(U)
+                        </span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Порівняння перевірених значень витрат
+                        електричної енергії для двох нагрівачів.
+                    </p>
+
+                    <div
+                        id="chart-energy-voltage"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+            </div>
+
+            <div class="analysis-observation-note">
+                <strong>Орієнтир для аналізу</strong>
+
+                <p>
+                    Простежте, як підвищення напруги впливає на силу
+                    струму, активну потужність і тривалість нагрівання.
+                    Зіставте зменшення часу з витратами електричної
+                    енергії та порівняйте обидва нагрівальні елементи.
+                </p>
+            </div>
+
+            <form id="analysis-form" class="analysis-form">
+                <div class="analysis-form-heading">
+                    <p class="section-number">Самостійна робота</p>
+
+                    <h3>Висновки за результатами досліду</h3>
+
+                    <p>
+                        Сформулюйте три змістовні висновки. У кожному
+                        полі потрібно ввести щонайменше 30 символів.
+                    </p>
+                </div>
+
+                <label class="analysis-question">
+                    <span>
+                        1. Як зі збільшенням напруги змінюються сила
+                        струму та активна потужність нагрівачів?
+                    </span>
+
+                    <textarea
+                        name="electricalCharacteristicsConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+
+                        <strong
+                            data-character-count="electricalCharacteristicsConclusion"
+                        >
+                            0
+                        </strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        2. Як напруга та конструкція нагрівача
+                        впливають на тривалість нагрівання води?
+                    </span>
+
+                    <textarea
+                        name="heatingTimeConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+
+                        <strong
+                            data-character-count="heatingTimeConclusion"
+                        >
+                            0
+                        </strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        3. Які режими мають найменші витрати
+                        електричної енергії та який нагрівач працює
+                        ефективніше за досліджених умов?
+                    </span>
+
+                    <textarea
+                        name="energyConsumptionConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+
+                        <strong
+                            data-character-count="energyConsumptionConclusion"
+                        >
+                            0
+                        </strong>
+                    </small>
+                </label>
+
+                <div class="analysis-actions">
+                    <button
+                        id="analysis-save-button"
+                        class="analysis-button analysis-button-primary"
+                        type="submit"
+                    >
+                        Зберегти висновки
+                    </button>
+
+                    <button
+                        id="reset-analysis"
+                        class="analysis-button analysis-button-danger"
+                        type="button"
+                    >
+                        Очистити висновки
+                    </button>
+                </div>
+
+                <p
+                    id="analysis-message"
+                    class="analysis-message"
+                    data-state="default"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Проаналізуйте графіки та заповніть усі три поля.
+                </p>
+            </form>
+
+            <div
+                id="analysis-complete-panel"
+                class="analysis-complete-panel"
+                hidden
+            >
+                <strong>Аналіз результатів завершено</strong>
+
+                <p>
+                    Висновки збережено. Можна переходити до
+                    контрольних питань.
+                </p>
+
+                <a href="#questions">
+                    Перейти до контрольних питань
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

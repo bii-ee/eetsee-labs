@@ -1,0 +1,621 @@
+#final-report-panel {
+    min-width: 0;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+}
+
+.report-introduction {
+    margin-bottom: 18px;
+}
+
+.report-introduction h3 {
+    margin: 4px 0 8px;
+    color: var(--color-primary);
+    font-size: 1.08rem;
+}
+
+.report-introduction p:last-child {
+    max-width: 780px;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.report-readiness {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-left: 5px solid #8da4b2;
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.report-readiness:empty {
+    display: none;
+}
+
+.report-readiness[data-state="success"] {
+    border-left-color: #2f8b67;
+    background: #edf9f3;
+    color: #17613e;
+}
+
+.report-readiness[data-state="error"] {
+    border-left-color: #c94242;
+    background: #fff3f3;
+    color: #982a2a;
+}
+
+/* Дані студента */
+
+.student-report-form {
+    display: grid;
+    grid-template-columns:
+        minmax(240px, 2fr)
+        minmax(150px, 1fr)
+        minmax(140px, 1fr);
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.report-field {
+    display: grid;
+    min-width: 0;
+    gap: 7px;
+    color: var(--color-primary);
+    font-size: 0.84rem;
+    font-weight: 750;
+}
+
+.report-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 43px;
+    padding: 10px 12px;
+    border: 1px solid #b9ccd7;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text);
+    font: inherit;
+}
+
+.report-field input:hover {
+    border-color: #7896a4;
+}
+
+.report-field input:focus {
+    border-color: var(--color-accent);
+    outline: 3px solid rgba(14, 135, 168, 0.16);
+}
+
+.report-controls {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.report-control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.report-button {
+    min-height: 43px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.report-button-primary {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.report-button-secondary {
+    border-color: var(--color-accent);
+    background: #ffffff;
+    color: var(--color-primary);
+}
+
+.report-button-danger {
+    border-color: #e6aaaa;
+    background: #fff8f8;
+    color: #8b2727;
+}
+
+.report-button:hover:not(:disabled),
+.report-button:focus-visible:not(:disabled) {
+    filter: brightness(0.95);
+}
+
+.report-button:disabled {
+    border-color: #d6e0e5;
+    background: #e9eef1;
+    color: #82929d;
+    cursor: not-allowed;
+    filter: none;
+}
+
+/* Документ звіту */
+
+.report-document {
+    box-sizing: border-box;
+    min-width: 0;
+    margin-top: 26px;
+    padding: 28px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    color: #142f45;
+}
+
+.report-document[hidden] {
+    display: none;
+}
+
+.report-document-header {
+    padding-bottom: 18px;
+    border-bottom: 2px solid #173c55;
+    text-align: center;
+}
+
+.report-document-header p {
+    margin: 0 0 7px;
+    color: #526b7b;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.report-document-header h3 {
+    max-width: 850px;
+    margin: 0 auto;
+    color: #12344d;
+    font-size: 1.12rem;
+    line-height: 1.4;
+}
+
+/* Метадані */
+
+.report-meta {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 2fr)
+        repeat(3, minmax(110px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.report-meta div {
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid #cfdee6;
+    border-radius: 8px;
+    background: #f7fafc;
+}
+
+.report-meta dt {
+    margin-bottom: 4px;
+    color: #607785;
+    font-size: 0.74rem;
+}
+
+.report-meta dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: #12344d;
+    font-size: 0.86rem;
+    font-weight: 750;
+}
+
+/* Мета роботи */
+
+.report-purpose {
+    padding: 14px 16px;
+    border: 1px solid #cfdee6;
+    border-left: 5px solid var(--color-accent);
+    border-radius: var(--radius-small);
+    background: #f5fafc;
+}
+
+.report-purpose h3,
+.report-section h3 {
+    margin: 0 0 12px;
+    color: #12344d;
+    font-size: 1rem;
+}
+
+.report-purpose p,
+.report-section-note {
+    margin: 0;
+    color: #526b7b;
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.report-section {
+    min-width: 0;
+    margin-top: 24px;
+}
+
+.report-section-note {
+    margin: -5px 0 10px;
+}
+
+/* Функціональна схема */
+
+.report-schematic {
+    display: grid;
+    min-height: 250px;
+    place-items: center;
+    padding: 12px;
+    overflow: hidden;
+    border: 1px solid #cfdee6;
+    border-radius: 10px;
+    background: #fbfdfe;
+}
+
+.report-schematic svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 330px;
+}
+
+/* Умови досліду */
+
+.report-condition-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.report-condition-list div {
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #cfdee6;
+    border-radius: 8px;
+    background: #f7fafc;
+}
+
+.report-condition-list dt {
+    margin: 0 0 4px;
+    color: #607785;
+    font-size: 0.74rem;
+}
+
+.report-condition-list dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: #12344d;
+    font-size: 0.86rem;
+    font-weight: 750;
+}
+
+/* Таблиці */
+
+.report-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid #bfcfd8;
+    border-radius: 8px;
+}
+
+.report-table-wrapper + .report-table-wrapper {
+    margin-top: 14px;
+}
+
+.report-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.82rem;
+}
+
+.report-table th,
+.report-table td {
+    padding: 8px 6px;
+    border-right: 1px solid #bfcfd8;
+    border-bottom: 1px solid #bfcfd8;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.report-table th:last-child,
+.report-table td:last-child {
+    border-right: 0;
+}
+
+.report-table tbody tr:last-child th,
+.report-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.report-table thead th {
+    background: #173c55;
+    color: #ffffff;
+    font-weight: 750;
+}
+
+.report-table tbody th {
+    background: #edf4f7;
+    color: #12344d;
+    font-weight: 750;
+}
+
+.report-experiment-table th:nth-child(1) {
+    width: 12%;
+}
+
+.report-experiment-table th:nth-child(2),
+.report-experiment-table th:nth-child(6),
+.report-experiment-table th:nth-child(7) {
+    width: 11%;
+}
+
+.report-calculation-table th:nth-child(1) {
+    width: 17%;
+}
+
+/* Графіки */
+
+.report-chart-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-chart {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+    padding: 12px;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid #cfdee6;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.report-chart figcaption {
+    margin-bottom: 8px;
+    color: #12344d;
+    font-size: 0.84rem;
+    font-weight: 750;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.report-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: 380px;
+    margin: auto 0;
+}
+
+.report-chart .analysis-chart-grid-line {
+    stroke: #dce7ed;
+    stroke-width: 1;
+    stroke-dasharray: 5 5;
+    vector-effect: non-scaling-stroke;
+}
+
+.report-chart .analysis-chart-axis {
+    stroke: #6f8795;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.report-chart .analysis-chart-tick,
+.report-chart .analysis-chart-category,
+.report-chart .analysis-chart-axis-title,
+.report-chart .analysis-chart-unit,
+.report-chart .analysis-chart-value {
+    fill: #526b7b;
+    font-family: inherit;
+}
+
+.report-chart .analysis-chart-tick,
+.report-chart .analysis-chart-category {
+    font-size: 14px;
+}
+
+.report-chart .analysis-chart-axis-title,
+.report-chart .analysis-chart-unit {
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.report-chart .analysis-chart-value {
+    fill: #12344d;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.report-chart .analysis-chart-line {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.report-chart .analysis-chart-point {
+    stroke: #ffffff;
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+}
+
+/* Легенди графіків */
+
+.report-chart .analysis-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+    justify-content: center;
+    margin: 8px -12px -12px;
+    padding: 9px 12px;
+    border-top: 1px solid #cfdee6;
+    background: #f8fafb;
+}
+
+.report-chart .analysis-chart-legend span {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    color: #526b7b;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.report-chart .analysis-chart-legend i {
+    width: 18px;
+    height: 4px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+}
+
+/* Висновки */
+
+.report-conclusions {
+    display: grid;
+    gap: 10px;
+}
+
+.report-conclusions section {
+    padding: 12px 14px;
+    border-left: 4px solid #1286a8;
+    background: #f5fafc;
+}
+
+.report-conclusions h4 {
+    margin: 0 0 6px;
+    color: #12344d;
+    font-size: 0.9rem;
+}
+
+.report-conclusions p {
+    margin: 0;
+    color: #354f5e;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* Підсумковий статус */
+
+.report-final-status {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding: 14px 16px;
+    border: 1px solid #b9dfcf;
+    border-left: 5px solid #2f8b67;
+    border-radius: 10px;
+    background: #edf9f3;
+    font-size: 0.84rem;
+}
+
+.report-final-status strong {
+    color: #17613e;
+}
+
+/* Адаптивність */
+
+@media (max-width: 900px) {
+    .student-report-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .report-field:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .report-meta,
+    .report-condition-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .report-chart-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .student-report-form {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    .report-field:first-child,
+    .report-controls {
+        grid-column: 1;
+    }
+
+    .report-controls,
+    .report-final-status {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .report-control-group,
+    .report-button {
+        width: 100%;
+    }
+
+    .report-document {
+        padding: 16px;
+    }
+
+    .report-meta,
+    .report-condition-list {
+        grid-template-columns: 1fr;
+    }
+
+    .report-table {
+        min-width: 650px;
+    }
+
+    .report-calculation-table {
+        min-width: 500px;
+    }
+
+    .report-chart {
+        padding: 10px;
+    }
+
+    .report-chart .analysis-chart-legend {
+        margin:
+            8px -10px -10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .report-button {
+        transition: none;
+    }
+}

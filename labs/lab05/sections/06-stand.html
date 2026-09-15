@@ -1,0 +1,542 @@
+<section
+    id="stand"
+    class="content-section"
+>
+    <p class="section-number">
+        Інтерактивний модуль
+    </p>
+
+    <h2>
+        Віртуальний лабораторний стенд
+    </h2>
+
+    <p class="lead">
+        Інтерактивний макет відтворює основні елементи
+        лабораторної установки для дослідження двох
+        електродних нагрівальних елементів за напруги
+        100, 150 і 200 В. У цьому розділі установка
+        залишається вимкненою.
+    </p>
+
+    <div class="stand-notice">
+        <strong>
+            Завдання ознайомлення
+        </strong>
+
+        <p>
+            Послідовно виберіть вісім груп елементів
+            лабораторного стенда. Після перегляду
+            всіх компонентів підтвердьте готовність
+            до проведення дослідів.
+        </p>
+    </div>
+
+    <div class="stand-workspace">
+        <div
+            id="stand-lock-overlay"
+            class="stand-lock-overlay"
+            role="status"
+        >
+            <div class="stand-lock-content">
+                <strong>
+                    Доступ до стенда заблоковано
+                </strong>
+
+                <p>
+                    Спочатку пройдіть перевірку знань
+                    у розділі «Техніка безпеки».
+                </p>
+
+                <a
+                    href="#safety"
+                    class="stand-lock-link"
+                >
+                    Перейти до техніки безпеки
+                </a>
+            </div>
+        </div>
+
+        <div id="stand-interactive-area">
+            <div class="stand-layout">
+                <div class="stand-visual-panel">
+                    <div class="stand-panel-heading">
+                        <div>
+                            <p>
+                                Навчальний макет
+                            </p>
+
+                            <h3>
+                                Електродний нагрівач
+                                і вимірювальна схема
+                            </h3>
+                        </div>
+
+                        <span class="stand-power-state">
+                            Установка вимкнена
+                        </span>
+                    </div>
+
+                    <div class="stand-bench">
+                        <div class="stand-installation">
+                            <div class="stand-electrical-panel">
+                                <div class="stand-control-row">
+                                    <button
+                                        class="stand-control-device stand-supply"
+                                        type="button"
+                                        data-stand-component="supply"
+                                        aria-label="Джерело живлення і вимикач K"
+                                    >
+                                        <span class="stand-device-code">
+                                            ~220 В
+                                        </span>
+
+                                        <strong>
+                                            Живлення
+                                        </strong>
+
+                                        <small>
+                                            Вимикач K
+                                        </small>
+
+                                        <span class="stand-switch-state">
+                                            Вимкнено
+                                        </span>
+                                    </button>
+
+                                    <span
+                                        class="stand-connection-arrow"
+                                        aria-hidden="true"
+                                    >
+                                        →
+                                    </span>
+
+                                    <button
+                                        class="stand-control-device stand-latr"
+                                        type="button"
+                                        data-stand-component="latr"
+                                        aria-label="Лабораторний автотрансформатор"
+                                    >
+                                        <span class="stand-device-code">
+                                            ЛАТР
+                                        </span>
+
+                                        <span
+                                            class="stand-latr-scale"
+                                            aria-hidden="true"
+                                        >
+                                            <i></i>
+                                        </span>
+
+                                        <strong>
+                                            0 В
+                                        </strong>
+
+                                        <small>
+                                            Регулювання напруги
+                                        </small>
+                                    </button>
+                                </div>
+
+                                <div class="stand-meter-panel">
+                                    <button
+                                        class="stand-meter"
+                                        type="button"
+                                        data-stand-component="voltmeter"
+                                        aria-label="Вольтметр PV"
+                                    >
+                                        <span class="stand-device-code">
+                                            PV
+                                        </span>
+
+                                        <span class="stand-meter-display">
+                                            0,0 В
+                                        </span>
+
+                                        <small>
+                                            Вольтметр
+                                        </small>
+                                    </button>
+
+                                    <button
+                                        class="stand-meter"
+                                        type="button"
+                                        data-stand-component="ammeter"
+                                        aria-label="Амперметр PA"
+                                    >
+                                        <span class="stand-device-code">
+                                            PA
+                                        </span>
+
+                                        <span class="stand-meter-display">
+                                            0,00 А
+                                        </span>
+
+                                        <small>
+                                            Амперметр
+                                        </small>
+                                    </button>
+
+                                    <button
+                                        class="stand-meter"
+                                        type="button"
+                                        data-stand-component="wattmeter"
+                                        aria-label="Ватметр PW"
+                                    >
+                                        <span class="stand-device-code">
+                                            PW
+                                        </span>
+
+                                        <span class="stand-meter-display">
+                                            0 Вт
+                                        </span>
+
+                                        <small>
+                                            Ватметр
+                                        </small>
+                                    </button>
+                                </div>
+
+                                <div class="stand-supply-label">
+                                    <span class="stand-supply-dot"></span>
+
+                                    Напругу на електродний
+                                    нагрівач не подано
+                                </div>
+                            </div>
+
+                            <div class="stand-heating-panel">
+                                <div class="stand-heater-selection">
+                                    <p>
+                                        Змінні нагрівальні елементи
+                                    </p>
+
+                                    <div class="stand-heater-buttons">
+                                        <button
+                                            class="stand-heater-type"
+                                            type="button"
+                                            data-stand-component="heaters"
+                                            aria-label="Електродний нагрівальний елемент першого типу"
+                                        >
+                                            <span class="stand-electrode-symbol">
+                                                1
+                                            </span>
+
+                                            <strong>
+                                                Нагрівач 1
+                                            </strong>
+
+                                            <small>
+                                                Елемент першого типу
+                                            </small>
+                                        </button>
+
+                                        <button
+                                            class="stand-heater-type"
+                                            type="button"
+                                            data-stand-component="heaters"
+                                            aria-label="Електродний нагрівальний елемент другого типу"
+                                        >
+                                            <span class="stand-electrode-symbol">
+                                                2
+                                            </span>
+
+                                            <strong>
+                                                Нагрівач 2
+                                            </strong>
+
+                                            <small>
+                                                Елемент другого типу
+                                            </small>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button
+                                    class="stand-water-system"
+                                    type="button"
+                                    data-stand-component="water"
+                                    aria-label="Посудина з водою і термометр"
+                                >
+                                    <span
+                                        class="stand-vessel"
+                                        aria-hidden="true"
+                                    >
+                                        <span class="stand-vessel-water"></span>
+                                        <span class="stand-vessel-electrode"></span>
+                                    </span>
+
+                                    <span class="stand-water-description">
+                                        <strong>
+                                            Посудина з водою
+                                        </strong>
+
+                                        <small>
+                                            Однаковий об’єм
+                                            і початкова температура
+                                        </small>
+
+                                        <span class="stand-temperature-display">
+                                            20,0 °C
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="stand-instruments">
+                            <button
+                                class="stand-tool stand-stopwatch"
+                                type="button"
+                                data-stand-component="stopwatch"
+                                aria-label="Секундомір"
+                            >
+                                <span
+                                    class="stand-tool-icon"
+                                    aria-hidden="true"
+                                >
+                                    00:00
+                                </span>
+
+                                <span>
+                                    <strong>
+                                        Секундомір
+                                    </strong>
+
+                                    <small>
+                                        Вимірювання тривалості
+                                        нагрівання
+                                    </small>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="stand-functional-path">
+                            <span>
+                                Мережа ~220 В і K
+                            </span>
+
+                            <b aria-hidden="true">
+                                →
+                            </b>
+
+                            <span>
+                                ЛАТР
+                            </span>
+
+                            <b aria-hidden="true">
+                                →
+                            </b>
+
+                            <span>
+                                PA і PW
+                            </span>
+
+                            <b aria-hidden="true">
+                                →
+                            </b>
+
+                            <span>
+                                Електродний нагрівач
+                            </span>
+
+                            <b aria-hidden="true">
+                                →
+                            </b>
+
+                            <span>
+                                Нагрівання води
+                            </span>
+                        </div>
+
+                        <p class="stand-voltage-note">
+                            Вольтметр PV контролює фактичну
+                            напругу на електродному нагрівачі.
+                        </p>
+                    </div>
+
+                    <p class="stand-visual-caption">
+                        Макет показує функціональний склад
+                        лабораторної установки. Натискання
+                        на елементи в цьому розділі не подає
+                        напругу і не запускає нагрівання.
+                    </p>
+                </div>
+
+                <aside
+                    class="stand-information"
+                    aria-live="polite"
+                >
+                    <div class="stand-information-main">
+                        <p class="stand-information-label">
+                            Відомості про елемент
+                        </p>
+
+                        <h3 id="stand-component-title">
+                            Оберіть елемент стенда
+                        </h3>
+
+                        <p id="stand-component-description">
+                            Натисніть на елемент макета
+                            або його назву, щоб переглянути
+                            призначення.
+                        </p>
+                    </div>
+
+                    <dl class="stand-properties">
+                        <div>
+                            <dt>
+                                Позначення
+                            </dt>
+
+                            <dd id="stand-component-code">
+                                -
+                            </dd>
+                        </div>
+
+                        <div>
+                            <dt>
+                                Функція
+                            </dt>
+
+                            <dd id="stand-component-function">
+                                -
+                            </dd>
+                        </div>
+
+                        <div>
+                            <dt>
+                                Пов’язана величина або стан
+                            </dt>
+
+                            <dd id="stand-component-value">
+                                -
+                            </dd>
+                        </div>
+                    </dl>
+                </aside>
+            </div>
+
+            <div class="stand-component-navigation">
+                <h3>
+                    Елементи лабораторного стенда
+                </h3>
+
+                <div class="stand-component-buttons">
+                    <button
+                        type="button"
+                        data-stand-component="supply"
+                    >
+                        Живлення і вимикач K
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="latr"
+                    >
+                        Лабораторний автотрансформатор
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="voltmeter"
+                    >
+                        Вольтметр PV
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="ammeter"
+                    >
+                        Амперметр PA
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="wattmeter"
+                    >
+                        Ватметр PW
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="heaters"
+                    >
+                        Нагрівальні елементи
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="water"
+                    >
+                        Посудина і термометр
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="stopwatch"
+                    >
+                        Секундомір
+                    </button>
+                </div>
+            </div>
+
+            <div class="stand-progress-panel">
+                <div class="stand-progress-heading">
+                    <div>
+                        <h3>
+                            Готовність до роботи зі стендом
+                        </h3>
+
+                        <p id="stand-progress-text">
+                            Переглянуто 0 із 8 груп елементів
+                        </p>
+                    </div>
+
+                    <strong id="stand-progress-percent">
+                        0%
+                    </strong>
+                </div>
+
+                <div
+                    class="stand-progress-track"
+                    role="progressbar"
+                    aria-label="Прогрес ознайомлення зі стендом"
+                    aria-valuemin="0"
+                    aria-valuemax="8"
+                    aria-valuenow="0"
+                >
+                    <span id="stand-progress-bar"></span>
+                </div>
+
+                <div class="stand-progress-actions">
+                    <button
+                        id="stand-ready-button"
+                        class="stand-ready-button"
+                        type="button"
+                        disabled
+                    >
+                        Підтвердити готовність стенда
+                    </button>
+
+                    <button
+                        id="stand-reset-button"
+                        class="stand-reset-button"
+                        type="button"
+                    >
+                        Скинути ознайомлення
+                    </button>
+                </div>
+
+                <p
+                    id="stand-status"
+                    class="stand-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Послідовно виберіть усі групи
+                    елементів стенда.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,98 +1,241 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Лабораторна робота №5</title>
+    <meta
+        name="description"
+        content="Інтерактивна лабораторна робота №5 з дослідження параметрів роботи електродного нагрівача."
+    >
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <meta
+        name="theme-color"
+        content="#6b3825"
+    >
 
-        body {
-            display: grid;
-            min-height: 100vh;
-            margin: 0;
-            padding: 24px;
-            place-items: center;
-            background: #f3f7fa;
-            color: #17384f;
-            font-family:
-                Inter,
-                Arial,
-                sans-serif;
-        }
+    <title>
+        Лабораторна робота №5 | Електродний нагрівач
+    </title>
 
-        main {
-            width: min(100%, 720px);
-            padding: 42px;
-            border: 1px solid #cfdee6;
-            border-radius: 20px;
-            background: #ffffff;
-            box-shadow: 0 16px 40px rgba(21, 56, 77, 0.1);
-        }
+    <link
+        rel="stylesheet"
+        href="../../common/css/theme.css"
+    >
 
-        .label {
-            margin: 0 0 12px;
-            color: #0e87a8;
-            font-size: 0.85rem;
-            font-weight: 800;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
+    <link
+        rel="stylesheet"
+        href="../../common/css/base.css"
+    >
 
-        h1 {
-            margin: 0 0 16px;
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            line-height: 1.15;
-        }
+    <link
+        rel="stylesheet"
+        href="../../common/css/components.css"
+    >
 
-        p {
-            margin: 0 0 26px;
-            color: #607483;
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
+    <link
+        rel="stylesheet"
+        href="../../common/css/safety.css"
+    >
 
-        a {
-            display: inline-flex;
-            min-height: 46px;
-            align-items: center;
-            justify-content: center;
-            padding: 11px 18px;
-            border-radius: 9px;
-            background: #173c55;
-            color: #ffffff;
-            font-weight: 750;
-            text-decoration: none;
-        }
+    <link
+        rel="stylesheet"
+        href="./lab05.css"
+    >
 
-        a:hover,
-        a:focus-visible {
-            background: #0e87a8;
-        }
-    </style>
+    <link
+        rel="stylesheet"
+        href="./stand.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./experiment.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./calculations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./charts.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./quiz.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./report.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../common/css/print.css"
+    >
 </head>
 
 <body>
-    <main>
-        <p class="label">Лабораторна робота №5</p>
+    <a
+        class="skip-link"
+        href="#main-content"
+    >
+        Перейти до змісту
+    </a>
 
-        <h1>Матеріали готуються</h1>
+    <header class="site-header">
+        <div class="page-container">
+            <a
+                class="back-to-course"
+                href="../../"
+            >
+                Повернутися до переліку лабораторних робіт
+            </a>
 
-        <p>
-            Інтерактивний модуль лабораторної роботи №5
-            перебуває на етапі розроблення.
-        </p>
+            <p class="course-label">
+                Енергоефективні технології споживання
+                електричної енергії
+            </p>
 
-        <a href="../../">
-            Повернутися до переліку робіт
-        </a>
-    </main>
+            <h1>
+                Лабораторна робота №5
+            </h1>
+
+            <p class="lab-title">
+                Дослідження параметрів роботи
+                електродного нагрівача
+            </p>
+
+            <div class="header-status">
+                Інтерактивний дистанційний практикум
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container lab-layout">
+        <aside class="side-navigation">
+            <a
+                class="back-to-course"
+                href="../../"
+            >
+                Повернутися до переліку лабораторних робіт
+            </a>
+
+            <h2>
+                Зміст роботи
+            </h2>
+
+            <nav
+                class="navigation-list"
+                aria-label="Навігація лабораторною роботою"
+            >
+                <a
+                    class="navigation-link is-active"
+                    href="#overview"
+                >
+                    1. Огляд роботи
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#goals"
+                >
+                    2. Мета і завдання
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#equipment"
+                >
+                    3. Обладнання
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#theory"
+                >
+                    4. Теоретичні відомості
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#safety"
+                >
+                    5. Техніка безпеки
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#stand"
+                >
+                    6. Віртуальний стенд
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#experiment"
+                >
+                    7. Проведення дослідів
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#calculations"
+                >
+                    8. Розрахунки
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#analysis"
+                >
+                    9. Аналіз результатів
+                </a>
+
+                <a
+                    class="navigation-link"
+                    href="#questions"
+                >
+                    10. Контрольні питання
+                </a>
+            </nav>
+        </aside>
+
+        <main id="main-content">
+            <div
+                id="sections-root"
+                class="section-stack"
+                aria-live="polite"
+            >
+                <div class="loading-panel">
+                    Завантаження матеріалів лабораторної роботи
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        <div class="page-container">
+            <p>
+                КПІ ім. Ігоря Сікорського · НН ІЕЕ ·
+                Кафедра електропостачання
+            </p>
+        </div>
+    </footer>
+
+    <script
+        type="module"
+        src="./main.js"
+    ></script>
 </body>
+
 </html>

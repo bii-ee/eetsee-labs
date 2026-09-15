@@ -1,0 +1,1555 @@
+#experiment {
+    --experiment-copper: #6b3825;
+    --experiment-copper-dark: #472317;
+    --experiment-copper-soft: #f8eee9;
+    --experiment-water: #7bc5dc;
+    --experiment-water-light: #a6deed;
+    --experiment-success: #187a65;
+    --experiment-warning: #c38118;
+    --experiment-danger: #a23d3d;
+
+    border-top: 5px solid var(--experiment-copper);
+}
+
+#experiment *,
+#experiment *::before,
+#experiment *::after {
+    box-sizing: border-box;
+}
+
+#experiment button,
+#experiment input,
+#experiment output {
+    max-width: 100%;
+    font: inherit;
+}
+
+#experiment .experiment-model-notice {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid #ddc9bd;
+    border-left: 5px solid var(--experiment-copper);
+    border-radius: var(--radius-medium);
+    background: #fcf7f4;
+}
+
+#experiment .experiment-model-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+#experiment .experiment-model-notice p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+#experiment .experiment-access-shell {
+    position: relative;
+    min-width: 0;
+}
+
+#experiment .experiment-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+#experiment .experiment-lock-overlay[hidden] {
+    display: none;
+}
+
+#experiment .experiment-lock-card {
+    display: flex;
+    width: min(100%, 520px);
+    min-height: 210px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 26px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+#experiment .experiment-lock-card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+#experiment .experiment-lock-card p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+}
+
+#experiment .experiment-lock-link {
+    display: inline-flex;
+    width: min(100%, 300px);
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--experiment-copper);
+    color: #ffffff;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none;
+}
+
+#experiment .experiment-lock-link:hover,
+#experiment .experiment-lock-link:focus-visible {
+    filter: brightness(1.08);
+}
+
+#experiment #experiment-interactive-area {
+    min-width: 0;
+    transition:
+        opacity 180ms ease,
+        filter 180ms ease;
+}
+
+#experiment #experiment-interactive-area[inert] {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+    filter: blur(2px);
+}
+
+#experiment .experiment-status-panel {
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 0.65fr)
+        minmax(240px, 1fr)
+        auto;
+    gap: 18px;
+    align-items: center;
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+#experiment .experiment-status-label,
+#experiment .experiment-status-details span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+#experiment .experiment-power-state {
+    color: var(--experiment-danger);
+    font-size: 1.08rem;
+}
+
+#experiment .experiment-power-state.is-on {
+    color: var(--experiment-success);
+}
+
+#experiment .experiment-status-details strong {
+    color: var(--color-primary);
+    font-size: 0.96rem;
+}
+
+#experiment .experiment-power-button,
+#experiment .experiment-action-button,
+#experiment .experiment-reset-button {
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: var(--radius-small);
+    font-weight: 750;
+    cursor: pointer;
+}
+
+#experiment .experiment-power-button,
+#experiment .experiment-action-button {
+    border: 1px solid var(--experiment-copper);
+    background: var(--experiment-copper);
+    color: #ffffff;
+}
+
+#experiment .experiment-power-button:hover:not(:disabled),
+#experiment .experiment-power-button:focus-visible:not(:disabled),
+#experiment .experiment-action-button:hover:not(:disabled),
+#experiment .experiment-action-button:focus-visible:not(:disabled) {
+    filter: brightness(1.08);
+}
+
+#experiment .experiment-power-button.is-on {
+    border-color: var(--experiment-danger);
+    background: var(--experiment-danger);
+}
+
+#experiment .experiment-power-button:disabled,
+#experiment .experiment-action-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#experiment .experiment-reset-button {
+    border: 1px solid #d9aaaa;
+    background: #fff7f7;
+    color: #8d3030;
+}
+
+#experiment .experiment-reset-button:hover,
+#experiment .experiment-reset-button:focus-visible {
+    border-color: var(--experiment-danger);
+    background: #fff0f0;
+}
+
+#experiment .experiment-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    width: 100%;
+    min-width: 0;
+}
+
+#experiment .experiment-control-panel,
+#experiment .experiment-visual-panel,
+#experiment .experiment-table-panel {
+    width: 100%;
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+#experiment .experiment-control-panel {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+}
+
+#experiment .experiment-control-panel >
+.experiment-control-section {
+    grid-column: span 6;
+    min-width: 0;
+}
+
+#experiment .experiment-control-section h3,
+#experiment .experiment-conditions h3,
+#experiment .experiment-table-panel h3 {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+
+#experiment .experiment-control-section p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+}
+
+#experiment .experiment-heater-buttons,
+#experiment .experiment-voltage-buttons {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+#experiment .experiment-heater-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#experiment .experiment-voltage-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#experiment .experiment-heater-button,
+#experiment .experiment-voltage-button {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-primary);
+    cursor: pointer;
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+#experiment .experiment-heater-button {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 112px;
+    align-items: center;
+    padding: 14px;
+    text-align: left;
+}
+
+#experiment .experiment-heater-number {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background:
+        linear-gradient(
+            160deg,
+            #b96d45,
+            var(--experiment-copper-dark)
+        );
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 850;
+    box-shadow: 0 4px 8px rgba(71, 35, 23, 0.2);
+}
+
+#experiment .experiment-heater-content {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+}
+
+#experiment .experiment-heater-content strong {
+    color: var(--color-primary);
+    font-size: 0.92rem;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+#experiment .experiment-heater-content small {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+#experiment .experiment-voltage-button {
+    display: grid;
+    min-height: 112px;
+    place-items: center;
+    align-content: center;
+    gap: 4px;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+#experiment .experiment-voltage-button strong {
+    font-size: 0.92rem;
+}
+
+#experiment .experiment-voltage-button small {
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+}
+
+#experiment .experiment-heater-button:hover:not(:disabled),
+#experiment .experiment-heater-button:focus-visible:not(:disabled),
+#experiment .experiment-voltage-button:hover:not(:disabled),
+#experiment .experiment-voltage-button:focus-visible:not(:disabled) {
+    border-color: var(--experiment-copper);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(107, 56, 37, 0.12);
+    transform: translateY(-1px);
+}
+
+#experiment .experiment-heater-button.is-selected,
+#experiment .experiment-voltage-button.is-selected {
+    border-color: var(--experiment-copper);
+    background: var(--experiment-copper-soft);
+    box-shadow: inset 4px 0 0 var(--experiment-copper);
+}
+
+#experiment .experiment-heater-button.is-completed,
+#experiment .experiment-voltage-button.is-completed {
+    border-color: #74ac92;
+    background: #eff9f4;
+}
+
+#experiment .experiment-heater-button:disabled,
+#experiment .experiment-voltage-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+#experiment .experiment-control-panel >
+.experiment-conditions {
+    grid-column: span 5;
+    min-width: 0;
+}
+
+#experiment .experiment-conditions {
+    padding: 16px;
+    border: 1px solid #d7e1e6;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+}
+
+#experiment .experiment-conditions dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0 0;
+}
+
+#experiment .experiment-conditions dl > div {
+    min-width: 0;
+    padding: 10px;
+    border-radius: 9px;
+    background: var(--color-surface-soft);
+}
+
+#experiment .experiment-conditions dt {
+    margin-bottom: 3px;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+#experiment .experiment-conditions dd {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.82rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+#experiment .experiment-control-panel >
+.experiment-current-task {
+    grid-column: span 7;
+    min-width: 0;
+    height: 100%;
+}
+
+#experiment .experiment-current-task {
+    padding: 16px;
+    border: 1px solid #d5b9aa;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+}
+
+#experiment .experiment-current-task > span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--experiment-copper);
+    font-size: 0.77rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+#experiment .experiment-current-task strong {
+    display: block;
+    color: var(--color-primary);
+}
+
+#experiment .experiment-current-task p {
+    margin: 8px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+}
+
+#experiment .experiment-control-panel >
+.experiment-action-button {
+    grid-column: span 5;
+    width: 100%;
+}
+
+#experiment .experiment-control-panel >
+.experiment-message {
+    grid-column: span 7;
+}
+
+#experiment .experiment-message {
+    min-height: 44px;
+    margin: 0;
+    padding: 12px 14px;
+    border-left: 4px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+#experiment .experiment-message[data-type="success"] {
+    border-left-color: var(--experiment-success);
+    color: #175d44;
+}
+
+#experiment .experiment-message[data-type="warning"] {
+    border-left-color: var(--experiment-warning);
+    color: #785000;
+}
+
+#experiment .experiment-message[data-type="error"] {
+    border-left-color: var(--experiment-danger);
+    color: #852d2d;
+}
+
+#experiment .experiment-visual-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    overflow: hidden;
+}
+
+#experiment .experiment-visual-panel > *,
+#experiment .experiment-installation > *,
+#experiment .experiment-power-chain > *,
+#experiment .experiment-heating-system > *,
+#experiment .experiment-heating-workspace > *,
+#experiment .experiment-heating-topline > *,
+#experiment .experiment-heating-controls > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+#experiment .experiment-visual-header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#experiment .experiment-visual-header span {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+}
+
+#experiment .experiment-visual-header strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-primary);
+    font-size: 1.08rem;
+}
+
+#experiment #experiment-target-voltage-label {
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: var(--experiment-copper-soft);
+    color: var(--experiment-copper-dark);
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+#experiment .experiment-installation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid #c5d3da;
+    border-radius: 16px;
+    background: #f5f9fa;
+}
+
+#experiment .experiment-power-chain {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 0.85fr)
+        36px
+        minmax(320px, 1.15fr);
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+}
+
+#experiment .experiment-device-card {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 122px;
+    align-content: center;
+    justify-items: center;
+    gap: 7px;
+    padding: 14px;
+    overflow: hidden;
+    border: 2px solid #9aadb6;
+    border-radius: 13px;
+    background: #ffffff;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+#experiment .experiment-device-code {
+    display: grid;
+    min-width: 78px;
+    min-height: 34px;
+    place-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+#experiment .experiment-device-card strong {
+    color: var(--color-primary);
+    font-size: 0.91rem;
+}
+
+#experiment .experiment-device-card small,
+#experiment .experiment-device-card label {
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+}
+
+#experiment .experiment-device-state {
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #e8edf0;
+    color: #6c7d86;
+    font-size: 0.7rem;
+    font-weight: 750;
+}
+
+#experiment .experiment-device-state.is-on {
+    background: #dff3e9;
+    color: #176347;
+}
+
+#experiment .experiment-connection-arrow {
+    display: grid;
+    width: 36px;
+    place-items: center;
+    align-self: center;
+    color: var(--experiment-copper);
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+#experiment .experiment-latr-card {
+    border-color: #b78369;
+    background: var(--experiment-copper-soft);
+}
+
+#experiment .experiment-latr-card input {
+    display: block;
+    width: min(100%, 420px);
+    min-width: 0;
+    margin-inline: auto;
+    accent-color: var(--experiment-copper);
+    cursor: pointer;
+}
+
+#experiment .experiment-latr-card input:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+#experiment .experiment-latr-card output {
+    color: var(--experiment-copper-dark);
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.95rem;
+    font-weight: 850;
+}
+
+#experiment .experiment-measurement-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+}
+
+#experiment .experiment-meter-card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 3px 10px;
+    width: 100%;
+    min-width: 0;
+    min-height: 84px;
+    align-items: center;
+    padding: 10px 12px;
+    overflow: hidden;
+    border: 2px solid #8da3ad;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--color-primary);
+    box-shadow: 0 5px 12px rgba(20, 47, 63, 0.08);
+}
+
+#experiment .instrument-code {
+    grid-row: 1 / 3;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+#experiment .experiment-meter-card strong {
+    min-width: 0;
+    color: var(--color-primary);
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+#experiment .experiment-meter-card small {
+    min-width: 0;
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    white-space: nowrap;
+}
+
+#experiment .experiment-heating-system {
+    display: grid;
+    grid-template-columns:
+        minmax(136px, 150px)
+        minmax(0, 760px);
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+    justify-content: start;
+    padding: 18px;
+    border: 1px solid #d3b8a9;
+    border-radius: 15px;
+    background:
+        linear-gradient(
+            145deg,
+            #fffaf7,
+            #f4e7df
+        );
+}
+
+#experiment .experiment-vessel-area {
+    display: grid;
+    min-width: 0;
+    place-items: center start;
+    align-content: center;
+}
+
+#experiment .experiment-vessel {
+    position: relative;
+    display: block;
+    width: 136px;
+    height: 164px;
+    overflow: hidden;
+    border: 5px solid #667983;
+    border-top: 0;
+    border-radius: 6px 6px 28px 28px;
+    background: #f6fbfd;
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.7),
+        0 8px 16px rgba(32, 70, 89, 0.16);
+}
+
+#experiment .experiment-vessel::before {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    z-index: 4;
+    width: calc(100% + 10px);
+    height: 6px;
+    border-radius: 999px;
+    background: #667983;
+    content: "";
+}
+
+#experiment .experiment-water {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 68%;
+    background:
+        linear-gradient(
+            180deg,
+            var(--experiment-water-light),
+            var(--experiment-water)
+        );
+    transition:
+        height 180ms ease,
+        background-color 180ms ease;
+}
+
+#experiment .experiment-water::before {
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--experiment-water-light);
+    content: "";
+}
+
+#experiment .experiment-electrode {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    z-index: 3;
+    width: 17px;
+    height: 112px;
+    border-radius: 5px 5px 10px 10px;
+    background:
+        linear-gradient(
+            90deg,
+            #7f4229,
+            #c17b53 48%,
+            #6b3825
+        );
+    transform: translateX(-50%);
+}
+
+#experiment .experiment-electrode::after {
+    position: absolute;
+    bottom: -13px;
+    left: 50%;
+    width: 40px;
+    height: 27px;
+    background: var(--experiment-copper);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    content: "";
+    transform: translateX(-50%);
+}
+
+#experiment .experiment-bubble-field {
+    position: absolute;
+    inset: 28% 10% 8%;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+
+#experiment .experiment-bubble-field::before,
+#experiment .experiment-bubble-field::after {
+    position: absolute;
+    bottom: 4px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    content: "";
+}
+
+#experiment .experiment-bubble-field::before {
+    left: 24%;
+    box-shadow:
+        25px -18px 0 -1px rgba(255, 255, 255, 0.72),
+        49px -6px 0 0 rgba(255, 255, 255, 0.65),
+        64px -34px 0 -1px rgba(255, 255, 255, 0.76);
+}
+
+#experiment .experiment-bubble-field::after {
+    right: 25%;
+    box-shadow:
+        -18px -35px 0 -1px rgba(255, 255, 255, 0.7),
+        18px -54px 0 0 rgba(255, 255, 255, 0.72),
+        -39px -68px 0 -1px rgba(255, 255, 255, 0.68);
+}
+
+#experiment .experiment-heating-system.is-heating
+.experiment-bubble-field {
+    opacity: 0.58;
+}
+
+#experiment .experiment-heating-system.is-boiling
+.experiment-bubble-field {
+    opacity: 1;
+}
+
+#experiment .experiment-heating-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: min(100%, 760px);
+    align-content: center;
+    justify-self: start;
+}
+
+#experiment .experiment-heating-topline {
+    display: grid;
+    grid-template-columns:
+        minmax(240px, 320px)
+        minmax(280px, 360px);
+    gap: 12px;
+    align-items: stretch;
+    justify-content: start;
+}
+
+#experiment .experiment-heating-description {
+    display: grid;
+    min-width: 0;
+    align-content: center;
+    gap: 5px;
+    padding: 12px 14px;
+    border: 1px solid rgba(183, 131, 105, 0.42);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.56);
+}
+
+#experiment .experiment-heating-description > span {
+    color: var(--experiment-copper);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+#experiment .experiment-heating-description > strong {
+    color: var(--color-primary);
+    font-size: 1.05rem;
+}
+
+#experiment .experiment-heating-description > small {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+#experiment .experiment-heating-progress {
+    display: grid;
+    width: min(100%, 360px);
+    min-width: 0;
+    align-content: center;
+    padding: 12px 14px;
+    border: 1px solid #d2dde2;
+    border-radius: 11px;
+    background: #ffffff;
+}
+
+#experiment .experiment-heating-progress > div:first-child {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+}
+
+#experiment .experiment-heating-progress strong {
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+#experiment .experiment-heating-track {
+    height: 11px;
+    margin-top: 11px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dfe8ec;
+}
+
+#experiment .experiment-heating-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            var(--experiment-copper),
+            #c36b40
+        );
+    transition: width 120ms linear;
+}
+
+#experiment .experiment-heating-controls {
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 220px)
+        minmax(340px, 472px);
+    gap: 12px;
+    align-items: stretch;
+    justify-content: start;
+}
+
+#experiment .experiment-temperature-display {
+    display: grid;
+    min-width: 0;
+    align-content: center;
+    gap: 7px;
+    padding: 12px 14px;
+    border: 1px solid #b9d4de;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+#experiment .experiment-temperature-display > span {
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+}
+
+#experiment .experiment-temperature-display strong {
+    color: var(--color-primary);
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+#experiment .experiment-stopwatch {
+    display: grid;
+    grid-template-columns:
+        minmax(105px, 125px)
+        minmax(0, 1fr);
+    gap: 16px;
+    min-width: 0;
+    align-items: center;
+    padding: 12px 14px;
+    overflow: hidden;
+    border: 1px solid #b9cbd4;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+#experiment .experiment-stopwatch-display {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    height: 58px;
+    place-items: center;
+    padding: 0 10px;
+    border-radius: 9px;
+    background: #173c55;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.96rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+#experiment .experiment-stopwatch-description {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+}
+
+#experiment .experiment-stopwatch-description strong {
+    color: var(--color-primary);
+    font-size: 1rem;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+#experiment .experiment-stopwatch-description small {
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+    line-height: 1.4;
+}
+
+#experiment .experiment-live-chart {
+    min-width: 0;
+    padding: 16px 18px 14px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+}
+
+#experiment .experiment-live-chart-header {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+#experiment .experiment-live-chart-header > div {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+}
+
+#experiment .experiment-live-chart-header strong {
+    color: var(--color-primary);
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+#experiment .experiment-live-chart-header > span {
+    flex: 0 0 auto;
+    color: var(--color-text-muted);
+    font-family: "Cambria Math", Cambria, serif;
+    font-size: 1.15rem;
+    font-style: italic;
+}
+
+#experiment #experiment-chart-status {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+#experiment .experiment-live-chart svg {
+    display: block;
+    width: 100%;
+    height: clamp(250px, 24vw, 310px);
+    min-height: 0;
+    overflow: visible;
+}
+
+#experiment .temperature-plot-background {
+    fill: #f8fbfc;
+}
+
+#experiment .temperature-grid line {
+    stroke: #d7e3e8;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    vector-effect: non-scaling-stroke;
+}
+
+#experiment .temperature-axis {
+    stroke: #7893a1;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+#experiment .temperature-axis-value {
+    fill: #607582;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+#experiment .temperature-axis-title {
+    fill: #395466;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#experiment .temperature-line {
+    fill: none;
+    stroke: #b85f37;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+#experiment .temperature-point {
+    fill: #b85f37;
+    stroke: #ffffff;
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+}
+
+#experiment .temperature-point[hidden] {
+    display: none;
+}
+
+#experiment .experiment-chart-legend {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+    gap: 10px 20px;
+    align-items: center;
+    margin-top: 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+#experiment .experiment-chart-legend span {
+    display: flex;
+    min-width: 0;
+    gap: 8px;
+    align-items: center;
+}
+
+#experiment .experiment-chart-legend span:last-child {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+#experiment .experiment-chart-line-sample {
+    display: inline-block;
+    width: 26px;
+    height: 4px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: #b85f37;
+}
+
+#experiment .experiment-table-panel {
+    margin-top: 20px;
+}
+
+#experiment .experiment-table-header,
+#experiment .experiment-table-actions {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#experiment .experiment-table-header {
+    margin-bottom: 18px;
+}
+
+#experiment .experiment-table-header .section-number {
+    margin-bottom: 5px;
+}
+
+#experiment .experiment-progress {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--experiment-copper-soft);
+    color: var(--experiment-copper-dark);
+    font-size: 0.86rem;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+#experiment .table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+}
+
+#experiment .experiment-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #ffffff;
+}
+
+#experiment .experiment-column-heater {
+    width: 11%;
+}
+
+#experiment .experiment-column-target-voltage {
+    width: 10%;
+}
+
+#experiment .experiment-column-voltage {
+    width: 9%;
+}
+
+#experiment .experiment-column-current {
+    width: 8%;
+}
+
+#experiment .experiment-column-power {
+    width: 9%;
+}
+
+#experiment .experiment-column-initial-temperature,
+#experiment .experiment-column-final-temperature {
+    width: 11%;
+}
+
+#experiment .experiment-column-time {
+    width: 10%;
+}
+
+#experiment .experiment-column-status {
+    width: 21%;
+}
+
+#experiment .experiment-table th,
+#experiment .experiment-table td {
+    min-width: 0;
+    padding: 10px 5px;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+#experiment .experiment-table thead th {
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+#experiment .experiment-table thead th:first-child {
+    white-space: nowrap;
+}
+
+#experiment .experiment-table thead sub {
+    font-size: 0.72em;
+}
+
+#experiment .experiment-table tbody th {
+    color: var(--color-primary);
+    font-size: 0.86rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+#experiment .experiment-table tbody tr.is-active {
+    background: #fff8f4;
+}
+
+#experiment .experiment-table tbody tr.is-completed {
+    background: #eff9f4;
+}
+
+#experiment .experiment-table tbody tr.is-pending {
+    color: var(--color-text-muted);
+}
+
+#experiment .experiment-heater-table-label {
+    display: inline-flex;
+    min-width: 38px;
+    min-height: 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--experiment-copper-soft);
+    color: var(--experiment-copper-dark);
+    font-weight: 800;
+}
+
+#experiment .record-status {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #edf1f3;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    font-weight: 750;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+}
+
+#experiment .is-completed .record-status {
+    background: #dff3e9;
+    color: #176347;
+}
+
+#experiment .is-active .record-status {
+    background: var(--experiment-copper-soft);
+    color: var(--experiment-copper-dark);
+}
+
+#experiment .experiment-table-actions {
+    align-items: center;
+    margin-top: 16px;
+}
+
+#experiment .experiment-table-actions p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+#experiment.is-completed .experiment-progress {
+    background: #daf3e8;
+    color: #176347;
+}
+
+@media (max-width: 1000px) {
+    #experiment .experiment-heating-workspace {
+        width: 100%;
+    }
+
+    #experiment .experiment-heating-topline {
+        grid-template-columns:
+            minmax(220px, 0.9fr)
+            minmax(260px, 1.1fr);
+    }
+
+    #experiment .experiment-heating-controls {
+        grid-template-columns:
+            minmax(170px, 0.55fr)
+            minmax(280px, 1.45fr);
+    }
+
+    #experiment .experiment-heating-progress {
+        width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    #experiment .experiment-status-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-status-panel
+    .experiment-power-button {
+        width: 100%;
+    }
+
+    #experiment .experiment-control-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-control-panel > * {
+        grid-column: 1 / -1;
+    }
+
+    #experiment .experiment-control-section +
+    .experiment-control-section {
+        padding-top: 20px;
+        border-top: 1px solid var(--color-border);
+    }
+
+    #experiment .experiment-table-header,
+    #experiment .experiment-table-actions,
+    #experiment .experiment-visual-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    #experiment #experiment-target-voltage-label,
+    #experiment .experiment-progress {
+        width: fit-content;
+    }
+
+    #experiment .experiment-table {
+        min-width: 760px;
+    }
+}
+
+@media (max-width: 760px) {
+    #experiment .experiment-power-chain,
+    #experiment .experiment-heating-system {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-connection-arrow {
+        display: none;
+    }
+
+    #experiment .experiment-vessel-area {
+        place-items: center;
+    }
+
+    #experiment .experiment-heating-topline {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-heating-progress {
+        width: 100%;
+    }
+
+    #experiment .experiment-heating-controls {
+        grid-template-columns:
+            minmax(160px, 0.55fr)
+            minmax(250px, 1.45fr);
+    }
+}
+
+@media (max-width: 620px) {
+    #experiment .experiment-lock-overlay {
+        padding: 14px;
+    }
+
+    #experiment .experiment-control-panel,
+    #experiment .experiment-visual-panel,
+    #experiment .experiment-table-panel {
+        padding: 15px;
+    }
+
+    #experiment .experiment-heater-buttons,
+    #experiment .experiment-voltage-buttons,
+    #experiment .experiment-conditions dl,
+    #experiment .experiment-measurement-panel,
+    #experiment .experiment-heating-controls,
+    #experiment .experiment-chart-legend {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-installation,
+    #experiment .experiment-heating-system {
+        padding: 12px;
+    }
+
+    #experiment .experiment-heater-button,
+    #experiment .experiment-voltage-button {
+        min-height: 92px;
+    }
+
+    #experiment .experiment-temperature-display {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    #experiment .experiment-chart-legend span:last-child {
+        justify-content: flex-start;
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    #experiment .experiment-heater-content strong {
+        white-space: normal;
+    }
+
+    #experiment .experiment-stopwatch {
+        grid-template-columns: minmax(0, 1fr);
+        text-align: center;
+    }
+
+    #experiment .experiment-stopwatch-description {
+        justify-items: center;
+    }
+
+    #experiment .experiment-live-chart {
+        padding: 15px 10px;
+    }
+
+    #experiment .experiment-live-chart-header {
+        display: grid;
+        gap: 6px;
+    }
+
+    #experiment .experiment-live-chart-header > span {
+        justify-self: start;
+    }
+
+    #experiment .experiment-live-chart svg {
+        height: 220px;
+    }
+
+    #experiment .experiment-reset-button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #experiment #experiment-interactive-area,
+    #experiment .experiment-heater-button,
+    #experiment .experiment-voltage-button,
+    #experiment .experiment-water,
+    #experiment .experiment-bubble-field,
+    #experiment .experiment-heating-track span {
+        transition: none;
+    }
+}

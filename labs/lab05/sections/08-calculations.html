@@ -1,0 +1,251 @@
+<section id="calculations" class="content-section">
+    <p class="section-number">Розрахунковий модуль</p>
+
+    <h2>Оброблення результатів експерименту</h2>
+
+    <p class="lead">
+        Для кожного з шести дослідів визначте витрати електричної
+        енергії за активною потужністю нагрівача та тривалістю
+        нагрівання води до температури кипіння.
+    </p>
+
+    <div class="calculations-access-shell">
+        <div
+            id="calculations-lock-overlay"
+            class="calculations-lock-overlay"
+            role="status"
+        >
+            <div class="calculations-lock-card">
+                <strong>Доступ до розрахунків заблоковано</strong>
+
+                <p>
+                    Спочатку завершіть усі шість дослідів у розділі
+                    «Проведення дослідів».
+                </p>
+
+                <a class="calculations-lock-link" href="#experiment">
+                    Перейти до проведення дослідів
+                </a>
+            </div>
+        </div>
+
+        <div id="calculations-interactive-area">
+            <div class="calculations-formula-layout">
+                <article class="calculation-formula-card">
+                    <div class="calculation-formula-heading">
+                        <span>Розрахункова залежність</span>
+                        <h3>Витрати електричної енергії</h3>
+                    </div>
+
+                    <div class="calculation-formula">
+                        <math
+                            xmlns="http://www.w3.org/1998/Math/MathML"
+                            display="block"
+                        >
+                            <mrow>
+                                <msub>
+                                    <mi>W</mi>
+                                    <mtext>ел</mtext>
+                                </msub>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <mrow>
+                                        <mi>P</mi>
+                                        <mo>·</mo>
+                                        <mi>t</mi>
+                                    </mrow>
+
+                                    <mn>60</mn>
+                                </mfrac>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Значення визначають у ват-годинах, якщо
+                        потужність задано у ватах, а тривалість
+                        нагрівання у хвилинах.
+                    </p>
+                </article>
+
+                <aside class="calculations-units-card">
+                    <span>Позначення у формулі</span>
+
+                    <dl>
+                        <div>
+                            <dt>
+                                <i>W</i><sub>ел</sub>
+                            </dt>
+                            <dd>витрати електричної енергії, Вт·год</dd>
+                        </div>
+
+                        <div>
+                            <dt><i>P</i></dt>
+                            <dd>активна потужність нагрівача, Вт</dd>
+                        </div>
+
+                        <div>
+                            <dt><i>t</i></dt>
+                            <dd>тривалість нагрівання води, хв</dd>
+                        </div>
+
+                        <div>
+                            <dt>60</dt>
+                            <dd>коефіцієнт переходу від хвилин до годин</dd>
+                        </div>
+                    </dl>
+                </aside>
+            </div>
+
+            <div class="calculations-instruction">
+                <strong>Порядок виконання</strong>
+
+                <ol>
+                    <li>
+                        Використайте значення активної потужності
+                        <i>P</i> і тривалості нагрівання <i>t</i>,
+                        перенесені з експерименту.
+                    </li>
+
+                    <li>
+                        Для кожного досліду обчисліть
+                        <i>W</i><sub>ел</sub> за наведеною формулою.
+                    </li>
+
+                    <li>
+                        Введіть результати у таблицю з точністю
+                        до 0,1 Вт·год.
+                    </li>
+
+                    <li>
+                        Натисніть «Перевірити розрахунки».
+                    </li>
+                </ol>
+            </div>
+
+            <div class="calculations-source-status">
+                <div>
+                    <span>Отримано дослідів</span>
+                    <strong id="calculations-experiment-count">0 із 6</strong>
+                </div>
+
+                <div>
+                    <span>Заповнено результатів</span>
+                    <strong id="calculations-filled-count">0 із 6</strong>
+                </div>
+
+                <div>
+                    <span>Стан розрахунків</span>
+                    <strong id="calculations-progress">Не розпочато</strong>
+                </div>
+            </div>
+
+            <div class="calculations-table-panel">
+                <div class="calculations-table-heading">
+                    <div>
+                        <p class="section-number">Таблиця 5.2</p>
+
+                        <h3>Розрахунок витрат електричної енергії</h3>
+                    </div>
+
+                    <p>
+                        Виміряні значення заповнюються автоматично.
+                        Значення <i>W</i><sub>ел</sub> вводить студент.
+                    </p>
+                </div>
+
+                <div class="calculations-table-scroll">
+                    <table class="calculations-table">
+                        <colgroup>
+                            <col class="calculations-column-heater">
+                            <col class="calculations-column-target-voltage">
+                            <col class="calculations-column-voltage">
+                            <col class="calculations-column-current">
+                            <col class="calculations-column-power">
+                            <col class="calculations-column-time">
+                            <col class="calculations-column-energy">
+                            <col class="calculations-column-status">
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Нагрівач</th>
+                                <th scope="col">
+                                    U<sub>зад</sub>, В
+                                </th>
+                                <th scope="col">U, В</th>
+                                <th scope="col">I, А</th>
+                                <th scope="col">P, Вт</th>
+                                <th scope="col">t, хв</th>
+                                <th scope="col">
+                                    W<sub>ел</sub>, Вт·год
+                                </th>
+                                <th scope="col">Перевірка</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="calculations-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="calculations-actions">
+                <div>
+                    <strong>Перевірка результатів</strong>
+
+                    <p>
+                        Десятковий роздільник можна вводити комою
+                        або крапкою.
+                    </p>
+                </div>
+
+                <div class="calculations-action-buttons">
+                    <button
+                        id="calculations-check-button"
+                        class="calculations-check-button"
+                        type="button"
+                        disabled
+                    >
+                        Перевірити розрахунки
+                    </button>
+
+                    <button
+                        id="calculations-reset-button"
+                        class="calculations-reset-button"
+                        type="button"
+                        disabled
+                    >
+                        Очистити розрахунки
+                    </button>
+                </div>
+            </div>
+
+            <p
+                id="calculations-message"
+                class="calculations-message"
+                role="status"
+                aria-live="polite"
+            >
+                Завершіть усі досліди, щоб перейти до розрахунків.
+            </p>
+
+            <div
+                id="calculations-complete-panel"
+                class="calculations-complete-panel"
+                hidden
+            >
+                <strong>Розрахунки виконано правильно</strong>
+
+                <p>
+                    Витрати електричної енергії визначено для всіх
+                    шести дослідів. Можна переходити до аналізу
+                    отриманих результатів.
+                </p>
+
+                <a href="#analysis">Перейти до аналізу результатів</a>
+            </div>
+        </div>
+    </div>
+</section>

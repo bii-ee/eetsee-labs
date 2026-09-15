@@ -1,0 +1,652 @@
+#analysis {
+    --analysis-copper: #6b3825;
+    --analysis-copper-dark: #472317;
+    --analysis-copper-soft: #f8eee9;
+    --analysis-blue: #2f7e93;
+    --analysis-blue-soft: #eaf5f8;
+    --analysis-success: #187a65;
+    --analysis-warning: #c38118;
+    --analysis-danger: #a23d3d;
+
+    min-width: 0;
+    max-width: 100%;
+    border-top: 5px solid var(--analysis-copper);
+}
+
+#analysis *,
+#analysis *::before,
+#analysis *::after {
+    box-sizing: border-box;
+}
+
+#analysis button,
+#analysis textarea {
+    font: inherit;
+}
+
+/* Блокування розділу */
+
+#analysis .analysis-access-shell {
+    position: relative;
+    min-width: 0;
+    min-height: 320px;
+}
+
+#analysis .analysis-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+#analysis .analysis-lock-overlay[hidden] {
+    display: none;
+}
+
+#analysis .analysis-lock-card {
+    display: flex;
+    width: min(100%, 520px);
+    min-height: 210px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 26px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+#analysis .analysis-lock-card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+#analysis .analysis-lock-card p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+#analysis .analysis-lock-link {
+    display: inline-flex;
+    width: min(100%, 300px);
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--analysis-copper);
+    color: #ffffff;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none;
+}
+
+#analysis .analysis-lock-link:hover,
+#analysis .analysis-lock-link:focus-visible {
+    filter: brightness(1.08);
+}
+
+#analysis #analysis-interactive-area {
+    min-width: 0;
+    transition:
+        opacity 180ms ease,
+        filter 180ms ease;
+}
+
+#analysis #analysis-interactive-area[inert] {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+    filter: blur(2px);
+}
+
+/* Джерело даних */
+
+#analysis .analysis-source-note {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px 0 18px;
+    padding: 18px 20px;
+    border: 1px solid #ddc9bd;
+    border-left: 5px solid var(--analysis-copper);
+    border-radius: var(--radius-medium);
+    background: #fcf7f4;
+}
+
+#analysis .analysis-source-note strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-primary);
+}
+
+#analysis .analysis-source-note p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+#analysis .analysis-source-note > span {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--analysis-copper-dark);
+    font-size: 0.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Узагальнені показники */
+
+#analysis .analysis-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+#analysis .analysis-summary-grid article {
+    display: grid;
+    min-width: 0;
+    align-content: start;
+    gap: 5px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+#analysis .analysis-summary-grid article:nth-child(1) {
+    border-top: 4px solid #7896a4;
+}
+
+#analysis .analysis-summary-grid article:nth-child(2) {
+    border-top: 4px solid var(--analysis-copper);
+}
+
+#analysis .analysis-summary-grid article:nth-child(3) {
+    border-top: 4px solid var(--analysis-blue);
+}
+
+#analysis .analysis-summary-grid article:nth-child(4) {
+    border-top: 4px solid var(--analysis-success);
+}
+
+#analysis .analysis-summary-grid span,
+#analysis .analysis-summary-grid small {
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    line-height: 1.35;
+}
+
+#analysis .analysis-summary-grid strong {
+    min-width: 0;
+    color: var(--color-primary);
+    font-size: 1.12rem;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+/* Сітка графіків */
+
+#analysis .analysis-chart-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+}
+
+#analysis .analysis-chart-card {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+#analysis .analysis-chart-card-wide {
+    grid-column: auto;
+}
+
+/* Заголовок графіка */
+
+#analysis .analysis-chart-heading {
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#analysis .analysis-chart-heading > div {
+    min-width: 0;
+}
+
+#analysis .analysis-chart-heading .section-number {
+    margin: 0 0 3px;
+}
+
+#analysis .analysis-chart-heading h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.96rem;
+    line-height: 1.35;
+}
+
+#analysis .analysis-chart-heading > span {
+    flex: 0 0 auto;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: var(--analysis-copper-soft);
+    color: var(--analysis-copper-dark);
+    font-family:
+        "Cambria Math",
+        Cambria,
+        serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+#analysis .analysis-chart-description {
+    min-height: 0;
+    margin: 6px 0 9px;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+/* Контейнер графіка */
+
+#analysis .analysis-chart {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #c8d8e1;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+}
+
+#analysis .analysis-chart-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+}
+
+/* Елементи SVG */
+
+#analysis .analysis-chart-grid-line {
+    stroke: #dce7ed;
+    stroke-width: 1;
+    stroke-dasharray: 5 5;
+    vector-effect: non-scaling-stroke;
+}
+
+#analysis .analysis-chart-axis {
+    stroke: #6f8795;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+#analysis .analysis-chart-tick,
+#analysis .analysis-chart-category,
+#analysis .analysis-chart-axis-title,
+#analysis .analysis-chart-unit,
+#analysis .analysis-chart-value {
+    fill: #526b7b;
+    font-family: inherit;
+}
+
+#analysis .analysis-chart-tick,
+#analysis .analysis-chart-category {
+    font-size: 13px;
+}
+
+#analysis .analysis-chart-axis-title,
+#analysis .analysis-chart-unit {
+    font-size: 14px;
+    font-weight: 750;
+}
+
+#analysis .analysis-chart-value {
+    fill: var(--color-primary);
+    stroke: #ffffff;
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    paint-order: stroke fill;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+#analysis .analysis-chart-line,
+#analysis .analysis-chart-point {
+    transition:
+        opacity 150ms ease,
+        filter 150ms ease;
+}
+
+#analysis .analysis-chart-line {
+    fill: none;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+#analysis .analysis-chart-point {
+    stroke: #ffffff;
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+}
+
+#analysis .analysis-chart-point:hover,
+#analysis .analysis-chart-point:focus {
+    filter: brightness(0.86);
+    outline: none;
+}
+
+/* Легенда графіка */
+
+#analysis .analysis-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 18px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-top: 1px solid var(--color-border);
+    background: #fbfcfd;
+}
+
+#analysis .analysis-chart-legend span {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+#analysis .analysis-chart-legend i {
+    width: 18px;
+    height: 4px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+}
+
+/* Орієнтир для аналізу */
+
+#analysis .analysis-observation-note {
+    margin-top: 22px;
+    padding: 18px 20px;
+    border: 1px solid #d7dfb2;
+    border-left: 5px solid #9a9e35;
+    border-radius: var(--radius-medium);
+    background: #fbfced;
+}
+
+#analysis .analysis-observation-note strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+#analysis .analysis-observation-note p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+/* Форма висновків */
+
+#analysis .analysis-form {
+    display: grid;
+    min-width: 0;
+    gap: 18px;
+    margin-top: 22px;
+    padding: 22px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+#analysis .analysis-form-heading h3 {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+}
+
+#analysis .analysis-form-heading .section-number {
+    margin-bottom: 4px;
+}
+
+#analysis .analysis-form-heading p:last-child {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+#analysis .analysis-question {
+    display: grid;
+    gap: 9px;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+#analysis .analysis-question textarea {
+    width: 100%;
+    min-height: 112px;
+    padding: 13px 14px;
+    resize: vertical;
+    border: 1px solid #b8ccd8;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text);
+    font-weight: 400;
+    line-height: 1.55;
+}
+
+#analysis .analysis-question textarea:focus-visible {
+    border-color: var(--analysis-copper);
+    outline: 3px solid rgba(107, 56, 37, 0.15);
+}
+
+#analysis .analysis-question > small {
+    justify-self: end;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+#analysis .analysis-question > small strong {
+    color: var(--color-primary);
+}
+
+/* Кнопки форми */
+
+#analysis .analysis-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+#analysis .analysis-button {
+    min-height: 44px;
+    padding: 10px 17px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#analysis .analysis-button-primary {
+    background: var(--analysis-copper);
+    color: #ffffff;
+}
+
+#analysis .analysis-button-danger {
+    border-color: #e1b6b6;
+    background: #fff8f8;
+    color: #8b2727;
+}
+
+#analysis .analysis-button:hover,
+#analysis .analysis-button:focus-visible {
+    filter: brightness(0.95);
+}
+
+/* Стан форми */
+
+#analysis .analysis-message {
+    margin: 0;
+    padding: 13px 15px;
+    border-left: 5px solid #8da4b2;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text-muted);
+}
+
+#analysis .analysis-message[data-state="warning"] {
+    border-left-color: var(--analysis-warning);
+    background: #fff8e9;
+    color: #805300;
+}
+
+#analysis .analysis-message[data-state="success"] {
+    border-left-color: var(--analysis-success);
+    background: #edf9f3;
+    color: #096844;
+}
+
+/* Завершення аналізу */
+
+#analysis .analysis-complete-panel {
+    margin-top: 18px;
+    padding: 22px;
+    border: 1px solid #9bcbb3;
+    border-left: 5px solid #23845d;
+    border-radius: var(--radius-medium);
+    background: #edf8f2;
+}
+
+#analysis .analysis-complete-panel[hidden] {
+    display: none;
+}
+
+#analysis .analysis-complete-panel strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #17613e;
+    font-size: 1.03rem;
+}
+
+#analysis .analysis-complete-panel p {
+    margin: 0 0 15px;
+    color: #315f4a;
+}
+
+#analysis .analysis-complete-panel a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border-radius: var(--radius-small);
+    background: #23845d;
+    color: #ffffff;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+#analysis .analysis-complete-panel a:hover,
+#analysis .analysis-complete-panel a:focus-visible {
+    filter: brightness(0.95);
+}
+
+/* Адаптивність */
+
+@media (max-width: 820px) {
+    #analysis .analysis-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    #analysis .analysis-lock-overlay {
+        padding: 14px;
+    }
+
+    #analysis .analysis-lock-card {
+        min-height: 190px;
+        padding: 20px;
+    }
+
+    #analysis .analysis-source-note,
+    #analysis .analysis-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    #analysis .analysis-source-note > span {
+        width: fit-content;
+        white-space: normal;
+    }
+
+    #analysis .analysis-summary-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #analysis .analysis-chart-card,
+    #analysis .analysis-form {
+        padding: 15px;
+    }
+
+    #analysis .analysis-chart-heading {
+        display: grid;
+    }
+
+    #analysis .analysis-chart-heading > span {
+        width: fit-content;
+    }
+
+    #analysis .analysis-chart {
+        overflow-x: auto;
+    }
+
+    #analysis .analysis-chart-svg {
+        width: 760px;
+        min-width: 760px;
+        max-width: none;
+    }
+
+    #analysis .analysis-button {
+        width: 100%;
+    }
+}
+
+/* Зменшення анімацій */
+
+@media (prefers-reduced-motion: reduce) {
+    #analysis #analysis-interactive-area,
+    #analysis .analysis-chart-line,
+    #analysis .analysis-chart-point {
+        transition: none;
+    }
+}

@@ -1,0 +1,1151 @@
+#stand {
+    --stand-copper: #6b3825;
+    --stand-copper-dark: #472317;
+    --stand-copper-soft: #f8eee9;
+    --stand-water: #7bc5dc;
+    --stand-water-dark: #267a96;
+
+    border-top: 5px solid var(--stand-copper);
+}
+
+/* Загальні обмеження */
+
+#stand *,
+#stand *::before,
+#stand *::after {
+    box-sizing: border-box;
+}
+
+#stand button {
+    max-width: 100%;
+}
+
+/* Інформаційне повідомлення */
+
+#stand .stand-notice {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid #ddc9bd;
+    border-left: 5px solid var(--stand-copper);
+    border-radius: var(--radius-medium);
+    background: #fcf7f4;
+}
+
+#stand .stand-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+#stand .stand-notice p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+/* Блокування стенда */
+
+#stand .stand-workspace {
+    position: relative;
+    min-width: 0;
+    min-height: 300px;
+}
+
+#stand .stand-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+#stand .stand-lock-overlay[hidden] {
+    display: none;
+}
+
+#stand .stand-lock-content {
+    width: min(100%, 520px);
+    padding: 26px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+#stand .stand-lock-content strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+#stand .stand-lock-content p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+}
+
+#stand .stand-lock-link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--color-accent);
+    color: #ffffff;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none;
+}
+
+#stand .stand-lock-link:hover,
+#stand .stand-lock-link:focus-visible {
+    filter: brightness(0.94);
+}
+
+#stand #stand-interactive-area {
+    min-width: 0;
+    transition:
+        opacity 180ms ease,
+        filter 180ms ease;
+}
+
+#stand #stand-interactive-area[inert] {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+    filter: blur(2px);
+}
+
+/* Основне компонування */
+
+#stand .stand-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    width: 100%;
+    min-width: 0;
+    align-items: start;
+}
+
+#stand .stand-visual-panel,
+#stand .stand-information,
+#stand .stand-component-navigation,
+#stand .stand-progress-panel {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface);
+}
+
+#stand .stand-visual-panel {
+    padding: 20px;
+}
+
+#stand .stand-panel-heading {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+#stand .stand-panel-heading p {
+    margin: 0 0 4px;
+    color: var(--stand-copper);
+    font-size: 0.79rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+#stand .stand-panel-heading h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.05rem;
+}
+
+#stand .stand-power-state {
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    border: 1px solid #d2dbe0;
+    border-radius: 999px;
+    background: #f3f6f8;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 750;
+}
+
+/* Робоча поверхня */
+
+#stand .stand-bench {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid #cbd8de;
+    border-radius: 18px;
+    background:
+        linear-gradient(180deg,
+            #f4f8fa 0 78%,
+            #e1e7ea 78% 80%,
+            #d1dadd 80% 100%);
+}
+
+/*
+ * Ключове виправлення.
+ * Електрична і нагрівальна панелі більше
+ * не розміщуються в одному рядку.
+ */
+
+#stand .stand-installation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    align-items: start;
+}
+
+/* Електрична панель */
+
+#stand .stand-electrical-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #b9cbd4;
+    border-radius: 15px;
+    background:
+        linear-gradient(145deg,
+            #edf3f6,
+            #ffffff);
+}
+
+#stand .stand-control-row {
+    display: grid;
+    grid-template-columns:
+        minmax(190px, 0.85fr) 38px minmax(280px, 1.15fr);
+    gap: 14px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+}
+
+#stand .stand-control-row>*,
+#stand .stand-meter-panel>*,
+#stand .stand-heating-panel>* {
+    min-width: 0;
+    max-width: 100%;
+}
+
+#stand .stand-control-device,
+#stand .stand-meter,
+#stand .stand-heater-type,
+#stand .stand-water-system,
+#stand .stand-tool {
+    min-width: 0;
+    font: inherit;
+    cursor: pointer;
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+#stand .stand-control-device {
+    display: grid;
+    width: 100%;
+    min-height: 130px;
+    align-content: center;
+    justify-items: center;
+    gap: 7px;
+    padding: 14px;
+    border: 2px solid #9aadb6;
+    border-radius: 13px;
+    background: #ffffff;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+#stand .stand-control-device .stand-device-code {
+    display: grid;
+    width: auto;
+    min-width: 74px;
+    height: 34px;
+    place-items: center;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+#stand .stand-control-device strong {
+    font-size: 0.92rem;
+}
+
+#stand .stand-control-device small {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+}
+
+#stand .stand-switch-state {
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #e8edf0;
+    color: #6c7d86;
+    font-size: 0.7rem;
+    font-weight: 750;
+}
+
+#stand .stand-connection-arrow {
+    display: grid;
+    width: 38px;
+    min-width: 0;
+    place-items: center;
+    align-self: center;
+    color: var(--stand-copper);
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+#stand .stand-latr {
+    min-width: 0;
+    border-color: #b78369;
+    background: var(--stand-copper-soft);
+}
+
+#stand .stand-latr-scale {
+    position: relative;
+    display: block;
+    width: min(100%, 260px);
+    height: 10px;
+    border-radius: 999px;
+    background:
+        linear-gradient(90deg,
+            #d8c2b7,
+            var(--stand-copper));
+}
+
+#stand .stand-latr-scale i {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: var(--stand-copper-dark);
+    box-shadow: 0 2px 5px rgba(50, 25, 17, 0.25);
+    transform: translate(-50%, -50%);
+}
+
+/* Вимірювальні прилади */
+
+#stand .stand-meter-panel {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+}
+
+#stand .stand-meter {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 3px 10px;
+    width: 100%;
+    min-width: 0;
+    min-height: 84px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 2px solid #8da3ad;
+    border-radius: 12px;
+    background: #fdfefe;
+    color: var(--color-primary);
+    text-align: left;
+    box-shadow: 0 5px 12px rgba(20, 47, 63, 0.08);
+}
+
+#stand .stand-meter .stand-device-code {
+    grid-row: 1 / 3;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+#stand .stand-meter-display {
+    min-width: 0;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.88rem;
+    font-weight: 800;
+}
+
+#stand .stand-meter small {
+    min-width: 0;
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    white-space: normal;
+}
+
+#stand .stand-supply-label {
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+    align-items: center;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+#stand .stand-supply-dot {
+    flex: 0 0 auto;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #aeb8bd;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+}
+
+/* Нагрівальна панель */
+
+#stand .stand-heating-panel {
+    display: grid;
+    grid-template-columns:
+        minmax(360px, 1.15fr) minmax(310px, 0.85fr);
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+    padding: 16px;
+    border: 1px solid #d3b8a9;
+    border-radius: 15px;
+    background:
+        linear-gradient(145deg,
+            #fffaf7,
+            #f4e7df);
+}
+
+#stand .stand-heater-selection {
+    display: grid;
+    min-width: 0;
+    align-content: center;
+}
+
+#stand .stand-heater-selection>p {
+    margin: 0 0 10px;
+    color: var(--stand-copper-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+#stand .stand-heater-buttons {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+}
+
+#stand .stand-heater-type {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 128px;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    padding: 11px;
+    border: 2px solid #c8a795;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+#stand .stand-electrode-symbol {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 50% 50% 44% 44%;
+    background:
+        linear-gradient(160deg,
+            #b96d45,
+            var(--stand-copper-dark));
+    color: #ffffff;
+    font-weight: 850;
+    box-shadow: 0 4px 8px rgba(71, 35, 23, 0.22);
+}
+
+#stand .stand-heater-type strong {
+    font-size: 0.84rem;
+}
+
+#stand .stand-heater-type small {
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    line-height: 1.35;
+}
+
+/* Посудина з водою */
+
+#stand .stand-water-system {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    align-items: center;
+    padding: 14px;
+    border: 2px solid #9dbfca;
+    border-radius: 14px;
+    background: #ffffff;
+    color: var(--color-text);
+    text-align: left;
+}
+
+#stand .stand-vessel {
+    position: relative;
+    display: block;
+    width: 92px;
+    height: 112px;
+    overflow: hidden;
+    border: 4px solid #667983;
+    border-top: 0;
+    border-radius: 4px 4px 21px 21px;
+    background: #f6fbfd;
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.7),
+        0 6px 12px rgba(32, 70, 89, 0.12);
+}
+
+#stand .stand-vessel::before {
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: calc(100% + 8px);
+    height: 5px;
+    border-radius: 999px;
+    background: #667983;
+    content: "";
+}
+
+#stand .stand-vessel-water {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 68%;
+    background:
+        linear-gradient(180deg,
+            rgba(154, 220, 238, 0.82),
+            var(--stand-water));
+}
+
+#stand .stand-vessel-water::before {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    border-radius: 50%;
+    background: #a6deed;
+    content: "";
+}
+
+#stand .stand-vessel-electrode {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    z-index: 2;
+    width: 14px;
+    height: 78px;
+    border-radius: 5px 5px 9px 9px;
+    background:
+        linear-gradient(90deg,
+            #7f4229,
+            #c17b53 48%,
+            #6b3825);
+    transform: translateX(-50%);
+}
+
+#stand .stand-vessel-electrode::after {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 32px;
+    height: 22px;
+    background: var(--stand-copper);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    content: "";
+    transform: translateX(-50%);
+}
+
+#stand .stand-water-description {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+#stand .stand-water-description strong {
+    color: var(--color-primary);
+    font-size: 0.91rem;
+}
+
+#stand .stand-water-description small {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+#stand .stand-temperature-display {
+    width: fit-content;
+    margin-top: 4px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: #173c55;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+/* Секундомір */
+
+#stand .stand-instruments {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+}
+
+#stand .stand-tool {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #b9c9d0;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--color-text);
+    text-align: left;
+}
+
+#stand .stand-tool-icon {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 64px;
+    height: 46px;
+    place-items: center;
+    padding: 0 8px;
+    border-radius: 9px;
+    background: #183a4e;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.83rem;
+    font-weight: 800;
+}
+
+#stand .stand-tool strong,
+#stand .stand-tool small {
+    display: block;
+}
+
+#stand .stand-tool strong {
+    margin-bottom: 3px;
+    color: var(--color-primary);
+}
+
+#stand .stand-tool small {
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+}
+
+/* Функціональний шлях */
+
+#stand .stand-functional-path {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px dashed #aebfc7;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+#stand .stand-functional-path b {
+    color: var(--stand-copper);
+}
+
+#stand .stand-voltage-note {
+    margin: -4px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+#stand .stand-visual-caption {
+    margin: 14px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    text-align: center;
+}
+
+/* Відомості про елемент */
+
+#stand .stand-information {
+    display: grid;
+    grid-template-columns:
+        minmax(250px, 0.75fr) minmax(0, 1.75fr);
+    gap: 22px;
+    width: 100%;
+    min-width: 0;
+    align-items: start;
+    padding: 22px;
+    background: var(--color-surface-soft);
+}
+
+#stand .stand-information-main {
+    min-width: 0;
+    min-height: 0;
+}
+
+#stand .stand-information-label {
+    margin: 0 0 7px;
+    color: var(--stand-copper);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+#stand .stand-information h3 {
+    margin: 0 0 10px;
+    color: var(--color-primary);
+    font-size: 1.13rem;
+}
+
+#stand .stand-information-main>p:not(.stand-information-label) {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+#stand .stand-properties {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    min-width: 0;
+    margin: 0;
+}
+
+#stand .stand-properties div {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface);
+}
+
+#stand .stand-properties dt {
+    margin-bottom: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+#stand .stand-properties dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+/* Навігація компонентами */
+
+#stand .stand-component-navigation,
+#stand .stand-progress-panel {
+    margin-top: 18px;
+    padding: 20px;
+}
+
+#stand .stand-component-navigation h3,
+#stand .stand-progress-panel h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+
+#stand .stand-component-buttons {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+#stand .stand-component-buttons button {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    padding: 10px 40px 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+#stand .stand-component-buttons button:hover,
+#stand .stand-component-buttons button:focus-visible {
+    border-color: var(--color-accent);
+}
+
+#stand .stand-component-buttons button.is-selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-primary);
+}
+
+/* Позначка переглянутого елемента за зразком ЛР8 */
+
+#stand .stand-component-buttons button.is-visited::after {
+    position: absolute;
+    top: 50%;
+    right: 11px;
+
+    display: grid;
+    width: 21px;
+    height: 21px;
+    place-items: center;
+
+    border: 1px solid #105b4c;
+    border-radius: 50%;
+    background: #187a65;
+    color: #ffffff;
+
+    content: "✓";
+    font-family: Arial, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 900;
+    line-height: 1;
+
+    opacity: 1;
+    box-shadow:
+        0 1px 3px rgba(12, 62, 52, 0.28);
+
+    transform: translateY(-50%);
+}
+
+/* Вибраний і вже переглянутий елемент */
+
+#stand .stand-component-buttons button.is-selected.is-visited::after {
+    border-color: #0d4f42;
+    background: #146b59;
+}
+
+/* Стани елементів */
+
+#stand .stand-control-device:hover,
+#stand .stand-control-device:focus-visible,
+#stand .stand-control-device.is-selected,
+#stand .stand-meter:hover,
+#stand .stand-meter:focus-visible,
+#stand .stand-meter.is-selected,
+#stand .stand-heater-type:hover,
+#stand .stand-heater-type:focus-visible,
+#stand .stand-heater-type.is-selected,
+#stand .stand-water-system:hover,
+#stand .stand-water-system:focus-visible,
+#stand .stand-water-system.is-selected,
+#stand .stand-tool:hover,
+#stand .stand-tool:focus-visible,
+#stand .stand-tool.is-selected {
+    border-color: var(--color-accent);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(14, 135, 168, 0.18);
+    transform: translateY(-1px);
+}
+
+#stand .stand-control-device.is-visited,
+#stand .stand-meter.is-visited,
+#stand .stand-heater-type.is-visited,
+#stand .stand-water-system.is-visited,
+#stand .stand-tool.is-visited {
+    background: #f0faf6;
+}
+
+/* Прогрес */
+
+#stand .stand-progress-heading {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#stand .stand-progress-heading p {
+    margin: 5px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+#stand .stand-progress-heading>strong {
+    color: var(--stand-copper);
+    font-size: 1.05rem;
+}
+
+#stand .stand-progress-track {
+    height: 11px;
+    margin-top: 15px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dfe8ec;
+}
+
+#stand .stand-progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(90deg,
+            var(--stand-copper),
+            #b96d45);
+    transition: width 180ms ease;
+}
+
+#stand .stand-progress-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+#stand .stand-ready-button,
+#stand .stand-reset-button {
+    min-height: 43px;
+    padding: 10px 15px;
+    border-radius: var(--radius-small);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+#stand .stand-ready-button {
+    border: 1px solid var(--stand-copper);
+    background: var(--stand-copper);
+    color: #ffffff;
+}
+
+#stand .stand-ready-button:hover:not(:disabled),
+#stand .stand-ready-button:focus-visible:not(:disabled) {
+    filter: brightness(1.08);
+}
+
+#stand .stand-ready-button:disabled {
+    border-color: #aebdc4;
+    background: #dce5e9;
+    color: #718089;
+    cursor: not-allowed;
+}
+
+#stand .stand-reset-button {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+#stand .stand-reset-button:hover,
+#stand .stand-reset-button:focus-visible {
+    border-color: var(--color-accent);
+}
+
+#stand .stand-status {
+    margin: 14px 0 0;
+    padding: 11px 13px;
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+#stand .stand-status-ready {
+    background: #fff4e8;
+    color: #7b451d;
+}
+
+#stand .stand-status-success {
+    background: #eaf7f0;
+    color: #17613e;
+}
+
+/* Адаптивність */
+
+@media (max-width: 900px) {
+    #stand .stand-heating-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-information {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-properties {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    #stand .stand-component-buttons {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+
+    #stand .stand-panel-heading,
+    #stand .stand-progress-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    #stand .stand-power-state {
+        align-self: flex-start;
+    }
+
+    #stand .stand-control-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-connection-arrow {
+        display: none;
+    }
+
+    #stand .stand-meter-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-properties {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    #stand .stand-lock-overlay {
+        padding: 14px;
+    }
+
+    #stand .stand-visual-panel,
+    #stand .stand-information,
+    #stand .stand-component-navigation,
+    #stand .stand-progress-panel {
+        padding: 15px;
+    }
+
+    #stand .stand-bench,
+    #stand .stand-electrical-panel,
+    #stand .stand-heating-panel {
+        padding: 12px;
+    }
+
+    #stand .stand-heater-buttons {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-water-system {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        height: auto;
+        text-align: center;
+    }
+
+    #stand .stand-water-description {
+        width: 100%;
+        justify-items: center;
+        text-align: center;
+    }
+
+    #stand .stand-component-buttons {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #stand .stand-progress-actions,
+    #stand .stand-ready-button,
+    #stand .stand-reset-button {
+        width: 100%;
+    }
+
+    #stand .stand-functional-path b {
+        display: none;
+    }
+
+    #stand .stand-functional-path span {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #stand #stand-interactive-area,
+    #stand .stand-control-device,
+    #stand .stand-meter,
+    #stand .stand-heater-type,
+    #stand .stand-water-system,
+    #stand .stand-tool,
+    #stand .stand-progress-track span {
+        transition: none;
+    }
+}

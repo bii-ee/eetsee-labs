@@ -1,0 +1,638 @@
+<section id="experiment" class="content-section">
+    <p class="section-number">Інтерактивний модуль</p>
+
+    <h2>Проведення дослідів</h2>
+
+    <p class="lead">
+        Для двох електродних нагрівальних елементів виконайте досліди
+        за напруги 100, 150 і 200 В. Під час кожного досліду
+        зафіксуйте фактичну напругу, силу струму, активну потужність
+        і тривалість нагрівання води до температури кипіння.
+    </p>
+
+    <div class="experiment-model-notice">
+        <strong>Навчальна модель</strong>
+
+        <p>
+            Час нагрівання у симуляції прискорено. Для всіх дослідів
+            використовуються однаковий об’єм води та однакова
+            початкова температура.
+        </p>
+    </div>
+
+    <div class="experiment-access-shell">
+        <div
+            id="experiment-lock-overlay"
+            class="experiment-lock-overlay"
+            role="status"
+        >
+            <div class="experiment-lock-card">
+                <strong>Доступ до проведення дослідів заблоковано</strong>
+
+                <p>
+                    Спочатку перегляньте всі елементи віртуального
+                    стенда та підтвердьте готовність до роботи.
+                </p>
+
+                <a class="experiment-lock-link" href="#stand">
+                    Перейти до віртуального стенда
+                </a>
+            </div>
+        </div>
+
+        <div id="experiment-interactive-area">
+            <div class="experiment-status-panel">
+                <div>
+                    <span class="experiment-status-label">
+                        Стан установки
+                    </span>
+
+                    <strong
+                        id="experiment-power-state"
+                        class="experiment-power-state"
+                    >
+                        Вимкнена
+                    </strong>
+                </div>
+
+                <div class="experiment-status-details">
+                    <span>Поточний етап</span>
+
+                    <strong id="experiment-phase-label">
+                        Вибір параметрів досліду
+                    </strong>
+                </div>
+
+                <button
+                    id="experiment-power-button"
+                    class="experiment-power-button"
+                    type="button"
+                    disabled
+                >
+                    Увімкнути установку
+                </button>
+            </div>
+
+            <div class="experiment-layout">
+                <div class="experiment-control-panel">
+                    <div class="experiment-control-section">
+                        <h3>1. Нагрівальний елемент</h3>
+
+                        <p>
+                            Виберіть конструкцію електродного нагрівача,
+                            для якої буде виконано дослід.
+                        </p>
+
+                        <div
+                            class="experiment-heater-buttons"
+                            role="group"
+                            aria-label="Вибір електродного нагрівача"
+                        >
+                            <button
+                                class="experiment-heater-button is-selected"
+                                type="button"
+                                data-heater-id="heater-1"
+                                aria-pressed="true"
+                            >
+                                <span class="experiment-heater-number">1</span>
+
+                                <span class="experiment-heater-content">
+                                    <strong>Нагрівач №1</strong>
+                                    <small>
+                                        Електродний елемент першого типу
+                                    </small>
+                                </span>
+                            </button>
+
+                            <button
+                                class="experiment-heater-button"
+                                type="button"
+                                data-heater-id="heater-2"
+                                aria-pressed="false"
+                            >
+                                <span class="experiment-heater-number">2</span>
+
+                                <span class="experiment-heater-content">
+                                    <strong>Нагрівач №2</strong>
+                                    <small>
+                                        Електродний елемент другого типу
+                                    </small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experiment-control-section">
+                        <h3>2. Напруга досліду</h3>
+
+                        <p>
+                            Досліди виконуються послідовно за напруги
+                            100, 150 і 200 В.
+                        </p>
+
+                        <div
+                            class="experiment-voltage-buttons"
+                            role="group"
+                            aria-label="Вибір напруги досліду"
+                        >
+                            <button
+                                class="experiment-voltage-button is-selected"
+                                type="button"
+                                data-voltage="100"
+                                aria-pressed="true"
+                            >
+                                <strong>100 В</strong>
+                                <small>Дослід 1</small>
+                            </button>
+
+                            <button
+                                class="experiment-voltage-button"
+                                type="button"
+                                data-voltage="150"
+                                aria-pressed="false"
+                            >
+                                <strong>150 В</strong>
+                                <small>Дослід 2</small>
+                            </button>
+
+                            <button
+                                class="experiment-voltage-button"
+                                type="button"
+                                data-voltage="200"
+                                aria-pressed="false"
+                            >
+                                <strong>200 В</strong>
+                                <small>Дослід 3</small>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="experiment-conditions">
+                        <h3>Умови досліду</h3>
+
+                        <dl>
+                            <div>
+                                <dt>Теплоносій</dt>
+                                <dd>Вода</dd>
+                            </div>
+
+                            <div>
+                                <dt>Об’єм води</dt>
+                                <dd id="experiment-water-volume">
+                                    Не задано
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt>Початкова температура</dt>
+                                <dd id="experiment-initial-temperature">
+                                    20 °C
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt>Температура завершення</dt>
+                                <dd id="experiment-boiling-temperature">
+                                    100 °C
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <div class="experiment-current-task">
+                        <span>Поточне завдання</span>
+
+                        <strong id="experiment-task-title">
+                            Дані досліду очікують погодження
+                        </strong>
+
+                        <p id="experiment-task-description">
+                            Для вибраного нагрівача і напруги ще не
+                            внесено погоджені значення U, I, P і t.
+                        </p>
+                    </div>
+
+                    <button
+                        id="experiment-action-button"
+                        class="experiment-action-button"
+                        type="button"
+                        disabled
+                    >
+                        Дані не погоджено
+                    </button>
+
+                    <p
+                        id="experiment-message"
+                        class="experiment-message"
+                        data-type="warning"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Експериментальні значення для вибраного досліду
+                        ще не погоджені.
+                    </p>
+                </div>
+
+                <div class="experiment-visual-panel">
+                    <div class="experiment-visual-header">
+                        <div>
+                            <span>Віртуальна установка</span>
+
+                            <strong id="experiment-current-run">
+                                Нагрівач 1, напруга 100 В
+                            </strong>
+                        </div>
+
+                        <span id="experiment-target-voltage-label">
+                            U<sub>зад</sub> = 100 В
+                        </span>
+                    </div>
+
+                    <div class="experiment-installation">
+                        <div class="experiment-power-chain">
+                            <div class="experiment-device-card">
+                                <span class="experiment-device-code">
+                                    ~220 В
+                                </span>
+
+                                <strong>Живлення</strong>
+                                <small>Вимикач K</small>
+
+                                <span
+                                    id="experiment-switch-state"
+                                    class="experiment-device-state"
+                                >
+                                    Вимкнено
+                                </span>
+                            </div>
+
+                            <span
+                                class="experiment-connection-arrow"
+                                aria-hidden="true"
+                            >
+                                →
+                            </span>
+
+                            <div class="experiment-device-card experiment-latr-card">
+                                <span class="experiment-device-code">
+                                    ЛАТР
+                                </span>
+
+                                <strong>Регулювання напруги</strong>
+
+                                <label for="experiment-latr-control">
+                                    Положення регулятора
+                                </label>
+
+                                <input
+                                    id="experiment-latr-control"
+                                    type="range"
+                                    min="0"
+                                    max="220"
+                                    value="0"
+                                    step="1"
+                                    disabled
+                                >
+
+                                <output
+                                    id="experiment-latr-output"
+                                    for="experiment-latr-control"
+                                >
+                                    0 В
+                                </output>
+                            </div>
+                        </div>
+
+                        <div
+                            class="experiment-measurement-panel"
+                            aria-label="Покази електровимірювальних приладів"
+                        >
+                            <article class="experiment-meter-card">
+                                <span class="instrument-code">PV</span>
+
+                                <strong>
+                                    <span id="experiment-voltage-reading">0</span>
+                                    В
+                                </strong>
+
+                                <small>Вольтметр</small>
+                            </article>
+
+                            <article class="experiment-meter-card">
+                                <span class="instrument-code">PA</span>
+
+                                <strong>
+                                    <span id="experiment-current-reading">0</span>
+                                    А
+                                </strong>
+
+                                <small>Амперметр</small>
+                            </article>
+
+                            <article class="experiment-meter-card">
+                                <span class="instrument-code">PW</span>
+
+                                <strong>
+                                    <span id="experiment-power-reading">0</span>
+                                    Вт
+                                </strong>
+
+                                <small>Ватметр</small>
+                            </article>
+                        </div>
+
+                        <div
+                            id="experiment-heating-system"
+                            class="experiment-heating-system"
+                        >
+                            <div class="experiment-vessel-area">
+                                <span class="experiment-vessel" aria-hidden="true">
+                                    <span class="experiment-water"></span>
+                                    <span class="experiment-electrode"></span>
+                                    <span class="experiment-bubble-field"></span>
+                                </span>
+                            </div>
+
+                            <div class="experiment-heating-workspace">
+                                <div class="experiment-heating-topline">
+                                    <div class="experiment-heating-description">
+                                        <span>Установлений елемент</span>
+
+                                        <strong id="experiment-active-heater-label">
+                                            Нагрівач 1
+                                        </strong>
+
+                                        <small id="experiment-active-heater-description">
+                                            Електродний нагрівальний елемент
+                                            першого типу
+                                        </small>
+                                    </div>
+
+                                    <div class="experiment-heating-progress">
+                                        <div>
+                                            <span>Перебіг нагрівання</span>
+
+                                            <strong id="experiment-progress-label">
+                                                Очікується
+                                            </strong>
+                                        </div>
+
+                                        <div
+                                            class="experiment-heating-track"
+                                            role="progressbar"
+                                            aria-label="Перебіг нагрівання води"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            aria-valuenow="0"
+                                        >
+                                            <span id="experiment-heating-bar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="experiment-heating-controls">
+                                    <div class="experiment-temperature-display">
+                                        <span>Температура води</span>
+
+                                        <strong>
+                                            <span id="experiment-temperature-reading">20</span>
+                                            °C
+                                        </strong>
+                                    </div>
+
+                                    <div class="experiment-stopwatch">
+                                        <span
+                                            id="experiment-stopwatch-reading"
+                                            class="experiment-stopwatch-display"
+                                        >
+                                            00:00
+                                        </span>
+
+                                        <span class="experiment-stopwatch-description">
+                                            <strong>Секундомір</strong>
+
+                                            <small id="experiment-stopwatch-note">
+                                                Очікування початку нагрівання
+                                            </small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="experiment-live-chart">
+                        <div class="experiment-live-chart-header">
+                            <div>
+                                <strong>
+                                    Температура води під час нагрівання
+                                </strong>
+
+                                <small id="experiment-chart-status">
+                                    Дані досліду очікують погодження
+                                </small>
+                            </div>
+
+                            <span>T = f(t)</span>
+                        </div>
+
+                        <svg
+                            viewBox="0 10 680 232"
+                            role="img"
+                            aria-label="Залежність температури води від часу нагрівання"
+                        >
+                            <rect
+                                class="temperature-plot-background"
+                                x="64"
+                                y="24"
+                                width="584"
+                                height="174"
+                                rx="4"
+                            ></rect>
+
+                            <g class="temperature-grid">
+                                <line x1="64" y1="24" x2="648" y2="24"></line>
+                                <line x1="64" y1="67.5" x2="648" y2="67.5"></line>
+                                <line x1="64" y1="111" x2="648" y2="111"></line>
+                                <line x1="64" y1="154.5" x2="648" y2="154.5"></line>
+                                <line x1="64" y1="198" x2="648" y2="198"></line>
+
+                                <line x1="64" y1="24" x2="64" y2="198"></line>
+                                <line x1="210" y1="24" x2="210" y2="198"></line>
+                                <line x1="356" y1="24" x2="356" y2="198"></line>
+                                <line x1="502" y1="24" x2="502" y2="198"></line>
+                                <line x1="648" y1="24" x2="648" y2="198"></line>
+                            </g>
+
+                            <line
+                                class="temperature-axis"
+                                x1="64"
+                                y1="198"
+                                x2="648"
+                                y2="198"
+                            ></line>
+
+                            <line
+                                class="temperature-axis"
+                                x1="64"
+                                y1="24"
+                                x2="64"
+                                y2="198"
+                            ></line>
+
+                            <text
+                                id="experiment-chart-y-max"
+                                class="temperature-axis-value"
+                                x="53"
+                                y="29"
+                                text-anchor="end"
+                            >
+                                100
+                            </text>
+
+                            <text
+                                id="experiment-chart-y-min"
+                                class="temperature-axis-value"
+                                x="53"
+                                y="202"
+                                text-anchor="end"
+                            >
+                                20
+                            </text>
+
+                            <text
+                                class="temperature-axis-value"
+                                x="64"
+                                y="219"
+                                text-anchor="middle"
+                            >
+                                0
+                            </text>
+
+                            <text
+                                id="experiment-chart-x-max"
+                                class="temperature-axis-value"
+                                x="648"
+                                y="219"
+                                text-anchor="end"
+                            >
+                                0
+                            </text>
+
+                            <text
+                                class="temperature-axis-title"
+                                x="20"
+                                y="111"
+                                text-anchor="middle"
+                                transform="rotate(-90 20 111)"
+                            >
+                                T, °C
+                            </text>
+
+                            <text
+                                class="temperature-axis-title"
+                                x="356"
+                                y="234"
+                                text-anchor="middle"
+                            >
+                                t, хв
+                            </text>
+
+                            <polyline
+                                id="experiment-temperature-line"
+                                class="temperature-line"
+                                points=""
+                            ></polyline>
+
+                            <circle
+                                id="experiment-temperature-point"
+                                class="temperature-point"
+                                cx="64"
+                                cy="198"
+                                r="5"
+                                hidden
+                            ></circle>
+                        </svg>
+
+                        <div class="experiment-chart-legend">
+                            <span>
+                                <i class="experiment-chart-line-sample"></i>
+                                Температура води
+                            </span>
+
+                            <span>Прискорена часова шкала</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="experiment-table-panel">
+                <div class="experiment-table-header">
+                    <div>
+                        <p class="section-number">Таблиця 5.1</p>
+
+                        <h3>Результати експериментальних вимірювань</h3>
+                    </div>
+
+                    <div class="experiment-progress">
+                        Завершено дослідів:
+                        <strong id="experiment-progress-value">0 із 6</strong>
+                    </div>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="experiment-table">
+                        <colgroup>
+                            <col class="experiment-column-heater">
+                            <col class="experiment-column-target-voltage">
+                            <col class="experiment-column-voltage">
+                            <col class="experiment-column-current">
+                            <col class="experiment-column-power">
+                            <col class="experiment-column-initial-temperature">
+                            <col class="experiment-column-final-temperature">
+                            <col class="experiment-column-time">
+                            <col class="experiment-column-status">
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Нагрівач</th>
+                                <th scope="col">U<sub>зад</sub>, В</th>
+                                <th scope="col">U, В</th>
+                                <th scope="col">I, А</th>
+                                <th scope="col">P, Вт</th>
+                                <th scope="col">T<sub>0</sub>, °C</th>
+                                <th scope="col">T<sub>к</sub>, °C</th>
+                                <th scope="col">t, хв</th>
+                                <th scope="col">Стан</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="experiment-table-body">
+                            <tr>
+                                <td colspan="9">
+                                    Експериментальні дані ще не отримано.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="experiment-table-actions">
+                    <p>
+                        Для переходу до розрахунків необхідно завершити
+                        всі шість дослідів.
+                    </p>
+
+                    <button
+                        id="experiment-reset-button"
+                        class="experiment-reset-button"
+                        type="button"
+                    >
+                        Очистити результати
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

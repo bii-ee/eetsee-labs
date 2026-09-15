@@ -1,0 +1,340 @@
+<section id="questions" class="content-section">
+    <p class="section-number">Завершальний етап</p>
+
+    <h2>Контрольні питання</h2>
+
+    <p class="lead">
+        Перевірте розуміння принципу дії електродного нагрівача,
+        призначення елементів лабораторної установки, впливу напруги
+        на електричні параметри та тривалість нагрівання води.
+    </p>
+
+    <div class="quiz-access-shell">
+        <div
+            id="quiz-lock-overlay"
+            class="quiz-lock-overlay"
+            role="status"
+        >
+            <div class="quiz-lock-card">
+                <strong>Доступ до контрольних питань заблоковано</strong>
+
+                <p>
+                    Спочатку сформулюйте та збережіть три висновки
+                    в розділі «Аналіз результатів експерименту».
+                </p>
+
+                <a class="quiz-lock-link" href="#analysis">
+                    Перейти до аналізу
+                </a>
+            </div>
+        </div>
+
+        <div id="quiz-interactive-area">
+            <div class="quiz-heading">
+                <div>
+                    <p class="section-number">Підсумковий тест</p>
+
+                    <h3>8 запитань з однією правильною відповіддю</h3>
+                </div>
+
+                <span>Прохідний результат: 6 із 8</span>
+            </div>
+
+            <div class="quiz-progress-panel">
+                <div>
+                    <span>Надано відповідей</span>
+                    <strong id="quiz-answered-count">0 із 8</strong>
+                </div>
+
+                <div
+                    class="quiz-progress-track"
+                    role="progressbar"
+                    aria-label="Заповнення контрольного тесту"
+                    aria-valuemin="0"
+                    aria-valuemax="8"
+                    aria-valuenow="0"
+                >
+                    <span id="quiz-progress-bar"></span>
+                </div>
+            </div>
+
+            <form id="quiz-form" novalidate>
+                <div id="quiz-list" class="quiz-list"></div>
+
+                <div class="quiz-actions">
+                    <button
+                        id="quiz-check-button"
+                        class="quiz-button quiz-button-primary"
+                        type="submit"
+                    >
+                        Перевірити відповіді
+                    </button>
+
+                    <button
+                        id="reset-quiz"
+                        class="quiz-button quiz-button-danger"
+                        type="button"
+                    >
+                        Почати тест заново
+                    </button>
+                </div>
+
+                <div
+                    id="quiz-result"
+                    class="quiz-result"
+                    data-state="default"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Дайте відповідь на всі 8 запитань.
+                </div>
+            </form>
+
+            <section
+                id="final-report-panel"
+                class="final-report-panel"
+                hidden
+            >
+                <div class="report-introduction">
+                    <p class="section-number">Підсумок роботи</p>
+
+                    <h3>Формування звіту студента</h3>
+
+                    <p>
+                        Вкажіть дані студента. Експериментальні
+                        вимірювання, розрахунки, графіки, висновки
+                        та результат тесту будуть додані автоматично.
+                    </p>
+                </div>
+
+                <div
+                    id="report-readiness"
+                    class="report-readiness"
+                    data-state="default"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+                <form
+                    id="student-report-form"
+                    class="student-report-form"
+                >
+                    <label class="report-field">
+                        <span>Прізвище, ім’я та по батькові</span>
+
+                        <input
+                            type="text"
+                            name="studentName"
+                            autocomplete="name"
+                            minlength="5"
+                            required
+                        >
+                    </label>
+
+                    <label class="report-field">
+                        <span>Навчальна група</span>
+
+                        <input
+                            type="text"
+                            name="studentGroup"
+                            required
+                        >
+                    </label>
+
+                    <label class="report-field">
+                        <span>Номер бригади</span>
+
+                        <input
+                            type="text"
+                            name="studentBrigade"
+                        >
+                    </label>
+
+                    <div class="report-controls">
+                        <div class="report-control-group">
+                            <button
+                                id="generate-report"
+                                class="report-button report-button-primary"
+                                type="submit"
+                            >
+                                Сформувати звіт
+                            </button>
+
+                            <button
+                                id="print-report"
+                                class="report-button report-button-secondary"
+                                type="button"
+                                disabled
+                            >
+                                Друк / Зберегти у PDF
+                            </button>
+                        </div>
+
+                        <button
+                            id="reset-lab"
+                            class="report-button report-button-danger"
+                            type="button"
+                        >
+                            Очистити всю роботу
+                        </button>
+                    </div>
+                </form>
+
+                <article
+                    id="report-document"
+                    class="report-document report-document-lab05"
+                    hidden
+                >
+                    <header class="report-document-header">
+                        <p>Лабораторна робота №5</p>
+
+                        <h3>
+                            Дослідження параметрів роботи
+                            електродного нагрівача
+                        </h3>
+                    </header>
+
+                    <dl class="report-meta">
+                        <div>
+                            <dt>Студент</dt>
+                            <dd id="report-student-name"></dd>
+                        </div>
+
+                        <div>
+                            <dt>Група</dt>
+                            <dd id="report-student-group"></dd>
+                        </div>
+
+                        <div>
+                            <dt>Бригада</dt>
+                            <dd id="report-student-brigade"></dd>
+                        </div>
+
+                        <div>
+                            <dt>Дата</dt>
+                            <dd id="report-date"></dd>
+                        </div>
+                    </dl>
+
+                    <section class="report-purpose">
+                        <h3>Мета роботи</h3>
+
+                        <p>
+                            Дослідити електричні параметри двох
+                            електродних нагрівальних елементів за
+                            напруги 100, 150 і 200 В, визначити
+                            тривалість нагрівання води до кипіння та
+                            розрахувати витрати електричної енергії.
+                        </p>
+                    </section>
+
+                    <section class="report-section report-scheme-section">
+                        <h3>Функціональна схема установки</h3>
+
+                        <div
+                            id="report-schematic"
+                            class="report-schematic"
+                        ></div>
+                    </section>
+
+                    <section class="report-section report-data-section">
+                        <h3>1. Експериментальні дані</h3>
+
+                        <dl class="report-condition-list">
+                            <div>
+                                <dt>Теплоносій</dt>
+                                <dd id="report-heat-carrier"></dd>
+                            </div>
+
+                            <div>
+                                <dt>Об’єм води</dt>
+                                <dd id="report-water-volume"></dd>
+                            </div>
+
+                            <div>
+                                <dt>Початкова температура</dt>
+                                <dd id="report-initial-temperature"></dd>
+                            </div>
+
+                            <div>
+                                <dt>Температура завершення</dt>
+                                <dd id="report-final-temperature"></dd>
+                            </div>
+                        </dl>
+
+                        <div class="report-table-wrapper">
+                            <table class="report-table report-experiment-table">
+                                <thead>
+                                    <tr>
+                                        <th>Нагрівач</th>
+                                        <th>U<sub>зад</sub>, В</th>
+                                        <th>U, В</th>
+                                        <th>I, А</th>
+                                        <th>P, Вт</th>
+                                        <th>T<sub>0</sub>, °C</th>
+                                        <th>T<sub>к</sub>, °C</th>
+                                        <th>t, хв</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="report-experiment-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="report-section">
+                        <h3>2. Результати розрахунків</h3>
+
+                        <p class="report-section-note">
+                            Витрати електричної енергії визначено за
+                            формулою W<sub>ел</sub> = P · t / 60.
+                        </p>
+
+                        <div class="report-table-wrapper">
+                            <table class="report-table report-calculation-table">
+                                <thead>
+                                    <tr>
+                                        <th>Нагрівач</th>
+                                        <th>U<sub>зад</sub>, В</th>
+                                        <th>P, Вт</th>
+                                        <th>t, хв</th>
+                                        <th>W<sub>ел</sub>, Вт·год</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="report-calculation-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="report-section report-charts-section">
+                        <h3>3. Графічне подання результатів</h3>
+
+                        <div
+                            id="report-charts"
+                            class="report-chart-list"
+                        ></div>
+                    </section>
+
+                    <section class="report-section report-conclusions-section">
+                        <h3>4. Висновки</h3>
+
+                        <div
+                            id="report-conclusions"
+                            class="report-conclusions"
+                        ></div>
+                    </section>
+
+                    <footer class="report-final-status">
+                        <strong>Лабораторну роботу виконано</strong>
+
+                        <span>
+                            Результат контрольного тесту:
+                            <strong id="report-quiz-score"></strong>
+                        </span>
+                    </footer>
+                </article>
+            </section>
+        </div>
+    </div>
+</section>
