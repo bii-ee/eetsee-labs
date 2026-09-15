@@ -1,0 +1,593 @@
+<section id="calculations" class="content-section">
+    <p class="section-number">Розрахунковий модуль</p>
+
+    <h2>Оброблення результатів дослідів</h2>
+
+    <p class="lead">
+        За результатами циклічного режиму визначте спожиту
+        електричну енергію, кількість теплоти, отриману водою,
+        та експериментальний термічний ККД індукційної плити.
+        Результати другого досліду передаються до розділу
+        аналізу для побудови порівняльних графіків.
+    </p>
+
+    <div class="calculations-access-shell">
+        <div
+            id="calculations-lock-overlay"
+            class="calculations-lock-overlay"
+            role="status"
+        >
+            <div class="calculations-lock-card">
+                <strong>
+                    Доступ до розрахунків заблоковано
+                </strong>
+
+                <p>
+                    Спочатку завершіть шість циклів першого
+                    досліду та дев’ять режимів другого досліду.
+                </p>
+
+                <a
+                    class="calculations-lock-link"
+                    href="#experiment"
+                >
+                    Перейти до проведення дослідів
+                </a>
+            </div>
+        </div>
+
+        <div id="calculations-interactive-area">
+            <div class="calculations-formulas">
+                <article class="calculation-formula-card">
+                    <span>Формула 1</span>
+
+                    <h3>
+                        Енергія за один увімкнений інтервал
+                    </h3>
+
+                    <div class="calculation-formula">
+                        <math
+                            xmlns="http://www.w3.org/1998/Math/MathML"
+                            display="block"
+                            aria-label="Енергія циклу дорівнює активній потужності, помноженій на тривалість увімкненого стану та поділеній на 3600"
+                        >
+                            <mrow>
+                                <msub>
+                                    <mi>W</mi>
+                                    <mi>i</mi>
+                                </msub>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <mrow>
+                                        <msub>
+                                            <mi>P</mi>
+                                            <mi>i</mi>
+                                        </msub>
+
+                                        <mo>·</mo>
+
+                                        <msub>
+                                            <mi>t</mi>
+
+                                            <mrow>
+                                                <mtext>увімк</mtext>
+                                                <mo>,</mo>
+                                                <mi>i</mi>
+                                            </mrow>
+                                        </msub>
+                                    </mrow>
+
+                                    <mn>3600</mn>
+                                </mfrac>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        <var>P<sub>i</sub></var> подається в кВт,
+                        <var>t<sub>увімк,i</sub></var> у секундах,
+                        результат <var>W<sub>i</sub></var>
+                        отримують у кВт·год.
+                    </p>
+                </article>
+
+                <article class="calculation-formula-card">
+                    <span>Формула 2</span>
+
+                    <h3>
+                        Загальна спожита електрична енергія
+                    </h3>
+
+                    <div class="calculation-formula">
+                        <math
+                            xmlns="http://www.w3.org/1998/Math/MathML"
+                            display="block"
+                            aria-label="Загальна електрична енергія дорівнює сумі енергій усіх циклів"
+                        >
+                            <mrow>
+                                <msub>
+                                    <mi>W</mi>
+                                    <mtext>ел</mtext>
+                                </msub>
+
+                                <mo>=</mo>
+
+                                <munderover>
+                                    <mo>∑</mo>
+
+                                    <mrow>
+                                        <mi>i</mi>
+                                        <mo>=</mo>
+                                        <mn>1</mn>
+                                    </mrow>
+
+                                    <mi>n</mi>
+                                </munderover>
+
+                                <msub>
+                                    <mi>W</mi>
+                                    <mi>i</mi>
+                                </msub>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Загальну електричну енергію визначають
+                        додаванням енергій усіх увімкнених
+                        інтервалів до моменту кипіння води.
+                    </p>
+                </article>
+
+                <article class="calculation-formula-card">
+                    <span>Формула 3</span>
+
+                    <h3>
+                        Кількість теплоти, отримана водою
+                    </h3>
+
+                    <div class="calculation-formula">
+                        <math
+                            xmlns="http://www.w3.org/1998/Math/MathML"
+                            display="block"
+                            aria-label="Кількість теплоти дорівнює масі води, помноженій на питому теплоємність і різницю температур, поділеній на 3600"
+                        >
+                            <mrow>
+                                <mi>Q</mi>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <mrow>
+                                        <msub>
+                                            <mi>m</mi>
+                                            <mtext>в</mtext>
+                                        </msub>
+
+                                        <mo>·</mo>
+
+                                        <msub>
+                                            <mi>c</mi>
+                                            <mtext>в</mtext>
+                                        </msub>
+
+                                        <mo>·</mo>
+
+                                        <mo>(</mo>
+
+                                        <mn>100</mn>
+
+                                        <mo>−</mo>
+
+                                        <msub>
+                                            <mi>t</mi>
+                                            <mn>0</mn>
+                                        </msub>
+
+                                        <mo>)</mo>
+                                    </mrow>
+
+                                    <mn>3600</mn>
+                                </mfrac>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        Для води приймають
+                        <var>c<sub>в</sub></var> = 4,2 кДж/(кг·К).
+                        Маса подається в кг, а результат
+                        <var>Q</var> отримують у кВт·год.
+                    </p>
+                </article>
+
+                <article class="calculation-formula-card">
+                    <span>Формула 4</span>
+
+                    <h3>
+                        Експериментальний термічний ККД
+                    </h3>
+
+                    <div class="calculation-formula">
+                        <math
+                            xmlns="http://www.w3.org/1998/Math/MathML"
+                            display="block"
+                            aria-label="Коефіцієнт корисної дії дорівнює відношенню кількості теплоти до спожитої електричної енергії, помноженому на 100 відсотків"
+                        >
+                            <mrow>
+                                <mi>η</mi>
+
+                                <mo>=</mo>
+
+                                <mfrac>
+                                    <mi>Q</mi>
+
+                                    <msub>
+                                        <mi>W</mi>
+                                        <mtext>ел</mtext>
+                                    </msub>
+                                </mfrac>
+
+                                <mo>·</mo>
+
+                                <mn>100</mn>
+
+                                <mo>%</mo>
+                            </mrow>
+                        </math>
+                    </div>
+
+                    <p>
+                        ККД показує, яка частина спожитої
+                        електричної енергії використана
+                        для нагрівання води.
+                    </p>
+                </article>
+            </div>
+
+            <div class="calculations-instruction">
+                <strong>Порядок виконання</strong>
+
+                <ol>
+                    <li>
+                        Для кожного циклу перенесіть
+                        <var>P<sub>i</sub></var> і
+                        <var>t<sub>увімк,i</sub></var>
+                        з результатів першого досліду.
+                    </li>
+
+                    <li>
+                        Розрахуйте енергію
+                        <var>W<sub>i</sub></var>
+                        кожного увімкненого інтервалу.
+                    </li>
+
+                    <li>
+                        Визначте загальну спожиту енергію
+                        <var>W<sub>ел</sub></var>
+                        і кількість теплоти
+                        <var>Q</var>.
+                    </li>
+
+                    <li>
+                        Розрахуйте експериментальний
+                        термічний ККД <var>η</var>
+                        та перевірте введені значення.
+                    </li>
+                </ol>
+            </div>
+
+            <div class="calculations-source-status">
+                <div>
+                    <span>Маса води</span>
+
+                    <strong id="calculations-water-mass">
+                        —
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Початкова температура</span>
+
+                    <strong id="calculations-initial-temperature">
+                        —
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Отримано циклів</span>
+
+                    <strong id="calculations-cycle-count">
+                        0 із 6
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Стан розрахунків</span>
+
+                    <strong id="calculations-progress">
+                        Не розпочато
+                    </strong>
+                </div>
+            </div>
+
+            <div class="calculations-table-panel">
+                <div class="calculations-table-heading">
+                    <div>
+                        <p class="section-number">
+                            Таблиця 8.5
+                        </p>
+
+                        <h3>
+                            Розрахунок спожитої енергії за циклами
+                        </h3>
+                    </div>
+
+                    <p>
+                        Вихідні значення переносяться автоматично.
+                        Значення <var>W<sub>i</sub></var>
+                        розраховує та вводить студент.
+                    </p>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="calculations-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Цикл</th>
+
+                                <th scope="col">
+                                    <var>U<sub>i</sub></var>, В
+                                </th>
+
+                                <th scope="col">
+                                    <var>I<sub>i</sub></var>, А
+                                </th>
+
+                                <th scope="col">
+                                    <var>P<sub>i</sub></var>, кВт
+                                </th>
+
+                                <th scope="col">
+                                    <var>t<sub>увімк,i</sub></var>, с
+                                </th>
+
+                                <th scope="col">
+                                    <var>t<sub>вимк,i</sub></var>, с
+                                </th>
+
+                                <th scope="col">
+                                    <var>W<sub>i</sub></var>, кВт·год
+                                </th>
+
+                                <th scope="col">
+                                    Перевірка
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="calculations-table-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="calculations-precision-note">
+                    Значення енергії одного циклу вводьте
+                    з точністю щонайменше до п’яти знаків
+                    після коми.
+                </div>
+            </div>
+
+            <div class="calculations-summary-panel">
+                <div class="calculations-table-heading">
+                    <div>
+                        <p class="section-number">
+                            Підсумкові розрахунки
+                        </p>
+
+                        <h3>
+                            Енергія, теплота та ККД
+                        </h3>
+                    </div>
+
+                    <p>
+                        Використовуйте масу і початкову температуру
+                        води, зафіксовані перед проведенням досліду.
+                    </p>
+                </div>
+
+                <div class="calculations-result-grid">
+                    <article class="calculation-result-card">
+                        <div>
+                            <span>Результат 1</span>
+
+                            <h3>
+                                Загальна електрична енергія
+                            </h3>
+
+                            <p>
+                                Сума енергій усіх шести циклів.
+                            </p>
+                        </div>
+
+                        <label
+                            class="calculation-result-field"
+                            for="calculations-total-energy-input"
+                        >
+                            <span>
+                                <var>W<sub>ел</sub></var>
+                            </span>
+
+                            <span class="calculation-result-input">
+                                <input
+                                    id="calculations-total-energy-input"
+                                    type="text"
+                                    inputmode="decimal"
+                                    autocomplete="off"
+                                    data-calculation-field="total-energy"
+                                >
+
+                                <small>кВт·год</small>
+                            </span>
+                        </label>
+
+                        <span
+                            id="calculations-total-energy-status"
+                            class="calculation-status"
+                            data-state="pending"
+                        >
+                            Очікується
+                        </span>
+                    </article>
+
+                    <article class="calculation-result-card">
+                        <div>
+                            <span>Результат 2</span>
+
+                            <h3>
+                                Кількість теплоти
+                            </h3>
+
+                            <p>
+                                Теплова енергія, отримана водою.
+                            </p>
+                        </div>
+
+                        <label
+                            class="calculation-result-field"
+                            for="calculations-useful-heat-input"
+                        >
+                            <span>
+                                <var>Q</var>
+                            </span>
+
+                            <span class="calculation-result-input">
+                                <input
+                                    id="calculations-useful-heat-input"
+                                    type="text"
+                                    inputmode="decimal"
+                                    autocomplete="off"
+                                    data-calculation-field="useful-heat"
+                                >
+
+                                <small>кВт·год</small>
+                            </span>
+                        </label>
+
+                        <span
+                            id="calculations-useful-heat-status"
+                            class="calculation-status"
+                            data-state="pending"
+                        >
+                            Очікується
+                        </span>
+                    </article>
+
+                    <article class="calculation-result-card">
+                        <div>
+                            <span>Результат 3</span>
+
+                            <h3>
+                                Термічний ККД
+                            </h3>
+
+                            <p>
+                                Відношення корисної теплоти
+                                до спожитої електричної енергії.
+                            </p>
+                        </div>
+
+                        <label
+                            class="calculation-result-field"
+                            for="calculations-efficiency-input"
+                        >
+                            <span>
+                                <var>η</var>
+                            </span>
+
+                            <span class="calculation-result-input">
+                                <input
+                                    id="calculations-efficiency-input"
+                                    type="text"
+                                    inputmode="decimal"
+                                    autocomplete="off"
+                                    data-calculation-field="efficiency"
+                                >
+
+                                <small>%</small>
+                            </span>
+                        </label>
+
+                        <span
+                            id="calculations-efficiency-status"
+                            class="calculation-status"
+                            data-state="pending"
+                        >
+                            Очікується
+                        </span>
+                    </article>
+                </div>
+            </div>
+
+            <div class="calculations-actions">
+                <div>
+                    <strong>Перевірка результатів</strong>
+
+                    <p>
+                        Заповніть енергії шести циклів і три
+                        підсумкові результати.
+                    </p>
+                </div>
+
+                <div class="calculations-action-buttons">
+                    <button
+                        id="calculations-check-button"
+                        class="calculations-check-button"
+                        type="button"
+                    >
+                        Перевірити розрахунки
+                    </button>
+
+                    <button
+                        id="calculations-reset-button"
+                        class="calculations-reset-button"
+                        type="button"
+                    >
+                        Очистити розрахунки
+                    </button>
+                </div>
+            </div>
+
+            <p
+                id="calculations-message"
+                class="calculations-message"
+                role="status"
+                aria-live="polite"
+            >
+                Введіть результати розрахунків у відповідні поля.
+            </p>
+
+            <div
+                id="calculations-complete-panel"
+                class="calculations-complete-panel"
+                hidden
+            >
+                <strong>
+                    Розрахунки виконано правильно
+                </strong>
+
+                <p>
+                    Визначено енергію циклів, загальну спожиту
+                    електричну енергію, корисну теплоту та
+                    експериментальний термічний ККД. Можна
+                    переходити до побудови й аналізу графіків.
+                </p>
+
+                <a href="#analysis">
+                    Перейти до аналізу результатів
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

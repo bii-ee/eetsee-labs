@@ -1,0 +1,627 @@
+<section id="experiment" class="content-section">
+    <p class="section-number">Інтерактивний модуль</p>
+
+    <h2>Проведення дослідів</h2>
+
+    <p class="lead">
+        Проведіть два досліди з індукційною плитою
+        «МЕРИДІАН ПП-3». Спочатку дослідіть циклічну роботу
+        плити в режимі «Термостат», а потім визначте вплив
+        напруги живлення та заданої температури на параметри
+        нагрівання води.
+    </p>
+
+    <div class="experiment-model-notice">
+        <strong>Навчальна модель</strong>
+
+        <p>
+            Час виконання дослідів прискорено. Значення є
+            відтворюваними модельними даними, сформованими
+            в межах результатів попередніх протоколів і приведеними
+            до одиниць вимірювання, установлених методикою ЛР8.
+        </p>
+    </div>
+
+    <div class="experiment-access-shell">
+        <div
+            id="experiment-lock-overlay"
+            class="experiment-lock-overlay"
+            role="status"
+        >
+            <div class="experiment-lock-card">
+                <strong>
+                    Доступ до проведення дослідів заблоковано
+                </strong>
+
+                <p>
+                    Спочатку перегляньте всі елементи віртуального
+                    стенда та підтвердьте готовність до роботи.
+                </p>
+
+                <a class="experiment-lock-link" href="#stand">
+                    Перейти до віртуального стенда
+                </a>
+            </div>
+        </div>
+
+        <div id="experiment-interactive-area">
+            <div class="experiment-status-panel">
+                <div>
+                    <span class="experiment-status-label">
+                        Стан установки
+                    </span>
+
+                    <strong
+                        id="experiment-power-state"
+                        class="experiment-power-state"
+                    >
+                        Знеструмлена
+                    </strong>
+                </div>
+
+                <div class="experiment-status-details">
+                    <span>Поточний етап</span>
+
+                    <strong id="experiment-phase-label">
+                        Підготовка вихідних даних
+                    </strong>
+                </div>
+
+                <div class="experiment-status-details">
+                    <span>Загальний прогрес</span>
+
+                    <strong id="experiment-progress-value">
+                        0 із 15 операцій
+                    </strong>
+                </div>
+            </div>
+
+            <div class="experiment-layout">
+                <div class="experiment-control-panel">
+                    <section class="experiment-control-section">
+                        <p class="experiment-step-label">
+                            Підготовка
+                        </p>
+
+                        <h3>Вихідні параметри води</h3>
+
+                        <p>
+                            Перевірте об’єм води, введіть визначену
+                            масу та початкову температуру перед
+                            початком першого досліду.
+                        </p>
+
+                        <div class="experiment-input-grid">
+                            <label class="experiment-field">
+                                <span>Об’єм води</span>
+
+                                <span class="experiment-input">
+                                    <input
+                                        id="experiment-water-volume"
+                                        type="number"
+                                        min="100"
+                                        max="1000"
+                                        step="10"
+                                        value="200"
+                                    >
+
+                                    <small>мл</small>
+                                </span>
+                            </label>
+
+                            <label class="experiment-field">
+                                <span>Маса води</span>
+
+                                <span class="experiment-input">
+                                    <input
+                                        id="experiment-water-mass"
+                                        type="number"
+                                        min="0.1"
+                                        max="1"
+                                        step="0.001"
+                                        value="0.200"
+                                    >
+
+                                    <small>кг</small>
+                                </span>
+                            </label>
+
+                            <label class="experiment-field">
+                                <span>Початкова температура</span>
+
+                                <span class="experiment-input">
+                                    <input
+                                        id="experiment-initial-temperature"
+                                        type="number"
+                                        min="5"
+                                        max="40"
+                                        step="0.1"
+                                        value="20.0"
+                                    >
+
+                                    <small>°C</small>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button
+                            id="experiment-setup-button"
+                            class="experiment-primary-button"
+                            type="button"
+                        >
+                            Зафіксувати вихідні дані
+                        </button>
+                    </section>
+
+                    <section class="experiment-control-section">
+                        <p class="experiment-step-label">
+                            Дослід 1
+                        </p>
+
+                        <h3>Циклічний режим «Термостат»</h3>
+
+                        <p>
+                            Для кожного циклу модель фіксує напругу,
+                            струм, активну потужність і тривалості
+                            увімкненого та вимкненого станів.
+                        </p>
+
+                        <div class="experiment-task-card">
+                            <span>Поточне завдання</span>
+
+                            <strong id="experiment-one-task">
+                                Зафіксуйте вихідні параметри води
+                            </strong>
+
+                            <p id="experiment-one-description">
+                                Після підтвердження параметрів стане
+                                доступним запуск першого циклу.
+                            </p>
+                        </div>
+
+                        <button
+                            id="experiment-cycle-button"
+                            class="experiment-primary-button"
+                            type="button"
+                            disabled
+                        >
+                            Запустити цикл 1
+                        </button>
+
+                        <p
+                            id="experiment-one-message"
+                            class="experiment-message"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Очікується підготовка вихідних даних.
+                        </p>
+                    </section>
+
+                    <section class="experiment-control-section">
+                        <p class="experiment-step-label">
+                            Дослід 2
+                        </p>
+
+                        <h3>Вплив напруги та температури</h3>
+
+                        <p>
+                            Послідовно виконайте дев’ять режимів для
+                            температур 110, 160 і 240 °C та заданих
+                            напруг 200, 220 і 240 В.
+                        </p>
+
+                        <div class="experiment-task-card">
+                            <span>Поточний режим</span>
+
+                            <strong id="experiment-two-task">
+                                Дослід 2 ще не доступний
+                            </strong>
+
+                            <p id="experiment-two-description">
+                                Спочатку завершіть усі цикли першого
+                                досліду.
+                            </p>
+                        </div>
+
+                        <button
+                            id="experiment-trial-button"
+                            class="experiment-primary-button"
+                            type="button"
+                            disabled
+                        >
+                            Виконати режим 1
+                        </button>
+
+                        <p
+                            id="experiment-two-message"
+                            class="experiment-message"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Очікується завершення досліду 1.
+                        </p>
+                    </section>
+                </div>
+
+                <div class="experiment-visual-panel">
+                    <div class="experiment-visual-header">
+                        <div>
+                            <span>Віртуальна установка</span>
+
+                            <strong id="experiment-current-condition">
+                                Плита підготовлена до роботи
+                            </strong>
+                        </div>
+
+                        <span id="experiment-mode-badge">
+                            Очікування
+                        </span>
+                    </div>
+
+                    <div class="experiment-simulator">
+                        <div class="experiment-power-chain">
+                            <article>
+                                <span>~</span>
+                                <strong id="experiment-source-reading">
+                                    220 В
+                                </strong>
+                                <small>Джерело живлення</small>
+                            </article>
+
+                            <b aria-hidden="true">→</b>
+
+                            <article>
+                                <span>ЛАТР</span>
+                                <strong id="experiment-latr-reading">
+                                    0 В
+                                </strong>
+                                <small>Автотрансформатор</small>
+                            </article>
+
+                            <b aria-hidden="true">→</b>
+
+                            <article>
+                                <span>A20</span>
+                                <strong>DIRIS</strong>
+                                <small>Аналізатор мережі</small>
+                            </article>
+
+                            <b aria-hidden="true">→</b>
+
+                            <article>
+                                <span>ПП-3</span>
+                                <strong>МЕРИДІАН</strong>
+                                <small>Індукційна плита</small>
+                            </article>
+                        </div>
+
+                        <div class="experiment-heating-zone">
+                            <div
+                                id="experiment-plate-visual"
+                                class="experiment-plate"
+                                aria-label="Індукційна плита МЕРИДІАН ПП-3"
+                            >
+                                <div class="experiment-plate-surface">
+                                    <span
+                                        id="experiment-heating-indicator"
+                                        class="experiment-heating-indicator"
+                                    ></span>
+
+                                    <span class="experiment-induction-ring">
+                                        <strong>МЕРИДІАН</strong>
+                                    </span>
+                                </div>
+
+                                <div class="experiment-plate-display">
+                                    <span id="experiment-display-mode">
+                                        OFF
+                                    </span>
+
+                                    <small id="experiment-display-setting">
+                                        Установка знеструмлена
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div
+                                id="experiment-pot-visual"
+                                class="experiment-pot"
+                                aria-label="Посуд із водою"
+                            >
+                                <span class="experiment-pot-handle"></span>
+                                <span class="experiment-water"></span>
+
+                                <strong>Посуд із водою</strong>
+
+                                <small>
+                                    Феромагнітне дно
+                                </small>
+                            </div>
+                        </div>
+
+                        <div
+                            class="experiment-instruments"
+                            aria-label="Поточні покази приладів"
+                        >
+                            <article>
+                                <span class="instrument-code">U</span>
+
+                                <strong>
+                                    <span id="experiment-voltage-reading">
+                                        0
+                                    </span>
+                                    В
+                                </strong>
+
+                                <small>Напруга</small>
+                            </article>
+
+                            <article>
+                                <span class="instrument-code">I</span>
+
+                                <strong>
+                                    <span id="experiment-current-reading">
+                                        0,0
+                                    </span>
+                                    А
+                                </strong>
+
+                                <small>Струм</small>
+                            </article>
+
+                            <article>
+                                <span class="instrument-code">P</span>
+
+                                <strong>
+                                    <span id="experiment-power-reading">
+                                        0,00
+                                    </span>
+                                    кВт
+                                </strong>
+
+                                <small>Активна потужність</small>
+                            </article>
+
+                            <article>
+                                <span class="instrument-code">t</span>
+
+                                <strong>
+                                    <span id="experiment-time-reading">
+                                        0,00
+                                    </span>
+                                    с
+                                </strong>
+
+                                <small>Тривалість інтервалу</small>
+                            </article>
+
+                            <article>
+                                <span class="instrument-code">°C</span>
+
+                                <strong>
+                                    <span id="experiment-temperature-reading">
+                                        20,0
+                                    </span>
+                                    °C
+                                </strong>
+
+                                <small>Температура води</small>
+                            </article>
+                        </div>
+
+                        <div class="experiment-interval-panel">
+                            <div>
+                                <span>Поточний інтервал</span>
+
+                                <strong id="experiment-interval-label">
+                                    Очікування
+                                </strong>
+                            </div>
+
+                            <div
+                                id="experiment-interval-track"
+                                class="experiment-interval-track"
+                                role="progressbar"
+                                aria-label="Перебіг поточного інтервалу"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="0"
+                            >
+                                <span id="experiment-interval-bar"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section
+                id="experiment-one-panel"
+                class="experiment-table-panel"
+            >
+                <div class="experiment-table-header">
+                    <div>
+                        <p class="section-number">Таблиця 8.3</p>
+
+                        <h3>
+                            Дослід 1. Параметри циклічного режиму
+                        </h3>
+                    </div>
+
+                    <span
+                        id="experiment-one-status"
+                        class="experiment-table-status"
+                    >
+                        0 із 6 циклів
+                    </span>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="experiment-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Цикл</th>
+                                <th scope="col">
+                                    <var>U<sub>i</sub></var>, В
+                                </th>
+                                <th scope="col">
+                                    <var>I<sub>i</sub></var>, А
+                                </th>
+                                <th scope="col">
+                                    <var>P<sub>i</sub></var>, кВт
+                                </th>
+                                <th scope="col">
+                                    <var>t<sub>увімк,i</sub></var>, с
+                                </th>
+                                <th scope="col">
+                                    <var>t<sub>вимк,i</sub></var>, с
+                                </th>
+                                <th scope="col">Стан</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="experiment-one-table-body"></tbody>
+                    </table>
+                </div>
+
+                <div
+                    id="experiment-one-summary"
+                    class="experiment-table-summary"
+                >
+                    <strong>Дослід ще не розпочато</strong>
+
+                    <p>
+                        Модель завершить нагрівання після досягнення
+                        температури кипіння води.
+                    </p>
+                </div>
+            </section>
+
+            <section
+                id="experiment-two-panel"
+                class="experiment-table-panel experiment-two-panel"
+            >
+                <div
+                    id="experiment-two-lock"
+                    class="experiment-subsection-lock"
+                >
+                    <strong>Дослід 2 заблоковано</strong>
+
+                    <p>
+                        Завершіть дослід циклічного режиму
+                        «Термостат».
+                    </p>
+                </div>
+
+                <div id="experiment-two-content">
+                    <div class="experiment-table-header">
+                        <div>
+                            <p class="section-number">Таблиця 8.4</p>
+
+                            <h3>
+                                Дослід 2. Вплив заданих параметрів
+                            </h3>
+                        </div>
+
+                        <span
+                            id="experiment-two-status"
+                            class="experiment-table-status"
+                        >
+                            0 із 9 режимів
+                        </span>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="experiment-table experiment-table-wide">
+                            <thead>
+                                <tr>
+                                    <th scope="col">№</th>
+                                    <th scope="col">
+                                        <var>T<sub>зад</sub></var>, °C
+                                    </th>
+                                    <th scope="col">
+                                        <var>U<sub>зад</sub></var>, В
+                                    </th>
+                                    <th scope="col">
+                                        <var>U</var>, В
+                                    </th>
+                                    <th scope="col">
+                                        <var>t<sub>0</sub></var>, °C
+                                    </th>
+                                    <th scope="col">
+                                        <var>I</var>, А
+                                    </th>
+                                    <th scope="col">
+                                        <var>P</var>, кВт
+                                    </th>
+                                    <th scope="col">
+                                        <var>t<sub>кип</sub></var>, хв
+                                    </th>
+                                    <th scope="col">Стан</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="experiment-two-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div
+                        id="experiment-two-summary"
+                        class="experiment-table-summary"
+                    >
+                        <strong>Дослід ще не розпочато</strong>
+
+                        <p>
+                            Режими виконуються послідовно за
+                            температурними групами 110, 160 і 240 °C.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div
+                id="experiment-completion"
+                class="experiment-completion"
+                hidden
+            >
+                <div>
+                    <span>Досліди завершено</span>
+
+                    <strong>
+                        Експериментальні дані готові до розрахунків
+                    </strong>
+
+                    <p>
+                        Заповнено шість циклів режиму «Термостат»
+                        і дев’ять комбінацій заданої температури
+                        та напруги.
+                    </p>
+                </div>
+
+                <a href="#calculations">
+                    Перейти до розрахунків
+                </a>
+            </div>
+
+            <div class="experiment-reset-panel">
+                <div>
+                    <strong>Повторне проведення дослідів</strong>
+
+                    <p>
+                        Очищення видалить усі експериментальні
+                        результати та поверне установку до початкового
+                        стану.
+                    </p>
+                </div>
+
+                <button
+                    id="experiment-reset-button"
+                    class="experiment-reset-button"
+                    type="button"
+                >
+                    Очистити результати
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

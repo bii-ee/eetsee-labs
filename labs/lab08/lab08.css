@@ -1,0 +1,460 @@
+/* Оформлення лабораторної роботи №8 */
+
+
+/* Шапка */
+
+.site-header {
+    background:
+        linear-gradient(
+            135deg,
+            #123b37 0%,
+            #1b5a4f 58%,
+            #277465 100%
+        );
+}
+
+.site-header h1 {
+    max-width: 1180px;
+    overflow-wrap: anywhere;
+}
+
+.course-label {
+    color: #c8eedc;
+}
+
+.lab-title {
+    max-width: 1050px;
+}
+
+.header-status {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Основний макет */
+
+.lab-layout {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns:
+        minmax(240px, 280px)
+        minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(20px, 2.5vw, 32px);
+}
+
+.lab-layout > .side-navigation,
+.lab-layout > main,
+#main-content,
+#sections-root,
+.section-stack,
+.content-section {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+
+#main-content,
+#sections-root,
+.section-stack,
+.content-section {
+    width: 100%;
+}
+
+.content-section > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.content-section img,
+.content-section svg,
+.content-section canvas {
+    max-width: 100%;
+}
+
+.table-scroll {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+
+/* Кольорові позначення розділів */
+
+#overview {
+    border-top: 5px solid #16849a;
+}
+
+#goals {
+    border-top: 5px solid #397a95;
+}
+
+#equipment {
+    border-top: 5px solid #3a8264;
+}
+
+#theory {
+    border-top: 5px solid #265f7d;
+}
+
+
+/* Схема послідовності процесу */
+
+.energy-flow {
+    box-sizing: border-box;
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0;
+    padding: 22px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.flow-node {
+    box-sizing: border-box;
+    display: grid;
+    min-width: 0;
+    min-height: 128px;
+    align-content: center;
+    gap: 7px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface);
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.flow-node-accent {
+    border-color: #16849a;
+    background: #e8f7f9;
+}
+
+.flow-number {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 3px;
+    place-items: center;
+    border-radius: 50%;
+    background: #164f5f;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.flow-node strong {
+    color: var(--color-primary);
+    line-height: 1.3;
+}
+
+.flow-node small {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+}
+
+.flow-arrow {
+    color: #16849a;
+    font-size: 1.65rem;
+    font-weight: 800;
+}
+
+
+/* Теоретичні панелі */
+
+.theory-accordion {
+    display: grid;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.theory-panel {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.theory-panel summary {
+    position: relative;
+    padding: 18px 54px 18px 20px;
+    color: var(--color-primary);
+    font-size: 1.04rem;
+    font-weight: 750;
+    cursor: pointer;
+    list-style: none;
+}
+
+.theory-panel summary::-webkit-details-marker {
+    display: none;
+}
+
+.theory-panel summary::after {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8f7f9;
+    color: #164f5f;
+    content: "+";
+    font-size: 1.2rem;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.theory-panel[open] summary {
+    border-bottom: 1px solid var(--color-border);
+    background: #edf7fa;
+}
+
+.theory-panel[open] summary::after {
+    content: "−";
+}
+
+.theory-panel-content {
+    padding: 22px;
+    background: var(--color-surface);
+}
+
+.theory-panel-content > :last-child {
+    margin-bottom: 0;
+}
+
+
+/* Інформаційні сітки */
+
+.classification-grid,
+.regulation-grid,
+.temperature-scale {
+    display: grid;
+    min-width: 0;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.classification-grid,
+.regulation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.temperature-scale {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.classification-grid article,
+.regulation-grid article,
+.temperature-scale article {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.classification-grid h3 {
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.classification-grid p,
+.regulation-grid p {
+    margin-bottom: 0;
+    color: var(--color-text-muted);
+}
+
+.temperature-scale article {
+    display: grid;
+    gap: 4px;
+    text-align: center;
+}
+
+.temperature-scale strong {
+    color: #16849a;
+    font-size: 1.05rem;
+}
+
+.temperature-scale span {
+    color: var(--color-text-muted);
+}
+
+.regulation-grid article {
+    border-top: 4px solid #16849a;
+}
+
+.regulation-grid span {
+    display: block;
+    margin-bottom: 5px;
+    color: #16849a;
+    font-size: 0.84rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.regulation-grid strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+}
+
+
+/* Формули */
+
+.formula-grid {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.formula-card {
+    box-sizing: border-box;
+    display: grid;
+    min-width: 0;
+    align-content: start;
+    gap: 14px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.formula-card h3 {
+    margin: 0;
+    font-size: 0.98rem;
+}
+
+.formula-card p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.91rem;
+}
+
+.formula-expression {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 82px;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    overflow-x: auto;
+    border: 1px solid #c8d8e1;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: #102f45;
+}
+
+.formula-expression math {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+    color: #102f45;
+    font-family:
+        "Cambria Math",
+        Cambria,
+        "Times New Roman",
+        serif;
+    font-size: clamp(1.3rem, 2.7vw, 1.65rem);
+    line-height: normal;
+    math-style: compact;
+}
+
+.formula-expression-wide math {
+    font-size: clamp(1.1rem, 2.3vw, 1.48rem);
+}
+
+.theory-list {
+    display: grid;
+    gap: 10px;
+    margin: 18px 0 0;
+    padding-left: 22px;
+}
+
+.theory-list li {
+    padding-left: 5px;
+}
+
+
+/* Стан завантаження */
+
+#sections-root[aria-busy="true"] {
+    cursor: progress;
+}
+
+
+/* Адаптивність */
+
+@media (max-width: 1080px) {
+    .energy-flow {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-arrow {
+        display: none;
+    }
+}
+
+@media (max-width: 980px) {
+    .lab-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .formula-grid,
+    .classification-grid,
+    .regulation-grid,
+    .temperature-scale {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .energy-flow {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .flow-node {
+        min-height: auto;
+    }
+
+    .theory-panel-content {
+        padding: 16px;
+    }
+
+    .formula-card {
+        padding: 15px;
+    }
+
+    .formula-expression {
+        justify-content: flex-start;
+    }
+
+    .formula-expression math {
+        font-size: 1.25rem;
+    }
+}

@@ -1,0 +1,1512 @@
+#experiment {
+    --experiment-green: #1e735d;
+    --experiment-green-dark: #155846;
+    --experiment-green-soft: #eaf6f1;
+    --experiment-green-pale: #f3faf7;
+    --experiment-blue: #267a96;
+    --experiment-warning: #d99a18;
+    --experiment-danger: #9a3d3d;
+
+    border-top: 5px solid var(--experiment-green);
+}
+
+#experiment *,
+#experiment *::before,
+#experiment *::after {
+    box-sizing: border-box;
+}
+
+/* Інформаційне повідомлення */
+
+.experiment-model-notice {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid #d9caa9;
+    border-left: 5px solid var(--experiment-warning);
+    border-radius: var(--radius-medium);
+    background: #fff9ec;
+}
+
+.experiment-model-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+.experiment-model-notice p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+/* Блокування доступу */
+
+.experiment-access-shell {
+    position: relative;
+    min-height: 320px;
+}
+
+.experiment-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+.experiment-lock-overlay[hidden] {
+    display: none;
+}
+
+.experiment-lock-card {
+    display: flex;
+    width: min(100%, 520px);
+    min-height: 210px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+.experiment-lock-card strong {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+.experiment-lock-card p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+}
+
+.experiment-lock-link {
+    display: inline-flex;
+    width: min(100%, 310px);
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 17px;
+    border-radius: var(--radius-small);
+    background: var(--experiment-green);
+    color: #ffffff;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none;
+}
+
+.experiment-lock-link:hover,
+.experiment-lock-link:focus-visible {
+    background: var(--experiment-green-dark);
+}
+
+#experiment-interactive-area {
+    transition:
+        opacity 180ms ease,
+        filter 180ms ease;
+}
+
+#experiment-interactive-area[inert] {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+    filter: blur(2px);
+}
+
+/* Загальний статус */
+
+.experiment-status-panel {
+    display: grid;
+    grid-template-columns:
+        minmax(170px, 0.7fr)
+        minmax(230px, 1.2fr)
+        minmax(180px, 0.8fr);
+    gap: 16px;
+    align-items: stretch;
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.experiment-status-panel > div {
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+}
+
+.experiment-status-label,
+.experiment-status-details span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 650;
+}
+
+.experiment-power-state,
+.experiment-status-details strong {
+    display: block;
+    overflow-wrap: anywhere;
+    color: var(--color-primary);
+    font-size: 0.96rem;
+}
+
+.experiment-power-state {
+    color: var(--experiment-danger);
+    font-size: 1.04rem;
+}
+
+.experiment-power-state.is-on {
+    color: var(--experiment-green);
+}
+
+/* Основне компонування */
+
+.experiment-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.experiment-visual-panel,
+.experiment-table-panel,
+.experiment-reset-panel {
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface);
+}
+
+/* Панель керування */
+
+.experiment-control-panel {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.experiment-control-section {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-top: 4px solid var(--experiment-green);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+}
+
+.experiment-control-section +
+.experiment-control-section {
+    margin-top: 0;
+    padding-top: 20px;
+    border-top: 4px solid var(--experiment-green);
+}
+
+.experiment-step-label {
+    margin: 0 0 7px;
+    color: var(--experiment-green);
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.experiment-control-section h3 {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+    font-size: 1.04rem;
+    line-height: 1.35;
+}
+
+.experiment-control-section > p:not(.experiment-step-label) {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+/* Поля вихідних даних */
+
+.experiment-input-grid {
+    display: grid;
+    gap: 11px;
+    margin-top: 16px;
+}
+
+.experiment-field {
+    display: grid;
+    gap: 6px;
+    color: var(--color-primary);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.experiment-input {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.experiment-input:focus-within {
+    border-color: var(--experiment-green);
+    box-shadow: 0 0 0 3px rgba(30, 115, 93, 0.14);
+}
+
+.experiment-input input {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--color-primary);
+    font: inherit;
+    font-weight: 750;
+}
+
+.experiment-input input:disabled {
+    background: #f3f7f5;
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+.experiment-input small {
+    display: grid;
+    min-width: 48px;
+    min-height: 44px;
+    place-items: center;
+    padding: 0 10px;
+    border-left: 1px solid var(--color-border);
+    background: var(--experiment-green-pale);
+    color: var(--experiment-green-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+/* Кнопки */
+
+.experiment-primary-button,
+.experiment-reset-button,
+.experiment-completion a {
+    min-height: 44px;
+    border-radius: var(--radius-small);
+    font: inherit;
+    font-weight: 750;
+}
+
+.experiment-primary-button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: 1px solid var(--experiment-green);
+    background: var(--experiment-green);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.experiment-control-section:first-child
+.experiment-primary-button {
+    margin-top: 18px;
+}
+
+.experiment-primary-button:hover:not(:disabled),
+.experiment-primary-button:focus-visible:not(:disabled) {
+    background: var(--experiment-green-dark);
+}
+
+.experiment-primary-button:disabled {
+    border-color: #b4c3c0;
+    background: #dce6e3;
+    color: #6e7e7a;
+    cursor: not-allowed;
+}
+
+/* Поточне завдання */
+
+.experiment-task-card {
+    flex: 1 0 auto;
+    min-height: 158px;
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #bdd8cf;
+    border-radius: var(--radius-small);
+    background: var(--experiment-green-pale);
+}
+
+.experiment-task-card > span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--experiment-green);
+    font-size: 0.73rem;
+    font-weight: 850;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.experiment-task-card strong {
+    display: block;
+    color: var(--color-primary);
+    line-height: 1.4;
+}
+
+.experiment-task-card p {
+    margin: 7px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.experiment-message {
+    min-height: 48px;
+    margin: 13px 0 0;
+    padding: 11px 13px;
+    border-left: 4px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.experiment-message[data-type="success"] {
+    border-left-color: var(--experiment-green);
+    background: #edf8f3;
+    color: #176148;
+}
+
+.experiment-message[data-type="warning"] {
+    border-left-color: var(--experiment-warning);
+    background: #fff8e9;
+    color: #775000;
+}
+
+/* Візуальна установка */
+
+.experiment-visual-panel {
+    display: grid;
+    width: 100%;
+    gap: 16px;
+    padding: 24px;
+    background: var(--color-surface-soft);
+}
+
+.experiment-visual-header {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.experiment-visual-header > div {
+    min-width: 0;
+}
+
+.experiment-visual-header span {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+}
+
+.experiment-visual-header strong {
+    display: block;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+    color: var(--color-primary);
+    font-size: 1.04rem;
+}
+
+#experiment-mode-badge {
+    flex: 0 0 auto;
+    max-width: 180px;
+    padding: 7px 12px;
+    overflow: hidden;
+    border: 1px solid #bdd8cf;
+    border-radius: 999px;
+    background: var(--experiment-green-soft);
+    color: var(--experiment-green-dark);
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.experiment-simulator {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    gap: 16px;
+    padding: 20px;
+    overflow: visible;
+    border: 1px solid #b9d2ca;
+    border-radius: 18px;
+    background: #edf7f3;
+}
+
+/* Функціональний ланцюг */
+
+.experiment-power-chain {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        18px
+        minmax(0, 1fr)
+        18px
+        minmax(0, 1fr)
+        18px
+        minmax(0, 1fr);
+    gap: 8px;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    overflow: hidden;
+    border: 1px dashed #a8c8bd;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.experiment-power-chain article {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 120px;
+    align-content: center;
+    justify-items: center;
+    gap: 3px;
+    padding: 12px 8px;
+    overflow: hidden;
+    border: 1px solid #c5d9d2;
+    border-radius: 11px;
+    background: var(--experiment-green-pale);
+    text-align: center;
+}
+
+.experiment-power-chain article > span {
+    display: grid;
+    width: min(100%, 84px);
+    min-width: 64px;
+    height: 40px;
+    place-items: center;
+    padding: 0 10px;
+    border-radius: 9px;
+    background: #17483f;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.experiment-power-chain strong {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--color-primary);
+    font-size: 0.86rem;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.experiment-power-chain small {
+    display: block;
+    max-width: 100%;
+    min-height: 34px;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+}
+
+.experiment-power-chain > b {
+    display: grid;
+    width: 18px;
+    place-items: center;
+    justify-self: center;
+    color: var(--experiment-green);
+    font-size: 1.15rem;
+}
+
+/* Плита та посуд */
+
+.experiment-heating-zone {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(300px, 0.75fr);
+    gap: 20px;
+    min-width: 0;
+}
+
+.experiment-plate,
+.experiment-pot {
+    position: relative;
+    min-width: 0;
+    min-height: 350px;
+    overflow: hidden;
+    border: 3px solid #3d4b50;
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            145deg,
+            #222d31,
+            #0c1316
+        );
+    box-shadow:
+        0 14px 24px rgba(20, 42, 39, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.experiment-plate {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 20px;
+}
+
+.experiment-plate-surface {
+    position: relative;
+    display: grid;
+    min-height: 255px;
+    place-items: center;
+    border: 1px solid #485c62;
+    border-radius: 18px;
+    background:
+        radial-gradient(
+            circle,
+            #111a1e 0 18%,
+            #536269 19% 20%,
+            #111a1e 21% 36%,
+            #4b5a60 37% 38%,
+            #10181c 39% 54%,
+            #45545a 55% 56%,
+            #0d1518 57% 100%
+        );
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        filter 180ms ease;
+}
+
+.experiment-induction-ring {
+    display: grid;
+    width: min(68%, 235px);
+    aspect-ratio: 1;
+    place-items: center;
+    border: 3px solid #718086;
+    border-radius: 50%;
+    color: #eef4f2;
+    text-align: center;
+}
+
+.experiment-induction-ring strong {
+    max-width: 82%;
+    font-size: 0.84rem;
+    letter-spacing: 0.04em;
+}
+
+.experiment-heating-indicator {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #687579;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.experiment-heating-indicator.is-on {
+    background: #ffbc42;
+    box-shadow:
+        0 0 14px rgba(255, 188, 66, 0.92),
+        inset 0 0 3px rgba(255, 255, 255, 0.7);
+}
+
+.experiment-plate.is-active
+.experiment-plate-surface {
+    border-color: #568f80;
+}
+
+.experiment-plate.is-heating
+.experiment-plate-surface {
+    border-color: #db6a34;
+    box-shadow:
+        inset 0 0 28px rgba(212, 73, 29, 0.28),
+        0 0 20px rgba(220, 91, 38, 0.2);
+    filter: brightness(1.08);
+}
+
+.experiment-plate-display {
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    border: 1px solid #46575d;
+    border-radius: 10px;
+    background: #152126;
+}
+
+.experiment-plate-display > span {
+    display: grid;
+    min-width: 65px;
+    min-height: 34px;
+    place-items: center;
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: #29363b;
+    color: #d9e3e0;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-weight: 800;
+}
+
+.experiment-plate.is-heating
+.experiment-plate-display > span {
+    background: #682e1f;
+    color: #ffcf72;
+}
+
+.experiment-plate-display small {
+    min-width: 0;
+    max-width: 65%;
+    color: #b5c1c4;
+    font-size: 0.76rem;
+    line-height: 1.35;
+    text-align: right;
+}
+
+/* Модель посуду */
+
+.experiment-pot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 24px 16px 30px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.experiment-pot::before {
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    width: min(70%, 250px);
+    height: 150px;
+    border: 10px solid #aebdc1;
+    border-top-width: 13px;
+    border-radius: 18px 18px 38px 38px;
+    background:
+        linear-gradient(
+            90deg,
+            #75878c,
+            #d9e1e2 24%,
+            #aebcbf 67%,
+            #718489
+        );
+    box-shadow:
+        inset 0 0 15px rgba(0, 0, 0, 0.25),
+        0 8px 16px rgba(0, 0, 0, 0.28);
+    content: "";
+    transform: translateX(-50%);
+}
+
+.experiment-pot-handle {
+    position: absolute;
+    top: 82px;
+    right: 2%;
+    width: 27%;
+    height: 31px;
+    border: 7px solid #829398;
+    border-left: 0;
+    border-radius: 0 14px 14px 0;
+}
+
+.experiment-water {
+    position: absolute;
+    z-index: 1;
+    top: 98px;
+    left: 50%;
+    width: min(60%, 216px);
+    height: 88px;
+    border-radius: 5px 5px 25px 25px;
+    background:
+        linear-gradient(
+            180deg,
+            #72c5d8,
+            #3c9db7
+        );
+    transform: translateX(-50%);
+    transition:
+        filter 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.experiment-pot.is-heating
+.experiment-water {
+    filter: brightness(1.12);
+    box-shadow:
+        0 -8px 18px rgba(189, 239, 247, 0.28);
+}
+
+.experiment-pot strong,
+.experiment-pot small {
+    position: relative;
+    z-index: 2;
+}
+
+.experiment-pot strong {
+    margin-top: 220px;
+    color: #f4f7f6;
+    font-size: 1rem;
+}
+
+.experiment-pot small {
+    margin-top: 5px;
+    color: #b9c7c8;
+    font-size: 0.76rem;
+}
+
+/* Покази приладів */
+
+.experiment-instruments {
+    display: grid;
+    grid-template-columns:
+        repeat(5, minmax(120px, 1fr));
+    gap: 12px;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #bed3cc;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.52);
+}
+
+.experiment-instruments article {
+    display: grid;
+    min-width: 0;
+    min-height: 116px;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    padding: 13px 10px;
+    border: 1px solid #bed3cc;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    text-align: center;
+}
+
+.instrument-code {
+    display: grid;
+    min-width: 46px;
+    height: 36px;
+    place-items: center;
+    padding: 0 7px;
+    border-radius: 9px;
+    background: #17483f;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.experiment-instruments strong {
+    min-width: 0;
+    color: var(--color-primary);
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.94rem;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
+.experiment-instruments small {
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
+    line-height: 1.35;
+}
+
+/* Прогрес поточного інтервалу */
+
+.experiment-interval-panel {
+    padding: 15px 17px;
+    border: 1px solid #bed3cc;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.experiment-interval-panel > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--color-text-muted);
+    font-size: 0.86rem;
+}
+
+.experiment-interval-panel strong {
+    color: var(--color-primary);
+    text-align: right;
+}
+
+.experiment-interval-track {
+    height: 12px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dce8e4;
+}
+
+.experiment-interval-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--experiment-green);
+    transition: width 70ms linear;
+}
+
+.experiment-interval-track.is-cooling span {
+    background: var(--experiment-blue);
+}
+
+/* Таблиці */
+
+.experiment-table-panel {
+    position: relative;
+    margin-top: 20px;
+    padding: 22px;
+    overflow: hidden;
+}
+
+.experiment-table-header {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 17px;
+}
+
+.experiment-table-header .section-number {
+    margin-bottom: 5px;
+}
+
+.experiment-table-header h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.03rem;
+}
+
+.experiment-table-status {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border: 1px solid #c0d9d0;
+    border-radius: 999px;
+    background: var(--experiment-green-soft);
+    color: var(--experiment-green-dark);
+    font-size: 0.82rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-small);
+}
+
+.experiment-table {
+    width: 100%;
+    min-width: 880px;
+    border-collapse: collapse;
+    background: #ffffff;
+}
+
+.experiment-table-wide {
+    min-width: 1060px;
+}
+
+.experiment-table th,
+.experiment-table td {
+    min-width: 92px;
+    padding: 13px 10px;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.experiment-table thead th {
+    background: var(--experiment-green-dark);
+    color: #ffffff;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.experiment-table tbody th {
+    background: #f2f7f5;
+    color: var(--color-primary);
+    font-size: 0.96rem;
+}
+
+.experiment-table tbody td {
+    color: var(--color-text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+}
+
+.experiment-table tbody tr.is-active {
+    background: #f0f8fb;
+}
+
+.experiment-table tbody tr.is-completed {
+    background: #eff9f4;
+}
+
+.experiment-table var {
+    font-family: "Cambria Math", Cambria, serif;
+    font-size: 1em;
+}
+
+.record-status {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+.is-active .record-status {
+    color: var(--experiment-blue);
+    font-weight: 750;
+}
+
+.is-completed .record-status {
+    color: var(--experiment-green);
+    font-weight: 800;
+}
+
+.experiment-table-summary {
+    margin-top: 15px;
+    padding: 13px 15px;
+    border-left: 4px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+}
+
+.experiment-table-summary strong {
+    display: block;
+    color: var(--color-primary);
+    font-size: 0.96rem;
+}
+
+.experiment-table-summary p {
+    margin: 5px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.experiment-table-summary[data-type="success"] {
+    border-left-color: var(--experiment-green);
+    background: #eaf7f1;
+}
+
+.experiment-table-summary[data-type="success"] strong,
+.experiment-table-summary[data-type="success"] p {
+    color: #176148;
+}
+
+/* Блокування другого досліду */
+
+.experiment-two-panel {
+    min-height: 0;
+}
+
+.experiment-subsection-lock {
+    position: static;
+    z-index: 10;
+    display: grid;
+    min-height: 190px;
+    align-content: center;
+    justify-items: center;
+    padding: 25px;
+    border: 1px dashed #a8c8bd;
+    border-radius: var(--radius-small);
+    background: var(--experiment-green-pale);
+    text-align: center;
+}
+
+.experiment-subsection-lock[hidden] {
+    display: none;
+}
+
+.experiment-subsection-lock strong {
+    color: var(--color-primary);
+    font-size: 1.08rem;
+}
+
+.experiment-subsection-lock p {
+    margin: 7px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+#experiment-two-content[inert] {
+    display: none;
+}
+
+/* Завершення дослідів */
+
+.experiment-completion {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 21px;
+    border: 1px solid #9dcbb9;
+    border-left: 5px solid var(--experiment-green);
+    border-radius: var(--radius-medium);
+    background: #eaf7f1;
+}
+
+.experiment-completion[hidden] {
+    display: none;
+}
+
+.experiment-completion > div {
+    min-width: 0;
+}
+
+.experiment-completion span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--experiment-green);
+    font-size: 0.75rem;
+    font-weight: 850;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.experiment-completion strong {
+    display: block;
+    color: var(--color-primary);
+    font-size: 1.02rem;
+}
+
+.experiment-completion p {
+    margin: 6px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.experiment-completion a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 17px;
+    background: var(--experiment-green);
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+}
+
+.experiment-completion a:hover,
+.experiment-completion a:focus-visible {
+    background: var(--experiment-green-dark);
+}
+
+/* Скидання результатів */
+
+.experiment-reset-panel {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 19px 21px;
+    background: var(--color-surface-soft);
+}
+
+.experiment-reset-panel > div {
+    min-width: 0;
+}
+
+.experiment-reset-panel strong {
+    display: block;
+    color: var(--color-primary);
+}
+
+.experiment-reset-panel p {
+    margin: 5px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.81rem;
+    line-height: 1.5;
+}
+
+.experiment-reset-button {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    border: 1px solid #d3a3a3;
+    background: #fff7f7;
+    color: #8d3030;
+    cursor: pointer;
+}
+
+.experiment-reset-button:hover:not(:disabled),
+.experiment-reset-button:focus-visible:not(:disabled) {
+    border-color: #a95858;
+    background: #fceaea;
+}
+
+.experiment-reset-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Фокус клавіатури */
+
+.experiment-primary-button:focus-visible,
+.experiment-reset-button:focus-visible,
+.experiment-lock-link:focus-visible,
+.experiment-completion a:focus-visible {
+    outline: 3px solid rgba(30, 115, 93, 0.25);
+    outline-offset: 2px;
+}
+
+/* Адаптація */
+
+@media (max-width: 1050px) {
+    .experiment-control-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-input-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .experiment-task-card {
+        min-height: 0;
+    }
+
+    .experiment-power-chain {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .experiment-power-chain > b {
+        display: none;
+    }
+
+    .experiment-heating-zone {
+        grid-template-columns:
+            minmax(0, 1.15fr)
+            minmax(260px, 0.85fr);
+    }
+
+    .experiment-instruments {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .experiment-status-panel {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .experiment-status-panel > div:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 760px) {
+    .experiment-heating-zone {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-plate,
+    .experiment-pot {
+        min-height: 330px;
+    }
+}
+
+@media (max-width: 700px) {
+    .experiment-input-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-table-header,
+    .experiment-completion,
+    .experiment-reset-panel {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .experiment-table-status {
+        width: fit-content;
+    }
+
+    .experiment-completion a,
+    .experiment-reset-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .experiment-status-panel {
+        grid-template-columns: 1fr;
+        padding: 13px;
+    }
+
+    .experiment-status-panel > div:last-child {
+        grid-column: auto;
+    }
+
+    .experiment-visual-panel,
+    .experiment-table-panel {
+        padding: 15px;
+    }
+
+    .experiment-simulator {
+        padding: 12px;
+    }
+
+    .experiment-visual-header {
+        display: grid;
+        gap: 9px;
+    }
+
+    #experiment-mode-badge {
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .experiment-power-chain {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-power-chain article {
+        min-height: 102px;
+    }
+
+    .experiment-power-chain strong {
+        white-space: normal;
+    }
+
+    .experiment-instruments {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-interval-panel > div:first-child {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .experiment-interval-panel strong {
+        text-align: left;
+    }
+
+    .experiment-lock-overlay {
+        padding: 14px;
+    }
+
+    .experiment-lock-card {
+        padding: 21px 17px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #experiment-interactive-area,
+    .experiment-input,
+    .experiment-plate-surface,
+    .experiment-water,
+    .experiment-interval-track span {
+        transition: none;
+    }
+}
+
+/* Таблиця 8.3 повністю в межах блока */
+
+.experiment-table {
+    table-layout: fixed;
+}
+
+.experiment-table th,
+.experiment-table td {
+    min-width: 0;
+}
+
+.experiment-table:not(.experiment-table-wide) {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(1),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(1) {
+    width: 10%;
+}
+
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(2),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(2),
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(3),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(3),
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(4),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(4),
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(5),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(5),
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(6),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(6) {
+    width: 14%;
+}
+
+.experiment-table:not(.experiment-table-wide)
+th:nth-child(7),
+.experiment-table:not(.experiment-table-wide)
+td:nth-child(7) {
+    width: 20%;
+    min-width: 0;
+}
+
+.experiment-table:not(.experiment-table-wide)
+thead th {
+    padding-right: 7px;
+    padding-left: 7px;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.experiment-table:not(.experiment-table-wide)
+.record-status {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Таблиця 8.4 повністю в межах блока */
+
+.experiment-table-wide {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.experiment-table-wide th,
+.experiment-table-wide td {
+    min-width: 0;
+    padding: 12px 6px;
+}
+
+.experiment-table-wide th:nth-child(1),
+.experiment-table-wide td:nth-child(1) {
+    width: 6%;
+}
+
+.experiment-table-wide th:nth-child(2),
+.experiment-table-wide td:nth-child(2) {
+    width: 11%;
+}
+
+.experiment-table-wide th:nth-child(3),
+.experiment-table-wide td:nth-child(3) {
+    width: 11%;
+}
+
+.experiment-table-wide th:nth-child(4),
+.experiment-table-wide td:nth-child(4) {
+    width: 10%;
+}
+
+.experiment-table-wide th:nth-child(5),
+.experiment-table-wide td:nth-child(5) {
+    width: 10%;
+}
+
+.experiment-table-wide th:nth-child(6),
+.experiment-table-wide td:nth-child(6) {
+    width: 9%;
+}
+
+.experiment-table-wide th:nth-child(7),
+.experiment-table-wide td:nth-child(7) {
+    width: 10%;
+}
+
+.experiment-table-wide th:nth-child(8),
+.experiment-table-wide td:nth-child(8) {
+    width: 14%;
+}
+
+.experiment-table-wide th:nth-child(9),
+.experiment-table-wide td:nth-child(9) {
+    width: 19%;
+    min-width: 0;
+}
+
+.experiment-table-wide thead th {
+    overflow-wrap: normal;
+    word-break: normal;
+    font-size: 0.86rem;
+}
+
+.experiment-table-wide tbody td {
+    font-size: 0.9rem;
+}
+
+/* На вузьких екранах залишається горизонтальне прокручування */
+
+@media (max-width: 700px) {
+    .experiment-table:not(.experiment-table-wide) {
+        min-width: 780px;
+    }
+
+    .experiment-table-wide {
+        min-width: 900px;
+    }
+}

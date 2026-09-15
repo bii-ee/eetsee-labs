@@ -1,0 +1,1129 @@
+#stand {
+    --stand-accent: #1b7564;
+    --stand-accent-dark: #13584c;
+    --stand-accent-soft: #e9f6f1;
+
+    border-top: 5px solid var(--stand-accent);
+}
+
+.stand-notice {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid #b8d8cf;
+    border-left: 5px solid var(--stand-accent);
+    border-radius: var(--radius-medium);
+    background: #eff9f5;
+}
+
+.stand-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+}
+
+.stand-notice p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+.stand-workspace {
+    position: relative;
+    min-width: 0;
+    min-height: 300px;
+}
+
+.stand-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    background: rgba(238, 245, 248, 0.94);
+    backdrop-filter: blur(4px);
+}
+
+.stand-lock-overlay[hidden] {
+    display: none;
+}
+
+.stand-lock-content {
+    width: min(100%, 520px);
+    padding: 26px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+.stand-lock-content strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 1.15rem;
+}
+
+.stand-lock-content p {
+    margin: 0 0 18px;
+    color: var(--color-text-muted);
+}
+
+.stand-lock-link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius-small);
+    background: var(--stand-accent);
+    color: #ffffff;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.stand-lock-link:hover,
+.stand-lock-link:focus-visible {
+    background: var(--stand-accent-dark);
+}
+
+#stand-interactive-area {
+    min-width: 0;
+    transition:
+        opacity 180ms ease,
+        filter 180ms ease;
+}
+
+#stand-interactive-area[inert] {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.25;
+    filter: blur(2px);
+}
+
+.stand-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(270px, 0.75fr);
+    gap: 18px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.stand-visual-panel,
+.stand-information,
+.stand-component-navigation,
+.stand-progress-panel {
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface);
+}
+
+.stand-visual-panel {
+    padding: 20px;
+}
+
+.stand-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.stand-panel-heading p {
+    margin: 0 0 4px;
+    color: var(--stand-accent);
+    font-size: 0.79rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.stand-panel-heading h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.05rem;
+}
+
+.stand-power-state {
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    border: 1px solid #d2dbe0;
+    border-radius: 999px;
+    background: #f3f6f8;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 750;
+}
+
+.stand-bench {
+    display: grid;
+    min-width: 0;
+    gap: 16px;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px solid #c7d8d3;
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            180deg,
+            #f5faf8 0 76%,
+            #e2ebe7 76% 78%,
+            #d3ded9 78% 100%
+        );
+}
+
+.stand-power-chain {
+    display: grid;
+    grid-template-columns:
+        repeat(5, minmax(92px, 1fr));
+    gap: 9px;
+}
+
+.stand-device-card,
+.stand-equipment-button,
+.stand-induction-plate,
+.stand-cookware,
+.stand-tool {
+    font: inherit;
+    cursor: pointer;
+}
+
+.stand-device-card {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 126px;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    padding: 16px 10px 12px;
+    border: 1px solid #b9c9c4;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.stand-device-number {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: grid;
+    width: 23px;
+    height: 23px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--stand-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.stand-device-symbol {
+    display: grid;
+    min-width: 48px;
+    height: 42px;
+    place-items: center;
+    padding: 0 7px;
+    border-radius: 9px;
+    background: #173c3a;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.83rem;
+    font-weight: 800;
+}
+
+.stand-device-card strong,
+.stand-device-card small {
+    display: block;
+}
+
+.stand-device-card strong {
+    font-size: 0.82rem;
+}
+
+.stand-device-card small {
+    color: var(--color-text-muted);
+    font-size: 0.67rem;
+    line-height: 1.3;
+}
+
+.stand-measurement-branch {
+    padding: 14px;
+    border: 1px dashed #9fbbb2;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.68);
+}
+
+.stand-measurement-branch > p {
+    margin: 0 0 10px;
+    color: var(--stand-accent-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.stand-measurement-devices {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.stand-equipment-button,
+.stand-tool {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 11px;
+    padding: 12px;
+    border: 1px solid #b9c9c4;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--color-text);
+    text-align: left;
+}
+
+.stand-equipment-icon,
+.stand-meter-screen {
+    display: grid;
+    flex: 0 0 auto;
+    width: 58px;
+    min-height: 48px;
+    place-items: center;
+    border-radius: 9px;
+    background: #173c3a;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-weight: 800;
+}
+
+.stand-meter-screen {
+    gap: 1px;
+    background: #dce7c2;
+    color: #253120;
+}
+
+.stand-meter-screen small {
+    font-size: 0.6rem;
+}
+
+.stand-equipment-button strong,
+.stand-equipment-button small {
+    display: block;
+}
+
+.stand-equipment-button strong {
+    margin-bottom: 3px;
+    color: var(--color-primary);
+    font-size: 0.84rem;
+}
+
+.stand-equipment-button small {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+}
+
+.stand-connection-arrow {
+    color: var(--stand-accent);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.stand-heating-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(180px, 0.7fr);
+    gap: 14px;
+}
+
+.stand-induction-plate,
+.stand-cookware {
+    min-width: 0;
+    border: 1px solid #526267;
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            150deg,
+            #293338,
+            #101619 68%,
+            #080c0e
+        );
+    color: #eef4f3;
+}
+
+.stand-induction-plate {
+    display: grid;
+    gap: 12px;
+    padding: 20px;
+}
+
+.stand-plate-surface {
+    display: grid;
+    min-height: 210px;
+    place-items: center;
+    border: 1px solid #4f5e63;
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            145deg,
+            #263136,
+            #10171a
+        );
+}
+
+.stand-induction-zone {
+    grid-area: 1 / 1;
+    display: block;
+    width: min(68%, 190px);
+    aspect-ratio: 1;
+    border: 3px solid #758386;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            #12191c 0 22%,
+            #526065 23% 25%,
+            #151d20 26% 44%,
+            #59676b 45% 47%,
+            #111719 48% 66%,
+            #546267 67% 69%,
+            #101619 70% 100%
+        );
+    box-shadow:
+        inset 0 0 25px rgba(0, 0, 0, 0.75),
+        0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stand-plate-brand {
+    grid-area: 1 / 1;
+    z-index: 1;
+    color: #dce5e3;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.stand-control-strip {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.stand-control-strip small {
+    padding: 7px 5px;
+    border: 1px solid #526267;
+    border-radius: 7px;
+    background: #1c262a;
+    color: #c9d5d2;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.stand-cookware {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stand-pot {
+    position: relative;
+    display: block;
+    width: min(100%, 180px);
+    height: 126px;
+    overflow: hidden;
+    border: 5px solid #8b9699;
+    border-top-width: 8px;
+    border-radius: 14px 14px 28px 28px;
+    background:
+        linear-gradient(
+            90deg,
+            #7b878b,
+            #d8dfe0 24%,
+            #9ba6a9 52%,
+            #e1e5e6 76%,
+            #758186
+        );
+    box-shadow: 0 13px 18px rgba(0, 0, 0, 0.32);
+}
+
+.stand-pot::before,
+.stand-pot::after {
+    position: absolute;
+    top: 12px;
+    width: 38px;
+    height: 13px;
+    border-radius: 8px;
+    background: #747f82;
+    content: "";
+}
+
+.stand-pot::before {
+    left: -31px;
+}
+
+.stand-pot::after {
+    right: -31px;
+}
+
+.stand-pot-water {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    height: 58%;
+    border-radius: 5px 5px 17px 17px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(116, 202, 223, 0.72),
+            rgba(42, 139, 170, 0.86)
+        );
+}
+
+.stand-cookware strong,
+.stand-cookware small {
+    display: block;
+}
+
+.stand-cookware small {
+    margin-top: 4px;
+    color: #b8c7c4;
+    font-size: 0.74rem;
+}
+
+.stand-instruments {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.stand-tool-icon {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 54px;
+    height: 44px;
+    place-items: center;
+    padding: 0 7px;
+    border-radius: 9px;
+    background: #173c3a;
+    color: #ffffff;
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.stand-tool strong,
+.stand-tool small {
+    display: block;
+}
+
+.stand-tool strong {
+    margin-bottom: 3px;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+}
+
+.stand-tool small {
+    color: var(--color-text-muted);
+    font-size: 0.69rem;
+}
+
+.stand-functional-path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 13px;
+    border: 1px dashed #9fbbb2;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.76);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.stand-functional-path b {
+    color: var(--stand-accent);
+}
+
+.stand-visual-caption {
+    margin: 14px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.stand-information {
+    display: grid;
+    align-content: start;
+    padding: 22px;
+    background: var(--color-surface-soft);
+}
+
+.stand-information-main {
+    min-height: 190px;
+}
+
+.stand-information-label {
+    margin: 0 0 7px;
+    color: var(--stand-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.stand-information h3 {
+    margin: 0 0 10px;
+    color: var(--color-primary);
+    font-size: 1.13rem;
+}
+
+.stand-information-main > p:not(
+    .stand-information-label
+) {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.stand-properties {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0 0;
+}
+
+.stand-properties div {
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface);
+}
+
+.stand-properties dt {
+    margin-bottom: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.stand-properties dd {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.stand-component-navigation,
+.stand-progress-panel {
+    margin-top: 18px;
+    padding: 20px;
+}
+
+.stand-component-navigation h3,
+.stand-progress-panel h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+
+.stand-component-buttons {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.stand-component-buttons button {
+    position: relative;
+    min-height: 50px;
+    padding: 10px 34px 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+    cursor: pointer;
+}
+
+.stand-component-buttons button:hover,
+.stand-component-buttons button:focus-visible,
+.stand-device-card:hover,
+.stand-device-card:focus-visible,
+.stand-equipment-button:hover,
+.stand-equipment-button:focus-visible,
+.stand-induction-plate:hover,
+.stand-induction-plate:focus-visible,
+.stand-cookware:hover,
+.stand-cookware:focus-visible,
+.stand-tool:hover,
+.stand-tool:focus-visible {
+    border-color: var(--stand-accent);
+    box-shadow: 0 0 0 3px rgba(27, 117, 100, 0.16);
+}
+
+.stand-component-buttons button.is-selected,
+.stand-device-card.is-selected,
+.stand-equipment-button.is-selected,
+.stand-induction-plate.is-selected,
+.stand-cookware.is-selected,
+.stand-tool.is-selected {
+    border-color: var(--stand-accent);
+    box-shadow: 0 0 0 3px rgba(27, 117, 100, 0.2);
+}
+
+.stand-component-buttons button.is-selected {
+    background: var(--stand-accent-soft);
+    color: var(--color-primary);
+}
+
+.stand-component-buttons button.is-visited::after {
+    position: absolute;
+    top: 50%;
+    right: 11px;
+    display: grid;
+    width: 19px;
+    height: 19px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-success);
+    color: #ffffff;
+    content: "✓";
+    font-size: 0.72rem;
+    transform: translateY(-50%);
+}
+
+.stand-device-card.is-visited,
+.stand-equipment-button.is-visited,
+.stand-tool.is-visited {
+    background: #eff9f5;
+}
+
+.stand-progress-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.stand-progress-heading p {
+    margin: 5px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+.stand-progress-heading > strong {
+    color: var(--stand-accent);
+    font-size: 1.05rem;
+}
+
+.stand-progress-track {
+    height: 11px;
+    margin-top: 15px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dfe8e4;
+}
+
+.stand-progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--stand-accent);
+    transition: width 180ms ease;
+}
+
+.stand-progress-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.stand-ready-button,
+.stand-reset-button {
+    min-height: 43px;
+    padding: 10px 15px;
+    border-radius: var(--radius-small);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.stand-ready-button {
+    border: 1px solid var(--stand-accent);
+    background: var(--stand-accent);
+    color: #ffffff;
+}
+
+.stand-ready-button:hover:not(:disabled),
+.stand-ready-button:focus-visible:not(:disabled) {
+    background: var(--stand-accent-dark);
+}
+
+.stand-ready-button:disabled {
+    border-color: #aebdc4;
+    background: #dce5e9;
+    color: #718089;
+    cursor: not-allowed;
+}
+
+.stand-reset-button {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.stand-status {
+    margin: 14px 0 0;
+    padding: 11px 13px;
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+}
+
+.stand-status-ready {
+    background: #fff7e8;
+    color: #805300;
+}
+
+.stand-status-success {
+    background: #eaf7f0;
+    color: #17613e;
+}
+
+@media (max-width: 1180px) {
+    .stand-power-chain {
+        grid-template-columns:
+            repeat(3, minmax(110px, 1fr));
+    }
+
+    .stand-instruments {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1050px) {
+    .stand-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-information-main {
+        min-height: auto;
+    }
+
+    .stand-component-buttons {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .stand-panel-heading,
+    .stand-progress-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .stand-power-state {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .stand-power-chain {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .stand-measurement-devices,
+    .stand-heating-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-connection-arrow {
+        transform: rotate(90deg);
+        text-align: center;
+    }
+
+    .stand-component-buttons {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .stand-visual-panel,
+    .stand-information,
+    .stand-component-navigation,
+    .stand-progress-panel {
+        padding: 15px;
+    }
+
+    .stand-bench {
+        padding: 12px;
+    }
+
+    .stand-power-chain,
+    .stand-component-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-control-strip {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .stand-progress-actions,
+    .stand-ready-button,
+    .stand-reset-button {
+        width: 100%;
+    }
+
+    .stand-functional-path b {
+        display: none;
+    }
+
+    .stand-functional-path span {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stand-progress-track span,
+    #stand-interactive-area {
+        transition: none;
+    }
+}
+
+/* Корекція ширини та компонування стенда */
+
+.stand-layout {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.stand-visual-panel,
+.stand-information {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.stand-information {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(280px, 0.7fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.stand-information-main {
+    min-width: 0;
+    min-height: 0;
+}
+
+.stand-information-main > p:not(
+    .stand-information-label
+) {
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.stand-properties {
+    min-width: 0;
+    margin: 0;
+}
+
+.stand-bench,
+.stand-power-chain,
+.stand-measurement-branch,
+.stand-measurement-devices,
+.stand-heating-layout,
+.stand-instruments,
+.stand-functional-path {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.stand-power-chain {
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+}
+
+.stand-heating-layout {
+    grid-template-columns:
+        minmax(0, 3fr)
+        minmax(0, 2fr);
+}
+
+.stand-instruments {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.stand-device-card,
+.stand-equipment-button,
+.stand-induction-plate,
+.stand-cookware,
+.stand-tool {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.stand-device-card strong,
+.stand-device-card small,
+.stand-equipment-button strong,
+.stand-equipment-button small,
+.stand-tool strong,
+.stand-tool small {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.stand-equipment-button > span:last-child,
+.stand-tool > span:last-child,
+.stand-cookware > span:last-child {
+    min-width: 0;
+}
+
+@media (max-width: 1180px) {
+    .stand-power-chain {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .stand-information {
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(260px, 0.8fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .stand-information {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .stand-properties {
+        margin-top: 4px;
+    }
+}
+
+@media (max-width: 760px) {
+    .stand-power-chain {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .stand-measurement-devices,
+    .stand-heating-layout,
+    .stand-instruments {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .stand-connection-arrow {
+        transform: rotate(90deg);
+        text-align: center;
+    }
+
+    .stand-component-buttons {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .stand-power-chain,
+    .stand-component-buttons {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .stand-device-card {
+        min-height: 112px;
+    }
+}
+
+/* Уточнене відображення екрана DIRIS A20 */
+
+.stand-meter-screen {
+    width: 78px;
+    min-width: 78px;
+    min-height: 56px;
+    box-sizing: border-box;
+    gap: 3px;
+    padding: 7px 6px;
+    border: 1px solid #c8d99e;
+    background:
+        linear-gradient(
+            180deg,
+            #e5edc8,
+            #d5e2ad
+        );
+    box-shadow:
+        inset 0 0 8px rgba(67, 84, 39, 0.12);
+}
+
+.stand-meter-screen b {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.stand-meter-screen small {
+    display: block;
+    width: 100%;
+    color: #53664d;
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Контрастна позначка переглянутого елемента */
+
+.stand-component-buttons button.is-visited::after {
+    width: 21px;
+    height: 21px;
+    border: 1px solid #105b4c;
+    background: #187a65;
+    color: #ffffff;
+    content: "✓";
+    font-size: 0.78rem;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow:
+        0 1px 3px rgba(12, 62, 52, 0.28);
+}

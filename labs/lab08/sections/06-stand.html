@@ -1,0 +1,472 @@
+<section id="stand" class="content-section">
+    <p class="section-number">Інтерактивний модуль</p>
+
+    <h2>Віртуальний лабораторний стенд</h2>
+
+    <p class="lead">
+        Інтерактивний макет відтворює склад лабораторної
+        установки для дослідження індукційної плити
+        «МЕРИДІАН ПП-3». У цьому розділі установка залишається
+        знеструмленою.
+    </p>
+
+    <div class="stand-notice">
+        <strong>Завдання ознайомлення</strong>
+
+        <p>
+            Послідовно виберіть вісім груп елементів установки.
+            Після перегляду всіх компонентів підтвердьте
+            готовність до проведення дослідів.
+        </p>
+    </div>
+
+    <div class="stand-workspace">
+        <div
+            id="stand-lock-overlay"
+            class="stand-lock-overlay"
+            role="status"
+        >
+            <div class="stand-lock-content">
+                <strong>Доступ до стенда заблоковано</strong>
+
+                <p>
+                    Спочатку пройдіть перевірку знань
+                    у розділі «Правила безпеки».
+                </p>
+
+                <a href="#safety" class="stand-lock-link">
+                    Перейти до правил безпеки
+                </a>
+            </div>
+        </div>
+
+        <div id="stand-interactive-area">
+            <div class="stand-layout">
+                <div class="stand-visual-panel">
+                    <div class="stand-panel-heading">
+                        <div>
+                            <p>Навчальний макет</p>
+
+                            <h3>
+                                Схема лабораторної установки
+                                з індукційною плитою
+                            </h3>
+                        </div>
+
+                        <span class="stand-power-state">
+                            Установка знеструмлена
+                        </span>
+                    </div>
+
+                    <div class="stand-bench">
+                        <div
+                            class="stand-power-chain"
+                            aria-label="Послідовність елементів лабораторної установки"
+                        >
+                            <button
+                                class="stand-device-card"
+                                type="button"
+                                data-stand-component="source"
+                                aria-label="Джерело живлення 220 вольт"
+                            >
+                                <span class="stand-device-number">1</span>
+                                <span class="stand-device-symbol">~</span>
+                                <strong>220 В</strong>
+                                <small>Джерело живлення</small>
+                            </button>
+
+                            <button
+                                class="stand-device-card"
+                                type="button"
+                                data-stand-component="switch"
+                                aria-label="Вимикач лабораторної установки"
+                            >
+                                <span class="stand-device-number">2</span>
+                                <span class="stand-device-symbol">Q</span>
+                                <strong>Вимкнено</strong>
+                                <small>Вимикач</small>
+                            </button>
+
+                            <button
+                                class="stand-device-card"
+                                type="button"
+                                data-stand-component="autotransformer"
+                                aria-label="Лабораторний автотрансформатор"
+                            >
+                                <span class="stand-device-number">3</span>
+                                <span class="stand-device-symbol">ЛАТР</span>
+                                <strong>0 В</strong>
+                                <small>Автотрансформатор</small>
+                            </button>
+
+                            <button
+                                class="stand-device-card stand-analyzer-card"
+                                type="button"
+                                data-stand-component="analyzer"
+                                aria-label="Аналізатор параметрів мережі DIRIS A20"
+                            >
+                                <span class="stand-device-number">4</span>
+                                <span class="stand-device-symbol">A20</span>
+                                <strong>DIRIS</strong>
+                                <small>Аналізатор мережі</small>
+                            </button>
+
+                            <button
+                                class="stand-device-card"
+                                type="button"
+                                data-stand-component="plate"
+                                aria-label="Індукційна плита МЕРИДІАН ПП-3"
+                            >
+                                <span class="stand-device-number">5</span>
+                                <span class="stand-device-symbol">ПП-3</span>
+                                <strong>МЕРИДІАН</strong>
+                                <small>Індукційна плита</small>
+                            </button>
+                        </div>
+
+                        <div class="stand-measurement-branch">
+                            <p>
+                                Вимірювальний канал аналізатора
+                            </p>
+
+                            <div class="stand-measurement-devices">
+                                <button
+                                    class="stand-equipment-button"
+                                    type="button"
+                                    data-stand-component="current-transformer"
+                                    aria-label="Трансформатор струму"
+                                >
+                                    <span class="stand-equipment-icon">
+                                        TA
+                                    </span>
+
+                                    <span>
+                                        <strong>
+                                            Трансформатор струму
+                                        </strong>
+
+                                        <small>
+                                            Вхід струму DIRIS A20
+                                        </small>
+                                    </span>
+                                </button>
+
+                                <span
+                                    class="stand-connection-arrow"
+                                    aria-hidden="true"
+                                >
+                                    →
+                                </span>
+
+                                <button
+                                    class="stand-equipment-button"
+                                    type="button"
+                                    data-stand-component="analyzer"
+                                    aria-label="Вимірювальні покази аналізатора DIRIS A20"
+                                >
+                                    <span class="stand-meter-screen">
+                                        <b>0</b>
+                                        <small>U · I · P</small>
+                                    </span>
+
+                                    <span>
+                                        <strong>DIRIS A20</strong>
+
+                                        <small>
+                                            Напруга, струм, потужність
+                                        </small>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="stand-heating-layout">
+                            <button
+                                class="stand-induction-plate"
+                                type="button"
+                                data-stand-component="plate"
+                                aria-label="Робоча поверхня індукційної плити"
+                            >
+                                <span class="stand-plate-surface">
+                                    <span class="stand-induction-zone"></span>
+                                    <span class="stand-plate-brand">
+                                        МЕРИДІАН
+                                    </span>
+                                </span>
+
+                                <span class="stand-control-strip">
+                                    <small>Нагрів</small>
+                                    <small>Термостат</small>
+                                    <small>Час</small>
+                                    <small>Робота</small>
+                                </span>
+                            </button>
+
+                            <button
+                                class="stand-cookware"
+                                type="button"
+                                data-stand-component="cookware"
+                                aria-label="Сумісний посуд із водою"
+                            >
+                                <span class="stand-pot">
+                                    <span class="stand-pot-water"></span>
+                                </span>
+
+                                <span>
+                                    <strong>Посуд із водою</strong>
+
+                                    <small>
+                                        Феромагнітне дно 12-26 см
+                                    </small>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="stand-instruments">
+                            <button
+                                class="stand-tool"
+                                type="button"
+                                data-stand-component="measuring-tools"
+                            >
+                                <span
+                                    class="stand-tool-icon"
+                                    aria-hidden="true"
+                                >
+                                    °C
+                                </span>
+
+                                <span>
+                                    <strong>Термометр</strong>
+
+                                    <small>
+                                        Початкова температура води
+                                    </small>
+                                </span>
+                            </button>
+
+                            <button
+                                class="stand-tool"
+                                type="button"
+                                data-stand-component="measuring-tools"
+                            >
+                                <span
+                                    class="stand-tool-icon"
+                                    aria-hidden="true"
+                                >
+                                    kg
+                                </span>
+
+                                <span>
+                                    <strong>Засіб визначення маси</strong>
+
+                                    <small>
+                                        Маса води
+                                    </small>
+                                </span>
+                            </button>
+
+                            <button
+                                class="stand-tool"
+                                type="button"
+                                data-stand-component="measuring-tools"
+                            >
+                                <span
+                                    class="stand-tool-icon"
+                                    aria-hidden="true"
+                                >
+                                    00:00
+                                </span>
+
+                                <span>
+                                    <strong>Секундомір</strong>
+
+                                    <small>
+                                        Тривалості інтервалів
+                                    </small>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="stand-functional-path">
+                            <span>220 В</span>
+                            <b aria-hidden="true">→</b>
+                            <span>Вимикач</span>
+                            <b aria-hidden="true">→</b>
+                            <span>Автотрансформатор</span>
+                            <b aria-hidden="true">→</b>
+                            <span>DIRIS A20</span>
+                            <b aria-hidden="true">→</b>
+                            <span>Індукційна плита</span>
+                            <b aria-hidden="true">→</b>
+                            <span>Посуд із водою</span>
+                        </div>
+                    </div>
+
+                    <p class="stand-visual-caption">
+                        Макет відображає функціональний склад
+                        установки. Вибір елементів не подає
+                        напругу та не запускає нагрівання.
+                    </p>
+                </div>
+
+                <aside
+                    class="stand-information"
+                    aria-live="polite"
+                >
+                    <div class="stand-information-main">
+                        <p class="stand-information-label">
+                            Відомості про елемент
+                        </p>
+
+                        <h3 id="stand-component-title">
+                            Оберіть елемент стенда
+                        </h3>
+
+                        <p id="stand-component-description">
+                            Натисніть на елемент макета або
+                            його назву, щоб переглянути
+                            призначення.
+                        </p>
+                    </div>
+
+                    <dl class="stand-properties">
+                        <div>
+                            <dt>Позначення</dt>
+                            <dd id="stand-component-code">-</dd>
+                        </div>
+
+                        <div>
+                            <dt>Функція</dt>
+                            <dd id="stand-component-function">-</dd>
+                        </div>
+
+                        <div>
+                            <dt>Пов’язана величина або стан</dt>
+                            <dd id="stand-component-value">-</dd>
+                        </div>
+                    </dl>
+                </aside>
+            </div>
+
+            <div class="stand-component-navigation">
+                <h3>Елементи лабораторної установки</h3>
+
+                <div class="stand-component-buttons">
+                    <button
+                        type="button"
+                        data-stand-component="source"
+                    >
+                        Джерело живлення
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="switch"
+                    >
+                        Вимикач
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="autotransformer"
+                    >
+                        Автотрансформатор
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="current-transformer"
+                    >
+                        Трансформатор струму
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="analyzer"
+                    >
+                        Аналізатор DIRIS A20
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="plate"
+                    >
+                        Плита «МЕРИДІАН ПП-3»
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="cookware"
+                    >
+                        Посуд із водою
+                    </button>
+
+                    <button
+                        type="button"
+                        data-stand-component="measuring-tools"
+                    >
+                        Засоби вимірювання
+                    </button>
+                </div>
+            </div>
+
+            <div class="stand-progress-panel">
+                <div class="stand-progress-heading">
+                    <div>
+                        <h3>
+                            Готовність до роботи зі стендом
+                        </h3>
+
+                        <p id="stand-progress-text">
+                            Переглянуто 0 із 8 груп елементів
+                        </p>
+                    </div>
+
+                    <strong id="stand-progress-percent">
+                        0%
+                    </strong>
+                </div>
+
+                <div
+                    class="stand-progress-track"
+                    role="progressbar"
+                    aria-label="Прогрес ознайомлення зі стендом"
+                    aria-valuemin="0"
+                    aria-valuemax="8"
+                    aria-valuenow="0"
+                >
+                    <span id="stand-progress-bar"></span>
+                </div>
+
+                <div class="stand-progress-actions">
+                    <button
+                        id="stand-ready-button"
+                        class="stand-ready-button"
+                        type="button"
+                        disabled
+                    >
+                        Підтвердити готовність стенда
+                    </button>
+
+                    <button
+                        id="stand-reset-button"
+                        class="stand-reset-button"
+                        type="button"
+                    >
+                        Скинути ознайомлення
+                    </button>
+                </div>
+
+                <p
+                    id="stand-status"
+                    class="stand-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Послідовно виберіть усі групи
+                    елементів стенда.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

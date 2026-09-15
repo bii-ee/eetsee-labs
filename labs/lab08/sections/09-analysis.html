@@ -1,0 +1,273 @@
+<section id="analysis" class="content-section">
+    <p class="section-number">Аналітичний модуль</p>
+
+    <h2>Аналіз результатів експерименту</h2>
+
+    <p class="lead">
+        Проаналізуйте циклічну роботу плити в режимі
+        «Термостат», а також вплив заданої напруги та температури
+        на активну потужність і тривалість нагрівання води до кипіння.
+    </p>
+
+    <div class="analysis-access-shell">
+        <div
+            id="analysis-lock-overlay"
+            class="analysis-lock-overlay"
+            role="status"
+        >
+            <div class="analysis-lock-card">
+                <strong>Доступ до аналізу заблоковано</strong>
+
+                <p>
+                    Спочатку правильно виконайте та перевірте
+                    розрахунки в розділі 8.
+                </p>
+
+                <a class="analysis-lock-link" href="#calculations">
+                    Перейти до розрахунків
+                </a>
+            </div>
+        </div>
+
+        <div id="analysis-interactive-area">
+            <div class="analysis-source-note">
+                <div>
+                    <strong>Джерело даних</strong>
+
+                    <p>
+                        Графіки будуються автоматично за результатами
+                        шести циклів першого досліду, дев’яти режимів
+                        другого досліду та перевірених розрахунків.
+                    </p>
+                </div>
+
+                <span id="analysis-source-label">
+                    Дані ще не отримано
+                </span>
+            </div>
+
+            <div class="analysis-summary-grid">
+                <article>
+                    <span>Електрична енергія</span>
+                    <strong id="analysis-total-energy">—</strong>
+                    <small>W<sub>ел</sub>, кВт·год</small>
+                </article>
+
+                <article>
+                    <span>Корисна теплота</span>
+                    <strong id="analysis-useful-heat">—</strong>
+                    <small>Q, кВт·год</small>
+                </article>
+
+                <article>
+                    <span>Термічний ККД</span>
+                    <strong id="analysis-efficiency">—</strong>
+                    <small>η, %</small>
+                </article>
+
+                <article>
+                    <span>Опрацьовано</span>
+                    <strong id="analysis-operation-count">0 із 15</strong>
+                    <small>6 циклів і 9 режимів</small>
+                </article>
+            </div>
+
+            <div class="analysis-chart-grid">
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 1</p>
+                            <h3>Циклічна зміна активної потужності</h3>
+                        </div>
+
+                        <span>P(t)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Під час увімкненого інтервалу потужність
+                        дорівнює виміряному значенню P<sub>i</sub>,
+                        а під час вимкненого інтервалу приймається
+                        рівною нулю.
+                    </p>
+
+                    <div
+                        id="chart-power-time"
+                        class="analysis-chart analysis-chart-wide"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 2</p>
+                            <h3>Залежність активної потужності від напруги</h3>
+                        </div>
+
+                        <span>P = f(U<sub>зад</sub>)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Для кожної заданої температури порівнюються
+                        результати при напругах 200, 220 і 240 В.
+                    </p>
+
+                    <div
+                        id="chart-power-voltage"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+
+                <article class="analysis-chart-card">
+                    <div class="analysis-chart-heading">
+                        <div>
+                            <p class="section-number">Графік 3</p>
+                            <h3>Тривалість нагрівання води до кипіння</h3>
+                        </div>
+
+                        <span>t<sub>кип</sub> = f(U<sub>зад</sub>)</span>
+                    </div>
+
+                    <p class="analysis-chart-description">
+                        Графік показує вплив напруги на тривалість
+                        нагрівання для заданих температур 110, 160
+                        і 240 °C.
+                    </p>
+
+                    <div
+                        id="chart-boiling-time"
+                        class="analysis-chart"
+                    ></div>
+                </article>
+            </div>
+
+            <div class="analysis-observation-note">
+                <strong>Орієнтир для аналізу</strong>
+
+                <p>
+                    На графіку P(t) враховуйте як увімкнені, так і
+                    вимкнені інтервали. Для другого досліду порівнюйте
+                    результати лише за однакової заданої температури
+                    або однакової заданої напруги.
+                </p>
+            </div>
+
+            <form id="analysis-form" class="analysis-form">
+                <div class="analysis-form-heading">
+                    <p class="section-number">Самостійна робота</p>
+
+                    <h3>Висновки за результатами дослідів</h3>
+
+                    <p>
+                        Сформулюйте три змістовні висновки. У кожному
+                        полі потрібно ввести щонайменше 30 символів.
+                    </p>
+                </div>
+
+                <label class="analysis-question">
+                    <span>
+                        1. Що показує ступінчастий характер графіка
+                        P(t) і як увімкнені та вимкнені інтервали
+                        впливають на спожиту енергію?
+                    </span>
+
+                    <textarea
+                        name="powerTimeConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="powerTimeConclusion">0</strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        2. Як зміна напруги від 200 до 240 В впливає
+                        на активну потужність і тривалість нагрівання
+                        за незмінної заданої температури?
+                    </span>
+
+                    <textarea
+                        name="voltageInfluenceConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="voltageInfluenceConclusion">0</strong>
+                    </small>
+                </label>
+
+                <label class="analysis-question">
+                    <span>
+                        3. Як зміна заданої температури впливає
+                        на потужність і час нагрівання за однакової
+                        напруги? Поясніть отриману тенденцію.
+                    </span>
+
+                    <textarea
+                        name="temperatureInfluenceConclusion"
+                        rows="4"
+                        minlength="30"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Введено символів:
+                        <strong data-character-count="temperatureInfluenceConclusion">0</strong>
+                    </small>
+                </label>
+
+                <div class="analysis-actions">
+                    <button
+                        id="analysis-save-button"
+                        class="analysis-button analysis-button-primary"
+                        type="submit"
+                    >
+                        Зберегти висновки
+                    </button>
+
+                    <button
+                        id="reset-analysis"
+                        class="analysis-button analysis-button-danger"
+                        type="button"
+                    >
+                        Очистити висновки
+                    </button>
+                </div>
+
+                <p
+                    id="analysis-message"
+                    class="analysis-message"
+                    data-state="default"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Проаналізуйте графіки та заповніть усі три поля.
+                </p>
+            </form>
+
+            <div
+                id="analysis-complete-panel"
+                class="analysis-complete-panel"
+                hidden
+            >
+                <strong>Аналіз результатів завершено</strong>
+
+                <p>
+                    Висновки збережено. Можна переходити до
+                    контрольних питань.
+                </p>
+
+                <a href="#questions">
+                    Перейти до контрольних питань
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
