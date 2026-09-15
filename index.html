@@ -133,11 +133,25 @@
       border-radius: 8px;
       font-weight: 700;
       text-decoration: none;
+      transition:
+        background-color 0.15s ease,
+        transform 0.08s ease;
+    }
+
+    .button:visited {
+      color: #ffffff;
     }
 
     .button:hover,
     .button:focus-visible {
+      color: #ffffff;
       background: #173fae;
+    }
+
+    .button:active {
+      color: #ffffff;
+      background: #12358f;
+      transform: translateY(1px);
     }
 
     @media (max-width: 700px) {
@@ -181,23 +195,25 @@
       <h2 id="labs-title">Лабораторні роботи</h2>
 
       <div class="lab-list">
-        <article class="lab-card lab-card-planned">
+        <article class="lab-card">
           <div>
-            <span class="lab-number">ЛР №5</span>
+            <span class="lab-number">ЛР №8</span>
 
             <h3>
-              Дослідження енергетичних характеристик
-              електродного нагрівача
+              Дослідження параметрів роботи побутових
+              індукційних плит
             </h3>
 
             <p>
-              Інтерактивні матеріали лабораторної роботи
-              перебувають на етапі підготовки.
+              Віртуальний стенд, дослідження циклічного режиму,
+              нагрівання води за різних параметрів, енергетичні
+              розрахунки, графіки, контрольні питання та
+              формування звіту.
             </p>
           </div>
 
-          <a class="button button-secondary" href="./labs/lab05/">
-            Переглянути ЛР №5
+          <a class="button" href="./labs/lab08/">
+            Відкрити ЛР №8
           </a>
         </article>
 
