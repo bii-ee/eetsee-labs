@@ -378,3 +378,17 @@
         font-size: 1.25rem;
     }
 }
+
+.flow-node-transformer {
+    min-width: 0;
+}
+
+.flow-node-transformer strong {
+    display: block;
+    max-width: 100%;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: auto;
+}
