@@ -1,4 +1,12 @@
 import {
+    initializeLaboratoryShell
+} from "../../common/js/lab-shell.js";
+
+import {
+    LAB05_CONFIG
+} from "./config.js";
+
+import {
     initializeSafetyModule
 } from "../../common/js/safety.js";
 
@@ -26,218 +34,57 @@ import {
     initializeReport
 } from "./report.js";
 
-const LAB_NAMESPACE = "lab05";
+function initializeLaboratoryModules({
+    root = document
+} = {}) {
+    const options = {
+        root,
+        namespace:
+            LAB05_CONFIG.namespace
+    };
 
-const sectionFiles = [
-    "./sections/01-overview.html",
-    "./sections/02-goals.html",
-    "./sections/03-equipment.html",
-    "./sections/04-theory.html",
-    "./sections/05-safety.html",
-    "./sections/06-stand.html",
-    "./sections/07-experiment.html",
-    "./sections/08-calculations.html",
-    "./sections/09-analysis.html",
-    "./sections/10-questions.html"
-];
-
-const sectionsRoot =
-    document.querySelector(
-        "#sections-root"
+    initializeSafetyModule(
+        options
     );
 
-const navigationLinks =
-    Array.from(
-        document.querySelectorAll(
-            ".navigation-link"
-        )
+    initializeStand(
+        options
     );
 
-async function loadSection(
-    filePath
-) {
-    const response =
-        await fetch(
-            filePath,
-            {
-                cache:
-                    "no-store"
-            }
-        );
+    initializeExperiment(
+        options
+    );
 
-    if (!response.ok) {
-        throw new Error(
-            `Не вдалося завантажити файл: ${filePath}`
-        );
-    }
+    initializeCalculations(
+        options
+    );
 
-    return response.text();
-}
+    initializeAnalysis(
+        options
+    );
 
-function initializeNavigation() {
-    const sections =
-        Array.from(
-            document.querySelectorAll(
-                ".content-section"
-            )
-        );
+    initializeQuiz(
+        options
+    );
 
-    if (
-        sections.length === 0 ||
-        navigationLinks.length === 0
-    ) {
-        return;
-    }
-
-    const observer =
-        new IntersectionObserver(
-            (entries) => {
-                const visibleEntries =
-                    entries
-                        .filter(
-                            (entry) =>
-                                entry.isIntersecting
-                        )
-                        .sort(
-                            (first, second) =>
-                                second
-                                    .intersectionRatio -
-                                first
-                                    .intersectionRatio
-                        );
-
-                const currentEntry =
-                    visibleEntries[0];
-
-                if (!currentEntry) {
-                    return;
-                }
-
-                navigationLinks.forEach(
-                    (link) => {
-                        const isCurrent =
-                            link.getAttribute(
-                                "href"
-                            ) ===
-                            `#${currentEntry.target.id}`;
-
-                        link.classList.toggle(
-                            "is-active",
-                            isCurrent
-                        );
-
-                        if (isCurrent) {
-                            link.setAttribute(
-                                "aria-current",
-                                "true"
-                            );
-                        } else {
-                            link.removeAttribute(
-                                "aria-current"
-                            );
-                        }
-                    }
-                );
-            },
-            {
-                rootMargin:
-                    "-20% 0px -65% 0px",
-
-                threshold:
-                    [
-                        0,
-                        0.1,
-                        0.25,
-                        0.5
-                    ]
-            }
-        );
-
-    sections.forEach(
-        (section) => {
-            observer.observe(
-                section
-            );
-        }
+    initializeReport(
+        options
     );
 }
 
-function initializeLaboratoryModules() {
-    initializeSafetyModule({
-        namespace:
-            LAB_NAMESPACE
-    });
+initializeLaboratoryShell({
+    root: document,
 
-    initializeStand({
-        namespace:
-            LAB_NAMESPACE
-    });
+    sectionFiles:
+        LAB05_CONFIG.sectionFiles,
 
-    initializeExperiment({
-        namespace:
-            LAB_NAMESPACE
-    });
-
-    initializeCalculations({
-        namespace:
-            LAB_NAMESPACE
-    });
-
-    initializeAnalysis({
-        namespace:
-            LAB_NAMESPACE
-    });
-
-    initializeQuiz({
-        namespace:
-            LAB_NAMESPACE
-    });
-
-    initializeReport({
-        namespace:
-            LAB_NAMESPACE
-    });
-}
-async function loadLaboratoryContent() {
-    if (!sectionsRoot) {
+    initializeModules:
+        initializeLaboratoryModules
+}).catch(
+    (error) => {
         console.error(
-            "Не знайдено контейнер лабораторної роботи."
-        );
-
-        return;
-    }
-
-    try {
-        const sectionContent =
-            await Promise.all(
-                sectionFiles.map(
-                    loadSection
-                )
-            );
-
-        sectionsRoot.innerHTML =
-            sectionContent.join("");
-
-        initializeNavigation();
-        initializeLaboratoryModules();
-    } catch (error) {
-        console.error(
+            "Не вдалося ініціалізувати ЛР5:",
             error
         );
-
-        sectionsRoot.innerHTML = `
-            <div class="error-panel">
-                <strong>
-                    Помилка завантаження матеріалів.
-                </strong>
-
-                <p>
-                    Перевірте структуру файлів і запустіть
-                    лабораторну роботу через локальний сервер.
-                </p>
-            </div>
-        `;
     }
-}
-
-loadLaboratoryContent();
+);
