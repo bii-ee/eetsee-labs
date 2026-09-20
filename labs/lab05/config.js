@@ -1,3 +1,7 @@
+import {
+    createLaboratoryEventNames
+} from "../../common/js/lab-events.js";
+
 export const LAB05_CONFIG = Object.freeze({
     id: "lab05",
 
@@ -50,3 +54,8 @@ export const LAB05_CONFIG = Object.freeze({
         passingScore: 6
     })
 });
+
+export const LAB05_EVENTS =
+    createLaboratoryEventNames(
+        LAB05_CONFIG.namespace
+    );

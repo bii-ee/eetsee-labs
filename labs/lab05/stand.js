@@ -2,6 +2,10 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const componentInformation = {
     supply: {
         title:
@@ -584,7 +588,7 @@ export function initializeStand({
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:stand-ready",
+                    LAB05_EVENTS.standReady,
                     {
                         detail: {
                             namespace
@@ -627,7 +631,7 @@ export function initializeStand({
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:stand-reset",
+                    LAB05_EVENTS.standReset,
                     {
                         detail: {
                             namespace
@@ -639,12 +643,12 @@ export function initializeStand({
     );
 
     document.addEventListener(
-        "laboratory:safety-passed",
+        LAB05_EVENTS.safetyPassed,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:safety-reset",
+        LAB05_EVENTS.safetyReset,
         updateAccess
     );
 

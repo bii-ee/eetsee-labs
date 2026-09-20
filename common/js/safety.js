@@ -1,9 +1,18 @@
 import { createStorage } from "./storage.js";
 
+import {
+    createLaboratoryEventNames
+} from "./lab-events.js";
+
 export function initializeSafetyModule({
     root = document,
     namespace = "laboratory"
 } = {}) {
+
+    const eventNames =
+        createLaboratoryEventNames(
+            namespace
+        );
     const section = root.querySelector("#safety");
 
     if (!section || section.dataset.initialized === "true") {
@@ -185,7 +194,7 @@ export function initializeSafetyModule({
         }
 
         document.dispatchEvent(
-            new CustomEvent("laboratory:safety-passed", {
+            new CustomEvent(eventNames.safetyPassed, {
                 detail: {
                     namespace
                 }
@@ -207,7 +216,7 @@ export function initializeSafetyModule({
 
         storage.remove("progress");
         document.dispatchEvent(
-            new CustomEvent("laboratory:safety-reset", {
+            new CustomEvent(eventNames.safetyReset, {
                 detail: {
                     namespace
                 }

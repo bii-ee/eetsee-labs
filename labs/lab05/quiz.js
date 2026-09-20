@@ -1,5 +1,9 @@
 import { createStorage } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const PASSING_SCORE = 6;
 const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
 const LAB05_QUIZ_STORAGE_KEY = "eetsee.lab05.quiz.v2";
@@ -417,7 +421,7 @@ export function initializeQuiz({
 
     function dispatchInvalidated() {
         window.dispatchEvent(
-            new CustomEvent(`${namespace}:quiz-invalidated`)
+            new CustomEvent(LAB05_EVENTS.quizInvalidated)
         );
     }
 
@@ -525,7 +529,7 @@ export function initializeQuiz({
 
             if (saveResult) {
                 window.dispatchEvent(
-                    new CustomEvent(`${namespace}:quiz-completed`, {
+                    new CustomEvent(LAB05_EVENTS.quizCompleted, {
                         detail: {
                             score,
                             total: QUESTIONS.length,
@@ -677,11 +681,11 @@ export function initializeQuiz({
     });
 
     window.addEventListener(
-        `${namespace}:analysis-completed`,
+        LAB05_EVENTS.analysisCompleted,
         updateAccess
     );
     window.addEventListener(
-        `${namespace}:analysis-invalidated`,
+        LAB05_EVENTS.analysisInvalidated,
         updateAccess
     );
 

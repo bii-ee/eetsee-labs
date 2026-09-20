@@ -9,6 +9,10 @@ import {
 import { formatNumber } from "./model.js";
 import { createStorage } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const QUIZ_TOTAL = 8;
 const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
 const LAB05_QUIZ_STORAGE_KEY = "eetsee.lab05.quiz.v2";
@@ -170,7 +174,7 @@ function calculationsAreReady(experiment, calculations) {
         !isExperimentComplete(experiment) ||
         calculations.completed !== true ||
         calculations.signature !==
-            createExperimentSignature(experiment)
+        createExperimentSignature(experiment)
     ) {
         return false;
     }
@@ -770,10 +774,10 @@ export function initializeReport({
             calculationReady &&
             analysis?.completed === true &&
             analysis?.signature ===
-                analysisSignature &&
+            analysisSignature &&
             quiz?.passed === true &&
             quiz?.analysisSignature ===
-                analysisSignature &&
+            analysisSignature &&
             Number(quiz?.score) >= 6;
 
         return {
@@ -870,65 +874,64 @@ export function initializeReport({
                     const firstHeaterRow =
                         index === 0 ||
                         data[index - 1].heaterId !==
-                            record.heaterId;
+                        record.heaterId;
 
                     return `
                         <tr>
-                            ${
-                                firstHeaterRow
-                                    ? `<th scope="rowgroup" rowspan="3">№${record.heaterNumber}</th>`
-                                    : ""
-                            }
+                            ${firstHeaterRow
+                            ? `<th scope="rowgroup" rowspan="3">№${record.heaterNumber}</th>`
+                            : ""
+                        }
 
                             <td>
                                 ${formatNumber(
-                                    record.targetVoltageV,
-                                    0
-                                )}
+                            record.targetVoltageV,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.actualVoltageV,
-                                    1
-                                )}
+                            record.actualVoltageV,
+                            1
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.currentA,
-                                    2
-                                )}
+                            record.currentA,
+                            2
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.activePowerW,
-                                    0
-                                )}
+                            record.activePowerW,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    LAB05_EXPERIMENT_CONDITIONS
-                                        .initialTemperatureC,
-                                    0
-                                )}
+                            LAB05_EXPERIMENT_CONDITIONS
+                                .initialTemperatureC,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    LAB05_EXPERIMENT_CONDITIONS
-                                        .boilingTemperatureC,
-                                    0
-                                )}
+                            LAB05_EXPERIMENT_CONDITIONS
+                                .boilingTemperatureC,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.boilingTimeMinutes,
-                                    2
-                                )}
+                            record.boilingTimeMinutes,
+                            2
+                        )}
                             </td>
                         </tr>
                     `;
@@ -943,42 +946,41 @@ export function initializeReport({
                     const firstHeaterRow =
                         index === 0 ||
                         data[index - 1].heaterId !==
-                            record.heaterId;
+                        record.heaterId;
 
                     return `
                         <tr>
-                            ${
-                                firstHeaterRow
-                                    ? `<th scope="rowgroup" rowspan="3">№${record.heaterNumber}</th>`
-                                    : ""
-                            }
+                            ${firstHeaterRow
+                            ? `<th scope="rowgroup" rowspan="3">№${record.heaterNumber}</th>`
+                            : ""
+                        }
 
                             <td>
                                 ${formatNumber(
-                                    record.targetVoltageV,
-                                    0
-                                )}
+                            record.targetVoltageV,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.activePowerW,
-                                    0
-                                )}
+                            record.activePowerW,
+                            0
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.boilingTimeMinutes,
-                                    2
-                                )}
+                            record.boilingTimeMinutes,
+                            2
+                        )}
                             </td>
 
                             <td>
                                 ${formatNumber(
-                                    record.electricalEnergyWh,
-                                    1
-                                )}
+                            record.electricalEnergyWh,
+                            1
+                        )}
                             </td>
                         </tr>
                     `;
@@ -1246,15 +1248,15 @@ export function initializeReport({
     );
 
     [
-        `${namespace}:quiz-completed`,
-        `${namespace}:quiz-invalidated`,
-        `${namespace}:analysis-completed`,
-        `${namespace}:analysis-invalidated`,
-        `${namespace}:calculations-completed`,
-        `${namespace}:calculations-invalidated`,
-        "lab05:experiment-updated",
-        "lab05:experiment-completed",
-        "lab05:experiment-reset"
+        LAB05_EVENTS.quizCompleted,
+        LAB05_EVENTS.quizInvalidated,
+        LAB05_EVENTS.analysisCompleted,
+        LAB05_EVENTS.analysisInvalidated,
+        LAB05_EVENTS.calculationsCompleted,
+        LAB05_EVENTS.calculationsInvalidated,
+        LAB05_EVENTS.experimentUpdated,
+        LAB05_EVENTS.experimentCompleted,
+        LAB05_EVENTS.experimentReset
     ].forEach((eventName) => {
         window.addEventListener(
             eventName,

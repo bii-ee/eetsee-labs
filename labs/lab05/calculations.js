@@ -13,6 +13,10 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const ENERGY_TOLERANCE_WH = 0.11;
 
 function parseStudentNumber(value) {
@@ -640,7 +644,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB05_EVENTS.calculationsInvalidated
             )
         );
     }
@@ -855,7 +859,7 @@ export function initializeCalculations({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    `${namespace}:calculations-completed`,
+                    LAB05_EVENTS.calculationsCompleted,
                     {
                         detail: {
                             records:
@@ -933,7 +937,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB05_EVENTS.calculationsInvalidated
             )
         );
 
@@ -1046,7 +1050,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB05_EVENTS.calculationsInvalidated
             )
         );
 
@@ -1069,17 +1073,17 @@ export function initializeCalculations({
     );
 
     window.addEventListener(
-        "lab05:experiment-updated",
+        LAB05_EVENTS.experimentUpdated,
         updateAccess
     );
 
     window.addEventListener(
-        "lab05:experiment-completed",
+        LAB05_EVENTS.experimentCompleted,
         updateAccess
     );
 
     window.addEventListener(
-        "lab05:experiment-reset",
+        LAB05_EVENTS.experimentReset,
         handleExperimentReset
     );
 

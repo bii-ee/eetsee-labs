@@ -8,6 +8,10 @@ import {
 import { formatNumber } from "./model.js";
 import { createStorage } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
 const MINIMUM_CONCLUSION_LENGTH = 30;
@@ -1126,7 +1130,7 @@ export function initializeAnalysis({
     function dispatchInvalidated() {
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:analysis-invalidated`
+                LAB05_EVENTS.analysisInvalidated
             )
         );
     }
@@ -1631,7 +1635,7 @@ export function initializeAnalysis({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    `${namespace}:analysis-completed`,
+                    LAB05_EVENTS.analysisCompleted,
                     {
                         detail: {
                             conclusions:
@@ -1706,27 +1710,27 @@ export function initializeAnalysis({
     );
 
     window.addEventListener(
-        `${namespace}:calculations-completed`,
+        LAB05_EVENTS.calculationsCompleted,
         updateAccess
     );
 
     window.addEventListener(
-        `${namespace}:calculations-invalidated`,
+        LAB05_EVENTS.calculationsInvalidated,
         updateAccess
     );
 
     window.addEventListener(
-        "lab05:experiment-updated",
+        LAB05_EVENTS.experimentUpdated,
         updateAccess
     );
 
     window.addEventListener(
-        "lab05:experiment-completed",
+        LAB05_EVENTS.experimentCompleted,
         updateAccess
     );
 
     window.addEventListener(
-        "lab05:experiment-reset",
+        LAB05_EVENTS.experimentReset,
         updateAccess
     );
 

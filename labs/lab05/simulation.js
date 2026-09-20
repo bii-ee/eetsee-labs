@@ -21,6 +21,10 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB05_EVENTS
+} from "./config.js";
+
 const ANIMATION_DURATION_MS = 9000;
 const VOLTAGE_TOLERANCE = 1;
 
@@ -2081,7 +2085,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab05:experiment-updated",
+                LAB05_EVENTS.experimentUpdated,
                 {
                     detail: {
                         experimentId:
@@ -2118,7 +2122,7 @@ export function initializeExperiment({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab05:experiment-completed",
+                    LAB05_EVENTS.experimentCompleted,
                     {
                         detail: {
                             records:
@@ -2212,7 +2216,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab05:experiment-reset"
+                LAB05_EVENTS.experimentReset
             )
         );
 
@@ -2286,12 +2290,12 @@ export function initializeExperiment({
     );
 
     document.addEventListener(
-        "laboratory:stand-ready",
+        LAB05_EVENTS.standReady,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:stand-reset",
+        LAB05_EVENTS.standReset,
         updateAccess
     );
 
