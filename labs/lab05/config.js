@@ -27,6 +27,29 @@ export const LAB05_CONFIG = Object.freeze({
         "./sections/10-questions.html"
     ]),
 
+    storage: Object.freeze({
+        safety:
+            "lab05:safety",
+
+        stand:
+            "lab05:stand",
+
+        experiment:
+            "eetsee.lab05.experiment.v2",
+
+        calculations:
+            "eetsee.lab05.calculations.verified.v2",
+
+        analysis:
+            "eetsee.lab05.analysis.v2",
+
+        quiz:
+            "eetsee.lab05.quiz.v2",
+
+        report:
+            "eetsee.lab05.report.v2"
+    }),
+
     variants: Object.freeze({
         count: 30,
         minimum: 1,

@@ -9,11 +9,11 @@ import { formatNumber } from "./model.js";
 import { createStorage } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
 const MINIMUM_CONCLUSION_LENGTH = 30;
 
 const HEATERS = Object.freeze([
@@ -164,7 +164,7 @@ function normalizeCalculationProgress(value) {
     return {
         values:
             value?.values &&
-            typeof value.values === "object"
+                typeof value.values === "object"
                 ? value.values
                 : {},
 
@@ -200,7 +200,7 @@ function calculationsAreReady(
         (experiment) =>
             parseStudentNumber(
                 calculationProgress.values[
-                    energyField(experiment.id)
+                energyField(experiment.id)
                 ]
             ) !== null
     );
@@ -213,13 +213,13 @@ function buildAnalysisData(
     return LAB05_EXPERIMENT_RUNS.map(
         (experiment) => ({
             ...experimentProgress.records[
-                experiment.id
+            experiment.id
             ],
 
             electricalEnergyWh:
                 parseStudentNumber(
                     calculationProgress.values[
-                        energyField(experiment.id)
+                    energyField(experiment.id)
                     ]
                 )
         })
@@ -244,9 +244,9 @@ function createAnalysisSignature(
                     value:
                         parseStudentNumber(
                             calculationProgress.values[
-                                energyField(
-                                    experiment.id
-                                )
+                            energyField(
+                                experiment.id
+                            )
                             ]
                         )
                 })
@@ -383,8 +383,8 @@ function appendPointLabel(
     const boxWidth = Math.max(
         66,
         label.length *
-            estimatedCharacterWidth +
-            horizontalPadding * 2
+        estimatedCharacterWidth +
+        horizontalPadding * 2
     );
 
     const requestedCenterY =
@@ -394,13 +394,13 @@ function appendPointLabel(
 
     const centerY = Math.min(
         plot.bottom -
-            boxHeight / 2 -
-            5,
+        boxHeight / 2 -
+        5,
 
         Math.max(
             plot.top +
-                boxHeight / 2 +
-                5,
+            boxHeight / 2 +
+            5,
 
             requestedCenterY
         )
@@ -544,8 +544,8 @@ function renderComparisonChart(
         return (
             plot.bottom -
             Number(value) /
-                yMaximum *
-                plotHeight
+            yMaximum *
+            plotHeight
         );
     }
 
@@ -731,14 +731,11 @@ function renderComparisonChart(
                             point,
                             index
                         ) =>
-                            `${
-                                index === 0
-                                    ? "M"
-                                    : "L"
-                            } ${
-                                point.x
-                            } ${
-                                point.y
+                            `${index === 0
+                                ? "M"
+                                : "L"
+                            } ${point.x
+                            } ${point.y
                             }`
                     )
                     .join(" ");
@@ -847,8 +844,8 @@ function renderComparisonChart(
                             ) =>
                                 currentSeries
                                     .coordinates[
-                                        index
-                                    ]
+                                    index
+                                ]
                                     .value
                         );
 
@@ -864,7 +861,7 @@ function renderComparisonChart(
 
                     const position =
                         maximumAtIndex ===
-                        minimumAtIndex
+                            minimumAtIndex
                             ? (
                                 seriesIndex === 0
                                     ? "above"
@@ -872,7 +869,7 @@ function renderComparisonChart(
                             )
                             : (
                                 point.value ===
-                                maximumAtIndex
+                                    maximumAtIndex
                                     ? "above"
                                     : "below"
                             );
@@ -967,7 +964,7 @@ export function initializeAnalysis({
     if (
         !section ||
         section.dataset.initialized ===
-            "true"
+        "true"
     ) {
         return;
     }
@@ -1091,7 +1088,7 @@ export function initializeAnalysis({
 
     const analysisStorage =
         createStorage(
-            LAB05_ANALYSIS_STORAGE_KEY
+            LAB05_CONFIG.storage.analysis
         );
 
     const textareas =
@@ -1157,7 +1154,7 @@ export function initializeAnalysis({
         return {
             conclusions:
                 stored.conclusions &&
-                typeof stored.conclusions ===
+                    typeof stored.conclusions ===
                     "object"
                     ? stored.conclusions
                     : {},
@@ -1199,7 +1196,7 @@ export function initializeAnalysis({
             (textarea) => {
                 textarea.value =
                     state.conclusions[
-                        textarea.name
+                    textarea.name
                     ] ?? "";
 
                 textarea.setCustomValidity(
@@ -1232,7 +1229,7 @@ export function initializeAnalysis({
             analysisData.reduce(
                 (best, record) =>
                     record.activePowerW >
-                    best.activePowerW
+                        best.activePowerW
                         ? record
                         : best
             );
@@ -1242,8 +1239,8 @@ export function initializeAnalysis({
                 (best, record) =>
                     record
                         .boilingTimeMinutes <
-                    best
-                        .boilingTimeMinutes
+                        best
+                            .boilingTimeMinutes
                         ? record
                         : best
             );
@@ -1253,8 +1250,8 @@ export function initializeAnalysis({
                 (best, record) =>
                     record
                         .electricalEnergyWh <
-                    best
-                        .electricalEnergyWh
+                        best
+                            .electricalEnergyWh
                         ? record
                         : best
             );

@@ -22,6 +22,7 @@ import {
 } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
@@ -65,7 +66,7 @@ function normalizeStoredProgress(
         (experiment) => {
             const sourceRecord =
                 value?.records?.[
-                    experiment.id
+                experiment.id
                 ];
 
             if (
@@ -171,7 +172,7 @@ export function initializeExperiment({
     if (
         !section ||
         section.dataset.initialized ===
-            "true"
+        "true"
     ) {
         return;
     }
@@ -414,9 +415,9 @@ export function initializeExperiment({
     if (
         missingElement ||
         elements.heaterButtons.length !==
-            2 ||
+        2 ||
         elements.voltageButtons.length !==
-            3
+        3
     ) {
         console.warn(
             "Не знайдено елементи експериментального модуля ЛР5."
@@ -430,7 +431,7 @@ export function initializeExperiment({
 
     const standStorage =
         createStorage(
-            `${namespace}:stand`
+            LAB05_CONFIG.storage.stand
         );
 
     const experimentStorage =
@@ -681,7 +682,7 @@ export function initializeExperiment({
         if (
             event?.detail?.namespace &&
             event.detail.namespace !==
-                namespace
+            namespace
         ) {
             return;
         }
@@ -1087,7 +1088,7 @@ export function initializeExperiment({
             !configured ||
             !(
                 state.phase ===
-                    "prepared" ||
+                "prepared" ||
                 state.isPowered
             );
 
@@ -1124,7 +1125,7 @@ export function initializeExperiment({
             !(
                 state.isPowered &&
                 state.phase ===
-                    "adjustment"
+                "adjustment"
             );
 
         elements.latrControl.value =
@@ -1203,7 +1204,7 @@ export function initializeExperiment({
         elements.temperatureReading.textContent =
             formatNumber(
                 state.currentTemperature ??
-                    initialTemperature,
+                initialTemperature,
                 1
             );
 
@@ -1267,13 +1268,13 @@ export function initializeExperiment({
         elements.heatingSystem.classList.toggle(
             "is-heating",
             state.phase ===
-                "heating"
+            "heating"
         );
 
         elements.heatingSystem.classList.toggle(
             "is-boiling",
             state.phase ===
-                "boiling"
+            "boiling"
         );
     }
 
@@ -1396,10 +1397,10 @@ export function initializeExperiment({
                 sampleCount === 0
                     ? 0
                     : state.progress *
-                        (
-                            index /
-                            sampleCount
-                        );
+                    (
+                        index /
+                        sampleCount
+                    );
 
             const elapsedSeconds =
                 totalDuration *
@@ -1491,7 +1492,7 @@ export function initializeExperiment({
                 (experiment) => {
                     const record =
                         state.records[
-                            experiment.id
+                        experiment.id
                         ];
 
                     const completed =
@@ -1500,11 +1501,11 @@ export function initializeExperiment({
 
                     const active =
                         experiment.heaterId ===
-                            state.selectedHeaterId &&
+                        state.selectedHeaterId &&
                         experiment.targetVoltageV ===
-                            state.selectedVoltage &&
+                        state.selectedVoltage &&
                         state.phase !==
-                            "all-complete";
+                        "all-complete";
 
                     const configured =
                         isExperimentConfigured(
@@ -1539,75 +1540,69 @@ export function initializeExperiment({
                             </th>
                             <td>
                                 ${formatNumber(
-                                    experiment.targetVoltageV,
-                                    0
-                                )}
+                        experiment.targetVoltageV,
+                        0
+                    )}
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.actualVoltageV,
-                                            1
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.actualVoltageV,
+                                1
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.currentA,
-                                            2
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.currentA,
+                                2
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.activePowerW,
-                                            0
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.activePowerW,
+                                0
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.initialTemperatureC,
-                                            1
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.initialTemperatureC,
+                                1
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.boilingTemperatureC,
-                                            1
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.boilingTemperatureC,
+                                1
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
-                                ${
-                                    completed
-                                        ? formatNumber(
-                                            record.boilingTimeMinutes,
-                                            2
-                                        )
-                                        : "–"
-                                }
+                                ${completed
+                            ? formatNumber(
+                                record.boilingTimeMinutes,
+                                2
+                            )
+                            : "–"
+                        }
                             </td>
 
                             <td>
@@ -1629,7 +1624,7 @@ export function initializeExperiment({
         section.classList.toggle(
             "is-completed",
             completedCount ===
-                LAB05_TOTAL_EXPERIMENTS
+            LAB05_TOTAL_EXPERIMENTS
         );
     }
 
@@ -1652,7 +1647,7 @@ export function initializeExperiment({
         if (
             state.isPowered ||
             state.phase ===
-                "heating"
+            "heating"
         ) {
             return;
         }
@@ -1704,7 +1699,7 @@ export function initializeExperiment({
         if (
             state.isPowered ||
             state.phase ===
-                "heating" ||
+            "heating" ||
             !LAB05_VOLTAGE_LEVELS.includes(
                 voltage
             )
@@ -1825,7 +1820,7 @@ export function initializeExperiment({
         if (
             !state.isPowered ||
             state.phase !==
-                "adjustment"
+            "adjustment"
         ) {
             return;
         }
@@ -1867,7 +1862,7 @@ export function initializeExperiment({
 
         if (
             state.phase !==
-                "adjustment" ||
+            "adjustment" ||
             !state.isPowered ||
             !isExperimentConfigured(
                 experiment
@@ -1930,7 +1925,7 @@ export function initializeExperiment({
 
         if (
             state.phase !==
-                "ready-heating" ||
+            "ready-heating" ||
             !state.isPowered ||
             !isExperimentConfigured(
                 experiment
@@ -1983,7 +1978,7 @@ export function initializeExperiment({
                 Math.min(
                     1,
                     elapsedAnimationTime /
-                        ANIMATION_DURATION_MS
+                    ANIMATION_DURATION_MS
                 );
 
             state.progress =
@@ -2059,7 +2054,7 @@ export function initializeExperiment({
 
         if (
             state.phase !==
-                "boiling" ||
+            "boiling" ||
             !isExperimentConfigured(
                 experiment
             )
@@ -2093,7 +2088,7 @@ export function initializeExperiment({
 
                         record:
                             state.records[
-                                experiment.id
+                            experiment.id
                             ],
 
                         records:

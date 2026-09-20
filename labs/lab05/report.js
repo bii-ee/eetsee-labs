@@ -10,13 +10,11 @@ import { formatNumber } from "./model.js";
 import { createStorage } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
 const QUIZ_TOTAL = 8;
-const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
-const LAB05_QUIZ_STORAGE_KEY = "eetsee.lab05.quiz.v2";
-const LAB05_REPORT_STORAGE_KEY = "eetsee.lab05.report.v2";
 
 const CHARTS = Object.freeze([
     Object.freeze({
@@ -693,13 +691,13 @@ export function initializeReport({
         LAB05_VERIFIED_CALCULATIONS_STORAGE_KEY
     );
     const analysisStorage = createStorage(
-        LAB05_ANALYSIS_STORAGE_KEY
+        LAB05_CONFIG.storage.analysis
     );
     const quizStorage = createStorage(
-        LAB05_QUIZ_STORAGE_KEY
+        LAB05_CONFIG.storage.quiz
     );
     const reportStorage = createStorage(
-        LAB05_REPORT_STORAGE_KEY
+        LAB05_CONFIG.storage.report
     );
 
     const studentInputs = {
@@ -1236,9 +1234,9 @@ export function initializeReport({
                 `${namespace}:stand`,
                 LAB05_EXPERIMENT_STORAGE_KEY,
                 LAB05_VERIFIED_CALCULATIONS_STORAGE_KEY,
-                LAB05_ANALYSIS_STORAGE_KEY,
-                LAB05_QUIZ_STORAGE_KEY,
-                LAB05_REPORT_STORAGE_KEY
+                LAB05_CONFIG.storage.analysis,
+                LAB05_CONFIG.storage.quiz,
+                LAB05_CONFIG.storage.report
             ].forEach(
                 clearStorageNamespace
             );

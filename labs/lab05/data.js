@@ -1,8 +1,12 @@
+import {
+    LAB05_CONFIG
+} from "./config.js";
+
 export const LAB05_EXPERIMENT_STORAGE_KEY =
-    "eetsee.lab05.experiment.v2";
+    LAB05_CONFIG.storage.experiment;
 
 export const LAB05_VERIFIED_CALCULATIONS_STORAGE_KEY =
-    "eetsee.lab05.calculations.verified.v2";
+    LAB05_CONFIG.storage.calculations;
 
 export const LAB05_VOLTAGE_LEVELS =
     Object.freeze([

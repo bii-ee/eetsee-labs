@@ -1,12 +1,11 @@
 import { createStorage } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
 const PASSING_SCORE = 6;
-const LAB05_ANALYSIS_STORAGE_KEY = "eetsee.lab05.analysis.v2";
-const LAB05_QUIZ_STORAGE_KEY = "eetsee.lab05.quiz.v2";
 
 const QUESTIONS = Object.freeze([
     Object.freeze({
@@ -357,10 +356,10 @@ export function initializeQuiz({
     section.dataset.quizInitialized = "true";
 
     const analysisStorage = createStorage(
-        LAB05_ANALYSIS_STORAGE_KEY
+        LAB05_CONFIG.storage.analysis
     );
     const quizStorage = createStorage(
-        LAB05_QUIZ_STORAGE_KEY
+        LAB05_CONFIG.storage.quiz
     );
 
     let analysisSignature = "";

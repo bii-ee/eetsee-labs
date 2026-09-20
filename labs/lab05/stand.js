@@ -3,6 +3,7 @@ import {
 } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
@@ -156,7 +157,7 @@ export function initializeStand({
     if (
         !section ||
         section.dataset.initialized ===
-            "true"
+        "true"
     ) {
         return;
     }
@@ -272,12 +273,12 @@ export function initializeStand({
 
     const safetyStorage =
         createStorage(
-            `${namespace}:safety`
+            LAB05_CONFIG.storage.safety
         );
 
     const standStorage =
         createStorage(
-            `${namespace}:stand`
+            LAB05_CONFIG.storage.stand
         );
 
     const componentIds =
@@ -327,7 +328,7 @@ export function initializeStand({
     let standReady =
         savedProgress?.ready === true &&
         visitedComponents.size ===
-            componentIds.length;
+        componentIds.length;
 
     function isSafetyPassed() {
         const safetyProgress =
@@ -346,7 +347,7 @@ export function initializeStand({
         if (
             event?.detail?.namespace &&
             event.detail.namespace !==
-                namespace
+            namespace
         ) {
             return;
         }
@@ -513,7 +514,7 @@ export function initializeStand({
     ) {
         const information =
             componentInformation[
-                componentId
+            componentId
             ];
 
         if (!information) {
