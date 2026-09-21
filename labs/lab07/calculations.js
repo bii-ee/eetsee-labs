@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
 const MODES = [
     { id: "mode-1", position: 1 },
     { id: "mode-2", position: 2 },
@@ -192,11 +197,11 @@ export function initializeCalculations({
     section.dataset.initialized = "true";
 
     const experimentStorage = createStorage(
-        `${namespace}:cyclic-experiment`
+        LAB07_CONFIG.storage.experiment
     );
 
     const calculationsStorage = createStorage(
-        `${namespace}:calculations`
+        LAB07_CONFIG.storage.calculations
     );
 
     let experimentProgress = normalizeExperimentProgress(
@@ -296,9 +301,9 @@ export function initializeCalculations({
                 rows.push(`
                     <tr>
                         ${cycleIndex === 0
-                            ? `<th rowspan="3" scope="rowgroup">Режим ${mode.position}</th>`
-                            : ""
-                        }
+                        ? `<th rowspan="3" scope="rowgroup">Режим ${mode.position}</th>`
+                        : ""
+                    }
                         <th scope="row">${cycleNumber}</th>
                         <td>
                             <span class="calculation-source-value">
@@ -312,15 +317,15 @@ export function initializeCalculations({
                         </td>
                         <td>
                             ${createInputMarkup(
-                                durationKey,
-                                `Тривалість циклу: режим ${mode.position}, цикл ${cycleNumber}`
-                            )}
+                        durationKey,
+                        `Тривалість циклу: режим ${mode.position}, цикл ${cycleNumber}`
+                    )}
                         </td>
                         <td>
                             ${createInputMarkup(
-                                dutyKey,
-                                `Відносна тривалість увімкнення: режим ${mode.position}, цикл ${cycleNumber}`
-                            )}
+                        dutyKey,
+                        `Відносна тривалість увімкнення: режим ${mode.position}, цикл ${cycleNumber}`
+                    )}
                         </td>
                         <td>
                             <span
@@ -347,9 +352,9 @@ export function initializeCalculations({
                         <span
                             class="calculation-summary-value"
                             data-summary-field="${dutyField(
-                                mode.id,
-                                cycleIndex
-                            )}"
+                    mode.id,
+                    cycleIndex
+                )}"
                         >—</span>
                     </td>
                 `
@@ -361,9 +366,9 @@ export function initializeCalculations({
                     ${values}
                     <td>
                         ${createInputMarkup(
-                            averageField(mode.id),
-                            `Середня відносна тривалість увімкнення для режиму ${mode.position}`
-                        )}
+                averageField(mode.id),
+                `Середня відносна тривалість увімкнення для режиму ${mode.position}`
+            )}
                     </td>
                     <td>
                         <span
@@ -443,7 +448,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB07_EVENTS.calculationsInvalidated
             )
         );
     }
@@ -610,7 +615,7 @@ export function initializeCalculations({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    `${namespace}:calculations-completed`,
+                    LAB07_EVENTS.calculationsCompleted,
                     {
                         detail: {
                             burner: experimentProgress.burner,
@@ -667,7 +672,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB07_EVENTS.calculationsInvalidated
             )
         );
 
@@ -744,7 +749,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:calculations-invalidated`
+                LAB07_EVENTS.calculationsInvalidated
             )
         );
 
@@ -762,15 +767,15 @@ export function initializeCalculations({
     );
 
     window.addEventListener(
-        "lab07:cyclic-experiment-updated",
+        LAB07_EVENTS.experimentUpdated,
         updateAccess
     );
     window.addEventListener(
-        "lab07:cyclic-experiment-completed",
+        LAB07_EVENTS.experimentCompleted,
         updateAccess
     );
     window.addEventListener(
-        "lab07:cyclic-experiment-reset",
+        LAB07_EVENTS.experimentReset,
         handleExperimentReset
     );
 

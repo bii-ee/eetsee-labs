@@ -13,6 +13,13 @@ const SHARED_EVENT_NAMES = Object.freeze({
 });
 
 const SCOPED_EVENT_SUFFIXES = Object.freeze({
+
+    variantSelected:
+        "variant-selected",
+
+    variantChanged:
+        "variant-changed",
+        
     experimentUpdated:
         "experiment-updated",
 

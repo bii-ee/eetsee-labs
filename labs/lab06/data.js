@@ -1,8 +1,12 @@
+import {
+    LAB06_CONFIG
+} from "./config.js";
+
 export const LAB06_EXPERIMENT_STORAGE_KEY =
-    "eetsee.lab06.experiment.v1";
+    LAB06_CONFIG.storage.experiment;
 
 export const LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY =
-    "eetsee.lab06.calculations.verified.v1";
+    LAB06_CONFIG.storage.calculationsVerified;
 
 export const LAB06_EXPERIMENT_MODES =
     Object.freeze([

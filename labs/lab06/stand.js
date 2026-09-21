@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
+
 const componentInformation = {
     qf: {
         title: "Автоматичний вимикач",
@@ -150,10 +155,11 @@ export function initializeStand({
     section.dataset.initialized = "true";
 
     const safetyStorage = createStorage(
-        `${namespace}:safety`
+        LAB06_CONFIG.storage.safety
     );
+
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB06_CONFIG.storage.stand
     );
 
     const savedProgress = standStorage.get("progress", {
@@ -341,7 +347,7 @@ export function initializeStand({
         saveProgress();
 
         document.dispatchEvent(
-            new CustomEvent("laboratory:stand-ready", {
+            new CustomEvent(LAB06_EVENTS.standReady, {
                 detail: {
                     namespace
                 }
@@ -370,7 +376,7 @@ export function initializeStand({
         saveProgress();
 
         document.dispatchEvent(
-            new CustomEvent("laboratory:stand-reset", {
+            new CustomEvent(LAB06_EVENTS.standReset, {
                 detail: {
                     namespace
                 }
@@ -378,11 +384,11 @@ export function initializeStand({
         );
     });
     document.addEventListener(
-        "laboratory:safety-passed",
+        LAB06_EVENTS.safetyPassed,
         updateAccess
     );
     document.addEventListener(
-        "laboratory:safety-reset",
+        LAB06_EVENTS.safetyReset,
         updateAccess
     );
     updateAccess();

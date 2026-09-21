@@ -1,5 +1,10 @@
 import { createStorage } from "../../common/js/storage.js";
 
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
 const EMPTY_READING = "—";
 const MODEL_MILLISECONDS_PER_SECOND = 70;
 
@@ -300,13 +305,12 @@ export function initializeExperiment({
     section.dataset.initialized = "true";
 
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB07_CONFIG.storage.stand
     );
 
     const experimentStorage = createStorage(
-        `${namespace}:cyclic-experiment`
+        LAB07_CONFIG.storage.experiment
     );
-
     const storedProgress = normalizeStoredProgress(
         experimentStorage.get("progress", {})
     );
@@ -1262,10 +1266,9 @@ export function initializeExperiment({
         );
 
         elements.indicatorLabel.textContent =
-            `L${state.burner}: ${
-                state.circuitOn
-                    ? "увімкнено"
-                    : "вимкнено"
+            `L${state.burner}: ${state.circuitOn
+                ? "увімкнено"
+                : "вимкнено"
             }`;
 
         elements.switchValue.textContent =
@@ -1401,7 +1404,7 @@ export function initializeExperiment({
                 .map((mode, index) => {
                     const record =
                         state.records[
-                            mode.id
+                        mode.id
                         ];
 
                     const cells = [];
@@ -1413,7 +1416,7 @@ export function initializeExperiment({
                     ) {
                         const cycle =
                             record?.cycles[
-                                cycleIndex
+                            cycleIndex
                             ];
 
                         cells.push(
@@ -1453,47 +1456,43 @@ export function initializeExperiment({
                         "complete";
 
                     return `
-                        <tr class="${
-                            completed
-                                ? "is-completed"
-                                : ""
-                        } ${
-                            active
-                                ? "is-active"
-                                : ""
+                        <tr class="${completed
+                            ? "is-completed"
+                            : ""
+                        } ${active
+                            ? "is-active"
+                            : ""
                         }">
                             <th scope="row">
                                 ${mode.position}
                             </th>
 
                             <td>
-                                ${
-                                    Number.isFinite(
-                                        record?.tau0
-                                    )
-                                        ? formatNumber(
-                                            record.tau0
-                                        )
-                                        : EMPTY_READING
-                                }
+                                ${Number.isFinite(
+                            record?.tau0
+                        )
+                            ? formatNumber(
+                                record.tau0
+                            )
+                            : EMPTY_READING
+                        }
                             </td>
 
                             ${cells
-                                .map(
-                                    (cell) =>
-                                        `<td>${cell}</td>`
-                                )
-                                .join("")}
+                            .map(
+                                (cell) =>
+                                    `<td>${cell}</td>`
+                            )
+                            .join("")}
 
                             <td>
                                 <span class="record-status">
-                                    ${
-                                        completed
-                                            ? "Завершено"
-                                            : record?.cycles.length
-                                                ? `${record.cycles.length} із 3`
-                                                : "Очікується"
-                                    }
+                                    ${completed
+                            ? "Завершено"
+                            : record?.cycles.length
+                                ? `${record.cycles.length} із 3`
+                                : "Очікується"
+                        }
                                 </span>
                             </td>
                         </tr>
@@ -1816,7 +1815,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab07:cyclic-experiment-updated",
+                LAB07_EVENTS.experimentUpdated,
                 {
                     detail: {
                         burner:
@@ -1852,7 +1851,7 @@ export function initializeExperiment({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab07:cyclic-experiment-completed",
+                    LAB07_EVENTS.experimentCompleted,
                     {
                         detail: {
                             burner:
@@ -1950,7 +1949,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab07:cyclic-experiment-reset"
+                LAB07_EVENTS.experimentReset
             )
         );
 
@@ -2006,12 +2005,12 @@ export function initializeExperiment({
     );
 
     document.addEventListener(
-        "laboratory:stand-ready",
+        LAB07_EVENTS.standReady,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:stand-reset",
+        LAB07_EVENTS.standReset,
         updateAccess
     );
 

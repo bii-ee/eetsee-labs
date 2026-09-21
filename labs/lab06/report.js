@@ -1,31 +1,32 @@
 import {
-    LAB06_EXPERIMENT_STORAGE_KEY
-} from "./data.js";
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
 
 const STORAGE_KEYS = {
     experiment:
-        LAB06_EXPERIMENT_STORAGE_KEY,
+        LAB06_CONFIG.storage.experiment,
 
     calculations:
-        "eetsee.lab06.calculations.v1",
+        LAB06_CONFIG.storage.calculationsDraft,
 
     calculationsCompleted:
-        "eetsee.lab06.calculations.completed.v1",
+        LAB06_CONFIG.storage.calculationsCompleted,
 
     analysis:
-        "eetsee.lab06.analysis.v1",
+        LAB06_CONFIG.storage.analysis,
 
     analysisCompleted:
-        "eetsee.lab06.analysis.completed.v1",
+        LAB06_CONFIG.storage.analysisCompleted,
 
     quiz:
-        "eetsee.lab06.quiz.v1",
+        LAB06_CONFIG.storage.quiz,
 
     quizCompleted:
-        "eetsee.lab06.quiz.completed.v1",
+        LAB06_CONFIG.storage.quizCompleted,
 
     student:
-        "eetsee.lab06.report.student.v1"
+        LAB06_CONFIG.storage.reportStudent
 };
 
 const CALCULATION_GROUPS = {
@@ -1078,7 +1079,7 @@ export function initializeReport() {
                 .filter(
                     (key) =>
                         key.startsWith(
-                            "eetsee.lab06."
+                            `eetsee.${LAB06_CONFIG.namespace}.`
                         )
                 )
                 .forEach(
@@ -1093,10 +1094,10 @@ export function initializeReport() {
     );
 
     [
-        "lab06:quiz-completed",
-        "lab06:quiz-invalidated",
-        "lab06:analysis-invalidated",
-        "lab06:calculations-invalidated"
+        LAB06_EVENTS.quizCompleted,
+        LAB06_EVENTS.quizInvalidated,
+        LAB06_EVENTS.analysisInvalidated,
+        LAB06_EVENTS.calculationsInvalidated
     ].forEach((eventName) => {
         window.addEventListener(
             eventName,

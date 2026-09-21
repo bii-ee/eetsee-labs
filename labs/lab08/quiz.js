@@ -2,7 +2,14 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
-const PASSING_SCORE = 6;
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS,
+    LAB08_SCOPED_EVENTS
+} from "./config.js";
+
+const PASSING_SCORE =
+    LAB08_CONFIG.quiz.passingScore;
 const STATE_VERSION = 1;
 
 const QUESTIONS = [
@@ -435,9 +442,9 @@ function renderQuestion(
                         name="${question.id}"
                         value="${option.value}"
                         ${selectedAnswer === option.value
-                            ? "checked"
-                            : ""
-                        }
+                    ? "checked"
+                    : ""
+                }
                     >
 
                     <span class="quiz-option-letter">
@@ -495,7 +502,7 @@ export function initializeQuiz({
     if (
         !section ||
         section.dataset.quizInitialized ===
-            "true"
+        "true"
     ) {
         return;
     }
@@ -571,12 +578,12 @@ export function initializeQuiz({
 
     const analysisStorage =
         createStorage(
-            `${namespace}:analysis`
+            LAB08_CONFIG.storage.analysis
         );
 
     const quizStorage =
         createStorage(
-            `${namespace}:quiz`
+            LAB08_CONFIG.storage.quiz
         );
 
     let analysisSignature = "";
@@ -607,7 +614,7 @@ export function initializeQuiz({
             typeof stored !== "object" ||
             stored.version !== STATE_VERSION ||
             stored.analysisSignature !==
-                signature
+            signature
         ) {
             return createInitialState(
                 signature
@@ -619,7 +626,7 @@ export function initializeQuiz({
 
             answers:
                 stored.answers &&
-                typeof stored.answers ===
+                    typeof stored.answers ===
                     "object"
                     ? stored.answers
                     : {},
@@ -654,9 +661,29 @@ export function initializeQuiz({
         type,
         detail = {}
     ) {
+        const eventNames = {
+            completed: {
+                shared:
+                    LAB08_EVENTS.quizCompleted,
+                scoped:
+                    LAB08_SCOPED_EVENTS.quizCompleted
+            },
+
+            invalidated: {
+                shared:
+                    LAB08_EVENTS.quizInvalidated,
+                scoped:
+                    LAB08_SCOPED_EVENTS.quizInvalidated
+            }
+        }[type];
+
+        if (!eventNames) {
+            return;
+        }
+
         document.dispatchEvent(
             new CustomEvent(
-                `laboratory:quiz-${type}`,
+                eventNames.shared,
                 {
                     detail: {
                         namespace,
@@ -668,7 +695,7 @@ export function initializeQuiz({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:quiz-${type}`,
+                eventNames.scoped,
                 {
                     detail
                 }
@@ -687,7 +714,7 @@ export function initializeQuiz({
                         question,
                         index + 1,
                         state.answers[
-                            question.id
+                        question.id
                         ]
                     )
             ).join("");
@@ -698,7 +725,7 @@ export function initializeQuiz({
             (question) =>
                 Boolean(
                     state.answers[
-                        question.id
+                    question.id
                     ]
                 )
         ).length;
@@ -762,7 +789,7 @@ export function initializeQuiz({
             (question) => {
                 const selectedValue =
                     state.answers[
-                        question.id
+                    question.id
                     ];
 
                 const selectedOption =
@@ -814,11 +841,9 @@ export function initializeQuiz({
                     feedback.textContent =
                         correct
                             ? selectedOption.feedback
-                            : `${
-                                selectedOption?.feedback ??
-                                "Відповідь неправильна."
-                            } Правильна відповідь: ${
-                                correctOption.label
+                            : `${selectedOption?.feedback ??
+                            "Відповідь неправильна."
+                            } Правильна відповідь: ${correctOption.label
                             }.`;
                 }
             }
@@ -897,7 +922,7 @@ export function initializeQuiz({
         if (
             event?.detail?.namespace &&
             event.detail.namespace !==
-                namespace
+            namespace
         ) {
             return;
         }
@@ -911,7 +936,7 @@ export function initializeQuiz({
         const ready =
             analysis?.completed === true &&
             typeof analysis.signature ===
-                "string" &&
+            "string" &&
             analysis.signature !== "";
 
         elements.lockOverlay.hidden =
@@ -953,7 +978,7 @@ export function initializeQuiz({
         if (
             state.checkedAt &&
             getAnsweredCount() ===
-                QUESTIONS.length
+            QUESTIONS.length
         ) {
             evaluateAnswers({
                 saveResult: false
@@ -1028,7 +1053,7 @@ export function initializeQuiz({
                     QUESTIONS.find(
                         (question) =>
                             !state.answers[
-                                question.id
+                            question.id
                             ]
                     );
 
@@ -1090,32 +1115,32 @@ export function initializeQuiz({
     );
 
     document.addEventListener(
-        "laboratory:analysis-completed",
+        LAB08_EVENTS.analysisCompleted,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:analysis-invalidated",
+        LAB08_EVENTS.analysisInvalidated,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:calculations-invalidated",
+        LAB08_EVENTS.calculationsInvalidated,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-reset",
+        LAB08_EVENTS.experimentReset,
         updateAccess
     );
 
     window.addEventListener(
-        `${namespace}:analysis-completed`,
+        LAB08_SCOPED_EVENTS.analysisCompleted,
         updateAccess
     );
 
     window.addEventListener(
-        `${namespace}:analysis-invalidated`,
+        LAB08_SCOPED_EVENTS.analysisInvalidated,
         updateAccess
     );
 

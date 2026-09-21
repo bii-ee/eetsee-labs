@@ -8,6 +8,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
+
 const EMPTY_READING = "—";
 
 function createSineWavePath({
@@ -122,7 +127,7 @@ export function initializeExperiment({
     }
 
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB06_CONFIG.storage.stand
     );
     const powerButton = experimentSection.querySelector(
         "#experiment-power-button"
@@ -429,7 +434,7 @@ export function initializeExperiment({
         if (completedCount === LAB06_EXPERIMENT_MODES.length) {
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab06:experiment-completed",
+                    LAB06_EVENTS.experimentCompleted,
                     {
                         detail: {
                             records: state.records
@@ -555,7 +560,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab06:experiment-updated",
+                LAB06_EVENTS.experimentUpdated,
                 {
                     detail: {
                         modeId:
@@ -601,7 +606,7 @@ export function initializeExperiment({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab06:experiment-reset"
+                LAB06_EVENTS.experimentReset
             )
         );
 
@@ -641,12 +646,12 @@ export function initializeExperiment({
     );
 
     document.addEventListener(
-        "laboratory:stand-ready",
+        LAB06_EVENTS.standReady,
         updateExperimentAccess
     );
 
     document.addEventListener(
-        "laboratory:stand-reset",
+        LAB06_EVENTS.standReset,
         updateExperimentAccess
     );
 

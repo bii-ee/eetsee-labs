@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS
+} from "./config.js";
+
 const componentInformation = {
     source: {
         title: "Джерело живлення",
@@ -185,11 +190,11 @@ export function initializeStand({
     section.dataset.initialized = "true";
 
     const safetyStorage = createStorage(
-        `${namespace}:safety`
+        LAB08_CONFIG.storage.safety
     );
 
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB08_CONFIG.storage.stand
     );
 
     const componentIds = Object.keys(
@@ -409,7 +414,7 @@ export function initializeStand({
     function dispatchStandReset() {
         document.dispatchEvent(
             new CustomEvent(
-                "laboratory:stand-reset",
+                LAB08_EVENTS.standReset,
                 {
                     detail: {
                         namespace
@@ -495,7 +500,7 @@ export function initializeStand({
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:stand-ready",
+                    LAB08_EVENTS.standReady,
                     {
                         detail: {
                             namespace
@@ -514,7 +519,7 @@ export function initializeStand({
     );
 
     document.addEventListener(
-        "laboratory:safety-passed",
+        LAB08_EVENTS.safetyPassed,
         (event) => {
             if (!eventMatchesNamespace(event)) {
                 return;
@@ -525,7 +530,7 @@ export function initializeStand({
     );
 
     document.addEventListener(
-        "laboratory:safety-reset",
+        LAB08_EVENTS.safetyReset,
         (event) => {
             if (!eventMatchesNamespace(event)) {
                 return;

@@ -1,13 +1,19 @@
+import {
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
+
 const ANALYSIS_COMPLETED_KEY =
-    "eetsee.lab06.analysis.completed.v1";
+    LAB06_CONFIG.storage.analysisCompleted;
 
 const QUIZ_STORAGE_KEY =
-    "eetsee.lab06.quiz.v1";
+    LAB06_CONFIG.storage.quiz;
 
 const QUIZ_COMPLETED_KEY =
-    "eetsee.lab06.quiz.completed.v1";
+    LAB06_CONFIG.storage.quizCompleted;
 
-const PASSING_SCORE = 6;
+const PASSING_SCORE =
+    LAB06_CONFIG.quiz.passingScore;
 
 const QUESTIONS = [
     {
@@ -342,11 +348,10 @@ function renderQuestion(
                         type="radio"
                         name="${question.id}"
                         value="${option.value}"
-                        ${
-                            selectedAnswer === option.value
-                                ? "checked"
-                                : ""
-                        }
+                        ${selectedAnswer === option.value
+                    ? "checked"
+                    : ""
+                }
                     >
 
                     <span class="quiz-option-letter">
@@ -656,7 +661,7 @@ export function initializeQuiz() {
                     (question) =>
                         Boolean(
                             state.answers[
-                                question.id
+                            question.id
                             ]
                         )
                 ).length;
@@ -677,7 +682,7 @@ export function initializeQuiz() {
                     QUESTIONS.find(
                         (question) =>
                             !state.answers[
-                                question.id
+                            question.id
                             ]
                     );
 
@@ -732,12 +737,12 @@ export function initializeQuiz() {
     );
 
     window.addEventListener(
-        "lab06:analysis-completed",
+        LAB06_EVENTS.analysisCompleted,
         renderReadiness
     );
 
     window.addEventListener(
-        "lab06:analysis-invalidated",
+        LAB06_EVENTS.analysisInvalidated,
         renderReadiness
     );
 

@@ -2,10 +2,19 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS,
+    LAB08_SCOPED_EVENTS
+} from "./config.js";
+
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
-const REQUIRED_CYCLE_COUNT = 6;
-const REQUIRED_TRIAL_COUNT = 9;
+const REQUIRED_CYCLE_COUNT =
+    LAB08_CONFIG.experiment.cyclicRunCount;
+
+const REQUIRED_TRIAL_COUNT =
+    LAB08_CONFIG.experiment.comparativeTrialCount;
 const MINIMUM_CONCLUSION_LENGTH = 30;
 const STATE_VERSION = 1;
 
@@ -129,9 +138,9 @@ function normalizeExperimentProgress(value) {
         completed:
             setupValid &&
             firstRecords.length ===
-                REQUIRED_CYCLE_COUNT &&
+            REQUIRED_CYCLE_COUNT &&
             secondRecords.length ===
-                REQUIRED_TRIAL_COUNT &&
+            REQUIRED_TRIAL_COUNT &&
             value?.completed === true
     };
 }
@@ -754,11 +763,11 @@ function groupTrialsByTemperature(
 
             color:
                 temperatureColors[
-                    temperature
+                temperature
                 ] ??
                 fallbackColors[
-                    index %
-                    fallbackColors.length
+                index %
+                fallbackColors.length
                 ],
 
             points:
@@ -783,7 +792,7 @@ function groupTrialsByTemperature(
 
                             y:
                                 trial[
-                                    valueKey
+                                valueKey
                                 ]
                         })
                     )
@@ -854,7 +863,7 @@ function calculatePointLabelPositions(
             Math.max(
                 labels[index].preferredY,
                 labels[index - 1].labelY +
-                    minimumGap
+                minimumGap
             );
     }
 
@@ -879,7 +888,7 @@ function calculatePointLabelPositions(
             Math.min(
                 labels[index].labelY,
                 labels[index + 1].labelY -
-                    minimumGap
+                minimumGap
             );
     }
 
@@ -1039,7 +1048,7 @@ function renderLineChart(
             (item, seriesIndex) => {
                 const point =
                     item.points[
-                        pointIndex
+                    pointIndex
                     ];
 
                 if (!point) {
@@ -1222,7 +1231,7 @@ export function initializeAnalysis({
     if (
         !section ||
         section.dataset.initialized ===
-            "true"
+        "true"
     ) {
         return;
     }
@@ -1326,17 +1335,17 @@ export function initializeAnalysis({
 
     const experimentStorage =
         createStorage(
-            `${namespace}:experiment`
+            LAB08_CONFIG.storage.experiment
         );
 
     const calculationsStorage =
         createStorage(
-            `${namespace}:calculations`
+            LAB08_CONFIG.storage.calculations
         );
 
     const analysisStorage =
         createStorage(
-            `${namespace}:analysis`
+            LAB08_CONFIG.storage.analysis
         );
 
     const textareas =
@@ -1375,9 +1384,29 @@ export function initializeAnalysis({
         type,
         detail = {}
     ) {
+        const eventNames = {
+            completed: {
+                shared:
+                    LAB08_EVENTS.analysisCompleted,
+                scoped:
+                    LAB08_SCOPED_EVENTS.analysisCompleted
+            },
+
+            invalidated: {
+                shared:
+                    LAB08_EVENTS.analysisInvalidated,
+                scoped:
+                    LAB08_SCOPED_EVENTS.analysisInvalidated
+            }
+        }[type];
+
+        if (!eventNames) {
+            return;
+        }
+
         document.dispatchEvent(
             new CustomEvent(
-                `laboratory:analysis-${type}`,
+                eventNames.shared,
                 {
                     detail: {
                         namespace,
@@ -1389,7 +1418,7 @@ export function initializeAnalysis({
 
         window.dispatchEvent(
             new CustomEvent(
-                `${namespace}:analysis-${type}`,
+                eventNames.scoped,
                 {
                     detail
                 }
@@ -1407,11 +1436,11 @@ export function initializeAnalysis({
         if (
             !stored ||
             typeof stored !==
-                "object" ||
+            "object" ||
             stored.version !==
-                STATE_VERSION ||
+            STATE_VERSION ||
             stored.signature !==
-                signature
+            signature
         ) {
             return createInitialState(
                 signature
@@ -1426,7 +1455,7 @@ export function initializeAnalysis({
 
             conclusions:
                 stored.conclusions &&
-                typeof stored.conclusions ===
+                    typeof stored.conclusions ===
                     "object"
                     ? stored.conclusions
                     : {},
@@ -1455,7 +1484,7 @@ export function initializeAnalysis({
             !experimentProgress.completed ||
             !calculations ||
             calculations.completed !==
-                true ||
+            true ||
             !calculations.results
         ) {
             calculationResults =
@@ -1542,7 +1571,7 @@ export function initializeAnalysis({
             (textarea) => {
                 textarea.value =
                     state.conclusions[
-                        textarea.name
+                    textarea.name
                     ] ?? "";
 
                 textarea.setCustomValidity(
@@ -1792,7 +1821,7 @@ export function initializeAnalysis({
         if (
             event?.detail?.namespace &&
             event.detail.namespace !==
-                namespace
+            namespace
         ) {
             return;
         }
@@ -2053,27 +2082,27 @@ export function initializeAnalysis({
     );
 
     document.addEventListener(
-        "laboratory:calculations-completed",
+        LAB08_EVENTS.calculationsCompleted,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:calculations-invalidated",
+        LAB08_EVENTS.calculationsInvalidated,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-progress",
+        LAB08_EVENTS.experimentUpdated,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-completed",
+        LAB08_EVENTS.experimentCompleted,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-reset",
+        LAB08_EVENTS.experimentReset,
         updateAccess
     );
 

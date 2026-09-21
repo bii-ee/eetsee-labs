@@ -12,11 +12,16 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
+
 const CALCULATION_STORAGE_KEY =
-    "eetsee.lab06.calculations.v1";
+    LAB06_CONFIG.storage.calculationsDraft;
 
 const CALCULATION_COMPLETED_KEY =
-    "eetsee.lab06.calculations.completed.v1";
+    LAB06_CONFIG.storage.calculationsCompleted;
 
 
 
@@ -157,11 +162,11 @@ export function initializeCalculations({
     }
 
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB06_CONFIG.storage.stand
     );
 
-    const readiness = section.querySelector(
-        "#calculation-readiness"
+    const lockOverlay = section.querySelector(
+        "#calculations-lock-overlay"
     );
 
     const readinessTitle = section.querySelector(
@@ -241,11 +246,6 @@ export function initializeCalculations({
             standReady &&
             experimentCompleted;
 
-        readiness.classList.toggle(
-            "is-ready",
-            isReady
-        );
-
         if (!standReady) {
             readinessTitle.textContent =
                 "Спочатку завершіть роботу зі стендом";
@@ -266,7 +266,11 @@ export function initializeCalculations({
                 "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно.";
         }
 
-        workspace.hidden = !isReady;
+        lockOverlay.hidden =
+            isReady;
+
+        workspace.inert =
+            !isReady;
 
         if (isReady) {
             renderTable();
@@ -477,7 +481,7 @@ export function initializeCalculations({
 
         window.dispatchEvent(
             new CustomEvent(
-                "lab06:calculations-invalidated"
+                LAB06_EVENTS.calculationsInvalidated
             )
         );
     }
@@ -678,7 +682,7 @@ export function initializeCalculations({
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab06:calculations-completed",
+                    LAB06_EVENTS.calculationsCompleted,
                     {
                         detail: {
                             calculations:
@@ -778,7 +782,7 @@ export function initializeCalculations({
     );
 
     window.addEventListener(
-        "lab06:experiment-completed",
+        LAB06_EVENTS.experimentCompleted,
         renderReadiness
     );
 
@@ -794,12 +798,12 @@ export function initializeCalculations({
     }
 
     document.addEventListener(
-        "laboratory:stand-ready",
+        LAB06_EVENTS.standReady,
         handleStandProgressChange
     );
 
     document.addEventListener(
-        "laboratory:stand-reset",
+        LAB06_EVENTS.standReset,
         handleStandProgressChange
     );
     function handleExperimentChange() {
@@ -809,12 +813,12 @@ export function initializeCalculations({
     }
 
     window.addEventListener(
-        "lab06:experiment-updated",
+        LAB06_EVENTS.experimentUpdated,
         handleExperimentChange
     );
 
     window.addEventListener(
-        "lab06:experiment-reset",
+        LAB06_EVENTS.experimentReset,
         handleExperimentChange
     );
     renderReadiness();

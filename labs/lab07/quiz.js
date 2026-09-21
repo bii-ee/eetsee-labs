@@ -2,7 +2,13 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
-const PASSING_SCORE = 6;
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
+const PASSING_SCORE =
+    LAB07_CONFIG.quiz.passingScore;
 
 const QUESTIONS = [
     {
@@ -379,8 +385,13 @@ export function initializeQuiz({
 
     section.dataset.quizInitialized = "true";
 
-    const analysisStorage = createStorage(`${namespace}:analysis`);
-    const quizStorage = createStorage(`${namespace}:quiz`);
+    const analysisStorage = createStorage(
+        LAB07_CONFIG.storage.analysis
+    );
+
+    const quizStorage = createStorage(
+        LAB07_CONFIG.storage.quiz
+    );
 
     let analysisSignature = "";
     let state = {
@@ -433,7 +444,7 @@ export function initializeQuiz({
 
     function dispatchInvalidated() {
         window.dispatchEvent(
-            new CustomEvent(`${namespace}:quiz-invalidated`)
+            new CustomEvent(LAB07_EVENTS.quizInvalidated)
         );
     }
 
@@ -538,7 +549,7 @@ export function initializeQuiz({
 
             if (saveResult) {
                 window.dispatchEvent(
-                    new CustomEvent(`${namespace}:quiz-completed`, {
+                    new CustomEvent(LAB07_EVENTS.quizCompleted, {
                         detail: {
                             score,
                             total: QUESTIONS.length,
@@ -690,11 +701,11 @@ export function initializeQuiz({
     });
 
     window.addEventListener(
-        `${namespace}:analysis-completed`,
+        LAB07_EVENTS.analysisCompleted,
         updateAccess
     );
     window.addEventListener(
-        `${namespace}:analysis-invalidated`,
+        LAB07_EVENTS.analysisInvalidated,
         updateAccess
     );
 

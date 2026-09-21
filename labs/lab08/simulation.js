@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS
+} from "./config.js";
+
 const THERMOSTAT_CYCLES = Object.freeze([
     {
         voltage: 219.6,
@@ -487,10 +492,11 @@ export function initializeExperiment({
     section.dataset.initialized = "true";
 
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB08_CONFIG.storage.stand
     );
+
     const experimentStorage = createStorage(
-        `${namespace}:experiment`
+        LAB08_CONFIG.storage.experiment
     );
 
     let state = normalizeState(
@@ -537,7 +543,7 @@ export function initializeExperiment({
     function dispatchProgressEvent() {
         document.dispatchEvent(
             new CustomEvent(
-                "laboratory:experiment-progress",
+                LAB08_EVENTS.experimentUpdated,
                 {
                     detail: {
                         namespace,
@@ -1541,7 +1547,7 @@ export function initializeExperiment({
         if (state.completed) {
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:experiment-completed",
+                    LAB08_EVENTS.experimentCompleted,
                     {
                         detail: {
                             namespace,
@@ -1655,7 +1661,7 @@ export function initializeExperiment({
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:experiment-reset",
+                    LAB08_EVENTS.experimentReset,
                     {
                         detail: {
                             namespace
@@ -1667,12 +1673,12 @@ export function initializeExperiment({
     );
 
     document.addEventListener(
-        "laboratory:stand-ready",
+        LAB08_EVENTS.standReady,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:stand-reset",
+        LAB08_EVENTS.standReset,
         updateAccess
     );
 

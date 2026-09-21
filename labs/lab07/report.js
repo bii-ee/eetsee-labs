@@ -2,14 +2,22 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
 const MODES = [
     { id: "mode-1", position: 1 },
     { id: "mode-2", position: 2 },
     { id: "mode-3", position: 3 }
 ];
 
-const CYCLES_PER_MODE = 3;
-const QUIZ_TOTAL = 8;
+const CYCLES_PER_MODE =
+    LAB07_CONFIG.experiment.cyclesPerMode;
+
+const QUIZ_TOTAL =
+    LAB07_CONFIG.quiz.questionCount;
 
 const CHARTS = [
     {
@@ -323,14 +331,24 @@ export function initializeReport({
     section.dataset.reportInitialized = "true";
 
     const experimentStorage = createStorage(
-        `${namespace}:cyclic-experiment`
+        LAB07_CONFIG.storage.experiment
     );
+
     const calculationsStorage = createStorage(
-        `${namespace}:calculations`
+        LAB07_CONFIG.storage.calculations
     );
-    const analysisStorage = createStorage(`${namespace}:analysis`);
-    const quizStorage = createStorage(`${namespace}:quiz`);
-    const reportStorage = createStorage(`${namespace}:report`);
+
+    const analysisStorage = createStorage(
+        LAB07_CONFIG.storage.analysis
+    );
+
+    const quizStorage = createStorage(
+        LAB07_CONFIG.storage.quiz
+    );
+
+    const reportStorage = createStorage(
+        LAB07_CONFIG.storage.report
+    );
 
     const studentInputs = {
         name: elements.form.elements.namedItem("studentName"),
@@ -614,28 +632,30 @@ export function initializeReport({
         }
 
         [
-            "safety",
-            "stand",
-            "cyclic-experiment",
-            "calculations",
-            "analysis",
-            "quiz",
-            "report"
+            LAB07_CONFIG.storage.safety,
+            LAB07_CONFIG.storage.stand,
+            LAB07_CONFIG.storage.experiment,
+            LAB07_CONFIG.storage.calculations,
+            LAB07_CONFIG.storage.analysis,
+            LAB07_CONFIG.storage.quiz,
+            LAB07_CONFIG.storage.report
         ].forEach((storageNamespace) => {
-            createStorage(`${namespace}:${storageNamespace}`).clear();
+            createStorage(
+                storageNamespace
+            ).clear();
         });
 
         window.location.reload();
     });
 
     [
-        `${namespace}:quiz-completed`,
-        `${namespace}:quiz-invalidated`,
-        `${namespace}:analysis-completed`,
-        `${namespace}:analysis-invalidated`,
-        `${namespace}:calculations-completed`,
-        `${namespace}:calculations-invalidated`,
-        `${namespace}:cyclic-experiment-reset`
+        LAB07_EVENTS.quizCompleted,
+        LAB07_EVENTS.quizInvalidated,
+        LAB07_EVENTS.analysisCompleted,
+        LAB07_EVENTS.analysisInvalidated,
+        LAB07_EVENTS.calculationsCompleted,
+        LAB07_EVENTS.calculationsInvalidated,
+        LAB07_EVENTS.experimentReset
     ].forEach((eventName) => {
         window.addEventListener(eventName, updateAccess);
     });

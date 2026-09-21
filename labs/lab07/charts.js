@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
 const MODES = [
@@ -550,13 +555,15 @@ export function initializeAnalysis({
     section.dataset.initialized = "true";
 
     const experimentStorage = createStorage(
-        `${namespace}:cyclic-experiment`
+        LAB07_CONFIG.storage.experiment
     );
+
     const calculationsStorage = createStorage(
-        `${namespace}:calculations`
+        LAB07_CONFIG.storage.calculations
     );
+
     const analysisStorage = createStorage(
-        `${namespace}:analysis`
+        LAB07_CONFIG.storage.analysis
     );
 
     const textareas = [
@@ -579,7 +586,7 @@ export function initializeAnalysis({
 
     function dispatchInvalidated() {
         window.dispatchEvent(
-            new CustomEvent(`${namespace}:analysis-invalidated`)
+            new CustomEvent(LAB07_EVENTS.analysisInvalidated)
         );
     }
 
@@ -893,7 +900,7 @@ export function initializeAnalysis({
         );
 
         window.dispatchEvent(
-            new CustomEvent(`${namespace}:analysis-completed`, {
+            new CustomEvent(LAB07_EVENTS.analysisCompleted, {
                 detail: {
                     burner: experimentProgress.burner,
                     conclusions: state.conclusions,
@@ -939,15 +946,15 @@ export function initializeAnalysis({
     });
 
     window.addEventListener(
-        `${namespace}:calculations-completed`,
+        LAB07_EVENTS.calculationsCompleted,
         updateAccess
     );
     window.addEventListener(
-        `${namespace}:calculations-invalidated`,
+        LAB07_EVENTS.calculationsInvalidated,
         updateAccess
     );
     window.addEventListener(
-        `${namespace}:cyclic-experiment-reset`,
+        LAB07_EVENTS.experimentReset,
         updateAccess
     );
 

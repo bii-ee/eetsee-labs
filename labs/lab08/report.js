@@ -2,9 +2,20 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
-const REQUIRED_CYCLE_COUNT = 6;
-const REQUIRED_TRIAL_COUNT = 9;
-const QUIZ_TOTAL = 8;
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS,
+    LAB08_SCOPED_EVENTS
+} from "./config.js";
+
+const REQUIRED_CYCLE_COUNT =
+    LAB08_CONFIG.experiment.cyclicRunCount;
+
+const REQUIRED_TRIAL_COUNT =
+    LAB08_CONFIG.experiment.comparativeTrialCount;
+
+const QUIZ_TOTAL =
+    LAB08_CONFIG.quiz.questionCount;
 const STATE_VERSION = 1;
 
 const CHARTS = [
@@ -1051,27 +1062,27 @@ export function initializeReport({
 
     const experimentStorage =
         createStorage(
-            `${namespace}:experiment`
+            LAB08_CONFIG.storage.experiment
         );
 
     const calculationsStorage =
         createStorage(
-            `${namespace}:calculations`
+            LAB08_CONFIG.storage.calculations
         );
 
     const analysisStorage =
         createStorage(
-            `${namespace}:analysis`
+            LAB08_CONFIG.storage.analysis
         );
 
     const quizStorage =
         createStorage(
-            `${namespace}:quiz`
+            LAB08_CONFIG.storage.quiz
         );
 
     const reportStorage =
         createStorage(
-            `${namespace}:report`
+            LAB08_CONFIG.storage.report
         );
 
     const studentInputs = {
@@ -1293,8 +1304,8 @@ export function initializeReport({
         );
 
         const quizJustCompleted =
-            event?.type === `${namespace}:quiz-completed` ||
-            event?.type === "laboratory:quiz-completed";
+            event?.type === LAB08_SCOPED_EVENTS.quizCompleted ||
+            event?.type === LAB08_EVENTS.quizCompleted;
 
         if (panelWasHidden && quizJustCompleted) {
             window.requestAnimationFrame(() => {
@@ -1809,24 +1820,24 @@ export function initializeReport({
             }
 
             [
-                "safety",
-                "stand",
-                "experiment",
-                "calculations",
-                "analysis",
-                "quiz",
-                "report"
+                LAB08_CONFIG.storage.safety,
+                LAB08_CONFIG.storage.stand,
+                LAB08_CONFIG.storage.experiment,
+                LAB08_CONFIG.storage.calculations,
+                LAB08_CONFIG.storage.analysis,
+                LAB08_CONFIG.storage.quiz,
+                LAB08_CONFIG.storage.report
             ].forEach(
                 (storageNamespace) => {
                     createStorage(
-                        `${namespace}:${storageNamespace}`
+                        storageNamespace
                     ).clear();
                 }
             );
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:experiment-reset",
+                    LAB08_EVENTS.experimentReset,
                     {
                         detail: {
                             namespace
@@ -1840,14 +1851,14 @@ export function initializeReport({
     );
 
     [
-        "laboratory:quiz-completed",
-        "laboratory:quiz-invalidated",
-        "laboratory:analysis-completed",
-        "laboratory:analysis-invalidated",
-        "laboratory:calculations-completed",
-        "laboratory:calculations-invalidated",
-        "laboratory:experiment-completed",
-        "laboratory:experiment-reset"
+        LAB08_EVENTS.quizCompleted,
+        LAB08_EVENTS.quizInvalidated,
+        LAB08_EVENTS.analysisCompleted,
+        LAB08_EVENTS.analysisInvalidated,
+        LAB08_EVENTS.calculationsCompleted,
+        LAB08_EVENTS.calculationsInvalidated,
+        LAB08_EVENTS.experimentCompleted,
+        LAB08_EVENTS.experimentReset
     ].forEach(
         (eventName) => {
             document.addEventListener(
@@ -1858,10 +1869,10 @@ export function initializeReport({
     );
 
     [
-        `${namespace}:quiz-completed`,
-        `${namespace}:quiz-invalidated`,
-        `${namespace}:analysis-completed`,
-        `${namespace}:analysis-invalidated`
+        LAB08_SCOPED_EVENTS.quizCompleted,
+        LAB08_SCOPED_EVENTS.quizInvalidated,
+        LAB08_SCOPED_EVENTS.analysisCompleted,
+        LAB08_SCOPED_EVENTS.analysisInvalidated
     ].forEach(
         (eventName) => {
             window.addEventListener(

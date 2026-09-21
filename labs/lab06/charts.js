@@ -4,14 +4,19 @@ import {
     LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY
 } from "./data.js";
 
+import {
+    LAB06_CONFIG,
+    LAB06_EVENTS
+} from "./config.js";
+
 const CALCULATION_COMPLETED_KEY =
-    "eetsee.lab06.calculations.completed.v1";
+    LAB06_CONFIG.storage.calculationsCompleted;
 
 const ANALYSIS_STORAGE_KEY =
-    "eetsee.lab06.analysis.v1";
+    LAB06_CONFIG.storage.analysis;
 
 const ANALYSIS_COMPLETED_KEY =
-    "eetsee.lab06.analysis.completed.v1";
+    LAB06_CONFIG.storage.analysisCompleted;
 
 const SVG_NAMESPACE =
     "http://www.w3.org/2000/svg";
@@ -1036,7 +1041,7 @@ export function initializeAnalysis() {
 
             window.dispatchEvent(
                 new CustomEvent(
-                    "lab06:analysis-invalidated"
+                    LAB06_EVENTS.analysisInvalidated
                 )
             );
 
@@ -1076,7 +1081,7 @@ export function initializeAnalysis() {
                 "true"
             );
             window.dispatchEvent(
-                new CustomEvent("lab06:analysis-completed")
+                new CustomEvent(LAB06_EVENTS.analysisCompleted)
             );
 
             message.dataset.type =
@@ -1109,7 +1114,7 @@ export function initializeAnalysis() {
                 ANALYSIS_COMPLETED_KEY
             );
             window.dispatchEvent(
-                new CustomEvent("lab06:analysis-invalidated")
+                new CustomEvent(LAB06_EVENTS.analysisInvalidated)
             );
 
             message.dataset.type =
@@ -1121,12 +1126,12 @@ export function initializeAnalysis() {
     );
 
     window.addEventListener(
-        "lab06:calculations-completed",
+        LAB06_EVENTS.calculationsCompleted,
         renderReadiness
     );
 
     window.addEventListener(
-        "lab06:calculations-invalidated",
+        LAB06_EVENTS.calculationsInvalidated,
         renderReadiness
     );
 

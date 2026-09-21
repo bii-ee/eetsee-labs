@@ -6,8 +6,16 @@ import {
     calculateCyclicExperimentResults
 } from "./model.js";
 
-const REQUIRED_CYCLE_COUNT = 6;
-const REQUIRED_TRIAL_COUNT = 9;
+import {
+    LAB08_CONFIG,
+    LAB08_EVENTS
+} from "./config.js";
+
+const REQUIRED_CYCLE_COUNT =
+    LAB08_CONFIG.experiment.cyclicRunCount;
+
+const REQUIRED_TRIAL_COUNT =
+    LAB08_CONFIG.experiment.comparativeTrialCount;
 const TOTAL_FIELDS = 9;
 const STATE_VERSION = 1;
 
@@ -82,7 +90,7 @@ function createInitialDraft(signature = "") {
 function normalizeExperimentProgress(value) {
     const setup =
         value?.setup &&
-        typeof value.setup === "object"
+            typeof value.setup === "object"
             ? value.setup
             : {};
 
@@ -339,12 +347,12 @@ export function initializeCalculations({
 
     const experimentStorage =
         createStorage(
-            `${namespace}:experiment`
+            LAB08_CONFIG.storage.experiment
         );
 
     const calculationsStorage =
         createStorage(
-            `${namespace}:calculations`
+            LAB08_CONFIG.storage.calculations
         );
 
     let experimentProgress =
@@ -383,7 +391,7 @@ export function initializeCalculations({
 
             values:
                 saved.values &&
-                typeof saved.values === "object"
+                    typeof saved.values === "object"
                     ? saved.values
                     : {},
 
@@ -392,7 +400,7 @@ export function initializeCalculations({
 
             results:
                 saved.results &&
-                typeof saved.results === "object"
+                    typeof saved.results === "object"
                     ? saved.results
                     : null
         };
@@ -503,52 +511,52 @@ export function initializeCalculations({
                         <td>
                             <span class="calculation-source-value">
                                 ${formatNumber(
-                                    cycle.voltage,
-                                    1
-                                )}
+                    cycle.voltage,
+                    1
+                )}
                             </span>
                         </td>
 
                         <td>
                             <span class="calculation-source-value">
                                 ${formatNumber(
-                                    cycle.current,
-                                    1
-                                )}
+                    cycle.current,
+                    1
+                )}
                             </span>
                         </td>
 
                         <td>
                             <span class="calculation-source-value">
                                 ${formatNumber(
-                                    cycle.power,
-                                    2
-                                )}
+                    cycle.power,
+                    2
+                )}
                             </span>
                         </td>
 
                         <td>
                             <span class="calculation-source-value">
                                 ${formatNumber(
-                                    cycle.onTime,
-                                    2
-                                )}
+                    cycle.onTime,
+                    2
+                )}
                             </span>
                         </td>
 
                         <td>
                             <span class="calculation-source-value">
                                 ${formatNumber(
-                                    cycle.offTime,
-                                    2
-                                )}
+                    cycle.offTime,
+                    2
+                )}
                             </span>
                         </td>
 
                         <td>
                             ${createCycleInputMarkup(
-                                index
-                            )}
+                    index
+                )}
                         </td>
 
                         <td>
@@ -683,7 +691,7 @@ export function initializeCalculations({
     function dispatchInvalidatedEvent() {
         document.dispatchEvent(
             new CustomEvent(
-                "laboratory:calculations-invalidated",
+                LAB08_EVENTS.calculationsInvalidated,
                 {
                     detail: {
                         namespace
@@ -1012,7 +1020,7 @@ export function initializeCalculations({
 
             document.dispatchEvent(
                 new CustomEvent(
-                    "laboratory:calculations-completed",
+                    LAB08_EVENTS.calculationsCompleted,
                     {
                         detail: {
                             namespace,
@@ -1260,17 +1268,17 @@ export function initializeCalculations({
     );
 
     document.addEventListener(
-        "laboratory:experiment-progress",
+        LAB08_EVENTS.experimentUpdated,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-completed",
+        LAB08_EVENTS.experimentCompleted,
         updateAccess
     );
 
     document.addEventListener(
-        "laboratory:experiment-reset",
+        LAB08_EVENTS.experimentReset,
         handleExperimentReset
     );
 

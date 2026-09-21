@@ -1,0 +1,383 @@
+:root {
+    --access-lock-accent: #14647a;
+    --access-lock-accent-hover: #0d4f62;
+    --access-lock-heading: #12344d;
+    --access-lock-text: #5f7180;
+    --access-lock-border: #c9d9e1;
+    --access-lock-overlay: rgba(238, 246, 249, 0.94);
+    --access-lock-card-background: #ffffff;
+    --access-lock-shadow:
+        0 18px 45px rgba(18, 52, 77, 0.14);
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    isolation: isolate;
+
+    --access-lock-accent: #14647a;
+    --access-lock-accent-hover: #0d4f62;
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+):has(
+    > :is(
+        .access-lock-overlay,
+        .stand-lock-overlay,
+        .experiment-lock-overlay,
+        .calculations-lock-overlay,
+        .analysis-lock-overlay,
+        .quiz-lock-overlay
+    ):not([hidden])
+) {
+    min-height: clamp(520px, 68vh, 760px);
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) > :is(
+    .access-lock-overlay,
+    .stand-lock-overlay,
+    .experiment-lock-overlay,
+    .calculations-lock-overlay,
+    .analysis-lock-overlay,
+    .quiz-lock-overlay
+) {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    box-sizing: border-box;
+    padding:
+        clamp(32px, 7vh, 72px)
+        clamp(18px, 4vw, 48px);
+
+    background: var(--access-lock-overlay);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+:is(
+    .access-lock-overlay,
+    .stand-lock-overlay,
+    .experiment-lock-overlay,
+    .calculations-lock-overlay,
+    .analysis-lock-overlay,
+    .quiz-lock-overlay
+)[hidden] {
+    display: none;
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) :is(
+    .access-lock-card,
+    .stand-lock-content,
+    .stand-lock-card,
+    .experiment-lock-card,
+    .calculations-lock-card,
+    .analysis-lock-card,
+    .quiz-lock-card
+) {
+    display: flex;
+    width: min(100%, 640px);
+    min-height: 230px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 34px 38px;
+    border: 1px solid var(--access-lock-border);
+    border-top: 4px solid var(--access-lock-accent);
+    border-radius: 16px;
+
+    background: var(--access-lock-card-background);
+    box-shadow: var(--access-lock-shadow);
+    text-align: center;
+}
+
+:is(
+    .access-lock-card,
+    .stand-lock-content,
+    .stand-lock-card,
+    .experiment-lock-card,
+    .calculations-lock-card,
+    .analysis-lock-card,
+    .quiz-lock-card
+) > strong {
+    display: block;
+    margin: 0;
+
+    color: var(--access-lock-heading);
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+:is(
+    .access-lock-card,
+    .stand-lock-content,
+    .stand-lock-card,
+    .experiment-lock-card,
+    .calculations-lock-card,
+    .analysis-lock-card,
+    .quiz-lock-card
+) > p {
+    max-width: 560px;
+    margin: 16px 0 22px;
+
+    color: var(--access-lock-text);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) :is(
+    .access-lock-link,
+    .stand-lock-link,
+    .experiment-lock-link,
+    .calculations-lock-link,
+    .analysis-lock-link,
+    .quiz-lock-link
+) {
+    display: inline-flex;
+    min-width: min(280px, 100%);
+    min-height: 52px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 22px;
+    border: 1px solid var(--access-lock-accent);
+    border-radius: 9px;
+
+    background: var(--access-lock-accent);
+    color: #ffffff;
+    font: inherit;
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) :is(
+    .access-lock-link,
+    .stand-lock-link,
+    .experiment-lock-link,
+    .calculations-lock-link,
+    .analysis-lock-link,
+    .quiz-lock-link
+):hover {
+    border-color: var(--access-lock-accent-hover);
+    background: var(--access-lock-accent-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(20, 100, 122, 0.22);
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+) :is(
+    .access-lock-link,
+    .stand-lock-link,
+    .experiment-lock-link,
+    .calculations-lock-link,
+    .analysis-lock-link,
+    .quiz-lock-link
+):focus-visible {
+    outline: 3px solid rgba(20, 100, 122, 0.28);
+    outline-offset: 3px;
+}
+
+:is(
+    .access-lock-shell,
+    .stand-workspace,
+    .experiment-access-shell,
+    .calculations-access-shell,
+    .analysis-access-shell,
+    .quiz-access-shell
+):has(
+    > :is(
+        .access-lock-overlay,
+        .stand-lock-overlay,
+        .experiment-lock-overlay,
+        .calculations-lock-overlay,
+        .analysis-lock-overlay,
+        .quiz-lock-overlay
+    ):not([hidden])
+) > :is(
+    .access-lock-content,
+    #stand-interactive-area,
+    #experiment-interactive-area,
+    #calculations-interactive-area,
+    #analysis-interactive-area,
+    #quiz-interactive-area,
+    #calculation-workspace,
+    #analysis-workspace,
+    #quiz-workspace
+) {
+    opacity: 0.18;
+    filter: blur(2px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 620px) {
+    :is(
+        .access-lock-shell,
+        .stand-workspace,
+        .experiment-access-shell,
+        .calculations-access-shell,
+        .analysis-access-shell,
+        .quiz-access-shell
+    ):has(
+        > :is(
+            .access-lock-overlay,
+            .stand-lock-overlay,
+            .experiment-lock-overlay,
+            .calculations-lock-overlay,
+            .analysis-lock-overlay,
+            .quiz-lock-overlay
+        ):not([hidden])
+    ) {
+        min-height: 460px;
+    }
+
+    :is(
+        .access-lock-shell,
+        .stand-workspace,
+        .experiment-access-shell,
+        .calculations-access-shell,
+        .analysis-access-shell,
+        .quiz-access-shell
+    ) > :is(
+        .access-lock-overlay,
+        .stand-lock-overlay,
+        .experiment-lock-overlay,
+        .calculations-lock-overlay,
+        .analysis-lock-overlay,
+        .quiz-lock-overlay
+    ) {
+        padding: 24px 14px;
+    }
+
+    :is(
+        .access-lock-card,
+        .stand-lock-content,
+        .stand-lock-card,
+        .experiment-lock-card,
+        .calculations-lock-card,
+        .analysis-lock-card,
+        .quiz-lock-card
+    ) {
+        min-height: 210px;
+        padding: 26px 20px;
+    }
+
+    :is(
+        .access-lock-link,
+        .stand-lock-link,
+        .experiment-lock-link,
+        .calculations-lock-link,
+        .analysis-lock-link,
+        .quiz-lock-link
+    ) {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(
+        .access-lock-link,
+        .stand-lock-link,
+        .experiment-lock-link,
+        .calculations-lock-link,
+        .analysis-lock-link,
+        .quiz-lock-link
+    ) {
+        transition: none;
+    }
+}
+
+@media print {
+    :is(
+        .access-lock-overlay,
+        .stand-lock-overlay,
+        .experiment-lock-overlay,
+        .calculations-lock-overlay,
+        .analysis-lock-overlay,
+        .quiz-lock-overlay
+    ) {
+        display: none !important;
+    }
+
+    :is(
+        .access-lock-content,
+        #stand-interactive-area,
+        #experiment-interactive-area,
+        #calculations-interactive-area,
+        #analysis-interactive-area,
+        #quiz-interactive-area,
+        #calculation-workspace,
+        #analysis-workspace,
+        #quiz-workspace
+    ) {
+        opacity: 1 !important;
+        filter: none !important;
+    }
+}

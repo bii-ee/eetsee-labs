@@ -2,6 +2,11 @@ import {
     createStorage
 } from "../../common/js/storage.js";
 
+import {
+    LAB07_CONFIG,
+    LAB07_EVENTS
+} from "./config.js";
+
 const componentInformation = {
     switches: {
         title: "Вимикачі конфорок",
@@ -154,10 +159,11 @@ export function initializeStand({
     section.dataset.initialized = "true";
 
     const safetyStorage = createStorage(
-        `${namespace}:safety`
+        LAB07_CONFIG.storage.safety
     );
+
     const standStorage = createStorage(
-        `${namespace}:stand`
+        LAB07_CONFIG.storage.stand
     );
     const componentIds = Object.keys(
         componentInformation
@@ -368,7 +374,7 @@ export function initializeStand({
 
         document.dispatchEvent(
             new CustomEvent(
-                "laboratory:stand-ready",
+                LAB07_EVENTS.standReady,
                 {
                     detail: {
                         namespace
@@ -398,7 +404,7 @@ export function initializeStand({
 
         document.dispatchEvent(
             new CustomEvent(
-                "laboratory:stand-reset",
+                LAB07_EVENTS.standReset,
                 {
                     detail: {
                         namespace
@@ -409,11 +415,11 @@ export function initializeStand({
     });
 
     document.addEventListener(
-        "laboratory:safety-passed",
+        LAB07_EVENTS.safetyPassed,
         updateAccess
     );
     document.addEventListener(
-        "laboratory:safety-reset",
+        LAB07_EVENTS.safetyReset,
         updateAccess
     );
 
