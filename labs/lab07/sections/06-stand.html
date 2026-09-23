@@ -21,21 +21,17 @@
     </div>
 
     <div class="stand-workspace">
-        <div
-            id="stand-lock-overlay"
-            class="stand-lock-overlay"
-            role="status"
-        >
-            <div class="stand-lock-content">
+        <div id="stand-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
                 <strong>Доступ до стенда заблоковано</strong>
 
                 <p>
-                    Спочатку пройдіть перевірку знань у розділі
-                    «Техніка безпеки».
+                    Спочатку завершіть перевірку знань
+                    у розділі 5.
                 </p>
 
-                <a href="#safety" class="stand-lock-link">
-                    Перейти до техніки безпеки
+                <a href="#safety" class="access-lock-link">
+                    Перейти до розділу 5
                 </a>
             </div>
         </div>
@@ -60,12 +56,8 @@
 
                     <div class="stand-bench">
                         <div class="stand-electrical-panel">
-                            <button
-                                class="stand-meter"
-                                type="button"
-                                data-stand-component="ammeter"
-                                aria-label="Амперметр PA"
-                            >
+                            <button class="stand-meter" type="button" data-stand-component="ammeter"
+                                aria-label="Амперметр PA">
                                 <span class="stand-device-code">PA</span>
 
                                 <span class="stand-meter-display">
@@ -81,28 +73,17 @@
                             </div>
                         </div>
 
-                        <div
-                            class="stand-stove"
-                            aria-label="Макет двоконфоркової електроплити"
-                        >
+                        <div class="stand-stove" aria-label="Макет двоконфоркової електроплити">
                             <div class="stand-stove-top">
-                                <button
-                                    class="stand-hotplate"
-                                    type="button"
-                                    data-stand-component="heaters"
-                                    aria-label="Нагрівальний елемент ТЕН1 першої конфорки"
-                                >
+                                <button class="stand-hotplate" type="button" data-stand-component="heaters"
+                                    aria-label="Нагрівальний елемент ТЕН1 першої конфорки">
                                     <span class="stand-hotplate-coil"></span>
                                     <strong>Конфорка 1</strong>
                                     <small>ТЕН1</small>
                                 </button>
 
-                                <button
-                                    class="stand-hotplate"
-                                    type="button"
-                                    data-stand-component="heaters"
-                                    aria-label="Нагрівальний елемент ТЕН2 другої конфорки"
-                                >
+                                <button class="stand-hotplate" type="button" data-stand-component="heaters"
+                                    aria-label="Нагрівальний елемент ТЕН2 другої конфорки">
                                     <span class="stand-hotplate-coil"></span>
                                     <strong>Конфорка 2</strong>
                                     <small>ТЕН2</small>
@@ -111,64 +92,40 @@
 
                             <div class="stand-control-panel">
                                 <div class="stand-control-group">
-                                    <button
-                                        class="stand-switch"
-                                        type="button"
-                                        data-stand-component="switches"
-                                        aria-label="Вимикач K1 першої конфорки"
-                                    >
+                                    <button class="stand-switch" type="button" data-stand-component="switches"
+                                        aria-label="Вимикач K1 першої конфорки">
                                         <span>K1</span>
                                         <strong>0</strong>
                                     </button>
 
-                                    <button
-                                        class="stand-regulator"
-                                        type="button"
-                                        data-stand-component="regulators"
-                                        aria-label="Регулятор R1 і B1 першої конфорки"
-                                    >
+                                    <button class="stand-regulator" type="button" data-stand-component="regulators"
+                                        aria-label="Регулятор R1 і B1 першої конфорки">
                                         <span class="stand-knob"></span>
                                         <small>R1, B1</small>
                                     </button>
 
-                                    <button
-                                        class="stand-indicator"
-                                        type="button"
-                                        data-stand-component="indicators"
-                                        aria-label="Світловий індикатор L1 першої конфорки"
-                                    >
+                                    <button class="stand-indicator" type="button" data-stand-component="indicators"
+                                        aria-label="Світловий індикатор L1 першої конфорки">
                                         <span class="stand-lamp"></span>
                                         <small>L1</small>
                                     </button>
                                 </div>
 
                                 <div class="stand-control-group">
-                                    <button
-                                        class="stand-switch"
-                                        type="button"
-                                        data-stand-component="switches"
-                                        aria-label="Вимикач K2 другої конфорки"
-                                    >
+                                    <button class="stand-switch" type="button" data-stand-component="switches"
+                                        aria-label="Вимикач K2 другої конфорки">
                                         <span>K2</span>
                                         <strong>0</strong>
                                     </button>
 
-                                    <button
-                                        class="stand-regulator"
-                                        type="button"
-                                        data-stand-component="regulators"
-                                        aria-label="Регулятор R2 і B2 другої конфорки"
-                                    >
+                                    <button class="stand-regulator" type="button" data-stand-component="regulators"
+                                        aria-label="Регулятор R2 і B2 другої конфорки">
                                         <span class="stand-knob"></span>
                                         <small>R2, B2</small>
                                     </button>
 
-                                    <button
-                                        class="stand-indicator"
-                                        type="button"
-                                        data-stand-component="indicators"
-                                        aria-label="Світловий індикатор L2 другої конфорки"
-                                    >
+                                    <button class="stand-indicator" type="button" data-stand-component="indicators"
+                                        aria-label="Світловий індикатор L2 другої конфорки">
                                         <span class="stand-lamp"></span>
                                         <small>L2</small>
                                     </button>
@@ -177,11 +134,7 @@
                         </div>
 
                         <div class="stand-instruments">
-                            <button
-                                class="stand-tool stand-pyrometer"
-                                type="button"
-                                data-stand-component="pyrometer"
-                            >
+                            <button class="stand-tool stand-pyrometer" type="button" data-stand-component="pyrometer">
                                 <span class="stand-tool-icon" aria-hidden="true">
                                     °C
                                 </span>
@@ -192,11 +145,7 @@
                                 </span>
                             </button>
 
-                            <button
-                                class="stand-tool stand-stopwatch"
-                                type="button"
-                                data-stand-component="stopwatch"
-                            >
+                            <button class="stand-tool stand-stopwatch" type="button" data-stand-component="stopwatch">
                                 <span class="stand-tool-icon" aria-hidden="true">
                                     00:00
                                 </span>
@@ -310,42 +259,22 @@
                     </strong>
                 </div>
 
-                <div
-                    class="stand-progress-track"
-                    role="progressbar"
-                    aria-label="Прогрес ознайомлення зі стендом"
-                    aria-valuemin="0"
-                    aria-valuemax="7"
-                    aria-valuenow="0"
-                >
+                <div class="stand-progress-track" role="progressbar" aria-label="Прогрес ознайомлення зі стендом"
+                    aria-valuemin="0" aria-valuemax="7" aria-valuenow="0">
                     <span id="stand-progress-bar"></span>
                 </div>
 
                 <div class="stand-progress-actions">
-                    <button
-                        id="stand-ready-button"
-                        class="stand-ready-button"
-                        type="button"
-                        disabled
-                    >
+                    <button id="stand-ready-button" class="stand-ready-button" type="button" disabled>
                         Підтвердити готовність стенда
                     </button>
 
-                    <button
-                        id="stand-reset-button"
-                        class="stand-reset-button"
-                        type="button"
-                    >
+                    <button id="stand-reset-button" class="stand-reset-button" type="button">
                         Скинути ознайомлення
                     </button>
                 </div>
 
-                <p
-                    id="stand-status"
-                    class="stand-status"
-                    role="status"
-                    aria-live="polite"
-                >
+                <p id="stand-status" class="stand-status" role="status" aria-live="polite">
                     Послідовно виберіть усі групи елементів стенда.
                 </p>
             </div>

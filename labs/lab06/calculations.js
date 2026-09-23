@@ -169,14 +169,6 @@ export function initializeCalculations({
         "#calculations-lock-overlay"
     );
 
-    const readinessTitle = section.querySelector(
-        "#calculation-readiness-title"
-    );
-
-    const readinessText = section.querySelector(
-        "#calculation-readiness-text"
-    );
-
     const workspace = section.querySelector(
         "#calculation-workspace"
     );
@@ -245,26 +237,6 @@ export function initializeCalculations({
         const isReady =
             standReady &&
             experimentCompleted;
-
-        if (!standReady) {
-            readinessTitle.textContent =
-                "Спочатку завершіть роботу зі стендом";
-
-            readinessText.textContent =
-                "Перегляньте всі елементи віртуального стенда та підтвердьте його готовність.";
-        } else if (!experimentCompleted) {
-            readinessTitle.textContent =
-                "Спочатку завершіть вимірювання";
-
-            readinessText.textContent =
-                `Записано ${completedCount} із 3 режимів. Поверніться до розділу 7.`;
-        } else {
-            readinessTitle.textContent =
-                "Вимірювання готові до оброблення";
-
-            readinessText.textContent =
-                "Записано 3 із 3 режимів. Заповніть розрахункову частину таблиці самостійно.";
-        }
 
         lockOverlay.hidden =
             isReady;

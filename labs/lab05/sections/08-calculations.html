@@ -10,21 +10,19 @@
     </p>
 
     <div class="calculations-access-shell">
-        <div
-            id="calculations-lock-overlay"
-            class="calculations-lock-overlay"
-            role="status"
-        >
-            <div class="calculations-lock-card">
-                <strong>Доступ до розрахунків заблоковано</strong>
+        <div id="calculations-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>
+                    Доступ до оброблення результатів заблоковано
+                </strong>
 
                 <p>
-                    Спочатку завершіть усі шість дослідів у розділі
-                    «Проведення дослідів».
+                    Спочатку завершіть усі передбачені досліди
+                    та збережіть результати вимірювань.
                 </p>
 
-                <a class="calculations-lock-link" href="#experiment">
-                    Перейти до проведення дослідів
+                <a href="#experiment" class="access-lock-link">
+                    Перейти до розділу 7
                 </a>
             </div>
         </div>
@@ -38,10 +36,7 @@
                     </div>
 
                     <div class="calculation-formula">
-                        <math
-                            xmlns="http://www.w3.org/1998/Math/MathML"
-                            display="block"
-                        >
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                             <mrow>
                                 <msub>
                                     <mi>W</mi>
@@ -202,40 +197,21 @@
                 </div>
 
                 <div class="calculations-action-buttons">
-                    <button
-                        id="calculations-check-button"
-                        class="calculations-check-button"
-                        type="button"
-                        disabled
-                    >
+                    <button id="calculations-check-button" class="calculations-check-button" type="button" disabled>
                         Перевірити розрахунки
                     </button>
 
-                    <button
-                        id="calculations-reset-button"
-                        class="calculations-reset-button"
-                        type="button"
-                        disabled
-                    >
+                    <button id="calculations-reset-button" class="calculations-reset-button" type="button" disabled>
                         Очистити розрахунки
                     </button>
                 </div>
             </div>
 
-            <p
-                id="calculations-message"
-                class="calculations-message"
-                role="status"
-                aria-live="polite"
-            >
+            <p id="calculations-message" class="calculations-message" role="status" aria-live="polite">
                 Завершіть усі досліди, щоб перейти до розрахунків.
             </p>
 
-            <div
-                id="calculations-complete-panel"
-                class="calculations-complete-panel"
-                hidden
-            >
+            <div id="calculations-complete-panel" class="calculations-complete-panel" hidden>
                 <strong>Розрахунки виконано правильно</strong>
 
                 <p>

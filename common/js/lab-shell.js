@@ -128,9 +128,17 @@ export function initializeLaboratoryNavigation({
         return null;
     }
 
-    function setActiveSection(
-        sectionId
-    ) {
+    const sectionIds = new Set(
+        sections.map(
+            (section) => section.id
+        )
+    );
+
+    let frameId = null;
+    let lockedSectionId = "";
+    let unlockTimerId = null;
+
+    function setActiveSection(sectionId) {
         navigationLinks.forEach(
             (link) => {
                 const isCurrent =
@@ -156,52 +164,230 @@ export function initializeLaboratoryNavigation({
         );
     }
 
-    const observer = new IntersectionObserver(
-        (entries) => {
-            const visibleEntries = entries
-                .filter(
-                    (entry) =>
-                        entry.isIntersecting
-                )
-                .sort(
-                    (first, second) =>
-                        first.boundingClientRect.top -
-                        second.boundingClientRect.top
-                );
+    function getHashSectionId() {
+        const hash =
+            window.location.hash.slice(1);
 
-            const currentEntry =
-                visibleEntries[0];
+        if (!hash) {
+            return "";
+        }
 
-            if (!currentEntry) {
-                return;
-            }
+        try {
+            return decodeURIComponent(hash);
+        } catch {
+            return hash;
+        }
+    }
 
+    function updateActiveSection() {
+        frameId = null;
+
+        if (lockedSectionId) {
             setActiveSection(
-                currentEntry.target.id
+                lockedSectionId
             );
-        },
-        {
-            rootMargin:
-                "-20% 0px -65% 0px",
 
-            threshold: [
-                0,
-                0.1,
-                0.25,
-                0.5
-            ]
+            return;
+        }
+
+        const reachedPageBottom =
+            window.scrollY +
+            window.innerHeight >=
+            document.documentElement.scrollHeight - 4;
+
+        if (reachedPageBottom) {
+            setActiveSection(
+                sections.at(-1).id
+            );
+
+            return;
+        }
+
+        const activationLine =
+            Math.min(
+                180,
+                Math.max(
+                    110,
+                    window.innerHeight * 0.18
+                )
+            );
+
+        let activeSection =
+            sections[0];
+
+        sections.forEach(
+            (section) => {
+                const sectionTop =
+                    section
+                        .getBoundingClientRect()
+                        .top;
+
+                if (
+                    sectionTop <=
+                    activationLine
+                ) {
+                    activeSection =
+                        section;
+                }
+            }
+        );
+
+        setActiveSection(
+            activeSection.id
+        );
+    }
+
+    function scheduleUpdate() {
+        if (frameId !== null) {
+            return;
+        }
+
+        frameId =
+            window.requestAnimationFrame(
+                updateActiveSection
+            );
+    }
+
+    function unlockNavigation() {
+        lockedSectionId = "";
+        scheduleUpdate();
+    }
+
+    function handleNavigationClick(event) {
+        const link =
+            event.currentTarget;
+
+        const sectionId =
+            link.hash.slice(1);
+
+        if (!sectionIds.has(sectionId)) {
+            return;
+        }
+
+        lockedSectionId =
+            sectionId;
+
+        setActiveSection(
+            sectionId
+        );
+
+        window.clearTimeout(
+            unlockTimerId
+        );
+
+        unlockTimerId =
+            window.setTimeout(
+                unlockNavigation,
+                1000
+            );
+    }
+
+    function handleHashChange() {
+        const sectionId =
+            getHashSectionId();
+
+        if (sectionIds.has(sectionId)) {
+            setActiveSection(
+                sectionId
+            );
+        }
+
+        scheduleUpdate();
+    }
+
+    navigationLinks.forEach(
+        (link) => {
+            link.addEventListener(
+                "click",
+                handleNavigationClick
+            );
         }
     );
 
+    window.addEventListener(
+        "scroll",
+        scheduleUpdate,
+        {
+            passive: true
+        }
+    );
+
+    window.addEventListener(
+        "resize",
+        scheduleUpdate
+    );
+
+    window.addEventListener(
+        "hashchange",
+        handleHashChange
+    );
+
+    const resizeObserver =
+        typeof ResizeObserver ===
+        "function"
+            ? new ResizeObserver(
+                scheduleUpdate
+            )
+            : null;
+
     sections.forEach(
         (section) => {
-            observer.observe(
+            resizeObserver?.observe(
                 section
             );
         }
     );
 
-    return observer;
+    const initialSectionId =
+        getHashSectionId();
+
+    if (sectionIds.has(initialSectionId)) {
+        setActiveSection(
+            initialSectionId
+        );
+    }
+
+    scheduleUpdate();
+
+    return {
+        disconnect() {
+            navigationLinks.forEach(
+                (link) => {
+                    link.removeEventListener(
+                        "click",
+                        handleNavigationClick
+                    );
+                }
+            );
+
+            window.removeEventListener(
+                "scroll",
+                scheduleUpdate
+            );
+
+            window.removeEventListener(
+                "resize",
+                scheduleUpdate
+            );
+
+            window.removeEventListener(
+                "hashchange",
+                handleHashChange
+            );
+
+            resizeObserver?.disconnect();
+
+            window.clearTimeout(
+                unlockTimerId
+            );
+
+            if (frameId !== null) {
+                window.cancelAnimationFrame(
+                    frameId
+                );
+            }
+        }
+    };
 }
 
 export async function initializeLaboratoryShell({

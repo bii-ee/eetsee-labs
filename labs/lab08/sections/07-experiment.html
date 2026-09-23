@@ -23,23 +23,19 @@
     </div>
 
     <div class="experiment-access-shell">
-        <div
-            id="experiment-lock-overlay"
-            class="experiment-lock-overlay"
-            role="status"
-        >
-            <div class="experiment-lock-card">
+        <div id="experiment-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
                 <strong>
                     Доступ до проведення дослідів заблоковано
                 </strong>
 
                 <p>
                     Спочатку перегляньте всі елементи віртуального
-                    стенда та підтвердьте готовність до роботи.
+                    стенда та підтвердьте його готовність.
                 </p>
 
-                <a class="experiment-lock-link" href="#stand">
-                    Перейти до віртуального стенда
+                <a href="#stand" class="access-lock-link">
+                    Перейти до розділу 6
                 </a>
             </div>
         </div>
@@ -51,10 +47,7 @@
                         Стан установки
                     </span>
 
-                    <strong
-                        id="experiment-power-state"
-                        class="experiment-power-state"
-                    >
+                    <strong id="experiment-power-state" class="experiment-power-state">
                         Знеструмлена
                     </strong>
                 </div>
@@ -96,14 +89,8 @@
                                 <span>Об’єм води</span>
 
                                 <span class="experiment-input">
-                                    <input
-                                        id="experiment-water-volume"
-                                        type="number"
-                                        min="100"
-                                        max="1000"
-                                        step="10"
-                                        value="200"
-                                    >
+                                    <input id="experiment-water-volume" type="number" min="100" max="1000" step="10"
+                                        value="200">
 
                                     <small>мл</small>
                                 </span>
@@ -113,14 +100,8 @@
                                 <span>Маса води</span>
 
                                 <span class="experiment-input">
-                                    <input
-                                        id="experiment-water-mass"
-                                        type="number"
-                                        min="0.1"
-                                        max="1"
-                                        step="0.001"
-                                        value="0.200"
-                                    >
+                                    <input id="experiment-water-mass" type="number" min="0.1" max="1" step="0.001"
+                                        value="0.200">
 
                                     <small>кг</small>
                                 </span>
@@ -130,25 +111,15 @@
                                 <span>Початкова температура</span>
 
                                 <span class="experiment-input">
-                                    <input
-                                        id="experiment-initial-temperature"
-                                        type="number"
-                                        min="5"
-                                        max="40"
-                                        step="0.1"
-                                        value="20.0"
-                                    >
+                                    <input id="experiment-initial-temperature" type="number" min="5" max="40" step="0.1"
+                                        value="20.0">
 
                                     <small>°C</small>
                                 </span>
                             </label>
                         </div>
 
-                        <button
-                            id="experiment-setup-button"
-                            class="experiment-primary-button"
-                            type="button"
-                        >
+                        <button id="experiment-setup-button" class="experiment-primary-button" type="button">
                             Зафіксувати вихідні дані
                         </button>
                     </section>
@@ -179,21 +150,11 @@
                             </p>
                         </div>
 
-                        <button
-                            id="experiment-cycle-button"
-                            class="experiment-primary-button"
-                            type="button"
-                            disabled
-                        >
+                        <button id="experiment-cycle-button" class="experiment-primary-button" type="button" disabled>
                             Запустити цикл 1
                         </button>
 
-                        <p
-                            id="experiment-one-message"
-                            class="experiment-message"
-                            role="status"
-                            aria-live="polite"
-                        >
+                        <p id="experiment-one-message" class="experiment-message" role="status" aria-live="polite">
                             Очікується підготовка вихідних даних.
                         </p>
                     </section>
@@ -224,21 +185,11 @@
                             </p>
                         </div>
 
-                        <button
-                            id="experiment-trial-button"
-                            class="experiment-primary-button"
-                            type="button"
-                            disabled
-                        >
+                        <button id="experiment-trial-button" class="experiment-primary-button" type="button" disabled>
                             Виконати режим 1
                         </button>
 
-                        <p
-                            id="experiment-two-message"
-                            class="experiment-message"
-                            role="status"
-                            aria-live="polite"
-                        >
+                        <p id="experiment-two-message" class="experiment-message" role="status" aria-live="polite">
                             Очікується завершення досліду 1.
                         </p>
                     </section>
@@ -297,16 +248,10 @@
                         </div>
 
                         <div class="experiment-heating-zone">
-                            <div
-                                id="experiment-plate-visual"
-                                class="experiment-plate"
-                                aria-label="Індукційна плита МЕРИДІАН ПП-3"
-                            >
+                            <div id="experiment-plate-visual" class="experiment-plate"
+                                aria-label="Індукційна плита МЕРИДІАН ПП-3">
                                 <div class="experiment-plate-surface">
-                                    <span
-                                        id="experiment-heating-indicator"
-                                        class="experiment-heating-indicator"
-                                    ></span>
+                                    <span id="experiment-heating-indicator" class="experiment-heating-indicator"></span>
 
                                     <span class="experiment-induction-ring">
                                         <strong>МЕРИДІАН</strong>
@@ -324,11 +269,7 @@
                                 </div>
                             </div>
 
-                            <div
-                                id="experiment-pot-visual"
-                                class="experiment-pot"
-                                aria-label="Посуд із водою"
-                            >
+                            <div id="experiment-pot-visual" class="experiment-pot" aria-label="Посуд із водою">
                                 <span class="experiment-pot-handle"></span>
                                 <span class="experiment-water"></span>
 
@@ -340,10 +281,7 @@
                             </div>
                         </div>
 
-                        <div
-                            class="experiment-instruments"
-                            aria-label="Поточні покази приладів"
-                        >
+                        <div class="experiment-instruments" aria-label="Поточні покази приладів">
                             <article>
                                 <span class="instrument-code">U</span>
 
@@ -419,15 +357,9 @@
                                 </strong>
                             </div>
 
-                            <div
-                                id="experiment-interval-track"
-                                class="experiment-interval-track"
-                                role="progressbar"
-                                aria-label="Перебіг поточного інтервалу"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                                aria-valuenow="0"
-                            >
+                            <div id="experiment-interval-track" class="experiment-interval-track" role="progressbar"
+                                aria-label="Перебіг поточного інтервалу" aria-valuemin="0" aria-valuemax="100"
+                                aria-valuenow="0">
                                 <span id="experiment-interval-bar"></span>
                             </div>
                         </div>
@@ -435,10 +367,7 @@
                 </div>
             </div>
 
-            <section
-                id="experiment-one-panel"
-                class="experiment-table-panel"
-            >
+            <section id="experiment-one-panel" class="experiment-table-panel">
                 <div class="experiment-table-header">
                     <div>
                         <p class="section-number">Таблиця 8.3</p>
@@ -448,10 +377,7 @@
                         </h3>
                     </div>
 
-                    <span
-                        id="experiment-one-status"
-                        class="experiment-table-status"
-                    >
+                    <span id="experiment-one-status" class="experiment-table-status">
                         0 із 6 циклів
                     </span>
                 </div>
@@ -484,10 +410,7 @@
                     </table>
                 </div>
 
-                <div
-                    id="experiment-one-summary"
-                    class="experiment-table-summary"
-                >
+                <div id="experiment-one-summary" class="experiment-table-summary">
                     <strong>Дослід ще не розпочато</strong>
 
                     <p>
@@ -497,14 +420,8 @@
                 </div>
             </section>
 
-            <section
-                id="experiment-two-panel"
-                class="experiment-table-panel experiment-two-panel"
-            >
-                <div
-                    id="experiment-two-lock"
-                    class="experiment-subsection-lock"
-                >
+            <section id="experiment-two-panel" class="experiment-table-panel experiment-two-panel">
+                <div id="experiment-two-lock" class="experiment-subsection-lock">
                     <strong>Дослід 2 заблоковано</strong>
 
                     <p>
@@ -523,10 +440,7 @@
                             </h3>
                         </div>
 
-                        <span
-                            id="experiment-two-status"
-                            class="experiment-table-status"
-                        >
+                        <span id="experiment-two-status" class="experiment-table-status">
                             0 із 9 режимів
                         </span>
                     </div>
@@ -565,10 +479,7 @@
                         </table>
                     </div>
 
-                    <div
-                        id="experiment-two-summary"
-                        class="experiment-table-summary"
-                    >
+                    <div id="experiment-two-summary" class="experiment-table-summary">
                         <strong>Дослід ще не розпочато</strong>
 
                         <p>
@@ -579,11 +490,7 @@
                 </div>
             </section>
 
-            <div
-                id="experiment-completion"
-                class="experiment-completion"
-                hidden
-            >
+            <div id="experiment-completion" class="experiment-completion" hidden>
                 <div>
                     <span>Досліди завершено</span>
 
@@ -614,11 +521,7 @@
                     </p>
                 </div>
 
-                <button
-                    id="experiment-reset-button"
-                    class="experiment-reset-button"
-                    type="button"
-                >
+                <button id="experiment-reset-button" class="experiment-reset-button" type="button">
                     Очистити результати
                 </button>
             </div>

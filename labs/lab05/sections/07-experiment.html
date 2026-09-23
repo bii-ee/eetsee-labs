@@ -21,21 +21,19 @@
     </div>
 
     <div class="experiment-access-shell">
-        <div
-            id="experiment-lock-overlay"
-            class="experiment-lock-overlay"
-            role="status"
-        >
-            <div class="experiment-lock-card">
-                <strong>Доступ до проведення дослідів заблоковано</strong>
+        <div id="experiment-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>
+                    Доступ до проведення дослідів заблоковано
+                </strong>
 
                 <p>
                     Спочатку перегляньте всі елементи віртуального
-                    стенда та підтвердьте готовність до роботи.
+                    стенда та підтвердьте його готовність.
                 </p>
 
-                <a class="experiment-lock-link" href="#stand">
-                    Перейти до віртуального стенда
+                <a href="#stand" class="access-lock-link">
+                    Перейти до розділу 6
                 </a>
             </div>
         </div>
@@ -47,10 +45,7 @@
                         Стан установки
                     </span>
 
-                    <strong
-                        id="experiment-power-state"
-                        class="experiment-power-state"
-                    >
+                    <strong id="experiment-power-state" class="experiment-power-state">
                         Вимкнена
                     </strong>
                 </div>
@@ -63,12 +58,7 @@
                     </strong>
                 </div>
 
-                <button
-                    id="experiment-power-button"
-                    class="experiment-power-button"
-                    type="button"
-                    disabled
-                >
+                <button id="experiment-power-button" class="experiment-power-button" type="button" disabled>
                     Увімкнути установку
                 </button>
             </div>
@@ -83,17 +73,9 @@
                             для якої буде виконано дослід.
                         </p>
 
-                        <div
-                            class="experiment-heater-buttons"
-                            role="group"
-                            aria-label="Вибір електродного нагрівача"
-                        >
-                            <button
-                                class="experiment-heater-button is-selected"
-                                type="button"
-                                data-heater-id="heater-1"
-                                aria-pressed="true"
-                            >
+                        <div class="experiment-heater-buttons" role="group" aria-label="Вибір електродного нагрівача">
+                            <button class="experiment-heater-button is-selected" type="button" data-heater-id="heater-1"
+                                aria-pressed="true">
                                 <span class="experiment-heater-number">1</span>
 
                                 <span class="experiment-heater-content">
@@ -104,12 +86,8 @@
                                 </span>
                             </button>
 
-                            <button
-                                class="experiment-heater-button"
-                                type="button"
-                                data-heater-id="heater-2"
-                                aria-pressed="false"
-                            >
+                            <button class="experiment-heater-button" type="button" data-heater-id="heater-2"
+                                aria-pressed="false">
                                 <span class="experiment-heater-number">2</span>
 
                                 <span class="experiment-heater-content">
@@ -130,37 +108,21 @@
                             100, 150 і 200 В.
                         </p>
 
-                        <div
-                            class="experiment-voltage-buttons"
-                            role="group"
-                            aria-label="Вибір напруги досліду"
-                        >
-                            <button
-                                class="experiment-voltage-button is-selected"
-                                type="button"
-                                data-voltage="100"
-                                aria-pressed="true"
-                            >
+                        <div class="experiment-voltage-buttons" role="group" aria-label="Вибір напруги досліду">
+                            <button class="experiment-voltage-button is-selected" type="button" data-voltage="100"
+                                aria-pressed="true">
                                 <strong>100 В</strong>
                                 <small>Дослід 1</small>
                             </button>
 
-                            <button
-                                class="experiment-voltage-button"
-                                type="button"
-                                data-voltage="150"
-                                aria-pressed="false"
-                            >
+                            <button class="experiment-voltage-button" type="button" data-voltage="150"
+                                aria-pressed="false">
                                 <strong>150 В</strong>
                                 <small>Дослід 2</small>
                             </button>
 
-                            <button
-                                class="experiment-voltage-button"
-                                type="button"
-                                data-voltage="200"
-                                aria-pressed="false"
-                            >
+                            <button class="experiment-voltage-button" type="button" data-voltage="200"
+                                aria-pressed="false">
                                 <strong>200 В</strong>
                                 <small>Дослід 3</small>
                             </button>
@@ -212,22 +174,12 @@
                         </p>
                     </div>
 
-                    <button
-                        id="experiment-action-button"
-                        class="experiment-action-button"
-                        type="button"
-                        disabled
-                    >
+                    <button id="experiment-action-button" class="experiment-action-button" type="button" disabled>
                         Дані не погоджено
                     </button>
 
-                    <p
-                        id="experiment-message"
-                        class="experiment-message"
-                        data-type="warning"
-                        role="status"
-                        aria-live="polite"
-                    >
+                    <p id="experiment-message" class="experiment-message" data-type="warning" role="status"
+                        aria-live="polite">
                         Експериментальні значення для вибраного досліду
                         ще не погоджені.
                     </p>
@@ -258,18 +210,12 @@
                                 <strong>Живлення</strong>
                                 <small>Вимикач K</small>
 
-                                <span
-                                    id="experiment-switch-state"
-                                    class="experiment-device-state"
-                                >
+                                <span id="experiment-switch-state" class="experiment-device-state">
                                     Вимкнено
                                 </span>
                             </div>
 
-                            <span
-                                class="experiment-connection-arrow"
-                                aria-hidden="true"
-                            >
+                            <span class="experiment-connection-arrow" aria-hidden="true">
                                 →
                             </span>
 
@@ -284,29 +230,16 @@
                                     Положення регулятора
                                 </label>
 
-                                <input
-                                    id="experiment-latr-control"
-                                    type="range"
-                                    min="0"
-                                    max="220"
-                                    value="0"
-                                    step="1"
-                                    disabled
-                                >
+                                <input id="experiment-latr-control" type="range" min="0" max="220" value="0" step="1"
+                                    disabled>
 
-                                <output
-                                    id="experiment-latr-output"
-                                    for="experiment-latr-control"
-                                >
+                                <output id="experiment-latr-output" for="experiment-latr-control">
                                     0 В
                                 </output>
                             </div>
                         </div>
 
-                        <div
-                            class="experiment-measurement-panel"
-                            aria-label="Покази електровимірювальних приладів"
-                        >
+                        <div class="experiment-measurement-panel" aria-label="Покази електровимірювальних приладів">
                             <article class="experiment-meter-card">
                                 <span class="instrument-code">PV</span>
 
@@ -341,10 +274,7 @@
                             </article>
                         </div>
 
-                        <div
-                            id="experiment-heating-system"
-                            class="experiment-heating-system"
-                        >
+                        <div id="experiment-heating-system" class="experiment-heating-system">
                             <div class="experiment-vessel-area">
                                 <span class="experiment-vessel" aria-hidden="true">
                                     <span class="experiment-water"></span>
@@ -377,14 +307,9 @@
                                             </strong>
                                         </div>
 
-                                        <div
-                                            class="experiment-heating-track"
-                                            role="progressbar"
-                                            aria-label="Перебіг нагрівання води"
-                                            aria-valuemin="0"
-                                            aria-valuemax="100"
-                                            aria-valuenow="0"
-                                        >
+                                        <div class="experiment-heating-track" role="progressbar"
+                                            aria-label="Перебіг нагрівання води" aria-valuemin="0" aria-valuemax="100"
+                                            aria-valuenow="0">
                                             <span id="experiment-heating-bar"></span>
                                         </div>
                                     </div>
@@ -401,10 +326,7 @@
                                     </div>
 
                                     <div class="experiment-stopwatch">
-                                        <span
-                                            id="experiment-stopwatch-reading"
-                                            class="experiment-stopwatch-display"
-                                        >
+                                        <span id="experiment-stopwatch-reading" class="experiment-stopwatch-display">
                                             00:00
                                         </span>
 
@@ -436,19 +358,10 @@
                             <span>T = f(t)</span>
                         </div>
 
-                        <svg
-                            viewBox="0 10 680 232"
-                            role="img"
-                            aria-label="Залежність температури води від часу нагрівання"
-                        >
-                            <rect
-                                class="temperature-plot-background"
-                                x="64"
-                                y="24"
-                                width="584"
-                                height="174"
-                                rx="4"
-                            ></rect>
+                        <svg viewBox="0 10 680 232" role="img"
+                            aria-label="Залежність температури води від часу нагрівання">
+                            <rect class="temperature-plot-background" x="64" y="24" width="584" height="174" rx="4">
+                            </rect>
 
                             <g class="temperature-grid">
                                 <line x1="64" y1="24" x2="648" y2="24"></line>
@@ -464,94 +377,42 @@
                                 <line x1="648" y1="24" x2="648" y2="198"></line>
                             </g>
 
-                            <line
-                                class="temperature-axis"
-                                x1="64"
-                                y1="198"
-                                x2="648"
-                                y2="198"
-                            ></line>
+                            <line class="temperature-axis" x1="64" y1="198" x2="648" y2="198"></line>
 
-                            <line
-                                class="temperature-axis"
-                                x1="64"
-                                y1="24"
-                                x2="64"
-                                y2="198"
-                            ></line>
+                            <line class="temperature-axis" x1="64" y1="24" x2="64" y2="198"></line>
 
-                            <text
-                                id="experiment-chart-y-max"
-                                class="temperature-axis-value"
-                                x="53"
-                                y="29"
-                                text-anchor="end"
-                            >
+                            <text id="experiment-chart-y-max" class="temperature-axis-value" x="53" y="29"
+                                text-anchor="end">
                                 100
                             </text>
 
-                            <text
-                                id="experiment-chart-y-min"
-                                class="temperature-axis-value"
-                                x="53"
-                                y="202"
-                                text-anchor="end"
-                            >
+                            <text id="experiment-chart-y-min" class="temperature-axis-value" x="53" y="202"
+                                text-anchor="end">
                                 20
                             </text>
 
-                            <text
-                                class="temperature-axis-value"
-                                x="64"
-                                y="219"
-                                text-anchor="middle"
-                            >
+                            <text class="temperature-axis-value" x="64" y="219" text-anchor="middle">
                                 0
                             </text>
 
-                            <text
-                                id="experiment-chart-x-max"
-                                class="temperature-axis-value"
-                                x="648"
-                                y="219"
-                                text-anchor="end"
-                            >
+                            <text id="experiment-chart-x-max" class="temperature-axis-value" x="648" y="219"
+                                text-anchor="end">
                                 0
                             </text>
 
-                            <text
-                                class="temperature-axis-title"
-                                x="20"
-                                y="111"
-                                text-anchor="middle"
-                                transform="rotate(-90 20 111)"
-                            >
+                            <text class="temperature-axis-title" x="20" y="111" text-anchor="middle"
+                                transform="rotate(-90 20 111)">
                                 T, °C
                             </text>
 
-                            <text
-                                class="temperature-axis-title"
-                                x="356"
-                                y="234"
-                                text-anchor="middle"
-                            >
+                            <text class="temperature-axis-title" x="356" y="234" text-anchor="middle">
                                 t, хв
                             </text>
 
-                            <polyline
-                                id="experiment-temperature-line"
-                                class="temperature-line"
-                                points=""
-                            ></polyline>
+                            <polyline id="experiment-temperature-line" class="temperature-line" points=""></polyline>
 
-                            <circle
-                                id="experiment-temperature-point"
-                                class="temperature-point"
-                                cx="64"
-                                cy="198"
-                                r="5"
-                                hidden
-                            ></circle>
+                            <circle id="experiment-temperature-point" class="temperature-point" cx="64" cy="198" r="5"
+                                hidden></circle>
                         </svg>
 
                         <div class="experiment-chart-legend">
@@ -624,11 +485,7 @@
                         всі шість дослідів.
                     </p>
 
-                    <button
-                        id="experiment-reset-button"
-                        class="experiment-reset-button"
-                        type="button"
-                    >
+                    <button id="experiment-reset-button" class="experiment-reset-button" type="button">
                         Очистити результати
                     </button>
                 </div>
