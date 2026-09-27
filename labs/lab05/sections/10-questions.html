@@ -10,21 +10,17 @@
     </p>
 
     <div class="quiz-access-shell">
-        <div
-            id="quiz-lock-overlay"
-            class="quiz-lock-overlay"
-            role="status"
-        >
-            <div class="quiz-lock-card">
+        <div id="quiz-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
                 <strong>Доступ до контрольних питань заблоковано</strong>
 
                 <p>
                     Спочатку сформулюйте та збережіть три висновки
-                    в розділі «Аналіз результатів експерименту».
+                    в розділі 9.
                 </p>
 
-                <a class="quiz-lock-link" href="#analysis">
-                    Перейти до аналізу
+                <a href="#analysis" class="access-lock-link">
+                    Перейти до розділу 9
                 </a>
             </div>
         </div>
@@ -46,14 +42,8 @@
                     <strong id="quiz-answered-count">0 із 8</strong>
                 </div>
 
-                <div
-                    class="quiz-progress-track"
-                    role="progressbar"
-                    aria-label="Заповнення контрольного тесту"
-                    aria-valuemin="0"
-                    aria-valuemax="8"
-                    aria-valuenow="0"
-                >
+                <div class="quiz-progress-track" role="progressbar" aria-label="Заповнення контрольного тесту"
+                    aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
                     <span id="quiz-progress-bar"></span>
                 </div>
             </div>
@@ -62,39 +52,21 @@
                 <div id="quiz-list" class="quiz-list"></div>
 
                 <div class="quiz-actions">
-                    <button
-                        id="quiz-check-button"
-                        class="quiz-button quiz-button-primary"
-                        type="submit"
-                    >
+                    <button id="quiz-check-button" class="quiz-button quiz-button-primary" type="submit">
                         Перевірити відповіді
                     </button>
 
-                    <button
-                        id="reset-quiz"
-                        class="quiz-button quiz-button-danger"
-                        type="button"
-                    >
+                    <button id="reset-quiz" class="quiz-button quiz-button-danger" type="button">
                         Почати тест заново
                     </button>
                 </div>
 
-                <div
-                    id="quiz-result"
-                    class="quiz-result"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                >
+                <div id="quiz-result" class="quiz-result" data-state="default" role="status" aria-live="polite">
                     Дайте відповідь на всі 8 запитань.
                 </div>
             </form>
 
-            <section
-                id="final-report-panel"
-                class="final-report-panel"
-                hidden
-            >
+            <section id="final-report-panel" class="final-report-panel" hidden>
                 <div class="report-introduction">
                     <p class="section-number">Підсумок роботи</p>
 
@@ -107,84 +79,47 @@
                     </p>
                 </div>
 
-                <div
-                    id="report-readiness"
-                    class="report-readiness"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                ></div>
+                <div id="report-readiness" class="report-readiness" data-state="default" role="status"
+                    aria-live="polite"></div>
 
-                <form
-                    id="student-report-form"
-                    class="student-report-form"
-                >
+                <form id="student-report-form" class="student-report-form">
                     <label class="report-field">
                         <span>Прізвище, ім’я та по батькові</span>
 
-                        <input
-                            type="text"
-                            name="studentName"
-                            autocomplete="name"
-                            minlength="5"
-                            required
-                        >
+                        <input type="text" name="studentName" autocomplete="name" minlength="5" required>
                     </label>
 
                     <label class="report-field">
                         <span>Навчальна група</span>
 
-                        <input
-                            type="text"
-                            name="studentGroup"
-                            required
-                        >
+                        <input type="text" name="studentGroup" required>
                     </label>
 
                     <label class="report-field">
                         <span>Номер бригади</span>
 
-                        <input
-                            type="text"
-                            name="studentBrigade"
-                        >
+                        <input type="text" name="studentBrigade">
                     </label>
 
                     <div class="report-controls">
                         <div class="report-control-group">
-                            <button
-                                id="generate-report"
-                                class="report-button report-button-primary"
-                                type="submit"
-                            >
+                            <button id="generate-report" class="report-button report-button-primary" type="submit">
                                 Сформувати звіт
                             </button>
 
-                            <button
-                                id="print-report"
-                                class="report-button report-button-secondary"
-                                type="button"
-                                disabled
-                            >
+                            <button id="print-report" class="report-button report-button-secondary" type="button"
+                                disabled>
                                 Друк / Зберегти у PDF
                             </button>
                         </div>
 
-                        <button
-                            id="reset-lab"
-                            class="report-button report-button-danger"
-                            type="button"
-                        >
+                        <button id="reset-lab" class="report-button report-button-danger" type="button">
                             Очистити всю роботу
                         </button>
                     </div>
                 </form>
 
-                <article
-                    id="report-document"
-                    class="report-document report-document-lab05"
-                    hidden
-                >
+                <article id="report-document" class="report-document report-document-lab05" hidden>
                     <header class="report-document-header">
                         <p>Лабораторна робота №5</p>
 
@@ -231,10 +166,7 @@
                     <section class="report-section report-scheme-section">
                         <h3>Функціональна схема установки</h3>
 
-                        <div
-                            id="report-schematic"
-                            class="report-schematic"
-                        ></div>
+                        <div id="report-schematic" class="report-schematic"></div>
                     </section>
 
                     <section class="report-section report-data-section">
@@ -310,19 +242,13 @@
                     <section class="report-section report-charts-section">
                         <h3>3. Графічне подання результатів</h3>
 
-                        <div
-                            id="report-charts"
-                            class="report-chart-list"
-                        ></div>
+                        <div id="report-charts" class="report-chart-list"></div>
                     </section>
 
                     <section class="report-section report-conclusions-section">
                         <h3>4. Висновки</h3>
 
-                        <div
-                            id="report-conclusions"
-                            class="report-conclusions"
-                        ></div>
+                        <div id="report-conclusions" class="report-conclusions"></div>
                     </section>
 
                     <footer class="report-final-status">

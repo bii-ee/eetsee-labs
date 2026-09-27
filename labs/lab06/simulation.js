@@ -1,12 +1,10 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     LAB06_EXPERIMENT_MODES,
     LAB06_EXPERIMENT_STORAGE_KEY,
     getExperimentMode
 } from "./data.js";
-
-import {
-    createStorage
-} from "../../common/js/storage.js";
 
 import {
     LAB06_CONFIG,
@@ -126,9 +124,6 @@ export function initializeExperiment({
         return;
     }
 
-    const standStorage = createStorage(
-        LAB06_CONFIG.storage.stand
-    );
     const powerButton = experimentSection.querySelector(
         "#experiment-power-button"
     );
@@ -210,16 +205,12 @@ export function initializeExperiment({
         selectedModeId: LAB06_EXPERIMENT_MODES[0].id,
         currentMeasurement: null,
         records: loadStoredRecords(),
-        isMeasuring: false
+        isMeasuring: false,
+        measurementTimer: null
     };
 
     function isStandReady() {
-        const standProgress = standStorage.get(
-            "progress",
-            {}
-        );
-
-        return standProgress.ready === true;
+        return isLaboratoryPrepared(LAB06_CONFIG);
     }
 
     function updateExperimentAccess(event) {
@@ -239,6 +230,9 @@ export function initializeExperiment({
             "experiment-access-granted",
             accessGranted
         );
+        if (!accessGranted) {
+            resetExperiment({ askConfirmation: false });
+        }
     }
     function getSelectedMode() {
         return getExperimentMode(state.selectedModeId);
@@ -466,6 +460,7 @@ export function initializeExperiment({
     }
 
     function togglePower() {
+        if (!isStandReady()) return;
         if (state.isMeasuring) {
             return;
         }
@@ -488,6 +483,7 @@ export function initializeExperiment({
     }
 
     function measureCurrentMode() {
+        if (!isStandReady()) return;
         if (!state.isPowered || state.isMeasuring) {
             return;
         }
@@ -503,7 +499,10 @@ export function initializeExperiment({
             "Виконується стабілізація показів приладів."
         );
 
-        window.setTimeout(() => {
+        state.measurementTimer = window.setTimeout(() => {
+            state.measurementTimer = null;
+            if (!isStandReady()) return;
+
             state.currentMeasurement = {
                 modeId: mode.id,
                 position: mode.position,
@@ -525,6 +524,7 @@ export function initializeExperiment({
     }
 
     function recordCurrentMeasurement() {
+        if (!isStandReady()) return;
         const measurement =
             state.currentMeasurement;
 
@@ -585,9 +585,9 @@ export function initializeExperiment({
         recordButton.disabled = true;
     }
 
-    function resetExperiment() {
+    function resetExperiment({ askConfirmation = true } = {}) {
         const shouldReset =
-            window.confirm(
+            !askConfirmation || window.confirm(
                 "Очистити всі записані результати досліду?"
             );
 
@@ -595,6 +595,11 @@ export function initializeExperiment({
             return;
         }
 
+        window.clearTimeout(state.measurementTimer);
+        state.measurementTimer = null;
+        state.isPowered = false;
+        state.isMeasuring = false;
+        measureButton.textContent = "Зняти покази";
         state.records = {};
 
         state.currentMeasurement =
@@ -611,7 +616,7 @@ export function initializeExperiment({
         );
 
         clearCurrentMeasurement();
-
+        renderPowerState();
         renderTable();
 
         setMessage(
@@ -642,7 +647,7 @@ export function initializeExperiment({
 
     resetButton.addEventListener(
         "click",
-        resetExperiment
+        () => resetExperiment()
     );
 
     document.addEventListener(

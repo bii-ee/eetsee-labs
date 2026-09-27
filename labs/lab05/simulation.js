@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     LAB05_EXPERIMENT_CONDITIONS,
     LAB05_EXPERIMENT_RUNS,
@@ -429,11 +431,6 @@ export function initializeExperiment({
     section.dataset.initialized =
         "true";
 
-    const standStorage =
-        createStorage(
-            LAB05_CONFIG.storage.stand
-        );
-
     const experimentStorage =
         createStorage(
             LAB05_EXPERIMENT_STORAGE_KEY
@@ -543,12 +540,7 @@ export function initializeExperiment({
     }
 
     function isStandReady() {
-        return (
-            standStorage.get(
-                "progress",
-                {}
-            ).ready === true
-        );
+        return isLaboratoryPrepared(LAB05_CONFIG);
     }
 
     function saveProgress() {
@@ -701,16 +693,8 @@ export function initializeExperiment({
             accessGranted
         );
 
-        if (
-            !accessGranted &&
-            state.isPowered
-        ) {
-            resetLiveValues();
-
-            state.phase =
-                "selection";
-
-            renderAll();
+        if (!accessGranted) {
+            resetExperiment({ askConfirmation: false });
         }
     }
 
@@ -1766,6 +1750,7 @@ export function initializeExperiment({
     }
 
     function togglePower() {
+        if (!isStandReady()) return;
         const experiment =
             getCurrentExperiment();
 
@@ -1817,6 +1802,7 @@ export function initializeExperiment({
     }
 
     function handleLatrInput() {
+        if (!isStandReady()) return;
         if (
             !state.isPowered ||
             state.phase !==
@@ -2162,6 +2148,7 @@ export function initializeExperiment({
     }
 
     function handlePrimaryAction() {
+        if (!isStandReady()) return;
         const actions = {
             selection:
                 prepareExperiment,
@@ -2181,9 +2168,9 @@ export function initializeExperiment({
         ]?.();
     }
 
-    function resetExperiment() {
+    function resetExperiment({ askConfirmation = true } = {}) {
         const confirmed =
-            window.confirm(
+            !askConfirmation || window.confirm(
                 "Очистити результати всіх дослідів і почати роботу спочатку?"
             );
 
@@ -2281,7 +2268,7 @@ export function initializeExperiment({
 
     elements.resetButton.addEventListener(
         "click",
-        resetExperiment
+        () => resetExperiment()
     );
 
     document.addEventListener(

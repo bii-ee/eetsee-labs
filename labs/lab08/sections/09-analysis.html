@@ -10,21 +10,17 @@
     </p>
 
     <div class="analysis-access-shell">
-        <div
-            id="analysis-lock-overlay"
-            class="analysis-lock-overlay"
-            role="status"
-        >
-            <div class="analysis-lock-card">
-                <strong>Доступ до аналізу заблоковано</strong>
+        <div id="analysis-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>Доступ до аналізу результатів заблоковано</strong>
 
                 <p>
-                    Спочатку правильно виконайте та перевірте
-                    розрахунки в розділі 8.
+                    Спочатку виконайте та перевірте всі розрахунки
+                    в розділі 8.
                 </p>
 
-                <a class="analysis-lock-link" href="#calculations">
-                    Перейти до розрахунків
+                <a href="#calculations" class="access-lock-link">
+                    Перейти до розділу 8
                 </a>
             </div>
         </div>
@@ -90,10 +86,7 @@
                         рівною нулю.
                     </p>
 
-                    <div
-                        id="chart-power-time"
-                        class="analysis-chart analysis-chart-wide"
-                    ></div>
+                    <div id="chart-power-time" class="analysis-chart analysis-chart-wide"></div>
                 </article>
 
                 <article class="analysis-chart-card">
@@ -111,10 +104,7 @@
                         результати при напругах 200, 220 і 240 В.
                     </p>
 
-                    <div
-                        id="chart-power-voltage"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-power-voltage" class="analysis-chart"></div>
                 </article>
 
                 <article class="analysis-chart-card">
@@ -133,10 +123,7 @@
                         і 240 °C.
                     </p>
 
-                    <div
-                        id="chart-boiling-time"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-boiling-time" class="analysis-chart"></div>
                 </article>
             </div>
 
@@ -170,12 +157,7 @@
                         впливають на спожиту енергію?
                     </span>
 
-                    <textarea
-                        name="powerTimeConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="powerTimeConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
@@ -190,12 +172,7 @@
                         за незмінної заданої температури?
                     </span>
 
-                    <textarea
-                        name="voltageInfluenceConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="voltageInfluenceConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
@@ -210,12 +187,7 @@
                         напруги? Поясніть отриману тенденцію.
                     </span>
 
-                    <textarea
-                        name="temperatureInfluenceConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="temperatureInfluenceConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
@@ -224,39 +196,21 @@
                 </label>
 
                 <div class="analysis-actions">
-                    <button
-                        id="analysis-save-button"
-                        class="analysis-button analysis-button-primary"
-                        type="submit"
-                    >
+                    <button id="analysis-save-button" class="analysis-button analysis-button-primary" type="submit">
                         Зберегти висновки
                     </button>
 
-                    <button
-                        id="reset-analysis"
-                        class="analysis-button analysis-button-danger"
-                        type="button"
-                    >
+                    <button id="reset-analysis" class="analysis-button analysis-button-danger" type="button">
                         Очистити висновки
                     </button>
                 </div>
 
-                <p
-                    id="analysis-message"
-                    class="analysis-message"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                >
+                <p id="analysis-message" class="analysis-message" data-state="default" role="status" aria-live="polite">
                     Проаналізуйте графіки та заповніть усі три поля.
                 </p>
             </form>
 
-            <div
-                id="analysis-complete-panel"
-                class="analysis-complete-panel"
-                hidden
-            >
+            <div id="analysis-complete-panel" class="analysis-complete-panel" hidden>
                 <strong>Аналіз результатів завершено</strong>
 
                 <p>

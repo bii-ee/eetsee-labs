@@ -15,26 +15,17 @@
     </p>
 
     <div class="quiz-access-shell">
-        <div
-            id="quiz-lock-overlay"
-            class="quiz-lock-overlay"
-            role="status"
-        >
-            <div class="quiz-lock-card">
-                <strong>
-                    Доступ до контрольних питань заблоковано
-                </strong>
+        <div id="quiz-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>Доступ до контрольних питань заблоковано</strong>
 
                 <p>
-                    Спочатку сформулюйте та збережіть три
-                    висновки в розділі «Аналіз результатів».
+                    Спочатку сформулюйте та збережіть три висновки
+                    в розділі 9.
                 </p>
 
-                <a
-                    class="quiz-lock-link"
-                    href="#analysis"
-                >
-                    Перейти до аналізу
+                <a href="#analysis" class="access-lock-link">
+                    Перейти до розділу 9
                 </a>
             </div>
         </div>
@@ -42,11 +33,7 @@
         <div id="quiz-interactive-area">
             <!-- Формування звіту розташоване над питаннями -->
 
-            <section
-                id="final-report-panel"
-                class="final-report-panel"
-                hidden
-            >
+            <section id="final-report-panel" class="final-report-panel" hidden>
                 <div class="report-introduction">
                     <p class="section-number">
                         Підсумок роботи
@@ -64,30 +51,16 @@
                     </p>
                 </div>
 
-                <div
-                    id="report-readiness"
-                    class="report-readiness"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                ></div>
+                <div id="report-readiness" class="report-readiness" data-state="default" role="status"
+                    aria-live="polite"></div>
 
-                <form
-                    id="student-report-form"
-                    class="student-report-form"
-                >
+                <form id="student-report-form" class="student-report-form">
                     <label class="report-field">
                         <span>
                             Прізвище, ім’я та по батькові
                         </span>
 
-                        <input
-                            type="text"
-                            name="studentName"
-                            autocomplete="name"
-                            minlength="5"
-                            required
-                        >
+                        <input type="text" name="studentName" autocomplete="name" minlength="5" required>
                     </label>
 
                     <label class="report-field">
@@ -95,11 +68,7 @@
                             Навчальна група
                         </span>
 
-                        <input
-                            type="text"
-                            name="studentGroup"
-                            required
-                        >
+                        <input type="text" name="studentGroup" required>
                     </label>
 
                     <label class="report-field">
@@ -107,59 +76,39 @@
                             Номер бригади
                         </span>
 
-                        <input
-                            type="text"
-                            name="studentBrigade"
-                        >
+                        <input type="text" name="studentBrigade">
                     </label>
 
                     <div class="report-controls">
                         <div class="report-control-group">
-                            <button
-                                id="generate-report"
-                                class="
+                            <button id="generate-report" class="
                                     report-button
                                     report-button-primary
-                                "
-                                type="submit"
-                            >
+                                " type="submit">
                                 Сформувати звіт
                             </button>
 
-                            <button
-                                id="print-report"
-                                class="
+                            <button id="print-report" class="
                                     report-button
                                     report-button-secondary
-                                "
-                                type="button"
-                                disabled
-                            >
+                                " type="button" disabled>
                                 Друк / Зберегти у PDF
                             </button>
                         </div>
 
-                        <button
-                            id="reset-lab"
-                            class="
+                        <button id="reset-lab" class="
                                 report-button
                                 report-button-danger
-                            "
-                            type="button"
-                        >
+                            " type="button">
                             Очистити всю роботу
                         </button>
                     </div>
                 </form>
 
-                <article
-                    id="report-document"
-                    class="
+                <article id="report-document" class="
                         report-document
                         report-document-lab08
-                    "
-                    hidden
-                >
+                    " hidden>
                     <header class="report-document-header">
                         <p>
                             Лабораторна робота №8
@@ -176,33 +125,25 @@
                         <div>
                             <dt>Студент</dt>
 
-                            <dd
-                                id="report-student-name"
-                            ></dd>
+                            <dd id="report-student-name"></dd>
                         </div>
 
                         <div>
                             <dt>Група</dt>
 
-                            <dd
-                                id="report-student-group"
-                            ></dd>
+                            <dd id="report-student-group"></dd>
                         </div>
 
                         <div>
                             <dt>Бригада</dt>
 
-                            <dd
-                                id="report-student-brigade"
-                            ></dd>
+                            <dd id="report-student-brigade"></dd>
                         </div>
 
                         <div>
                             <dt>Дата</dt>
 
-                            <dd
-                                id="report-date"
-                            ></dd>
+                            <dd id="report-date"></dd>
                         </div>
                     </dl>
 
@@ -231,43 +172,32 @@
                             <p>
                                 Маса води
 
-                                <strong
-                                    id="report-water-mass"
-                                ></strong>
+                                <strong id="report-water-mass"></strong>
                             </p>
 
                             <p>
                                 Початкова температура води
 
-                                <strong
-                                    id="report-initial-temperature"
-                                ></strong>
+                                <strong id="report-initial-temperature"></strong>
                             </p>
                         </div>
                     </section>
 
-                    <section
-                        class="
+                    <section class="
                             report-section
                             report-scheme-section
-                        "
-                    >
+                        ">
                         <h3>
                             Функціональна схема установки
                         </h3>
 
-                        <div
-                            id="report-schematic"
-                            class="report-schematic"
-                        ></div>
+                        <div id="report-schematic" class="report-schematic"></div>
                     </section>
 
-                    <section
-                        class="
+                    <section class="
                             report-section
                             report-data-section
-                        "
-                    >
+                        ">
                         <h3>
                             1. Експериментальні дані циклічного
                             режиму
@@ -279,12 +209,10 @@
                         </p>
 
                         <div class="report-table-wrapper">
-                            <table
-                                class="
+                            <table class="
                                     report-table
                                     report-experiment-one-table
-                                "
-                            >
+                                ">
                                 <thead>
                                     <tr>
                                         <th>
@@ -313,9 +241,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody
-                                    id="report-experiment-one-body"
-                                ></tbody>
+                                <tbody id="report-experiment-one-body"></tbody>
                             </table>
                         </div>
                     </section>
@@ -327,12 +253,10 @@
                         </h3>
 
                         <div class="report-table-wrapper">
-                            <table
-                                class="
+                            <table class="
                                     report-table
                                     report-cycle-energy-table
-                                "
-                            >
+                                ">
                                 <thead>
                                     <tr>
                                         <th>
@@ -354,9 +278,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody
-                                    id="report-cycle-energy-body"
-                                ></tbody>
+                                <tbody id="report-cycle-energy-body"></tbody>
                             </table>
                         </div>
 
@@ -367,9 +289,7 @@
                                 </span>
 
                                 <strong>
-                                    <span
-                                        id="report-total-energy"
-                                    ></span>
+                                    <span id="report-total-energy"></span>
                                     кВт·год
                                 </strong>
 
@@ -384,9 +304,7 @@
                                 </span>
 
                                 <strong>
-                                    <span
-                                        id="report-useful-heat"
-                                    ></span>
+                                    <span id="report-useful-heat"></span>
                                     кВт·год
                                 </strong>
 
@@ -401,9 +319,7 @@
                                 </span>
 
                                 <strong>
-                                    <span
-                                        id="report-efficiency"
-                                    ></span>
+                                    <span id="report-efficiency"></span>
                                     %
                                 </strong>
 
@@ -414,12 +330,10 @@
                         </div>
                     </section>
 
-                    <section
-                        class="
+                    <section class="
                             report-section
                             report-heating-section
-                        "
-                    >
+                        ">
                         <h3>
                             3. Вплив заданих параметрів
                             на режим нагрівання
@@ -431,12 +345,10 @@
                         </p>
 
                         <div class="report-table-wrapper">
-                            <table
-                                class="
+                            <table class="
                                     report-table
                                     report-experiment-two-table
-                                "
-                            >
+                                ">
                                 <thead>
                                     <tr>
                                         <th>
@@ -473,43 +385,31 @@
                                     </tr>
                                 </thead>
 
-                                <tbody
-                                    id="report-experiment-two-body"
-                                ></tbody>
+                                <tbody id="report-experiment-two-body"></tbody>
                             </table>
                         </div>
                     </section>
 
-                    <section
-                        class="
+                    <section class="
                             report-section
                             report-charts-section
-                        "
-                    >
+                        ">
                         <h3>
                             4. Графічне подання результатів
                         </h3>
 
-                        <div
-                            id="report-charts"
-                            class="report-chart-list"
-                        ></div>
+                        <div id="report-charts" class="report-chart-list"></div>
                     </section>
 
-                    <section
-                        class="
+                    <section class="
                             report-section
                             report-conclusions-section
-                        "
-                    >
+                        ">
                         <h3>
                             5. Висновки
                         </h3>
 
-                        <div
-                            id="report-conclusions"
-                            class="report-conclusions"
-                        ></div>
+                        <div id="report-conclusions" class="report-conclusions"></div>
                     </section>
 
                     <footer class="report-final-status">
@@ -520,9 +420,7 @@
                         <span>
                             Результат контрольного тесту:
 
-                            <strong
-                                id="report-quiz-score"
-                            ></strong>
+                            <strong id="report-quiz-score"></strong>
                         </span>
                     </footer>
                 </article>
@@ -557,58 +455,32 @@
                     </strong>
                 </div>
 
-                <div
-                    class="quiz-progress-track"
-                    role="progressbar"
-                    aria-label="Заповнення контрольного тесту"
-                    aria-valuemin="0"
-                    aria-valuemax="8"
-                    aria-valuenow="0"
-                >
+                <div class="quiz-progress-track" role="progressbar" aria-label="Заповнення контрольного тесту"
+                    aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
                     <span id="quiz-progress-bar"></span>
                 </div>
             </div>
 
-            <form
-                id="quiz-form"
-                novalidate
-            >
-                <div
-                    id="quiz-list"
-                    class="quiz-list"
-                ></div>
+            <form id="quiz-form" novalidate>
+                <div id="quiz-list" class="quiz-list"></div>
 
                 <div class="quiz-actions">
-                    <button
-                        id="quiz-check-button"
-                        class="
+                    <button id="quiz-check-button" class="
                             quiz-button
                             quiz-button-primary
-                        "
-                        type="submit"
-                    >
+                        " type="submit">
                         Перевірити відповіді
                     </button>
 
-                    <button
-                        id="reset-quiz"
-                        class="
+                    <button id="reset-quiz" class="
                             quiz-button
                             quiz-button-danger
-                        "
-                        type="button"
-                    >
+                        " type="button">
                         Почати тест заново
                     </button>
                 </div>
 
-                <div
-                    id="quiz-result"
-                    class="quiz-result"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                >
+                <div id="quiz-result" class="quiz-result" data-state="default" role="status" aria-live="polite">
                     Дайте відповідь на всі 8 запитань.
                 </div>
             </form>

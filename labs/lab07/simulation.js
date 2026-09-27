@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import { createStorage } from "../../common/js/storage.js";
 
 import {
@@ -304,10 +306,6 @@ export function initializeExperiment({
 
     section.dataset.initialized = "true";
 
-    const standStorage = createStorage(
-        LAB07_CONFIG.storage.stand
-    );
-
     const experimentStorage = createStorage(
         LAB07_CONFIG.storage.experiment
     );
@@ -327,7 +325,8 @@ export function initializeExperiment({
         elapsedInterval: 0,
         intervalProgress: 0,
         partialCycle: null,
-        animationFrame: null
+        animationFrame: null,
+        coolingTimer: null
     };
 
     function getMode() {
@@ -384,10 +383,7 @@ export function initializeExperiment({
     }
 
     function isStandReady() {
-        return (
-            standStorage.get("progress", {}).ready ===
-            true
-        );
+        return isLaboratoryPrepared(LAB07_CONFIG);
     }
 
     function saveProgress() {
@@ -406,6 +402,8 @@ export function initializeExperiment({
     }
 
     function cancelAnimation() {
+        window.clearTimeout(state.coolingTimer);
+        state.coolingTimer = null;
         if (state.animationFrame !== null) {
             window.cancelAnimationFrame(
                 state.animationFrame
@@ -487,22 +485,8 @@ export function initializeExperiment({
             accessGranted
         );
 
-        if (
-            !accessGranted &&
-            state.isPowered
-        ) {
-            cancelAnimation();
-
-            state.isPowered = false;
-            state.circuitOn = false;
-            state.partialCycle = null;
-
-            state.phase =
-                Number.isFinite(getRecord()?.tau0)
-                    ? "await-power"
-                    : "await-initial";
-
-            renderAll();
+        if (!accessGranted) {
+            resetExperiment({ askConfirmation: false });
         }
     }
 
@@ -1570,6 +1554,7 @@ export function initializeExperiment({
     }
 
     function togglePower() {
+        if (!isStandReady()) return;
         if (
             state.phase ===
             "await-power"
@@ -1759,8 +1744,10 @@ export function initializeExperiment({
             "success"
         );
 
-        window.setTimeout(() => {
+        state.coolingTimer = window.setTimeout(() => {
+            state.coolingTimer = null;
             if (
+                isStandReady() &&
                 state.phase ===
                 "cooling"
             ) {
@@ -1892,6 +1879,7 @@ export function initializeExperiment({
     }
 
     function handlePrimaryAction() {
+        if (!isStandReady()) return;
         const actions = {
             "await-initial":
                 measureInitialTemperature,
@@ -1915,9 +1903,9 @@ export function initializeExperiment({
         actions[state.phase]?.();
     }
 
-    function resetExperiment() {
+    function resetExperiment({ askConfirmation = true } = {}) {
         const confirmed =
-            window.confirm(
+            !askConfirmation || window.confirm(
                 "Очистити всі дані дев’яти циклів і почати дослід спочатку?"
             );
 
@@ -2001,7 +1989,7 @@ export function initializeExperiment({
 
     elements.resetButton.addEventListener(
         "click",
-        resetExperiment
+        () => resetExperiment()
     );
 
     document.addEventListener(

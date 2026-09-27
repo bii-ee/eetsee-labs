@@ -10,6 +10,21 @@
         0 18px 45px rgba(18, 52, 77, 0.14);
 }
 
+/* Розділи 6–8: зелений; розділи 9–10: синій. */
+:is(#stand, #experiment, #calculations) {
+    --access-lock-accent: #1b7565;
+    --access-lock-accent-hover: #145b4e;
+    --access-lock-focus: rgba(27, 117, 101, 0.3);
+    --access-lock-button-shadow: rgba(27, 117, 101, 0.22);
+}
+
+:is(#analysis, #questions) {
+    --access-lock-accent: #14647a;
+    --access-lock-accent-hover: #0d4f62;
+    --access-lock-focus: rgba(20, 100, 122, 0.28);
+    --access-lock-button-shadow: rgba(20, 100, 122, 0.22);
+}
+
 :is(
     .access-lock-shell,
     .stand-workspace,
@@ -23,8 +38,6 @@
     overflow: hidden;
     isolation: isolate;
 
-    --access-lock-accent: #14647a;
-    --access-lock-accent-hover: #0d4f62;
 }
 
 :is(
@@ -221,7 +234,7 @@
     background: var(--access-lock-accent-hover);
     color: #ffffff;
     transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(20, 100, 122, 0.22);
+    box-shadow: 0 8px 20px var(--access-lock-button-shadow, rgba(20, 100, 122, 0.22));
 }
 
 :is(
@@ -239,7 +252,7 @@
     .analysis-lock-link,
     .quiz-lock-link
 ):focus-visible {
-    outline: 3px solid rgba(20, 100, 122, 0.28);
+    outline: 3px solid var(--access-lock-focus, rgba(20, 100, 122, 0.28));
     outline-offset: 3px;
 }
 

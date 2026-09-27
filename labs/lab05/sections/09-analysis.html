@@ -11,21 +11,17 @@
     </p>
 
     <div class="analysis-access-shell">
-        <div
-            id="analysis-lock-overlay"
-            class="analysis-lock-overlay"
-            role="status"
-        >
-            <div class="analysis-lock-card">
-                <strong>Доступ до аналізу заблоковано</strong>
+        <div id="analysis-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>Доступ до аналізу результатів заблоковано</strong>
 
                 <p>
-                    Спочатку правильно виконайте та перевірте всі
-                    розрахунки в розділі 8.
+                    Спочатку виконайте та перевірте всі розрахунки
+                    в розділі 8.
                 </p>
 
-                <a class="analysis-lock-link" href="#calculations">
-                    Перейти до розрахунків
+                <a href="#calculations" class="access-lock-link">
+                    Перейти до розділу 8
                 </a>
             </div>
         </div>
@@ -108,10 +104,7 @@
                         елементів за трьох рівнів напруги.
                     </p>
 
-                    <div
-                        id="chart-current-voltage"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-current-voltage" class="analysis-chart"></div>
                 </article>
 
                 <article class="analysis-chart-card">
@@ -133,10 +126,7 @@
                         збільшенням прикладеної напруги.
                     </p>
 
-                    <div
-                        id="chart-power-voltage"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-power-voltage" class="analysis-chart"></div>
                 </article>
 
                 <article class="analysis-chart-card">
@@ -155,10 +145,7 @@
                         початкової температури до температури кипіння.
                     </p>
 
-                    <div
-                        id="chart-time-voltage"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-time-voltage" class="analysis-chart"></div>
                 </article>
 
                 <article class="analysis-chart-card">
@@ -179,10 +166,7 @@
                         електричної енергії для двох нагрівачів.
                     </p>
 
-                    <div
-                        id="chart-energy-voltage"
-                        class="analysis-chart"
-                    ></div>
+                    <div id="chart-energy-voltage" class="analysis-chart"></div>
                 </article>
             </div>
 
@@ -215,19 +199,12 @@
                         струму та активна потужність нагрівачів?
                     </span>
 
-                    <textarea
-                        name="electricalCharacteristicsConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="electricalCharacteristicsConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
 
-                        <strong
-                            data-character-count="electricalCharacteristicsConclusion"
-                        >
+                        <strong data-character-count="electricalCharacteristicsConclusion">
                             0
                         </strong>
                     </small>
@@ -239,19 +216,12 @@
                         впливають на тривалість нагрівання води?
                     </span>
 
-                    <textarea
-                        name="heatingTimeConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="heatingTimeConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
 
-                        <strong
-                            data-character-count="heatingTimeConclusion"
-                        >
+                        <strong data-character-count="heatingTimeConclusion">
                             0
                         </strong>
                     </small>
@@ -264,58 +234,33 @@
                         ефективніше за досліджених умов?
                     </span>
 
-                    <textarea
-                        name="energyConsumptionConclusion"
-                        rows="4"
-                        minlength="30"
-                        required
-                    ></textarea>
+                    <textarea name="energyConsumptionConclusion" rows="4" minlength="30" required></textarea>
 
                     <small>
                         Введено символів:
 
-                        <strong
-                            data-character-count="energyConsumptionConclusion"
-                        >
+                        <strong data-character-count="energyConsumptionConclusion">
                             0
                         </strong>
                     </small>
                 </label>
 
                 <div class="analysis-actions">
-                    <button
-                        id="analysis-save-button"
-                        class="analysis-button analysis-button-primary"
-                        type="submit"
-                    >
+                    <button id="analysis-save-button" class="analysis-button analysis-button-primary" type="submit">
                         Зберегти висновки
                     </button>
 
-                    <button
-                        id="reset-analysis"
-                        class="analysis-button analysis-button-danger"
-                        type="button"
-                    >
+                    <button id="reset-analysis" class="analysis-button analysis-button-danger" type="button">
                         Очистити висновки
                     </button>
                 </div>
 
-                <p
-                    id="analysis-message"
-                    class="analysis-message"
-                    data-state="default"
-                    role="status"
-                    aria-live="polite"
-                >
+                <p id="analysis-message" class="analysis-message" data-state="default" role="status" aria-live="polite">
                     Проаналізуйте графіки та заповніть усі три поля.
                 </p>
             </form>
 
-            <div
-                id="analysis-complete-panel"
-                class="analysis-complete-panel"
-                hidden
-            >
+            <div id="analysis-complete-panel" class="analysis-complete-panel" hidden>
                 <strong>Аналіз результатів завершено</strong>
 
                 <p>

@@ -11,57 +11,58 @@
         електроенергії.
     </p>
 
-    <div id="quiz-readiness" class="quiz-readiness">
-        <div>
-            <strong id="quiz-readiness-title">
-                Перевірка готовності
-            </strong>
+    <div class="quiz-access-shell access-lock-shell">
+        <div id="quiz-lock-overlay" class="access-lock-overlay" role="status" aria-live="polite">
+            <div class="access-lock-card">
+                <strong>Доступ до контрольних питань заблоковано</strong>
 
-            <p id="quiz-readiness-text">
-                Спочатку завершіть аналіз результатів.
-            </p>
-        </div>
-
-        <a href="#analysis" class="quiz-back-link">
-            До аналізу
-        </a>
-    </div>
-
-    <div id="quiz-workspace" hidden>
-        <div class="quiz-heading">
-            <div>
-                <p class="section-number">
-                    Підсумковий тест
+                <p>
+                    Спочатку сформулюйте та збережіть три висновки
+                    в розділі 9.
                 </p>
 
-                <h3>
-                    8 запитань з однією правильною
-                    відповіддю
-                </h3>
+                <a href="#analysis" class="access-lock-link">
+                    Перейти до розділу 9
+                </a>
             </div>
-
-            <span>
-                Прохідний результат: 6 із 8
-            </span>
         </div>
 
-        <form id="quiz-form" novalidate>
-            <div id="quiz-list" class="quiz-list"></div>
+        <div id="quiz-workspace" class="access-lock-content" inert>
+            <div class="quiz-heading">
+                <div>
+                    <p class="section-number">
+                        Підсумковий тест
+                    </p>
 
-            <div class="quiz-actions">
-                <button class="quiz-button quiz-button-primary" type="submit">
-                    Перевірити відповіді
-                </button>
+                    <h3>
+                        8 запитань з однією правильною
+                        відповіддю
+                    </h3>
+                </div>
 
-                <button id="reset-quiz" class="quiz-button quiz-button-danger" type="button">
-                    Почати тест заново
-                </button>
+                <span>
+                    Прохідний результат: 6 із 8
+                </span>
             </div>
 
-            <div id="quiz-result" class="quiz-result" data-type="default" role="status" aria-live="polite">
-                Дайте відповідь на всі 8 запитань.
-            </div>
-        </form>
+            <form id="quiz-form" novalidate>
+                <div id="quiz-list" class="quiz-list"></div>
+
+                <div class="quiz-actions">
+                    <button class="quiz-button quiz-button-primary" type="submit">
+                        Перевірити відповіді
+                    </button>
+
+                    <button id="reset-quiz" class="quiz-button quiz-button-danger" type="button">
+                        Почати тест заново
+                    </button>
+                </div>
+
+                <div id="quiz-result" class="quiz-result" data-type="default" role="status" aria-live="polite">
+                    Дайте відповідь на всі 8 запитань.
+                </div>
+            </form>
+        </div>
     </div>
 
     <section id="final-report-panel" class="final-report-panel" hidden>
@@ -81,7 +82,8 @@
             </p>
         </div>
 
-        <div id="report-readiness" class="report-readiness" data-type="default" role="status" aria-live="polite"></div>
+        <div id="report-readiness" class="report-readiness" data-type="default" role="status" aria-live="polite">
+        </div>
 
         <form id="student-report-form" class="student-report-form">
             <label class="report-field">

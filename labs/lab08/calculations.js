@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -850,6 +852,7 @@ export function initializeCalculations({
     }
 
     function checkCalculations() {
+        if (!isLaboratoryPrepared(LAB08_CONFIG)) return;
         if (
             !experimentProgress.completed ||
             !expectedResults
@@ -1184,7 +1187,17 @@ export function initializeCalculations({
                 .length;
 
         const ready =
-            experimentProgress.completed;
+            isLaboratoryPrepared(LAB08_CONFIG) && experimentProgress.completed;
+
+        if (!ready) {
+            const wasCompleted = draft.completed ||
+                calculationsStorage.get("progress", {})?.completed === true;
+            calculationsStorage.remove("progress");
+            draft = createInitialDraft();
+            if (wasCompleted) {
+                dispatchInvalidatedEvent();
+            }
+        }
 
         elements.waterMass.textContent =
             experimentProgress.setup.confirmed

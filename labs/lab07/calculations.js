@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -497,6 +499,7 @@ export function initializeCalculations({
     }
 
     function checkCalculations() {
+        if (!isLaboratoryPrepared(LAB07_CONFIG)) return;
         if (!isExperimentComplete(experimentProgress)) {
             setMessage(
                 "Спочатку завершіть усі дев’ять циклів у розділі 7.",
@@ -715,9 +718,19 @@ export function initializeCalculations({
         const completedCycles = getCompletedCycleCount(
             experimentProgress
         );
-        const ready = isExperimentComplete(
+        const ready = isLaboratoryPrepared(LAB07_CONFIG) && isExperimentComplete(
             experimentProgress
         );
+
+        if (!ready) {
+            const wasCompleted = draft.completed ||
+                calculationsStorage.get("progress", {})?.completed === true;
+            calculationsStorage.remove("progress");
+            draft = { values: {}, completed: false, signature: "" };
+            if (wasCompleted) {
+                window.dispatchEvent(new CustomEvent(LAB07_EVENTS.calculationsInvalidated));
+            }
+        }
 
         elements.burner.textContent = ready
             ? `Конфорка ${experimentProgress.burner}`

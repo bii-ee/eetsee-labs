@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -491,10 +493,6 @@ export function initializeExperiment({
 
     section.dataset.initialized = "true";
 
-    const standStorage = createStorage(
-        LAB08_CONFIG.storage.stand
-    );
-
     const experimentStorage = createStorage(
         LAB08_CONFIG.storage.experiment
     );
@@ -507,15 +505,10 @@ export function initializeExperiment({
     );
 
     let operationInProgress = false;
+    let operationVersion = 0;
 
     function isStandReady() {
-        const standProgress =
-            standStorage.get(
-                "progress",
-                {}
-            );
-
-        return standProgress.ready === true;
+        return isLaboratoryPrepared(LAB08_CONFIG);
     }
 
     function updateAccess() {
@@ -531,6 +524,9 @@ export function initializeExperiment({
             "experiment-access-granted",
             accessGranted
         );
+        if (!accessGranted) {
+            resetExperiment({ askConfirmation: false });
+        }
     }
 
     function saveState() {
@@ -1177,6 +1173,7 @@ export function initializeExperiment({
         endTemperature,
         label
     }) {
+        const animationVersion = operationVersion;
         return new Promise((resolve) => {
             const effectiveDuration =
                 prefersReducedMotion()
@@ -1187,6 +1184,10 @@ export function initializeExperiment({
                 performance.now();
 
             function frame(currentTime) {
+                if (animationVersion !== operationVersion || !isStandReady()) {
+                    resolve();
+                    return;
+                }
                 const elapsed =
                     currentTime - startTime;
 
@@ -1239,6 +1240,7 @@ export function initializeExperiment({
 
     async function runThermostatCycle() {
         if (
+            !isStandReady() ||
             operationInProgress ||
             !state.setup.confirmed ||
             state.experimentOne.completed
@@ -1255,6 +1257,7 @@ export function initializeExperiment({
             return;
         }
 
+        const runVersion = operationVersion;
         operationInProgress = true;
         renderControls();
 
@@ -1327,9 +1330,13 @@ export function initializeExperiment({
             label: "Увімкнений стан"
         });
 
+        if (runVersion !== operationVersion || !isStandReady()) return;
+
         await wait(
             SIMULATION_TIMING.measurementPause
         );
+
+        if (runVersion !== operationVersion || !isStandReady()) return;
 
         setMessage(
             elements.experimentOneMessage,
@@ -1375,9 +1382,13 @@ export function initializeExperiment({
             label: "Вимкнений стан"
         });
 
+        if (runVersion !== operationVersion || !isStandReady()) return;
+
         await wait(
             SIMULATION_TIMING.measurementPause
         );
+
+        if (runVersion !== operationVersion || !isStandReady()) return;
 
         state.experimentOne.records.push({
             cycle: cycleIndex + 1,
@@ -1417,6 +1428,7 @@ export function initializeExperiment({
 
     async function runParameterTrial() {
         if (
+            !isStandReady() ||
             operationInProgress ||
             !state.experimentOne.completed ||
             state.experimentTwo.completed
@@ -1433,6 +1445,7 @@ export function initializeExperiment({
             return;
         }
 
+        const runVersion = operationVersion;
         operationInProgress = true;
         renderControls();
 
@@ -1488,9 +1501,13 @@ export function initializeExperiment({
             label: "Нагрівання до кипіння"
         });
 
+        if (runVersion !== operationVersion || !isStandReady()) return;
+
         await wait(
             SIMULATION_TIMING.measurementPause
         );
+
+        if (runVersion !== operationVersion || !isStandReady()) return;
 
         state.experimentTwo.records.push({
             trial: trialIndex + 1,
@@ -1563,6 +1580,7 @@ export function initializeExperiment({
         "click",
         () => {
             if (
+                !isStandReady() ||
                 operationInProgress ||
                 state.setup.confirmed
             ) {
@@ -1629,48 +1647,29 @@ export function initializeExperiment({
         runParameterTrial
     );
 
-    elements.resetButton.addEventListener(
-        "click",
-        () => {
-            if (operationInProgress) {
-                return;
-            }
-
-            const confirmed = window.confirm(
-                "Очистити всі результати обох дослідів?"
-            );
-
-            if (!confirmed) {
-                return;
-            }
-
-            state = createInitialState();
-
-            saveState();
-            render();
-
-            setMessage(
-                elements.experimentOneMessage,
-                "Результати очищено. Зафіксуйте вихідні параметри води."
-            );
-
-            setMessage(
-                elements.experimentTwoMessage,
-                "Очікується завершення досліду 1."
-            );
-
-            document.dispatchEvent(
-                new CustomEvent(
-                    LAB08_EVENTS.experimentReset,
-                    {
-                        detail: {
-                            namespace
-                        }
-                    }
-                )
-            );
+    function resetExperiment({ askConfirmation = true } = {}) {
+        if (askConfirmation && operationInProgress) return;
+        if (askConfirmation && !window.confirm("Очистити всі результати обох дослідів?")) {
+            return;
         }
-    );
+
+        operationVersion += 1;
+        operationInProgress = false;
+        state = createInitialState();
+        saveState();
+        render();
+
+        setMessage(elements.experimentOneMessage,
+            "Результати очищено. Зафіксуйте вихідні параметри води.");
+        setMessage(elements.experimentTwoMessage,
+            "Очікується завершення досліду 1.");
+
+        document.dispatchEvent(new CustomEvent(LAB08_EVENTS.experimentReset, {
+            detail: { namespace }
+        }));
+    }
+
+    elements.resetButton.addEventListener("click", () => resetExperiment());
 
     document.addEventListener(
         LAB08_EVENTS.standReady,

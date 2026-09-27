@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     LAB05_EXPERIMENT_RUNS,
     LAB05_EXPERIMENT_STORAGE_KEY,
@@ -14,6 +16,7 @@ import {
 } from "../../common/js/storage.js";
 
 import {
+    LAB05_CONFIG,
     LAB05_EVENTS
 } from "./config.js";
 
@@ -735,6 +738,7 @@ export function initializeCalculations({
     }
 
     function checkCalculations() {
+        if (!isLaboratoryPrepared(LAB05_CONFIG)) return;
         if (
             !isExperimentComplete(
                 experimentProgress
@@ -961,9 +965,20 @@ export function initializeCalculations({
             );
 
         const ready =
+            isLaboratoryPrepared(LAB05_CONFIG) &&
             isExperimentComplete(
                 experimentProgress
             );
+
+        if (!ready) {
+            const wasCompleted = draft.completed ||
+                calculationsStorage.get("progress", {})?.completed === true;
+            calculationsStorage.remove("progress");
+            draft = { values: {}, completed: false, signature: "" };
+            if (wasCompleted) {
+                window.dispatchEvent(new CustomEvent(LAB05_EVENTS.calculationsInvalidated));
+            }
+        }
 
         const signature =
             createExperimentSignature(

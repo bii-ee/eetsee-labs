@@ -365,6 +365,26 @@ export function initializeStand({
             "stand-access-granted",
             accessGranted
         );
+        if (
+            !accessGranted &&
+            (
+                standReady || visitedComponents.size > 0 ||
+                selectedComponent !== null ||
+                standStorage.get("progress", {}).ready === true
+            )
+        ) {
+            resetStandProgress();
+        }
+        if (
+            !accessGranted &&
+            (
+                standReady || visitedComponents.size > 0 ||
+                selectedComponent !== null ||
+                standStorage.get("progress", {}).ready === true
+            )
+        ) {
+            resetStandProgress();
+        }
     }
 
     function saveProgress() {
@@ -575,8 +595,9 @@ export function initializeStand({
         "click",
         () => {
             if (
-                visitedComponents.size !==
-                componentIds.length
+                !isSafetyPassed() ||
+                !isSafetyPassed() ||
+                visitedComponents.size !== componentIds.length
             ) {
                 return;
             }
@@ -600,48 +621,47 @@ export function initializeStand({
         }
     );
 
-    resetButton.addEventListener(
-        "click",
-        () => {
-            visitedComponents.clear();
+    function resetStandProgress() {
+        visitedComponents.clear();
+        selectedComponent = null;
+        standReady = false;
 
-            selectedComponent =
-                null;
+        titleElement.textContent = "Оберіть елемент стенда";
+        descriptionElement.textContent = "Натисніть на елемент макета або його назву, щоб переглянути призначення.";
+        codeElement.textContent = "-";
+        functionElement.textContent = "-";
+        valueElement.textContent = "-";
 
-            standReady =
-                false;
+        updateComponentAppearance();
+        updateProgress();
+        saveProgress();
 
-            titleElement.textContent =
-                "Оберіть елемент стенда";
+        document.dispatchEvent(new CustomEvent(LAB05_EVENTS.standReset, {
+            detail: { namespace }
+        }));
+    }
 
-            descriptionElement.textContent =
-                "Натисніть на елемент макета або його назву, щоб переглянути призначення.";
+    function resetStandProgress() {
+        visitedComponents.clear();
+        selectedComponent = null;
+        standReady = false;
 
-            codeElement.textContent =
-                "-";
+        titleElement.textContent = "Оберіть елемент стенда";
+        descriptionElement.textContent = "Натисніть на елемент макета або його назву, щоб переглянути призначення.";
+        codeElement.textContent = "-";
+        functionElement.textContent = "-";
+        valueElement.textContent = "-";
 
-            functionElement.textContent =
-                "-";
+        updateComponentAppearance();
+        updateProgress();
+        saveProgress();
 
-            valueElement.textContent =
-                "-";
+        document.dispatchEvent(new CustomEvent(LAB05_EVENTS.standReset, {
+            detail: { namespace }
+        }));
+    }
 
-            updateComponentAppearance();
-            updateProgress();
-            saveProgress();
-
-            document.dispatchEvent(
-                new CustomEvent(
-                    LAB05_EVENTS.standReset,
-                    {
-                        detail: {
-                            namespace
-                        }
-                    }
-                )
-            );
-        }
-    );
+    resetButton.addEventListener("click", resetStandProgress);
 
     document.addEventListener(
         LAB05_EVENTS.safetyPassed,
@@ -653,6 +673,7 @@ export function initializeStand({
         updateAccess
     );
 
+    saveProgress();
     updateAccess();
     updateComponentAppearance();
 

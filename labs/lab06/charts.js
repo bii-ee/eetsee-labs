@@ -719,19 +719,14 @@ export function initializeAnalysis() {
         return;
     }
 
-    const readiness =
+    const lockOverlay =
         section.querySelector(
-            "#analysis-readiness"
+            "#analysis-lock-overlay"
         );
 
-    const readinessTitle =
+    const lockText =
         section.querySelector(
-            "#analysis-readiness-title"
-        );
-
-    const readinessText =
-        section.querySelector(
-            "#analysis-readiness-text"
+            "#analysis-lock-text"
         );
 
     const workspace =
@@ -755,9 +750,8 @@ export function initializeAnalysis() {
         );
 
     if (
-        !readiness ||
-        !readinessTitle ||
-        !readinessText ||
+        !lockOverlay ||
+        !lockText ||
         !workspace ||
         !form ||
         !resetButton ||
@@ -980,28 +974,28 @@ export function initializeAnalysis() {
         );
     }
 
+    function invalidateAnalysis() {
+        const wasCompleted = localStorage.getItem(ANALYSIS_COMPLETED_KEY) === "true";
+        localStorage.removeItem(ANALYSIS_COMPLETED_KEY);
+        if (wasCompleted) {
+            window.dispatchEvent(new CustomEvent(LAB06_EVENTS.analysisInvalidated));
+        }
+    }
+
     function renderReadiness() {
         const calculationsCompleted =
             localStorage.getItem(
                 CALCULATION_COMPLETED_KEY
             ) === "true";
 
-        readiness.classList.toggle(
-            "is-ready",
-            calculationsCompleted
-        );
+        if (!calculationsCompleted) {
+            invalidateAnalysis();
+            lockText.textContent =
+                "Спочатку виконайте та перевірте всі розрахунки в розділі 8.";
 
-        workspace.hidden =
-            !calculationsCompleted;
-
-        if (
-            !calculationsCompleted
-        ) {
-            readinessTitle.textContent =
-                "Спочатку перевірте розрахунки";
-
-            readinessText.textContent =
-                "Розділ відкриється після правильного заповнення всіх 33 полів таблиці 6.1.";
+            lockOverlay.hidden = false;
+            lockOverlay.style.display = "";
+            workspace.inert = true;
 
             return;
         }
@@ -1012,23 +1006,17 @@ export function initializeAnalysis() {
 
             renderCharts(data);
 
-            readinessTitle.textContent =
-                "Дані готові до аналізу";
-
-            readinessText.textContent =
-                "Усі 33 розрахункові значення перевірено. Графіки побудовано за відповідями студента.";
+            lockOverlay.hidden = true;
+            lockOverlay.style.display = "none";
+            workspace.inert = false;
         } catch (error) {
-            workspace.hidden = true;
+            invalidateAnalysis();
+            lockText.textContent =
+                `${error.message} Перевірте дані в розділі 8.`;
 
-            readiness.classList.remove(
-                "is-ready"
-            );
-
-            readinessTitle.textContent =
-                "Не вдалося побудувати графіки";
-
-            readinessText.textContent =
-                error.message;
+            lockOverlay.hidden = false;
+            lockOverlay.style.display = "";
+            workspace.inert = true;
         }
     }
 

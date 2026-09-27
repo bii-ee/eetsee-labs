@@ -487,8 +487,8 @@ export function initializeStand({
         "click",
         () => {
             if (
-                visitedComponents.size !==
-                componentIds.length
+                !isSafetyPassed() ||
+                visitedComponents.size !== componentIds.length
             ) {
                 return;
             }
@@ -548,6 +548,7 @@ export function initializeStand({
         saveProgress();
     }
 
+    saveProgress();
     updateAccess();
     updateComponentAppearance();
 

@@ -179,7 +179,8 @@ export function initializeStand({
     );
 
     let selectedComponent = savedProgress.selected;
-    let standReady = savedProgress.ready === true;
+    let standReady = savedProgress.ready === true &&
+        visitedComponents.size === componentIds.length;
 
     function isSafetyPassed() {
         const safetyProgress = safetyStorage.get(
@@ -200,6 +201,16 @@ export function initializeStand({
             "stand-access-granted",
             accessGranted
         );
+        if (
+            !accessGranted &&
+            (
+                standReady || visitedComponents.size > 0 ||
+                selectedComponent !== null ||
+                standStorage.get("progress", {}).ready === true
+            )
+        ) {
+            resetStandProgress();
+        }
     }
 
     function saveProgress() {
@@ -335,8 +346,8 @@ export function initializeStand({
 
     readyButton.addEventListener("click", () => {
         if (
-            visitedComponents.size !==
-            componentIds.length
+            !isSafetyPassed() ||
+            visitedComponents.size !== componentIds.length
         ) {
             return;
         }
@@ -355,18 +366,13 @@ export function initializeStand({
         );
     });
 
-    resetButton.addEventListener("click", () => {
+    function resetStandProgress() {
         visitedComponents.clear();
-
         selectedComponent = null;
         standReady = false;
 
-        titleElement.textContent =
-            "Оберіть елемент схеми";
-
-        descriptionElement.textContent =
-            "Натисніть на прилад або елемент схеми, щоб переглянути його призначення.";
-
+        titleElement.textContent = "Оберіть елемент схеми";
+        descriptionElement.textContent = "Натисніть на прилад або елемент схеми, щоб переглянути його призначення.";
         codeElement.textContent = "-";
         functionElement.textContent = "-";
         valueElement.textContent = "-";
@@ -375,14 +381,13 @@ export function initializeStand({
         updateProgress();
         saveProgress();
 
-        document.dispatchEvent(
-            new CustomEvent(LAB06_EVENTS.standReset, {
-                detail: {
-                    namespace
-                }
-            })
-        );
-    });
+        document.dispatchEvent(new CustomEvent(LAB06_EVENTS.standReset, {
+            detail: { namespace }
+        }));
+    }
+
+    resetButton.addEventListener("click", resetStandProgress);
+
     document.addEventListener(
         LAB06_EVENTS.safetyPassed,
         updateAccess
@@ -391,6 +396,7 @@ export function initializeStand({
         LAB06_EVENTS.safetyReset,
         updateAccess
     );
+    saveProgress();
     updateAccess();
     updateComponentAppearance();
 

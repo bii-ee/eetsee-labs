@@ -1775,10 +1775,15 @@ export function initializeAnalysis({
     }
 
     function invalidateSavedAnalysis() {
-        if (!state.completed) {
+        const saved = analysisStorage.get("progress", {});
+        if (!state.completed && saved?.completed !== true) {
             return;
         }
 
+        // При старті state ще може бути порожнім, а у сховищі лишився старий допуск.
+        if (!currentSignature) {
+            state = { ...state, ...saved };
+        }
         state.completed = false;
 
         elements.completePanel.hidden =

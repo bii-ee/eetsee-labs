@@ -400,18 +400,8 @@ export function initializeQuiz() {
         return;
     }
 
-    const readiness =
-        section.querySelector("#quiz-readiness");
-
-    const readinessTitle =
-        section.querySelector(
-            "#quiz-readiness-title"
-        );
-
-    const readinessText =
-        section.querySelector(
-            "#quiz-readiness-text"
-        );
+    const lockOverlay =
+        section.querySelector("#quiz-lock-overlay");
 
     const workspace =
         section.querySelector("#quiz-workspace");
@@ -574,29 +564,23 @@ export function initializeQuiz() {
                 ANALYSIS_COMPLETED_KEY
             ) === "true";
 
-        readiness.classList.toggle(
-            "is-ready",
-            analysisCompleted
-        );
+        lockOverlay.hidden = analysisCompleted;
+        lockOverlay.style.display =
+            analysisCompleted ? "none" : "";
 
-        workspace.hidden =
-            !analysisCompleted;
+        workspace.inert = !analysisCompleted;
 
-        if (analysisCompleted) {
-            readinessTitle.textContent =
-                "Можна переходити до тесту";
-
-            readinessText.textContent =
-                "Висновки збережено. " +
-                "Дайте відповідь на всі " +
-                "контрольні питання.";
-        } else {
-            readinessTitle.textContent =
-                "Спочатку завершіть аналіз";
-
-            readinessText.textContent =
-                "Заповніть і збережіть три " +
-                "висновки в розділі 9.";
+        if (!analysisCompleted) {
+            const wasPassed = state.passed || localStorage.getItem(QUIZ_COMPLETED_KEY) === "true";
+            localStorage.removeItem(QUIZ_COMPLETED_KEY);
+            delete state.score;
+            delete state.passed;
+            delete state.checkedAt;
+            saveQuizState(state);
+            clearEvaluation();
+            if (wasPassed) {
+                window.dispatchEvent(new CustomEvent(LAB06_EVENTS.quizInvalidated));
+            }
         }
     }
 
@@ -727,6 +711,7 @@ export function initializeQuiz() {
                 QUIZ_COMPLETED_KEY
             );
 
+            window.dispatchEvent(new CustomEvent(LAB06_EVENTS.quizInvalidated));
             renderQuestions();
             clearEvaluation();
 

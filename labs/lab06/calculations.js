@@ -1,3 +1,5 @@
+import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+
 import {
     LAB06_EXPERIMENT_MODES,
     LAB06_EXPERIMENT_STORAGE_KEY,
@@ -7,10 +9,6 @@ import {
 import {
     calculateExpectedValues
 } from "./model.js";
-
-import {
-    createStorage
-} from "../../common/js/storage.js";
 
 import {
     LAB06_CONFIG,
@@ -161,10 +159,6 @@ export function initializeCalculations({
         return;
     }
 
-    const standStorage = createStorage(
-        LAB06_CONFIG.storage.stand
-    );
-
     const lockOverlay = section.querySelector(
         "#calculations-lock-overlay"
     );
@@ -201,12 +195,7 @@ export function initializeCalculations({
     );
 
     function isStandReady() {
-        const progress = standStorage.get(
-            "progress",
-            {}
-        );
-
-        return progress.ready === true;
+        return isLaboratoryPrepared(LAB06_CONFIG);
     }
 
     function getCompletedExperimentCount() {
@@ -246,6 +235,8 @@ export function initializeCalculations({
 
         if (isReady) {
             renderTable();
+        } else {
+            invalidateVerifiedCalculations();
         }
     }
 
@@ -469,6 +460,9 @@ export function initializeCalculations({
     }
 
     function checkCalculations() {
+        if (!isStandReady() || getCompletedExperimentCount() !== LAB06_EXPERIMENT_MODES.length) {
+            return;
+        }
         collectDraft();
 
         let correctCount = 0;
