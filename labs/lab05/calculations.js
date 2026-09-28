@@ -1,3 +1,5 @@
+import { parseStudentNumber } from "../../common/js/student-numbers.js";
+
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
 import {
@@ -22,22 +24,7 @@ import {
 
 const ENERGY_TOLERANCE_WH = 0.11;
 
-function parseStudentNumber(value) {
-    const normalized = String(value ?? "")
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(",", ".");
 
-    if (normalized === "") {
-        return null;
-    }
-
-    const number = Number(normalized);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function isFiniteNumber(value) {
     return Number.isFinite(

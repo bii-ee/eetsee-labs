@@ -15,6 +15,41 @@
         Лабораторна робота №8 | Дослідження індукційної плити
     </title>
 
+    <style>
+        html.variant-return-pending body {
+            visibility: hidden;
+        }
+
+        html.variant-return-pending::after {
+            content: "Завантаження вибраного варіанта…";
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: grid;
+            place-items: center;
+            background: #eef4f7;
+            color: #16354a;
+            font: 600 1.1rem/1.5 system-ui, sans-serif;
+        }
+    </style>
+
+    <script>
+        try {
+            const pendingVariant = sessionStorage.getItem("lab08:variant-return");
+            if (
+                pendingVariant &&
+                new URLSearchParams(location.search).get("variant") === pendingVariant
+            ) {
+                document.documentElement.classList.add("variant-return-pending");
+                window.setTimeout(() => {
+                    document.documentElement.classList.remove("variant-return-pending");
+                }, 8000);
+            }
+        } catch {
+            // Доступ до sessionStorage може бути обмежений браузером.
+        }
+    </script>
+
     <link rel="stylesheet" href="../../common/css/theme.css">
 
     <link rel="stylesheet" href="../../common/css/base.css">
@@ -26,6 +61,7 @@
     <link rel="stylesheet" href="./lab08.css">
 
     <link rel="stylesheet" href="./stand.css">
+    <link rel="stylesheet" href="../../common/css/stand-status.css">
 
     <link rel="stylesheet" href="./experiment.css">
 

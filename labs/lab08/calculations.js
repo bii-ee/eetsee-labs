@@ -1,3 +1,5 @@
+import { parseStudentNumber } from "../../common/js/student-numbers.js";
+
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
 import {
@@ -13,35 +15,14 @@ import {
     LAB08_EVENTS
 } from "./config.js";
 
-const REQUIRED_CYCLE_COUNT =
-    LAB08_CONFIG.experiment.cyclicRunCount;
-
 const REQUIRED_TRIAL_COUNT =
     LAB08_CONFIG.experiment.comparativeTrialCount;
-const TOTAL_FIELDS = 9;
 const STATE_VERSION = 1;
 
 const ENERGY_TOLERANCE = 0.0000051;
 const EFFICIENCY_TOLERANCE = 0.16;
 
-function parseStudentNumber(value) {
-    const normalized = String(
-        value ?? ""
-    )
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(",", ".");
 
-    if (normalized === "") {
-        return null;
-    }
-
-    const number = Number(normalized);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function formatNumber(
     value,
@@ -117,7 +98,7 @@ function normalizeExperimentProgress(value) {
                 )
                 .slice(
                     0,
-                    REQUIRED_CYCLE_COUNT
+                    LAB08_CONFIG.experiment.maximumCyclicRunCount
                 )
                 .map(
                     (
@@ -186,8 +167,8 @@ function normalizeExperimentProgress(value) {
         initialTemperature < 100;
 
     const firstCompleted =
-        firstRecords.length ===
-        REQUIRED_CYCLE_COUNT;
+        firstRecords.length > 0 &&
+        Number(value?.experimentOne?.records?.at(-1)?.finalTemperature) >= 100;
 
     const secondCompleted =
         secondRecords.length ===
@@ -621,7 +602,7 @@ export function initializeCalculations({
         elements.progress.textContent =
             draft.completed
                 ? "Розрахунки завершено"
-                : `${filledCount} із ${TOTAL_FIELDS} значень введено`;
+                : `${filledCount} із ${getInputs().length} значень введено`;
     }
 
     function clearValidationStyles() {
@@ -1220,7 +1201,7 @@ export function initializeCalculations({
                 : "Не визначено";
 
         elements.cycleCount.textContent =
-            `${completedCycles} із ${REQUIRED_CYCLE_COUNT}`;
+            `${completedCycles} циклів`;
 
         elements.lockOverlay.hidden =
             ready;

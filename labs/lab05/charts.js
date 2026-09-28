@@ -1,3 +1,7 @@
+import { createSvgElement } from "../../common/js/svg-elements.js";
+
+import { parseStudentNumber } from "../../common/js/student-numbers.js";
+
 import {
     LAB05_EXPERIMENT_RUNS,
     LAB05_EXPERIMENT_STORAGE_KEY,
@@ -13,7 +17,6 @@ import {
     LAB05_EVENTS
 } from "./config.js";
 
-const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 const MINIMUM_CONCLUSION_LENGTH = 30;
 
 const HEATERS = Object.freeze([
@@ -35,22 +38,7 @@ function isFiniteNumber(value) {
     return Number.isFinite(Number(value));
 }
 
-function parseStudentNumber(value) {
-    const normalized = String(value ?? "")
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(",", ".");
 
-    if (normalized === "") {
-        return null;
-    }
-
-    const number = Number(normalized);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function normalizeExperimentProgress(value) {
     const normalized = {
@@ -254,27 +242,7 @@ function createAnalysisSignature(
     });
 }
 
-function createSvgElement(
-    name,
-    attributes = {}
-) {
-    const element =
-        document.createElementNS(
-            SVG_NAMESPACE,
-            name
-        );
 
-    Object.entries(attributes).forEach(
-        ([key, value]) => {
-            element.setAttribute(
-                key,
-                String(value)
-            );
-        }
-    );
-
-    return element;
-}
 
 function appendSvgText(
     parent,

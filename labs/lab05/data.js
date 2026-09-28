@@ -2,6 +2,8 @@ import {
     LAB05_CONFIG
 } from "./config.js";
 
+import { getStudentVariant } from "../../common/js/student-variants.js";
+
 export const LAB05_EXPERIMENT_STORAGE_KEY =
     LAB05_CONFIG.storage.experiment;
 
@@ -319,6 +321,46 @@ export const LAB05_EXPERIMENT_RUNS =
         })
     ]);
 
+// Покази варіанта: опір нагрівача і втрати теплоти змінюються,
+// задані напруги, об’єм та температури залишаються з методички.
+export function createVariantExperiment(experiment, variantNumber) {
+    if (!experiment) return null;
+    if (!Number.isInteger(variantNumber) || variantNumber < 1 || variantNumber > 30) {
+        throw new RangeError("Номер варіанта має бути від 1 до 30.");
+    }
+
+    const heaterNumber = experiment.heaterNumber;
+    const base = experiment.measurements;
+    const voltageOffset = ((variantNumber * 7 + heaterNumber * 3) % 9 - 4) * 0.1;
+    const voltage = Math.round((base.actualVoltageV + voltageOffset) * 10) / 10;
+    const conductivity = 0.93 + ((variantNumber * 11 + heaterNumber * 7) % 30) * 0.0045;
+    const current = Math.round(base.currentA * conductivity *
+        voltage / base.actualVoltageV * 100) / 100;
+    const basePowerFactor = base.activePowerW /
+        (base.actualVoltageV * base.currentA);
+    const power = Math.round(voltage * current * basePowerFactor);
+    const heatLoss = 0.95 +
+        ((variantNumber * 13 + heaterNumber * 5) % 30) * 0.0035;
+    const boilingTimeSeconds = Math.round(
+        base.activePowerW * base.boilingTimeSeconds * heatLoss / power
+    );
+
+    return Object.freeze({
+        ...experiment,
+        measurements: Object.freeze({
+            actualVoltageV: voltage,
+            currentA: current,
+            activePowerW: power,
+            boilingTimeSeconds
+        }),
+        source: Object.freeze({
+            type: "individual-teaching-model",
+            variantNumber,
+            valuesRounded: true
+        })
+    });
+}
+
 export function getHeater(heaterId) {
     return (
         LAB05_HEATERS.find(
@@ -343,32 +385,22 @@ export function getExperimentsForHeater(
 export function getExperimentById(
     experimentId
 ) {
-    return (
-        LAB05_EXPERIMENT_RUNS.find(
-            (experiment) =>
-                experiment.id ===
-                experimentId
-        ) ??
-        null
+    const base = LAB05_EXPERIMENT_RUNS.find(
+        (experiment) => experiment.id === experimentId
     );
+    return createVariantExperiment(base, getStudentVariant());
 }
 
 export function getExperiment(
     heaterId,
     targetVoltageV
 ) {
-    return (
-        LAB05_EXPERIMENT_RUNS.find(
-            (experiment) =>
-                experiment.heaterId ===
-                    heaterId &&
-                experiment.targetVoltageV ===
-                    Number(
-                        targetVoltageV
-                    )
-        ) ??
-        null
+    const base = LAB05_EXPERIMENT_RUNS.find(
+        (experiment) =>
+            experiment.heaterId === heaterId &&
+            experiment.targetVoltageV === Number(targetVoltageV)
     );
+    return createVariantExperiment(base, getStudentVariant());
 }
 
 export function isExperimentConfigured(

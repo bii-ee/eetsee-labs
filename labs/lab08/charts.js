@@ -1,3 +1,5 @@
+import { createSvgElement } from "../../common/js/svg-elements.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -8,10 +10,6 @@ import {
     LAB08_SCOPED_EVENTS
 } from "./config.js";
 
-const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-
-const REQUIRED_CYCLE_COUNT =
-    LAB08_CONFIG.experiment.cyclicRunCount;
 
 const REQUIRED_TRIAL_COUNT =
     LAB08_CONFIG.experiment.comparativeTrialCount;
@@ -68,7 +66,7 @@ function normalizeExperimentProgress(value) {
                     record?.offTime ?? record?.tOff
                 )
         )
-        .slice(0, REQUIRED_CYCLE_COUNT)
+        .slice(0, LAB08_CONFIG.experiment.maximumCyclicRunCount)
         .map((record, index) => ({
             cycle: Number(record.cycle) || index + 1,
             voltage: Number(record.voltage),
@@ -137,8 +135,8 @@ function normalizeExperimentProgress(value) {
 
         completed:
             setupValid &&
-            firstRecords.length ===
-            REQUIRED_CYCLE_COUNT &&
+            firstRecords.length > 0 &&
+            Number(value?.experimentOne?.records?.at(-1)?.finalTemperature) >= 100 &&
             secondRecords.length ===
             REQUIRED_TRIAL_COUNT &&
             value?.completed === true
@@ -198,27 +196,7 @@ function createInitialState(signature = "") {
     };
 }
 
-function createSvgElement(
-    name,
-    attributes = {}
-) {
-    const element =
-        document.createElementNS(
-            SVG_NAMESPACE,
-            name
-        );
 
-    Object.entries(attributes).forEach(
-        ([key, value]) => {
-            element.setAttribute(
-                key,
-                String(value)
-            );
-        }
-    );
-
-    return element;
-}
 
 function appendSvgText(
     parent,
@@ -523,7 +501,7 @@ function renderPowerTimeline(
             role: "img",
 
             "aria-label":
-                "Ступінчастий графік активної потужності за шість циклів",
+                "Ступінчастий графік активної потужності за всі цикли",
 
             preserveAspectRatio:
                 "xMidYMid meet"
@@ -688,7 +666,7 @@ function renderPowerTimeline(
         createSvgElement("title");
 
     title.textContent =
-        "Загальна тривалість шести циклів: " +
+        "Загальна тривалість усіх циклів: " +
         `${formatNumber(
             totalDuration,
             2
@@ -1646,7 +1624,7 @@ export function initializeAnalysis({
                 .length;
 
         elements.operationCount.textContent =
-            `${completedOperations} із 15`;
+            `${experimentProgress.firstRecords.length} циклів, ${experimentProgress.secondRecords.length} із 9 режимів`;
     }
 
     function renderCharts() {
@@ -1810,7 +1788,7 @@ export function initializeAnalysis({
             "–";
 
         elements.operationCount.textContent =
-            "0 із 15";
+            "0 циклів, 0 із 9 режимів";
 
         elements.powerTimeChart
             .replaceChildren();

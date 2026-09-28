@@ -2,6 +2,8 @@ import {
     createLaboratoryEventNames
 } from "../../common/js/lab-events.js";
 
+import { variantStorageNamespace } from "../../common/js/student-variants.js";
+
 export const LAB05_CONFIG = Object.freeze({
     id: "lab05",
 
@@ -9,7 +11,7 @@ export const LAB05_CONFIG = Object.freeze({
 
     number: 5,
 
-    configVersion: 1,
+    configVersion: 2,
 
     title:
         "Дослідження параметрів роботи електродного нагрівача",
@@ -35,19 +37,19 @@ export const LAB05_CONFIG = Object.freeze({
             "lab05:stand",
 
         experiment:
-            "eetsee.lab05.experiment.v2",
+            variantStorageNamespace("eetsee.lab05.experiment.v3"),
 
         calculations:
-            "eetsee.lab05.calculations.verified.v2",
+            variantStorageNamespace("eetsee.lab05.calculations.verified.v3"),
 
         analysis:
-            "eetsee.lab05.analysis.v2",
+            variantStorageNamespace("eetsee.lab05.analysis.v3"),
 
         quiz:
-            "eetsee.lab05.quiz.v2",
+            variantStorageNamespace("eetsee.lab05.quiz.v3"),
 
         report:
-            "eetsee.lab05.report.v2"
+            variantStorageNamespace("eetsee.lab05.report.v3")
     }),
 
     variants: Object.freeze({

@@ -2,6 +2,44 @@
     border-top: 5px solid #1e735d;
 }
 
+.experiment-variant-panel {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    margin: 24px 0;
+    padding: 18px 20px;
+    border: 1px solid var(--color-border);
+    border-left: 5px solid #1e735d;
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.experiment-variant-panel label {
+    color: var(--color-primary);
+    font-weight: 750;
+}
+
+.experiment-variant-panel select {
+    width: min(100%, 260px);
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-primary);
+    font: inherit;
+}
+
+.experiment-variant-panel select:focus-visible {
+    outline: 3px solid #1e735d;
+    outline-offset: 2px;
+}
+
+.experiment-variant-panel p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
 .experiment-status-panel {
     display: flex;
     gap: 20px;

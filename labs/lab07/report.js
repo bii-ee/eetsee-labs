@@ -1,3 +1,5 @@
+import { createPrintCopy } from "../../common/js/report-print.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -6,6 +8,10 @@ import {
     LAB07_CONFIG,
     LAB07_EVENTS
 } from "./config.js";
+
+import {
+    getStudentVariant
+} from "../../common/js/student-variants.js";
 
 const MODES = [
     { id: "mode-1", position: 1 },
@@ -30,7 +36,7 @@ const CHARTS = [
     },
     {
         selector: "#chart-cycle-temperature",
-        caption: "Рисунок 3. Температурні межі циклів"
+        caption: "Рисунок 3. Температура конфорки залежно від часу"
     }
 ];
 
@@ -270,20 +276,6 @@ function cloneReportCharts(target) {
     });
 }
 
-function createPrintCopy(reportDocument) {
-    document.querySelector("#lab-print-root")?.remove();
-
-    const printRoot = document.createElement("div");
-    const reportCopy = reportDocument.cloneNode(true);
-
-    printRoot.id = "lab-print-root";
-    reportCopy.hidden = false;
-    reportCopy.removeAttribute("hidden");
-    printRoot.append(reportCopy);
-    document.body.append(printRoot);
-
-    return printRoot;
-}
 
 export function initializeReport({
     root = document,
@@ -304,6 +296,7 @@ export function initializeReport({
         resetButton: section.querySelector("#reset-lab"),
         document: section.querySelector("#report-document"),
         studentName: section.querySelector("#report-student-name"),
+        studentVariant: section.querySelector("#report-student-variant"),
         studentGroup: section.querySelector("#report-student-group"),
         studentBrigade: section.querySelector(
             "#report-student-brigade"
@@ -533,6 +526,7 @@ export function initializeReport({
         const data = buildReportData(snapshot.experiment);
 
         elements.studentName.textContent = student.name;
+        elements.studentVariant.textContent = String(getStudentVariant());
         elements.studentGroup.textContent = student.group;
         elements.studentBrigade.textContent =
             student.brigade || "Не вказано";
@@ -626,14 +620,12 @@ export function initializeReport({
 
     elements.resetButton.addEventListener("click", () => {
         if (!window.confirm(
-            "Очистити результати всіх етапів лабораторної роботи №7?"
+            "Очистити результати поточного варіанта лабораторної роботи №7?"
         )) {
             return;
         }
 
         [
-            LAB07_CONFIG.storage.safety,
-            LAB07_CONFIG.storage.stand,
             LAB07_CONFIG.storage.experiment,
             LAB07_CONFIG.storage.calculations,
             LAB07_CONFIG.storage.analysis,

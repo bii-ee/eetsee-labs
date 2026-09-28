@@ -1,3 +1,5 @@
+import { createSvgElement } from "../../common/js/svg-elements.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -7,7 +9,6 @@ import {
     LAB07_EVENTS
 } from "./config.js";
 
-const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
 const MODES = [
     { id: "mode-1", position: 1 },
@@ -23,12 +24,12 @@ const COLORS = {
     on: "#c45f3b",
     off: "#2f8260",
     cycle: "#397a95",
-    temperatureOn: "#c45f3b",
-    temperatureOff: "#397a95"
+    temperatureModes: ["#0e87a8", "#c45f3b", "#6a549b"]
 };
 
 function isFiniteNumber(value) {
-    return Number.isFinite(Number(value));
+    return value !== null && value !== "" &&
+        Number.isFinite(Number(value));
 }
 
 function formatNumber(value, digits = 1) {
@@ -89,6 +90,7 @@ function normalizeExperimentProgress(value) {
 function isExperimentComplete(progress) {
     return MODES.every(
         (mode) =>
+            isFiniteNumber(progress.records[mode.id]?.tau0) &&
             progress.records[mode.id]?.cycles.length ===
             CYCLES_PER_MODE
     );
@@ -150,18 +152,38 @@ function buildAnalysisData(progress) {
     });
 }
 
-function createSvgElement(name, attributes = {}) {
-    const element = document.createElementNS(
-        SVG_NAMESPACE,
-        name
-    );
+// Each mode starts at its own measured temperature and its own time zero.
+export function buildTemperatureTimeline(mode) {
+    const points = [{
+        time: 0,
+        temperature: mode.tau0,
+        phase: "Початкова температура",
+        cycle: 0
+    }];
+    let time = 0;
 
-    Object.entries(attributes).forEach(([key, value]) => {
-        element.setAttribute(key, String(value));
+    mode.cycles.forEach((cycle, index) => {
+        time += cycle.tOn;
+        points.push({
+            time,
+            temperature: cycle.tauOn,
+            phase: "Після нагрівання",
+            cycle: index + 1
+        });
+
+        time += cycle.tOff;
+        points.push({
+            time,
+            temperature: cycle.tauOff,
+            phase: "Після охолодження",
+            cycle: index + 1
+        });
     });
 
-    return element;
+    return points;
 }
+
+
 
 function appendSvgText(parent, text, attributes = {}) {
     const element = createSvgElement("text", attributes);
@@ -378,28 +400,40 @@ function renderBarChart(container, {
     appendLegend(container, series);
 }
 
-function renderLineChart(container, {
-    categories,
-    series,
-    yMaximum,
-    unit,
-    xTitle,
-    ariaLabel,
-    valueDigits = 0
-}) {
-    const width = 900;
-    const height = 420;
+function renderTemperatureChart(container, modes) {
     const plot = {
         left: 76,
         right: 870,
         top: 52,
         bottom: 322
     };
-
+    const series = modes.map((mode, index) => ({
+        name: `Положення ${mode.position}`,
+        color: COLORS.temperatureModes[index],
+        points: buildTemperatureTimeline(mode)
+    }));
+    const allPoints = series.flatMap((item) => item.points);
+    const longestDuration = Math.max(
+        ...allPoints.map((point) => point.time)
+    );
+    const xStep = Math.max(
+        10,
+        10 ** Math.floor(Math.log10(longestDuration / 5))
+    );
+    const xMaximum = getNiceMaximum(
+        [longestDuration],
+        xStep
+    );
+    const yMaximum = getNiceMaximum(
+        allPoints.map((point) => point.temperature),
+        50
+    );
     const svg = createSvgElement("svg", {
-        viewBox: `0 0 ${width} ${height}`,
+        viewBox: "0 0 900 420",
         role: "img",
-        "aria-label": ariaLabel,
+        "aria-label":
+            "Температура конфорки залежно від накопиченого часу; " +
+            "кожне положення регулятора починається з нуля секунд",
         preserveAspectRatio: "xMidYMid meet"
     });
     svg.classList.add("analysis-chart-svg");
@@ -407,88 +441,60 @@ function renderLineChart(container, {
     const getY = appendChartBase(svg, {
         plot,
         yMaximum,
-        unit,
-        xTitle,
-        tickDigits: 0
+        unit: "τ, °C",
+        xTitle: "Час від початку режиму t, с"
+    });
+    const getX = (time) =>
+        plot.left + time / xMaximum * (plot.right - plot.left);
+
+    createTicks(xMaximum, 5).forEach((tick) => {
+        const x = getX(tick);
+        svg.append(createSvgElement("line", {
+            x1: x,
+            y1: plot.top,
+            x2: x,
+            y2: plot.bottom,
+            class: "analysis-chart-grid-line"
+        }));
+        appendSvgText(svg, formatNumber(tick, 0), {
+            x,
+            y: plot.bottom + 27,
+            class: "analysis-chart-category",
+            "text-anchor": "middle"
+        });
     });
 
-    const dataLeft = plot.left + 18;
-    const dataRight = plot.right - 10;
-    const stepX =
-        (dataRight - dataLeft) / (categories.length - 1);
-
-    [2.5, 5.5].forEach((boundary) => {
-        const x = dataLeft + stepX * boundary;
-
-        svg.append(
-            createSvgElement("line", {
-                x1: x,
-                y1: plot.top,
-                x2: x,
-                y2: plot.bottom,
-                class: "analysis-chart-grid-line"
-            })
-        );
-    });
-
-    series.forEach((item, seriesIndex) => {
-        const coordinates = item.values.map((value, index) => ({
-            value: Number(value),
-            x: dataLeft + stepX * index,
-            y: getY(Number(value))
+    series.forEach((item) => {
+        const path = item.points.map((point, index) =>
+            `${index === 0 ? "M" : "L"} ` +
+            `${getX(point.time)} ${getY(point.temperature)}`
+        ).join(" ");
+        svg.append(createSvgElement("path", {
+            d: path,
+            class: "analysis-chart-line",
+            stroke: item.color
         }));
 
-        const pathData = coordinates.map((point, index) =>
-            `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`
-        ).join(" ");
-
-        svg.append(
-            createSvgElement("path", {
-                d: pathData,
-                class: "analysis-chart-line",
-                stroke: item.color
-            })
-        );
-
-        coordinates.forEach((point, index) => {
+        item.points.forEach((point) => {
+            const label =
+                `${item.name}, ${point.phase}` +
+                (point.cycle ? ` циклу ${point.cycle}` : "") +
+                `: ${formatNumber(point.time, 1)} с, ` +
+                `${formatNumber(point.temperature, 1)} °C`;
             const circle = createSvgElement("circle", {
-                cx: point.x,
-                cy: point.y,
-                r: 7,
+                cx: getX(point.time),
+                cy: getY(point.temperature),
+                r: 6,
                 fill: item.color,
                 class: "analysis-chart-point",
                 tabindex: 0,
                 role: "img",
-                "aria-label":
-                    `${categories[index]}, ${item.name}: ` +
-                    `${formatNumber(point.value, valueDigits)} ${unit}`
+                "aria-label": label
             });
             const title = createSvgElement("title");
-            title.textContent =
-                `${categories[index]}, ${item.name}: ` +
-                `${formatNumber(point.value, valueDigits)} ${unit}`;
+            title.textContent = label;
             circle.append(title);
             svg.append(circle);
-
-            appendSvgText(
-                svg,
-                formatNumber(point.value, valueDigits),
-                {
-                    x: point.x,
-                    y: point.y + (seriesIndex === 0 ? -13 : 22),
-                    class: "analysis-chart-value",
-                    "text-anchor": "middle"
-                }
-            );
-        });
-    });
-
-    categories.forEach((category, index) => {
-        appendSvgText(svg, category, {
-            x: dataLeft + stepX * index,
-            y: plot.bottom + 27,
-            class: "analysis-chart-category",
-            "text-anchor": "middle"
         });
     });
 
@@ -734,44 +740,10 @@ export function initializeAnalysis({
             tickDigits: 0
         });
 
-        const temperatureCycles = analysisData.flatMap((mode) =>
-            mode.cycles.map((cycle, cycleIndex) => ({
-                category: `${mode.position}.${cycleIndex + 1}`,
-                tauOn: cycle.tauOn,
-                tauOff: cycle.tauOff
-            }))
+        renderTemperatureChart(
+            elements.temperatureChart,
+            analysisData
         );
-        const temperatureValues = temperatureCycles.flatMap(
-            (cycle) => [cycle.tauOn, cycle.tauOff]
-        );
-
-        renderLineChart(elements.temperatureChart, {
-            categories: temperatureCycles.map(
-                (cycle) => cycle.category
-            ),
-            series: [
-                {
-                    name: "Наприкінці нагрівання τн",
-                    color: COLORS.temperatureOn,
-                    values: temperatureCycles.map(
-                        (cycle) => cycle.tauOn
-                    )
-                },
-                {
-                    name: "Наприкінці охолодження τо",
-                    color: COLORS.temperatureOff,
-                    values: temperatureCycles.map(
-                        (cycle) => cycle.tauOff
-                    )
-                }
-            ],
-            yMaximum: getNiceMaximum(temperatureValues, 50),
-            unit: "°C",
-            xTitle: "Положення регулятора і номер циклу",
-            ariaLabel:
-                "Температури наприкінці нагрівання та охолодження в дев’яти циклах",
-            valueDigits: 0
-        });
     }
 
     function calculationsAreReady() {

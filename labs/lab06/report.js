@@ -3,6 +3,10 @@ import {
     LAB06_EVENTS
 } from "./config.js";
 
+import {
+    getStudentVariant
+} from "../../common/js/student-variants.js";
+
 const STORAGE_KEYS = {
     experiment:
         LAB06_CONFIG.storage.experiment,
@@ -674,6 +678,10 @@ export function initializeReport() {
         );
 
         panel.querySelector(
+            "#report-student-variant"
+        ).textContent = String(getStudentVariant());
+
+        panel.querySelector(
             "#report-student-name"
         ).textContent =
             student.studentName;
@@ -1073,21 +1081,10 @@ export function initializeReport() {
                 return;
             }
 
-            Object.keys(
-                localStorage
-            )
-                .filter(
-                    (key) =>
-                        key.startsWith(
-                            `eetsee.${LAB06_CONFIG.namespace}.`
-                        )
-                )
-                .forEach(
-                    (key) =>
-                        localStorage.removeItem(
-                            key
-                        )
-                );
+            // Очищаємо результати тільки поточного варіанта.
+            Object.values(STORAGE_KEYS)
+                .concat(LAB06_CONFIG.storage.calculationsVerified)
+                .forEach((key) => localStorage.removeItem(key));
 
             window.location.reload();
         }

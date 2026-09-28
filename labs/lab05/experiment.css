@@ -44,6 +44,24 @@
     color: var(--color-text-muted);
 }
 
+#experiment .experiment-model-notice select {
+    width: min(100%, 260px);
+    min-height: 44px;
+    margin: 4px 0 14px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-primary);
+    font: inherit;
+    font-weight: 650;
+}
+
+#experiment .experiment-model-notice select:focus-visible {
+    outline: 3px solid var(--experiment-copper);
+    outline-offset: 2px;
+}
+
 #experiment .experiment-access-shell {
     position: relative;
     min-width: 0;

@@ -2,6 +2,14 @@ import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
 import { createStorage } from "../../common/js/storage.js";
 
+import { LAB07_EXPERIMENT_MODES as EXPERIMENT_MODES } from "./data.js";
+
+import {
+    getStudentVariant,
+    selectStudentVariant,
+    STUDENT_VARIANT_COUNT
+} from "../../common/js/student-variants.js";
+
 import {
     LAB07_CONFIG,
     LAB07_EVENTS
@@ -10,83 +18,7 @@ import {
 const EMPTY_READING = "—";
 const MODEL_MILLISECONDS_PER_SECOND = 70;
 
-const EXPERIMENT_MODES = Object.freeze([
-    Object.freeze({
-        id: "mode-1",
-        position: 1,
-        initialTemperature: 24,
-        cycles: Object.freeze([
-            Object.freeze({
-                tOn: 12,
-                tOff: 35,
-                tauOn: 68,
-                tauOff: 49
-            }),
-            Object.freeze({
-                tOn: 13,
-                tOff: 37,
-                tauOn: 74,
-                tauOff: 54
-            }),
-            Object.freeze({
-                tOn: 11,
-                tOff: 34,
-                tauOn: 78,
-                tauOff: 58
-            })
-        ])
-    }),
-    Object.freeze({
-        id: "mode-2",
-        position: 2,
-        initialTemperature: 58,
-        cycles: Object.freeze([
-            Object.freeze({
-                tOn: 22,
-                tOff: 23,
-                tauOn: 138,
-                tauOff: 99
-            }),
-            Object.freeze({
-                tOn: 24,
-                tOff: 23,
-                tauOn: 151,
-                tauOff: 109
-            }),
-            Object.freeze({
-                tOn: 23,
-                tOff: 24,
-                tauOn: 160,
-                tauOff: 116
-            })
-        ])
-    }),
-    Object.freeze({
-        id: "mode-3",
-        position: 3,
-        initialTemperature: 116,
-        cycles: Object.freeze([
-            Object.freeze({
-                tOn: 36,
-                tOff: 13,
-                tauOn: 245,
-                tauOff: 205
-            }),
-            Object.freeze({
-                tOn: 39,
-                tOff: 12,
-                tauOn: 273,
-                tauOff: 226
-            }),
-            Object.freeze({
-                tOn: 34,
-                tOff: 12,
-                tauOn: 292,
-                tauOff: 241
-            })
-        ])
-    })
-]);
+
 
 function formatNumber(value, digits = 0) {
     if (!Number.isFinite(value)) {
@@ -305,6 +237,26 @@ export function initializeExperiment({
     }
 
     section.dataset.initialized = "true";
+
+    const variantSelect = find("#student-variant-select");
+    const variantReturnKey = "lab07:variant-return";
+
+    if (variantSelect) {
+        for (let variant = 1; variant <= STUDENT_VARIANT_COUNT; variant += 1) {
+            variantSelect.add(new Option(`Варіант ${variant}`, String(variant)));
+        }
+
+        variantSelect.value = String(getStudentVariant());
+        variantSelect.addEventListener("change", () => {
+            const nextVariant = Number(variantSelect.value);
+            try {
+                window.sessionStorage.setItem(variantReturnKey, String(nextVariant));
+            } catch {
+                // Вибір варіанта працює і без sessionStorage.
+            }
+            selectStudentVariant(nextVariant);
+        });
+    }
 
     const experimentStorage = createStorage(
         LAB07_CONFIG.storage.experiment
@@ -2005,4 +1957,28 @@ export function initializeExperiment({
     resolveInitialState();
     renderAll();
     updateAccess();
+
+    if (variantSelect) {
+        try {
+            if (
+                window.sessionStorage.getItem(variantReturnKey) ===
+                String(getStudentVariant())
+            ) {
+                window.sessionStorage.removeItem(variantReturnKey);
+                window.requestAnimationFrame(() => {
+                    variantSelect.scrollIntoView({
+                        behavior: "instant",
+                        block: "center"
+                    });
+                    window.requestAnimationFrame(() => {
+                        document.documentElement.classList.remove(
+                            "variant-return-pending"
+                        );
+                    });
+                });
+            }
+        } catch {
+            // Приватний режим може обмежувати доступ до sessionStorage.
+        }
+    }
 }

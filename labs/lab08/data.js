@@ -1,8 +1,11 @@
+import { LAB08_CONFIG } from "./config.js";
+import { variantStorageNamespace } from "../../common/js/student-variants.js";
+
 export const LAB08_EXPERIMENT_STORAGE_KEY =
-    "eetsee.lab08.experiment.v1";
+    LAB08_CONFIG.storage.experiment;
 
 export const LAB08_VERIFIED_CALCULATIONS_STORAGE_KEY =
-    "eetsee.lab08.calculations.verified.v1";
+    variantStorageNamespace("eetsee.lab08.calculations.verified.v3");
 
 
 /* Фізичні величини, використані в методиці */

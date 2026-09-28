@@ -1,3 +1,5 @@
+import { createPrintCopy } from "../../common/js/report-print.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -8,8 +10,9 @@ import {
     LAB08_SCOPED_EVENTS
 } from "./config.js";
 
-const REQUIRED_CYCLE_COUNT =
-    LAB08_CONFIG.experiment.cyclicRunCount;
+import {
+    getStudentVariant
+} from "../../common/js/student-variants.js";
 
 const REQUIRED_TRIAL_COUNT =
     LAB08_CONFIG.experiment.comparativeTrialCount;
@@ -129,7 +132,7 @@ function normalizeExperiment(value) {
             )
             .slice(
                 0,
-                REQUIRED_CYCLE_COUNT
+                LAB08_CONFIG.experiment.maximumCyclicRunCount
             )
             .map(
                 (
@@ -284,8 +287,8 @@ function normalizeExperiment(value) {
 
         completed:
             setupValid &&
-            firstRecords.length ===
-            REQUIRED_CYCLE_COUNT &&
+            firstRecords.length > 0 &&
+            Number(value?.experimentOne?.records?.at(-1)?.finalTemperature) >= 100 &&
             secondRecords.length ===
             REQUIRED_TRIAL_COUNT &&
             value?.completed === true
@@ -358,7 +361,8 @@ function createAnalysisSignature(
 }
 
 function normalizeCalculationResults(
-    calculations
+    calculations,
+    progress
 ) {
     if (
         !calculations ||
@@ -388,7 +392,7 @@ function normalizeCalculationResults(
                 )
                 .slice(
                     0,
-                    REQUIRED_CYCLE_COUNT
+                    LAB08_CONFIG.experiment.maximumCyclicRunCount
                 )
                 .map(
                     (cycle) => ({
@@ -416,7 +420,7 @@ function normalizeCalculationResults(
 
     if (
         cycles.length !==
-        REQUIRED_CYCLE_COUNT ||
+        progress.firstRecords.length ||
         !requiredValues.every(
             isFiniteNumber
         )
@@ -841,45 +845,6 @@ function cloneReportCharts(target) {
     );
 }
 
-function createPrintCopy(
-    reportDocument
-) {
-    document
-        .querySelector(
-            "#lab-print-root"
-        )
-        ?.remove();
-
-    const printRoot =
-        document.createElement(
-            "div"
-        );
-
-    const reportCopy =
-        reportDocument.cloneNode(
-            true
-        );
-
-    printRoot.id =
-        "lab-print-root";
-
-    reportCopy.hidden =
-        false;
-
-    reportCopy.removeAttribute(
-        "hidden"
-    );
-
-    printRoot.append(
-        reportCopy
-    );
-
-    document.body.append(
-        printRoot
-    );
-
-    return printRoot;
-}
 
 export function initializeReport({
     root = document,
@@ -937,6 +902,11 @@ export function initializeReport({
         studentName:
             section.querySelector(
                 "#report-student-name"
+            ),
+
+        studentVariant:
+            section.querySelector(
+                "#report-student-variant"
             ),
 
         studentGroup:
@@ -1133,7 +1103,8 @@ export function initializeReport({
 
         const calculationResults =
             normalizeCalculationResults(
-                calculations
+                calculations,
+                experiment
             );
 
         const analysis =
@@ -1558,6 +1529,7 @@ export function initializeReport({
         student,
         snapshot
     ) {
+        elements.studentVariant.textContent = String(getStudentVariant());
         elements.studentName.textContent =
             student.name;
 
@@ -1812,7 +1784,7 @@ export function initializeReport({
         () => {
             const confirmed =
                 window.confirm(
-                    "Очистити результати всіх етапів лабораторної роботи №8?"
+                    "Очистити результати поточного варіанта лабораторної роботи №8?"
                 );
 
             if (!confirmed) {
@@ -1820,8 +1792,6 @@ export function initializeReport({
             }
 
             [
-                LAB08_CONFIG.storage.safety,
-                LAB08_CONFIG.storage.stand,
                 LAB08_CONFIG.storage.experiment,
                 LAB08_CONFIG.storage.calculations,
                 LAB08_CONFIG.storage.analysis,

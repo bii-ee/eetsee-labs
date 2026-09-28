@@ -2,6 +2,10 @@ import {
     createLaboratoryEventNames
 } from "../../common/js/lab-events.js";
 
+import {
+    variantStorageNamespace
+} from "../../common/js/student-variants.js";
+
 export const LAB06_CONFIG = Object.freeze({
     id: "lab06",
 
@@ -9,7 +13,7 @@ export const LAB06_CONFIG = Object.freeze({
 
     number: 6,
 
-    configVersion: 1,
+    configVersion: 3,
 
     title:
         "Дослідження енергетичних характеристик печей опору з тиристорними джерелами живлення",
@@ -35,31 +39,31 @@ export const LAB06_CONFIG = Object.freeze({
             "lab06:stand",
 
         experiment:
-            "eetsee.lab06.experiment.v1",
+            variantStorageNamespace("eetsee.lab06.experiment.v3"),
 
         calculationsDraft:
-            "eetsee.lab06.calculations.v1",
+            variantStorageNamespace("eetsee.lab06.calculations.v3"),
 
         calculationsVerified:
-            "eetsee.lab06.calculations.verified.v1",
+            variantStorageNamespace("eetsee.lab06.calculations.verified.v3"),
 
         calculationsCompleted:
-            "eetsee.lab06.calculations.completed.v1",
+            variantStorageNamespace("eetsee.lab06.calculations.completed.v3"),
 
         analysis:
-            "eetsee.lab06.analysis.v1",
+            variantStorageNamespace("eetsee.lab06.analysis.v3"),
 
         analysisCompleted:
-            "eetsee.lab06.analysis.completed.v1",
+            variantStorageNamespace("eetsee.lab06.analysis.completed.v3"),
 
         quiz:
-            "eetsee.lab06.quiz.v1",
+            variantStorageNamespace("eetsee.lab06.quiz.v3"),
 
         quizCompleted:
-            "eetsee.lab06.quiz.completed.v1",
+            variantStorageNamespace("eetsee.lab06.quiz.completed.v3"),
 
         reportStudent:
-            "eetsee.lab06.report.student.v1"
+            variantStorageNamespace("eetsee.lab06.report.student.v3")
     }),
 
     variants: Object.freeze({

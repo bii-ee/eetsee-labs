@@ -2,6 +2,10 @@ import {
     createLaboratoryEventNames
 } from "../../common/js/lab-events.js";
 
+import {
+    variantStorageNamespace
+} from "../../common/js/student-variants.js";
+
 export const LAB07_CONFIG = Object.freeze({
     id: "lab07",
 
@@ -9,7 +13,7 @@ export const LAB07_CONFIG = Object.freeze({
 
     number: 7,
 
-    configVersion: 1,
+    configVersion: 2,
 
     title:
         "Дослідження параметрів роботи побутових двоконфоркових електроплит із біметалевим терморезистором",
@@ -35,19 +39,19 @@ export const LAB07_CONFIG = Object.freeze({
             "lab07:stand",
 
         experiment:
-            "lab07:cyclic-experiment",
+            variantStorageNamespace("lab07:cyclic-experiment.v2"),
 
         calculations:
-            "lab07:calculations",
+            variantStorageNamespace("lab07:calculations.v2"),
 
         analysis:
-            "lab07:analysis",
+            variantStorageNamespace("lab07:analysis.v2"),
 
         quiz:
-            "lab07:quiz",
+            variantStorageNamespace("lab07:quiz.v2"),
 
         report:
-            "lab07:report"
+            variantStorageNamespace("lab07:report.v2")
     }),
 
     variants: Object.freeze({

@@ -1,3 +1,7 @@
+import { createSvgElement } from "../../common/js/svg-elements.js";
+
+import { parseStudentNumber as parseStoredNumber } from "../../common/js/student-numbers.js";
+
 import {
     LAB06_EXPERIMENT_MODES,
     LAB06_EXPERIMENT_STORAGE_KEY,
@@ -18,8 +22,6 @@ const ANALYSIS_STORAGE_KEY =
 const ANALYSIS_COMPLETED_KEY =
     LAB06_CONFIG.storage.analysisCompleted;
 
-const SVG_NAMESPACE =
-    "http://www.w3.org/2000/svg";
 
 function readJsonStorage(key, fallback = {}) {
     try {
@@ -53,24 +55,7 @@ function writeJsonStorage(key, value) {
     }
 }
 
-function parseStoredNumber(value) {
-    const normalized =
-        String(value ?? "")
-            .trim()
-            .replace(/\s+/g, "")
-            .replace(",", ".");
 
-    if (normalized === "") {
-        return null;
-    }
-
-    const number =
-        Number(normalized);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function formatNumber(value, digits = 2) {
     return new Intl.NumberFormat(
@@ -92,27 +77,7 @@ function normalizePosition(position, index) {
         : String(index + 1);
 }
 
-function createSvgElement(
-    name,
-    attributes = {}
-) {
-    const element =
-        document.createElementNS(
-            SVG_NAMESPACE,
-            name
-        );
 
-    Object.entries(attributes).forEach(
-        ([key, value]) => {
-            element.setAttribute(
-                key,
-                String(value)
-            );
-        }
-    );
-
-    return element;
-}
 
 function appendText(
     parent,

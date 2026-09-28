@@ -1,3 +1,5 @@
+import { renderStandProgress } from "../../common/js/stand-progress.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -300,43 +302,22 @@ export function initializeStand({
     }
 
     function updateProgress() {
-        const visitedCount =
-            visitedComponents.size;
+        const visitedCount = visitedComponents.size;
+        const totalCount = componentIds.length;
 
-        const totalCount =
-            componentIds.length;
-
-        const percentage = Math.round(
-            visitedCount / totalCount * 100
-        );
-
-        elements.progressText.textContent =
-            `Переглянуто ${visitedCount} із ${totalCount} груп елементів`;
-
-        elements.progressPercent.textContent =
-            `${percentage}%`;
-
-        elements.progressBar.style.width =
-            `${percentage}%`;
-
-        elements.progressTrack.setAttribute(
-            "aria-valuemax",
-            String(totalCount)
-        );
-
-        elements.progressTrack.setAttribute(
-            "aria-valuenow",
-            String(visitedCount)
-        );
-
-        elements.readyButton.disabled =
-            visitedCount !== totalCount ||
-            standReady;
+        renderStandProgress({
+            visitedCount,
+            totalCount,
+            ready: standReady,
+            label: "груп елементів",
+            progressText: elements.progressText,
+            progressPercent: elements.progressPercent,
+            progressTrack: elements.progressTrack,
+            progressBar: elements.progressBar,
+            readyButton: elements.readyButton
+        });
 
         if (standReady) {
-            elements.readyButton.textContent =
-                "Готовність підтверджено";
-
             setStatus(
                 "Склад і призначення елементів установки вивчено. Можна переходити до проведення дослідів.",
                 "success"
@@ -344,9 +325,6 @@ export function initializeStand({
 
             return;
         }
-
-        elements.readyButton.textContent =
-            "Підтвердити готовність стенда";
 
         if (visitedCount === totalCount) {
             setStatus(

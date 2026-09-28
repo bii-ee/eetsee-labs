@@ -1,0 +1,32 @@
+/* Однакові позначки переглянутих елементів стенда для ЛР5–ЛР8. */
+#stand .stand-component-buttons button {
+    position: relative;
+    min-width: 0;
+    padding-right: 42px;
+    text-align: left;
+}
+
+#stand .stand-component-buttons button.is-visited::after,
+#stand .stand-component-buttons button.is-selected.is-visited::after {
+    position: absolute;
+    top: 50%;
+    right: 11px;
+    display: grid;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    place-items: center;
+    border: 1px solid #105b4c;
+    border-radius: 50%;
+    background: #187a65;
+    color: #ffffff;
+    content: "✓";
+    font-family: Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 1;
+    box-shadow: 0 1px 3px rgba(12, 62, 52, 0.28);
+    transform: translateY(-50%);
+}

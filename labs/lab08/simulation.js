@@ -1,4 +1,11 @@
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+import { createThermostatCycle, createParameterTrial, MAXIMUM_CYCLES } from "./thermal-model.js";
+
+import {
+    getStudentVariant,
+    selectStudentVariant,
+    STUDENT_VARIANT_COUNT
+} from "../../common/js/student-variants.js";
 
 import {
     createStorage
@@ -9,146 +16,13 @@ import {
     LAB08_EVENTS
 } from "./config.js";
 
-const THERMOSTAT_CYCLES = Object.freeze([
-    {
-        voltage: 219.6,
-        current: 5.8,
-        power: 1.20,
-        onTime: 6.06,
-        offTime: 6.47,
-        finalTemperature: 32.0
-    },
-    {
-        voltage: 220.1,
-        current: 6.3,
-        power: 1.30,
-        onTime: 9.39,
-        offTime: 9.82,
-        finalTemperature: 45.0
-    },
-    {
-        voltage: 219.8,
-        current: 6.8,
-        power: 1.40,
-        onTime: 9.40,
-        offTime: 6.26,
-        finalTemperature: 58.0
-    },
-    {
-        voltage: 220.3,
-        current: 7.3,
-        power: 1.50,
-        onTime: 8.42,
-        offTime: 7.67,
-        finalTemperature: 72.0
-    },
-    {
-        voltage: 219.9,
-        current: 7.7,
-        power: 1.60,
-        onTime: 7.92,
-        offTime: 8.16,
-        finalTemperature: 86.0
-    },
-    {
-        voltage: 220.2,
-        current: 8.2,
-        power: 1.70,
-        onTime: 8.11,
-        offTime: 5.69,
-        finalTemperature: 100.0
-    }
-]);
+const PARAMETER_TRIALS = Object.freeze(
+    [110, 160, 240].flatMap((setTemperature) =>
+        [200, 220, 240].map((setVoltage) => ({ setTemperature, setVoltage }))
+    )
+);
 
-const PARAMETER_TRIALS = Object.freeze([
-    {
-        setTemperature: 110,
-        setVoltage: 200,
-        voltage: 199.2,
-        initialTemperature: 20.0,
-        current: 7.0,
-        power: 1.31,
-        boilingTime: 6.30
-    },
-    {
-        setTemperature: 110,
-        setVoltage: 220,
-        voltage: 219.4,
-        initialTemperature: 20.2,
-        current: 6.2,
-        power: 1.28,
-        boilingTime: 5.72
-    },
-    {
-        setTemperature: 110,
-        setVoltage: 240,
-        voltage: 239.1,
-        initialTemperature: 20.1,
-        current: 5.9,
-        power: 1.34,
-        boilingTime: 5.25
-    },
-    {
-        setTemperature: 160,
-        setVoltage: 200,
-        voltage: 199.6,
-        initialTemperature: 20.4,
-        current: 7.0,
-        power: 1.32,
-        boilingTime: 5.95
-    },
-    {
-        setTemperature: 160,
-        setVoltage: 220,
-        voltage: 219.8,
-        initialTemperature: 20.3,
-        current: 6.8,
-        power: 1.42,
-        boilingTime: 5.38
-    },
-    {
-        setTemperature: 160,
-        setVoltage: 240,
-        voltage: 239.5,
-        initialTemperature: 20.5,
-        current: 6.4,
-        power: 1.48,
-        boilingTime: 4.92
-    },
-    {
-        setTemperature: 240,
-        setVoltage: 200,
-        voltage: 199.4,
-        initialTemperature: 20.2,
-        current: 7.4,
-        power: 1.39,
-        boilingTime: 5.61
-    },
-    {
-        setTemperature: 240,
-        setVoltage: 220,
-        voltage: 219.7,
-        initialTemperature: 20.4,
-        current: 7.2,
-        power: 1.50,
-        boilingTime: 5.04
-    },
-    {
-        setTemperature: 240,
-        setVoltage: 240,
-        voltage: 239.8,
-        initialTemperature: 20.3,
-        current: 6.7,
-        power: 1.57,
-        boilingTime: 4.62
-    }
-]);
-
-const TOTAL_OPERATIONS =
-    THERMOSTAT_CYCLES.length +
-    PARAMETER_TRIALS.length;
-
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
 
 const SIMULATION_TIMING = Object.freeze({
     thermostatMillisecondsPerSecond: 230,
@@ -241,7 +115,7 @@ function normalizeState(savedState) {
         state.experimentOne.records =
             firstRecords.slice(
                 0,
-                THERMOSTAT_CYCLES.length
+                MAXIMUM_CYCLES
             );
     }
 
@@ -254,8 +128,8 @@ function normalizeState(savedState) {
     }
 
     state.experimentOne.completed =
-        state.experimentOne.records.length ===
-        THERMOSTAT_CYCLES.length;
+        state.experimentOne.records.length > 0 &&
+        state.experimentOne.records.at(-1)?.finalTemperature >= 100;
 
     state.experimentTwo.completed =
         state.experimentTwo.records.length ===
@@ -493,6 +367,26 @@ export function initializeExperiment({
 
     section.dataset.initialized = "true";
 
+    const variantSelect = getElement("#student-variant-select");
+    const variantReturnKey = "lab08:variant-return";
+
+    if (variantSelect) {
+        for (let variant = 1; variant <= STUDENT_VARIANT_COUNT; variant += 1) {
+            variantSelect.add(new Option(`Варіант ${variant}`, String(variant)));
+        }
+
+        variantSelect.value = String(getStudentVariant());
+        variantSelect.addEventListener("change", () => {
+            const nextVariant = Number(variantSelect.value);
+            try {
+                window.sessionStorage.setItem(variantReturnKey, String(nextVariant));
+            } catch {
+                // Вибір варіанта працює і без sessionStorage.
+            }
+            selectStudentVariant(nextVariant);
+        });
+    }
+
     const experimentStorage = createStorage(
         LAB08_CONFIG.storage.experiment
     );
@@ -547,7 +441,9 @@ export function initializeExperiment({
                             state.experimentOne.records.length +
                             state.experimentTwo.records.length,
                         totalOperations:
-                            TOTAL_OPERATIONS
+                            state.experimentOne.completed
+                                ? state.experimentOne.records.length + PARAMETER_TRIALS.length
+                                : null
                     }
                 }
             )
@@ -720,8 +616,15 @@ export function initializeExperiment({
             state.experimentOne.records;
 
         elements.experimentOneTableBody.innerHTML =
-            THERMOSTAT_CYCLES.map(
-                (cycle, index) => {
+            Array.from({
+                length: state.experimentOne.completed
+                    ? records.length
+                    : Math.max(
+                        LAB08_CONFIG.experiment.initialCyclicRows,
+                        records.length + 1
+                    )
+            }, (_, index) => index).map(
+                (index) => {
                     const record =
                         records[index];
 
@@ -908,7 +811,7 @@ export function initializeExperiment({
             state.experimentOne.records.length;
 
         elements.experimentOneStatus.textContent =
-            `${completedCount} із ${THERMOSTAT_CYCLES.length} циклів`;
+            `${completedCount} циклів до кипіння`;
 
         if (state.experimentOne.completed) {
             elements.experimentOneSummary.innerHTML = `
@@ -953,8 +856,8 @@ export function initializeExperiment({
             </strong>
 
             <p>
-                Наступний цикл буде записано після завершення
-                увімкненого та вимкненого інтервалів.
+                Записуйте цикли до закипання води. Останній
+                цикл може завершитися без вимкненого інтервалу.
             </p>
         `;
     }
@@ -1029,7 +932,7 @@ export function initializeExperiment({
             firstCount + secondCount;
 
         elements.progressValue.textContent =
-            `${completedOperations} із ${TOTAL_OPERATIONS} операцій`;
+            `${firstCount} циклів, ${secondCount} із ${PARAMETER_TRIALS.length} режимів`;
 
         elements.waterVolumeInput.value =
             state.setup.waterVolume;
@@ -1080,7 +983,7 @@ export function initializeExperiment({
                 `Виконайте цикл ${firstCount + 1}`;
 
             elements.experimentOneDescription.textContent =
-                "Запустіть цикл і дочекайтеся завершення увімкненого та вимкненого інтервалів.";
+                "Запустіть цикл і дочекайтеся вимірювання. Останній цикл завершиться під час нагрівання води до кипіння.";
         } else {
             elements.experimentOneTask.textContent =
                 "Дослід 1 завершено";
@@ -1250,12 +1153,11 @@ export function initializeExperiment({
 
         const cycleIndex =
             state.experimentOne.records.length;
-        const cycle =
-            THERMOSTAT_CYCLES[cycleIndex];
-
-        if (!cycle) {
-            return;
-        }
+        if (cycleIndex >= MAXIMUM_CYCLES) return;
+        const cycle = createThermostatCycle(
+            state.setup,
+            state.experimentOne.records
+        );
 
         const runVersion = operationVersion;
         operationInProgress = true;
@@ -1268,13 +1170,7 @@ export function initializeExperiment({
             previousRecord?.finalTemperature ??
             state.setup.initialTemperature;
 
-        const heatingEndTemperature =
-            startTemperature +
-            (
-                cycle.finalTemperature -
-                startTemperature
-            ) *
-            0.88;
+        const heatingEndTemperature = cycle.finalTemperature;
 
         elements.currentCondition.textContent =
             `Режим «Термостат», цикл ${cycleIndex + 1}`;
@@ -1338,57 +1234,60 @@ export function initializeExperiment({
 
         if (runVersion !== operationVersion || !isStandReady()) return;
 
-        setMessage(
-            elements.experimentOneMessage,
-            `Цикл ${cycleIndex + 1}: конфорка вимкнена, триває інтервал термостата.`,
-            "warning"
-        );
+        if (!cycle.boiling) {
+            setMessage(
+                elements.experimentOneMessage,
+                `Цикл ${cycleIndex + 1}: конфорка вимкнена, триває інтервал термостата.`,
+                "warning"
+            );
 
-        setInstallationState({
-            cooling: true,
-            mode: "PAUSE",
-            setting: `Цикл ${cycleIndex + 1}: вимкнений інтервал`
-        });
+            setInstallationState({
+                cooling: true,
+                mode: "PAUSE",
+                setting: `Цикл ${cycleIndex + 1}: вимкнений інтервал`
+            });
 
-        updateInstrumentReadings({
-            voltage: cycle.voltage,
-            current: 0,
-            power: 0,
-            elapsedTime: 0,
-            temperature:
-                heatingEndTemperature
-        });
+            updateInstrumentReadings({
+                voltage: cycle.voltage,
+                current: 0,
+                power: 0,
+                elapsedTime: 0,
+                temperature:
+                    heatingEndTemperature
+            });
 
-        await animateInterval({
-            laboratoryDuration:
-                cycle.offTime,
+            await animateInterval({
+                laboratoryDuration:
+                    cycle.offTime,
 
-            animationDuration:
-                Math.max(
-                    SIMULATION_TIMING
-                        .thermostatMinimumInterval,
+                animationDuration:
+                    Math.max(
+                        SIMULATION_TIMING
+                            .thermostatMinimumInterval,
 
-                    cycle.offTime *
-                    SIMULATION_TIMING
-                        .thermostatMillisecondsPerSecond
-                ),
+                        cycle.offTime *
+                        SIMULATION_TIMING
+                            .thermostatMillisecondsPerSecond
+                    ),
 
-            startTemperature:
-                heatingEndTemperature,
+                startTemperature:
+                    heatingEndTemperature,
 
-            endTemperature:
-                cycle.finalTemperature,
+                endTemperature:
+                    cycle.finalTemperature,
 
-            label: "Вимкнений стан"
-        });
+                label: "Вимкнений стан"
+            });
 
-        if (runVersion !== operationVersion || !isStandReady()) return;
+            if (runVersion !== operationVersion || !isStandReady()) return;
 
-        await wait(
-            SIMULATION_TIMING.measurementPause
-        );
+            await wait(
+                SIMULATION_TIMING.measurementPause
+            );
 
-        if (runVersion !== operationVersion || !isStandReady()) return;
+            if (runVersion !== operationVersion || !isStandReady()) return;
+
+        }
 
         state.experimentOne.records.push({
             cycle: cycleIndex + 1,
@@ -1402,8 +1301,7 @@ export function initializeExperiment({
         });
 
         state.experimentOne.completed =
-            state.experimentOne.records.length ===
-            THERMOSTAT_CYCLES.length;
+            cycle.boiling;
 
         if (state.experimentOne.completed) {
             setMessage(
@@ -1438,8 +1336,9 @@ export function initializeExperiment({
 
         const trialIndex =
             state.experimentTwo.records.length;
-        const trial =
-            PARAMETER_TRIALS[trialIndex];
+        const trialDefinition = PARAMETER_TRIALS[trialIndex];
+        const trial = trialDefinition &&
+            createParameterTrial(state.setup, trialDefinition);
 
         if (!trial) {
             return;
@@ -1604,6 +1503,8 @@ export function initializeExperiment({
                 Number.isFinite(waterMass) &&
                 waterMass >= 0.1 &&
                 waterMass <= 1 &&
+                Math.abs(waterMass - waterVolume / 1000) <=
+                    Math.max(0.03, waterVolume / 10000) &&
                 Number.isFinite(initialTemperature) &&
                 initialTemperature >= 5 &&
                 initialTemperature <= 40;
@@ -1611,7 +1512,7 @@ export function initializeExperiment({
             if (!isValid) {
                 setMessage(
                     elements.experimentOneMessage,
-                    "Перевірте введені параметри: об’єм 100-1000 мл, маса 0,1-1 кг, температура 5-40 °C.",
+                    "Перевірте параметри: об’єм 100-1000 мл, маса 0,1-1 кг (приблизно 1 кг на літр води), температура 5-40 °C.",
                     "warning"
                 );
 
@@ -1683,4 +1584,28 @@ export function initializeExperiment({
 
     updateAccess();
     render();
+
+    if (variantSelect) {
+        try {
+            if (
+                window.sessionStorage.getItem(variantReturnKey) ===
+                String(getStudentVariant())
+            ) {
+                window.sessionStorage.removeItem(variantReturnKey);
+                window.requestAnimationFrame(() => {
+                    variantSelect.scrollIntoView({
+                        behavior: "instant",
+                        block: "center"
+                    });
+                    window.requestAnimationFrame(() => {
+                        document.documentElement.classList.remove(
+                            "variant-return-pending"
+                        );
+                    });
+                });
+            }
+        } catch {
+            // Приватний режим може обмежувати доступ до sessionStorage.
+        }
+    }
 }

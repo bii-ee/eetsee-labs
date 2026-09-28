@@ -1,3 +1,7 @@
+import { createPrintCopy } from "../../common/js/report-print.js";
+
+import { parseStudentNumber } from "../../common/js/student-numbers.js";
+
 import {
     LAB05_EXPERIMENT_CONDITIONS,
     LAB05_EXPERIMENT_RUNS,
@@ -7,6 +11,7 @@ import {
 } from "./data.js";
 
 import { formatNumber } from "./model.js";
+import { getStudentVariant } from "../../common/js/student-variants.js";
 import { createStorage } from "../../common/js/storage.js";
 
 import {
@@ -54,22 +59,6 @@ function isFiniteNumber(value) {
     return Number.isFinite(Number(value));
 }
 
-function parseStudentNumber(value) {
-    const normalized = String(value ?? "")
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(",", ".");
-
-    if (normalized === "") {
-        return null;
-    }
-
-    const number = Number(normalized);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function energyField(experimentId) {
     return `energy-${experimentId}`;
@@ -570,23 +559,9 @@ function cloneReportCharts(target) {
     });
 }
 
-function createPrintCopy(reportDocument) {
-    document.querySelector("#lab-print-root")?.remove();
-
-    const printRoot = document.createElement("div");
-    const reportCopy = reportDocument.cloneNode(true);
-
-    printRoot.id = "lab-print-root";
-    reportCopy.hidden = false;
-    reportCopy.removeAttribute("hidden");
-    printRoot.append(reportCopy);
-    document.body.append(printRoot);
-
-    return printRoot;
-}
 
 function clearStorageNamespace(storageNamespace) {
-    const prefix = `${storageNamespace}:`;
+    const prefix = `eetsee:${storageNamespace}:`;
 
     Object.keys(localStorage)
         .filter((key) => key.startsWith(prefix))
@@ -635,6 +610,9 @@ export function initializeReport({
         ),
         studentBrigade: section.querySelector(
             "#report-student-brigade"
+        ),
+        studentVariant: section.querySelector(
+            "#report-student-variant"
         ),
         date: section.querySelector(
             "#report-date"
@@ -1052,6 +1030,9 @@ export function initializeReport({
         elements.studentBrigade.textContent =
             student.brigade || "Не вказано";
 
+        elements.studentVariant.textContent =
+            String(getStudentVariant());
+
         elements.date.textContent =
             new Intl.DateTimeFormat(
                 "uk-UA",
@@ -1223,15 +1204,13 @@ export function initializeReport({
         () => {
             if (
                 !window.confirm(
-                    "Очистити результати всіх етапів лабораторної роботи №5?"
+                    "Очистити результати поточного варіанта ЛР5?"
                 )
             ) {
                 return;
             }
 
             [
-                `${namespace}:safety`,
-                `${namespace}:stand`,
                 LAB05_EXPERIMENT_STORAGE_KEY,
                 LAB05_VERIFIED_CALCULATIONS_STORAGE_KEY,
                 LAB05_CONFIG.storage.analysis,

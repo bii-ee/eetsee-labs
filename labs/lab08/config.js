@@ -2,6 +2,10 @@ import {
     createLaboratoryEventNames
 } from "../../common/js/lab-events.js";
 
+import {
+    variantStorageNamespace
+} from "../../common/js/student-variants.js";
+
 export const LAB08_CONFIG = Object.freeze({
     id: "lab08",
 
@@ -9,7 +13,7 @@ export const LAB08_CONFIG = Object.freeze({
 
     number: 8,
 
-    configVersion: 1,
+    configVersion: 3,
 
     title:
         "Дослідження електричних та енергетичних характеристик індукційної плити «МЕРИДІАН ПП-3» у різних режимах роботи",
@@ -35,19 +39,19 @@ export const LAB08_CONFIG = Object.freeze({
             "lab08:stand",
 
         experiment:
-            "lab08:experiment",
+            variantStorageNamespace("lab08:experiment.v3"),
 
         calculations:
-            "lab08:calculations",
+            variantStorageNamespace("lab08:calculations.v3"),
 
         analysis:
-            "lab08:analysis",
+            variantStorageNamespace("lab08:analysis.v3"),
 
         quiz:
-            "lab08:quiz",
+            variantStorageNamespace("lab08:quiz.v3"),
 
         report:
-            "lab08:report"
+            variantStorageNamespace("lab08:report.v3")
     }),
 
     variants: Object.freeze({
@@ -61,11 +65,10 @@ export const LAB08_CONFIG = Object.freeze({
     }),
 
     experiment: Object.freeze({
-        cyclicRunCount: 6,
+        initialCyclicRows: 6,
+        maximumCyclicRunCount: 60,
 
-        comparativeTrialCount: 9,
-
-        requiredOperations: 15
+        comparativeTrialCount: 9
     }),
 
     quiz: Object.freeze({

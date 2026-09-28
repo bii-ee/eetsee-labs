@@ -1,5 +1,7 @@
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
+import { getStudentVariant, selectStudentVariant, STUDENT_VARIANT_COUNT } from "../../common/js/student-variants.js";
+
 import {
     LAB05_EXPERIMENT_CONDITIONS,
     LAB05_EXPERIMENT_RUNS,
@@ -430,6 +432,28 @@ export function initializeExperiment({
 
     section.dataset.initialized =
         "true";
+
+    const variantSelect = find("#student-variant-select");
+    const variantReturnKey = "lab05:variant-return";
+    if (variantSelect) {
+        const currentVariant = getStudentVariant();
+        for (let variant = 1; variant <= STUDENT_VARIANT_COUNT; variant += 1) {
+            variantSelect.add(new Option(`Варіант ${variant}`, String(variant)));
+        }
+        variantSelect.value = String(currentVariant);
+        variantSelect.addEventListener("change", () => {
+            const nextVariant = Number(variantSelect.value);
+            try {
+                window.sessionStorage.setItem(
+                    variantReturnKey,
+                    String(nextVariant)
+                );
+            } catch {
+                // Перемикання варіанту працює і без sessionStorage.
+            }
+            selectStudentVariant(nextVariant);
+        });
+    }
 
     const experimentStorage =
         createStorage(
@@ -2284,6 +2308,30 @@ export function initializeExperiment({
     resolveInitialState();
     renderAll();
     updateAccess();
+
+    if (variantSelect) {
+        try {
+            if (
+                window.sessionStorage.getItem(variantReturnKey) ===
+                String(getStudentVariant())
+            ) {
+                window.sessionStorage.removeItem(variantReturnKey);
+                window.requestAnimationFrame(() => {
+                    variantSelect.scrollIntoView({
+                        behavior: "instant",
+                        block: "center"
+                    });
+                    window.requestAnimationFrame(() => {
+                        document.documentElement.classList.remove(
+                            "variant-return-pending"
+                        );
+                    });
+                });
+            }
+        } catch {
+            // Приватний режим може обмежувати доступ до sessionStorage.
+        }
+    }
 
     const initialExperiment =
         getCurrentExperiment();

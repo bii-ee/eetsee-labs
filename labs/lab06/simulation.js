@@ -11,6 +11,12 @@ import {
     LAB06_EVENTS
 } from "./config.js";
 
+import {
+    getStudentVariant,
+    selectStudentVariant,
+    STUDENT_VARIANT_COUNT
+} from "../../common/js/student-variants.js";
+
 const EMPTY_READING = "—";
 
 function createSineWavePath({
@@ -122,6 +128,28 @@ export function initializeExperiment({
         );
 
         return;
+    }
+
+    const variantSelect = experimentSection.querySelector(
+        "#student-variant-select"
+    );
+    const variantReturnKey = "lab06:variant-return";
+
+    if (variantSelect) {
+        for (let variant = 1; variant <= STUDENT_VARIANT_COUNT; variant += 1) {
+            variantSelect.add(new Option(`Варіант ${variant}`, String(variant)));
+        }
+
+        variantSelect.value = String(getStudentVariant());
+        variantSelect.addEventListener("change", () => {
+            const nextVariant = Number(variantSelect.value);
+            try {
+                window.sessionStorage.setItem(variantReturnKey, String(nextVariant));
+            } catch {
+                // Вибір варіанта працює і без sessionStorage.
+            }
+            selectStudentVariant(nextVariant);
+        });
     }
 
     const powerButton = experimentSection.querySelector(
@@ -352,7 +380,8 @@ export function initializeExperiment({
         );
 
         readingOutputs.current.textContent = formatReading(
-            measurement.current
+            measurement.current,
+            2
         );
 
         readingOutputs.power.textContent = formatReading(
@@ -387,7 +416,7 @@ export function initializeExperiment({
 
                         <td>
                             ${record
-                        ? formatReading(record.current)
+                        ? formatReading(record.current, 2)
                         : EMPTY_READING}
                         </td>
 
@@ -666,4 +695,28 @@ export function initializeExperiment({
     renderCurrentMeasurement();
     renderTable();
     updateExperimentAccess();
+
+    if (variantSelect) {
+        try {
+            if (
+                window.sessionStorage.getItem(variantReturnKey) ===
+                String(getStudentVariant())
+            ) {
+                window.sessionStorage.removeItem(variantReturnKey);
+                window.requestAnimationFrame(() => {
+                    variantSelect.scrollIntoView({
+                        behavior: "instant",
+                        block: "center"
+                    });
+                    window.requestAnimationFrame(() => {
+                        document.documentElement.classList.remove(
+                            "variant-return-pending"
+                        );
+                    });
+                });
+            }
+        } catch {
+            // Приватний режим може обмежувати доступ до sessionStorage.
+        }
+    }
 }

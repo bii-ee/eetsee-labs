@@ -1,3 +1,5 @@
+import { parseStudentNumber } from "../../common/js/student-numbers.js";
+
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
 import {
@@ -71,22 +73,7 @@ const CALCULATION_FIELDS = [
 ];
 
 
-function parseStudentNumber(value) {
-    const normalizedValue = value
-        .trim()
-        .replace(/\s+/g, "")
-        .replace(",", ".");
 
-    if (normalizedValue === "") {
-        return null;
-    }
-
-    const number = Number(normalizedValue);
-
-    return Number.isFinite(number)
-        ? number
-        : null;
-}
 
 function formatNumber(value, digits = 2) {
     return new Intl.NumberFormat("uk-UA", {

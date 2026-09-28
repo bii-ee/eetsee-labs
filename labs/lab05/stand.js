@@ -1,3 +1,5 @@
+import { renderStandProgress } from "../../common/js/stand-progress.js";
+
 import {
     createStorage
 } from "../../common/js/storage.js";
@@ -459,47 +461,22 @@ export function initializeStand({
     }
 
     function updateProgress() {
-        const visitedCount =
-            visitedComponents.size;
+        const visitedCount = visitedComponents.size;
+        const totalCount = componentIds.length;
 
-        const totalCount =
-            componentIds.length;
-
-        const percentage =
-            Math.round(
-                (
-                    visitedCount /
-                    totalCount
-                ) * 100
-            );
-
-        progressText.textContent =
-            `Переглянуто ${visitedCount} із ${totalCount} груп елементів`;
-
-        progressPercent.textContent =
-            `${percentage}%`;
-
-        progressBar.style.width =
-            `${percentage}%`;
-
-        progressTrack.setAttribute(
-            "aria-valuemax",
-            String(totalCount)
-        );
-
-        progressTrack.setAttribute(
-            "aria-valuenow",
-            String(visitedCount)
-        );
-
-        readyButton.disabled =
-            visitedCount !== totalCount ||
-            standReady;
+        renderStandProgress({
+            visitedCount,
+            totalCount,
+            ready: standReady,
+            label: "груп елементів",
+            progressText: progressText,
+            progressPercent: progressPercent,
+            progressTrack: progressTrack,
+            progressBar: progressBar,
+            readyButton: readyButton
+        });
 
         if (standReady) {
-            readyButton.textContent =
-                "Готовність підтверджено";
-
             setStatus(
                 "Склад і призначення елементів стенда вивчено. Можна переходити до проведення дослідів.",
                 "success"
@@ -507,9 +484,6 @@ export function initializeStand({
 
             return;
         }
-
-        readyButton.textContent =
-            "Підтвердити готовність стенда";
 
         if (
             visitedCount ===
