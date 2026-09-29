@@ -295,7 +295,6 @@ export function initializeStand({
 
         if (markVisited) {
             visitedComponents.add(componentId);
-            standReady = false;
         }
 
         titleElement.textContent = information.title;

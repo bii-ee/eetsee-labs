@@ -158,6 +158,67 @@
     font-size: 0.94rem;
 }
 
+.lab-schematic {
+    margin: 24px 0 0;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface);
+}
+
+.lab-schematic h3 {
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+}
+
+.lab-schematic-image-link {
+    display: block;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    text-align: center;
+}
+
+.lab-schematic-image-link img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+}
+
+.lab-schematic figcaption {
+    margin-top: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.lab-schematic figcaption strong {
+    color: var(--color-text);
+}
+
+.lab-schematic figcaption p {
+    margin: 8px 0 0;
+}
+
+.lab-schematic-open-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+@media (max-width: 560px) {
+    .lab-schematic {
+        padding: 14px;
+    }
+
+    .lab-schematic-image-link {
+        padding: 6px;
+    }
+}
+
 .notice {
     margin-top: 24px;
     padding: 16px 18px;

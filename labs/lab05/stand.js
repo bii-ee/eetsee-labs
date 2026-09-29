@@ -377,16 +377,6 @@ export function initializeStand({
         ) {
             resetStandProgress();
         }
-        if (
-            !accessGranted &&
-            (
-                standReady || visitedComponents.size > 0 ||
-                selectedComponent !== null ||
-                standStorage.get("progress", {}).ready === true
-            )
-        ) {
-            resetStandProgress();
-        }
     }
 
     function saveProgress() {
@@ -570,7 +560,6 @@ export function initializeStand({
         () => {
             if (
                 !isSafetyPassed() ||
-                !isSafetyPassed() ||
                 visitedComponents.size !== componentIds.length
             ) {
                 return;
@@ -594,26 +583,6 @@ export function initializeStand({
             );
         }
     );
-
-    function resetStandProgress() {
-        visitedComponents.clear();
-        selectedComponent = null;
-        standReady = false;
-
-        titleElement.textContent = "Оберіть елемент стенда";
-        descriptionElement.textContent = "Натисніть на елемент макета або його назву, щоб переглянути призначення.";
-        codeElement.textContent = "-";
-        functionElement.textContent = "-";
-        valueElement.textContent = "-";
-
-        updateComponentAppearance();
-        updateProgress();
-        saveProgress();
-
-        document.dispatchEvent(new CustomEvent(LAB05_EVENTS.standReset, {
-            detail: { namespace }
-        }));
-    }
 
     function resetStandProgress() {
         visitedComponents.clear();

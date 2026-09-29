@@ -1,0 +1,63 @@
+/* Shared equipment illustrations for laboratory sections 3. */
+#equipment .equipment-illustration-note {
+    margin: 18px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.94rem;
+}
+
+#equipment .equipment-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+#equipment .equipment-card h3 {
+    margin: 0;
+    line-height: 1.35;
+}
+
+#equipment .equipment-card-media {
+    position: relative;
+    box-sizing: border-box;
+    flex: none;
+    width: min(100%, 290px);
+    aspect-ratio: 1;
+    align-self: center;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #fff;
+}
+
+#equipment .equipment-card-media img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#equipment .equipment-card-details {
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    padding-top: 10px;
+    color: var(--color-text-muted);
+    font-size: 0.94rem;
+}
+
+#equipment .equipment-card-details summary {
+    cursor: pointer;
+    color: var(--color-primary-light);
+    font-weight: 650;
+}
+
+#equipment .equipment-card-details summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+#equipment .equipment-card-details p {
+    margin: 10px 0 0;
+}
