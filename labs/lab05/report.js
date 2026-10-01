@@ -195,321 +195,15 @@ function buildReportData(experiment, calculations) {
     }));
 }
 
-function createFunctionalScheme() {
+function createReportScheme() {
     return `
-        <svg
-            viewBox="0 0 980 310"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-label="Функціональна схема установки для дослідження електродного нагрівача"
+        <img
+            src="../../common/assets/schematics/lab05-figure-5-2.png"
+            alt="Рисунок 5.2. Електрична схема установки для дослідження електродного нагрівача"
+            width="1916"
+            height="821"
+            decoding="async"
         >
-            <defs>
-                <marker
-                    id="lab05-report-arrow"
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="7"
-                    markerHeight="7"
-                    orient="auto-start-reverse"
-                >
-                    <path
-                        d="M 0 0 L 10 5 L 0 10 z"
-                        fill="#6b3825"
-                    />
-                </marker>
-
-                <linearGradient
-                    id="lab05-report-water"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                >
-                    <stop
-                        offset="0"
-                        stop-color="#a6deed"
-                    />
-
-                    <stop
-                        offset="1"
-                        stop-color="#7bc5dc"
-                    />
-                </linearGradient>
-            </defs>
-
-            <style>
-                .report-scheme-box {
-                    fill: #f8fbfc;
-                    stroke: #7896a4;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-copper-box {
-                    fill: #fcf4ef;
-                    stroke: #9f664b;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-meter-box {
-                    fill: #ffffff;
-                    stroke: #2f7e93;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-line {
-                    fill: none;
-                    stroke: #6b3825;
-                    stroke-width: 3;
-                    marker-end: url(#lab05-report-arrow);
-                }
-
-                .report-scheme-branch {
-                    fill: none;
-                    stroke: #7896a4;
-                    stroke-width: 2;
-                    stroke-dasharray: 7 6;
-                    marker-end: url(#lab05-report-arrow);
-                }
-
-                .report-scheme-title {
-                    fill: #15384d;
-                    font: 700 17px Arial, sans-serif;
-                    text-anchor: middle;
-                }
-
-                .report-scheme-label {
-                    fill: #526b7b;
-                    font: 13px Arial, sans-serif;
-                    text-anchor: middle;
-                }
-            </style>
-
-            <rect
-                class="report-scheme-box"
-                x="24"
-                y="52"
-                width="138"
-                height="82"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="93"
-                y="84"
-            >
-                Мережа ~220 В
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="93"
-                y="110"
-            >
-                живлення установки
-            </text>
-
-            <rect
-                class="report-scheme-box"
-                x="205"
-                y="52"
-                width="128"
-                height="82"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="269"
-                y="84"
-            >
-                Вимикач K
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="269"
-                y="110"
-            >
-                комутація кола
-            </text>
-
-            <rect
-                class="report-scheme-copper-box"
-                x="376"
-                y="52"
-                width="150"
-                height="82"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="451"
-                y="84"
-            >
-                ЛАТР
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="451"
-                y="110"
-            >
-                регулювання напруги
-            </text>
-
-            <rect
-                class="report-scheme-meter-box"
-                x="569"
-                y="52"
-                width="156"
-                height="82"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="647"
-                y="84"
-            >
-                PV · PA · PW
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="647"
-                y="110"
-            >
-                U, I та P
-            </text>
-
-            <rect
-                class="report-scheme-copper-box"
-                x="768"
-                y="34"
-                width="184"
-                height="118"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="860"
-                y="66"
-            >
-                Нагрівач 1 / 2
-            </text>
-
-            <rect
-                x="808"
-                y="82"
-                width="104"
-                height="52"
-                rx="5"
-                fill="url(#lab05-report-water)"
-                stroke="#667983"
-                stroke-width="3"
-            />
-
-            <rect
-                x="854"
-                y="71"
-                width="12"
-                height="48"
-                rx="4"
-                fill="#9f5a37"
-            />
-
-            <text
-                class="report-scheme-label"
-                x="860"
-                y="148"
-            >
-                нагрівання води
-            </text>
-
-            <path
-                class="report-scheme-line"
-                d="M 162 93 H 197"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 333 93 H 368"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 526 93 H 561"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 725 93 H 760"
-            />
-
-            <rect
-                class="report-scheme-meter-box"
-                x="260"
-                y="218"
-                width="190"
-                height="62"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="355"
-                y="244"
-            >
-                Секундомір
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="355"
-                y="266"
-            >
-                тривалість нагрівання t
-            </text>
-
-            <rect
-                class="report-scheme-meter-box"
-                x="570"
-                y="218"
-                width="190"
-                height="62"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="665"
-                y="244"
-            >
-                Термометр
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="665"
-                y="266"
-            >
-                температура води T
-            </text>
-
-            <path
-                class="report-scheme-branch"
-                d="M 860 152 V 188 H 355 V 210"
-            />
-
-            <path
-                class="report-scheme-branch"
-                d="M 860 152 V 188 H 665 V 210"
-            />
-        </svg>
     `;
 }
 
@@ -608,8 +302,8 @@ export function initializeReport({
         studentGroup: section.querySelector(
             "#report-student-group"
         ),
-        studentBrigade: section.querySelector(
-            "#report-student-brigade"
+        formVariant: section.querySelector(
+            "#report-form-variant"
         ),
         studentVariant: section.querySelector(
             "#report-student-variant"
@@ -686,10 +380,6 @@ export function initializeReport({
         group:
             elements.form.elements.namedItem(
                 "studentGroup"
-            ),
-        brigade:
-            elements.form.elements.namedItem(
-                "studentBrigade"
             )
     };
 
@@ -778,8 +468,8 @@ export function initializeReport({
         studentInputs.group.value =
             stored?.student?.group ?? "";
 
-        studentInputs.brigade.value =
-            stored?.student?.brigade ?? "";
+        elements.formVariant.textContent =
+            String(getStudentVariant());
     }
 
     function updateStudentFieldValidity(input) {
@@ -1011,9 +701,7 @@ export function initializeReport({
 
         const student = {
             name: studentInputs.name.value.trim(),
-            group: studentInputs.group.value.trim(),
-            brigade:
-                studentInputs.brigade.value.trim()
+            group: studentInputs.group.value.trim()
         };
 
         const data = buildReportData(
@@ -1026,9 +714,6 @@ export function initializeReport({
 
         elements.studentGroup.textContent =
             student.group;
-
-        elements.studentBrigade.textContent =
-            student.brigade || "Не вказано";
 
         elements.studentVariant.textContent =
             String(getStudentVariant());
@@ -1069,7 +754,7 @@ export function initializeReport({
             )} °C`;
 
         elements.schematic.innerHTML =
-            createFunctionalScheme();
+            createReportScheme();
 
         elements.quizScore.textContent =
             `${snapshot.quiz.score} із ${QUIZ_TOTAL}`;

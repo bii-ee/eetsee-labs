@@ -223,6 +223,11 @@ export function initializeExperiment({
                 "#experiment-power-button"
             ),
 
+        powerButtonLabel:
+            find(
+                "#experiment-power-button-label"
+            ),
+
         heaterButtons:
             findAll(
                 ".experiment-heater-button"
@@ -291,6 +296,46 @@ export function initializeExperiment({
         latrOutput:
             find(
                 "#experiment-latr-output"
+            ),
+
+        latrVisual:
+            find(
+                ".experiment-latr-visual"
+            ),
+
+        latrRotation:
+            find(
+                "#experiment-latr-knob-rotation"
+            ),
+
+        voltageNeedle:
+            find(
+                '.experiment-meter-card [data-needle="voltage"]'
+            ),
+
+        currentNeedle:
+            find(
+                '.experiment-meter-card [data-needle="current"]'
+            ),
+
+        powerNeedle:
+            find(
+                '.experiment-meter-card [data-needle="power"]'
+            ),
+
+        firstHeaterDrawing:
+            find(
+                "#experiment-electrodes-electrodes-plate"
+            ),
+
+        secondHeaterDrawing:
+            find(
+                "#experiment-electrodes-electrodes-coax"
+            ),
+
+        thermometerFill:
+            find(
+                "#experiment-thermometer-fill"
             ),
 
         voltageReading:
@@ -373,6 +418,28 @@ export function initializeExperiment({
                 "#experiment-chart-x-max"
             ),
 
+        chartTimeQuarters:
+            [1, 2, 3].map(
+                (index) => find(`#experiment-chart-x-${index}`)
+            ),
+
+        chartTemperatureQuarters:
+            [1, 2, 3].map(
+                (index) => find(`#experiment-chart-y-${index}`)
+            ),
+
+        chartReadout:
+            find("#experiment-chart-readout"),
+
+        temperatureArea:
+            find("#experiment-temperature-area"),
+
+        chartVerticalGuide:
+            find("#experiment-chart-vertical-guide"),
+
+        chartHorizontalGuide:
+            find("#experiment-chart-horizontal-guide"),
+
         temperatureLine:
             find(
                 "#experiment-temperature-line"
@@ -406,7 +473,9 @@ export function initializeExperiment({
             ([key]) =>
                 ![
                     "heaterButtons",
-                    "voltageButtons"
+                    "voltageButtons",
+                    "chartTimeQuarters",
+                    "chartTemperatureQuarters"
                 ].includes(key)
         );
 
@@ -421,7 +490,9 @@ export function initializeExperiment({
         elements.heaterButtons.length !==
         2 ||
         elements.voltageButtons.length !==
-        3
+        3 ||
+        elements.chartTimeQuarters.some((element) => !element) ||
+        elements.chartTemperatureQuarters.some((element) => !element)
     ) {
         console.warn(
             "Не знайдено елементи експериментального модуля ЛР5."
@@ -1071,10 +1142,18 @@ export function initializeExperiment({
             state.isPowered
         );
 
-        elements.powerButton.textContent =
+        const powerAction =
             state.isPowered
                 ? "Вимкнути установку"
                 : "Увімкнути установку";
+
+        elements.powerButtonLabel.textContent =
+            powerAction;
+
+        elements.powerButton.setAttribute(
+            "aria-label",
+            powerAction
+        );
 
         elements.powerButton.classList.toggle(
             "is-on",
@@ -1126,6 +1205,16 @@ export function initializeExperiment({
 
         elements.activeHeaterDescription.textContent =
             heater.construction;
+
+        const secondHeater =
+            state.selectedHeaterId ===
+            "heater-2";
+
+        elements.firstHeaterDrawing.style.display =
+            secondHeater ? "none" : "";
+
+        elements.secondHeaterDrawing.style.display =
+            secondHeater ? "" : "none";
     }
 
     function renderLatr() {
@@ -1148,6 +1237,36 @@ export function initializeExperiment({
                 state.latrValue,
                 0
             )} В`;
+
+        const position =
+            -135 +
+            Math.max(0, Math.min(1,
+                state.latrValue / 220
+            )) * 270;
+
+        elements.latrRotation.setAttribute(
+            "transform",
+            `rotate(${position} 85 82)`
+        );
+    }
+
+    function renderAnalogNeedle(
+        node,
+        value,
+        maximum
+    ) {
+        const normalized =
+            Math.max(
+                0,
+                Math.min(1,
+                    value / maximum
+                )
+            );
+
+        node.setAttribute(
+            "transform",
+            `rotate(${-62 + normalized * 124} 165 158)`
+        );
     }
 
     function renderMeasurements() {
@@ -1189,7 +1308,45 @@ export function initializeExperiment({
 
             power =
                 state.capturedPower;
+        } else if (
+            state.isPowered &&
+            state.phase === "adjustment" &&
+            isExperimentConfigured(experiment)
+        ) {
+            // Навчальне наближення показів при плавній зміні напруги.
+            // Збережені вимірювання завжди беруться з вибраного варіанта.
+            const ratio =
+                Math.max(0,
+                    state.latrValue /
+                    experiment.measurements.actualVoltageV
+                );
+
+            current =
+                experiment.measurements.currentA *
+                ratio;
+
+            power =
+                experiment.measurements.activePowerW *
+                ratio * ratio;
         }
+
+        renderAnalogNeedle(
+            elements.voltageNeedle,
+            voltage,
+            250
+        );
+
+        renderAnalogNeedle(
+            elements.currentNeedle,
+            current,
+            10
+        );
+
+        renderAnalogNeedle(
+            elements.powerNeedle,
+            power,
+            2000
+        );
 
         elements.voltageReading.textContent =
             formatNumber(
@@ -1215,6 +1372,26 @@ export function initializeExperiment({
                 initialTemperature,
                 1
             );
+
+        const temperature =
+            Math.max(20, Math.min(100,
+                state.currentTemperature ??
+                initialTemperature
+            ));
+
+        const columnHeight =
+            8 +
+            (temperature - 20) / 80 * 95;
+
+        elements.thermometerFill.setAttribute(
+            "y",
+            String(120 - columnHeight)
+        );
+
+        elements.thermometerFill.setAttribute(
+            "height",
+            String(columnHeight)
+        );
 
         elements.stopwatchReading.textContent =
             formatStopwatch(
@@ -1301,8 +1478,12 @@ export function initializeExperiment({
                 ""
             );
 
-            elements.temperaturePoint.hidden =
-                true;
+            elements.temperatureArea.setAttribute("points", "");
+            elements.chartVerticalGuide.setAttribute("hidden", "");
+            elements.chartHorizontalGuide.setAttribute("hidden", "");
+            elements.temperaturePoint.setAttribute("hidden", "");
+
+            elements.chartReadout.textContent = "Оберіть параметри досліду";
 
             elements.chartMinimum.textContent =
                 formatNumber(
@@ -1320,6 +1501,14 @@ export function initializeExperiment({
 
             elements.chartTimeMaximum.textContent =
                 "0";
+
+            elements.chartTimeQuarters.forEach((element) => {
+                element.textContent = "";
+            });
+
+            elements.chartTemperatureQuarters.forEach((element) => {
+                element.textContent = "";
+            });
 
             elements.chartStatus.textContent =
                 "Дані досліду очікують погодження";
@@ -1359,6 +1548,26 @@ export function initializeExperiment({
                 1
             );
 
+        elements.chartTimeQuarters.forEach((element, index) => {
+            element.textContent = formatNumber(
+                secondsToMinutes(totalDuration * (index + 1) / 4),
+                1
+            );
+        });
+
+        elements.chartTemperatureQuarters.forEach((element, index) => {
+            element.textContent = formatNumber(
+                initialTemperature +
+                    (boilingTemperature - initialTemperature) *
+                    (3 - index) / 4,
+                0
+            );
+        });
+
+        elements.chartReadout.textContent =
+            `${formatNumber(secondsToMinutes(state.elapsedSeconds), 1)} хв · ` +
+            `${formatNumber(state.currentTemperature ?? initialTemperature, 1)} °C`;
+
         elements.chartStatus.textContent =
             getPhaseLabel();
 
@@ -1379,8 +1588,10 @@ export function initializeExperiment({
                 ""
             );
 
-            elements.temperaturePoint.hidden =
-                true;
+            elements.temperatureArea.setAttribute("points", "");
+            elements.chartVerticalGuide.setAttribute("hidden", "");
+            elements.chartHorizontalGuide.setAttribute("hidden", "");
+            elements.temperaturePoint.setAttribute("hidden", "");
 
             return;
         }
@@ -1425,7 +1636,13 @@ export function initializeExperiment({
                     elapsedSeconds,
 
                     boilingTimeSeconds:
-                        totalDuration
+                        totalDuration,
+
+                    activePowerW:
+                        experiment.measurements.activePowerW,
+
+                    waterVolumeLiters:
+                        experiment.conditions.waterVolumeLiters
                 });
 
             const x =
@@ -1461,27 +1678,42 @@ export function initializeExperiment({
                 ""
             );
 
-            elements.temperaturePoint.hidden =
-                true;
+            elements.temperatureArea.setAttribute("points", "");
+            elements.chartVerticalGuide.setAttribute("hidden", "");
+            elements.chartHorizontalGuide.setAttribute("hidden", "");
+            elements.temperaturePoint.setAttribute("hidden", "");
 
             return;
         }
 
-        elements.temperatureLine.setAttribute(
-            "points",
-            points
-                .map(
-                    (point) =>
-                        `${point.x.toFixed(1)},${point.y.toFixed(1)}`
-                )
-                .join(" ")
-        );
+        const linePoints = points
+            .map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`)
+            .join(" ");
+
+        elements.temperatureLine.setAttribute("points", linePoints);
 
         const lastPoint =
             points.at(-1);
 
-        elements.temperaturePoint.hidden =
-            false;
+        elements.temperatureArea.setAttribute(
+            "points",
+            `64,198 ${linePoints} ${lastPoint.x.toFixed(1)},198`
+        );
+
+        const showGuides = state.progress > 0;
+        elements.chartVerticalGuide.toggleAttribute("hidden", !showGuides);
+        elements.chartHorizontalGuide.toggleAttribute("hidden", !showGuides);
+
+        if (showGuides) {
+            elements.chartVerticalGuide.setAttribute("x1", lastPoint.x.toFixed(1));
+            elements.chartVerticalGuide.setAttribute("x2", lastPoint.x.toFixed(1));
+            elements.chartVerticalGuide.setAttribute("y1", lastPoint.y.toFixed(1));
+            elements.chartHorizontalGuide.setAttribute("x2", lastPoint.x.toFixed(1));
+            elements.chartHorizontalGuide.setAttribute("y1", lastPoint.y.toFixed(1));
+            elements.chartHorizontalGuide.setAttribute("y2", lastPoint.y.toFixed(1));
+        }
+
+        elements.temperaturePoint.removeAttribute("hidden");
 
         elements.temperaturePoint.setAttribute(
             "cx",
@@ -2010,7 +2242,13 @@ export function initializeExperiment({
                         state.elapsedSeconds,
 
                     boilingTimeSeconds:
-                        totalDuration
+                        totalDuration,
+
+                    activePowerW:
+                        experiment.measurements.activePowerW,
+
+                    waterVolumeLiters:
+                        experiment.conditions.waterVolumeLiters
                 });
 
             renderMeasurements();
@@ -2284,6 +2522,59 @@ export function initializeExperiment({
         "input",
         handleLatrInput
     );
+
+    let latrDrag = null;
+
+    elements.latrVisual.addEventListener(
+        "pointerdown",
+        (event) => {
+            if (
+                elements.latrControl.disabled ||
+                event.button !== 0
+            ) return;
+
+            latrDrag = {
+                y: event.clientY,
+                value: state.latrValue
+            };
+
+            elements.latrVisual.setPointerCapture(
+                event.pointerId
+            );
+
+            event.preventDefault();
+        }
+    );
+
+    elements.latrVisual.addEventListener(
+        "pointermove",
+        (event) => {
+            if (!latrDrag) return;
+
+            const nextValue =
+                Math.max(0, Math.min(220,
+                    Math.round(
+                        latrDrag.value +
+                        (latrDrag.y - event.clientY) *
+                        220 / 160
+                    )
+                ));
+
+            elements.latrControl.value =
+                String(nextValue);
+
+            elements.latrControl.dispatchEvent(
+                new Event("input", { bubbles: true })
+            );
+        }
+    );
+
+    for (const type of ["pointerup", "pointercancel"]) {
+        elements.latrVisual.addEventListener(
+            type,
+            () => { latrDrag = null; }
+        );
+    }
 
     elements.actionButton.addEventListener(
         "click",

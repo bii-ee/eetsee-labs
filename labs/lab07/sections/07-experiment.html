@@ -14,9 +14,10 @@
         <strong>Навчальна модель</strong>
 
         <p>
-            Час у симуляції прискорено. Числові значення є
-            відтворюваними модельними даними, призначеними для
-            опанування послідовності вимірювань і розрахунків ЛР7.
+            Секундомір показує тривалість у модельних секундах,
+            а відтворення досліду прискорене. Температура поверхні
+            конфорки змінюється за спрощеною моделлю нагрівання
+            й охолодження; ці дані не є вимірами конкретного стенда.
         </p>
     </div>
 
@@ -68,9 +69,13 @@
                     </strong>
                 </div>
 
-                <button id="experiment-power-button" class="experiment-power-button" type="button" disabled>
-                    Увімкнути установку
-                </button>
+                <div class="experiment-power-control">
+                    <button id="experiment-power-button" class="experiment-power-button experiment-power-rocker"
+                        type="button" aria-label="Увімкнути установку" aria-pressed="false" disabled>
+                        <span>I</span><span>O</span>
+                    </button>
+                    <span class="experiment-power-control-label">Живлення установки</span>
+                </div>
             </div>
 
             <div class="experiment-layout">
@@ -126,28 +131,6 @@
                         </div>
                     </div>
 
-                    <div class="experiment-current-task">
-                        <span>Поточне завдання</span>
-
-                        <strong id="experiment-task-title">
-                            Виміряйте початкову температуру τ₀
-                        </strong>
-
-                        <p id="experiment-task-description">
-                            Установка має бути вимкнена. Наведіть
-                            пірометр на вибрану конфорку та зафіксуйте
-                            початкову температуру поверхні.
-                        </p>
-                    </div>
-
-                    <button id="experiment-action-button" class="experiment-action-button" type="button">
-                        Виміряти τ₀
-                    </button>
-
-                    <p id="experiment-message" class="experiment-message" role="status" aria-live="polite">
-                        Оберіть конфорку та виконайте початкове
-                        вимірювання.
-                    </p>
                 </div>
 
                 <div class="experiment-visual-panel">
@@ -205,53 +188,6 @@
                         </div>
                     </div>
 
-                    <div class="experiment-instruments" aria-label="Контрольні вимірювальні прилади">
-                        <article>
-                            <span class="instrument-code">PA</span>
-
-                            <strong>
-                                <span id="experiment-current-reading">0</span>
-                                А
-                            </strong>
-
-                            <small>Амперметр</small>
-
-                            <small id="experiment-current-note" class="experiment-instrument-note">
-                                Струм через конфорку відсутній
-                            </small>
-                        </article>
-
-                        <article>
-                            <span class="instrument-code">t</span>
-
-                            <strong>
-                                <span id="experiment-stopwatch-reading">0</span>
-                                с
-                            </strong>
-
-                            <small>Секундомір</small>
-
-                            <small id="experiment-stopwatch-note" class="experiment-instrument-note">
-                                Очікування початку інтервалу
-                            </small>
-                        </article>
-
-                        <article>
-                            <span class="instrument-code">τ</span>
-
-                            <strong>
-                                <span id="experiment-temperature-reading">—</span>
-                                °C
-                            </strong>
-
-                            <small>Пірометр</small>
-
-                            <small id="experiment-temperature-note" class="experiment-instrument-note">
-                                Значення ще не зафіксовано
-                            </small>
-                        </article>
-                    </div>
-
                     <div class="experiment-cycle-progress">
                         <div>
                             <span>Інтервал циклу</span>
@@ -266,8 +202,102 @@
                             <span id="experiment-cycle-bar"></span>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="experiment-live-chart">
+            <div class="experiment-task-panel">
+                <div class="experiment-current-task">
+                    <span>Поточне завдання</span>
+
+                    <strong id="experiment-task-title">
+                        Виміряйте початкову температуру τ₀
+                    </strong>
+
+                    <p id="experiment-task-description">
+                        Установка має бути вимкнена. Наведіть
+                        пірометр на вибрану конфорку та зафіксуйте
+                        початкову температуру поверхні.
+                    </p>
+                </div>
+
+                <div class="experiment-task-actions">
+                    <button id="experiment-action-button" class="experiment-action-button" type="button">
+                        Виміряти τ₀
+                    </button>
+
+                    <p id="experiment-message" class="experiment-message" role="status" aria-live="polite">
+                        Оберіть конфорку та виконайте початкове
+                        вимірювання.
+                    </p>
+                </div>
+            </div>
+
+            <div class="experiment-instruments" aria-label="Контрольні вимірювальні прилади">
+                <article class="experiment-instrument-card experiment-ammeter-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 285" role="img" aria-label="Амперметр" class="svg-label"><defs>
+<linearGradient id="lab07-experiment-ammeter-meter1-case" x2=".8" y2="1"><stop stop-color="#566167"></stop><stop offset=".18" stop-color="#303b40"></stop><stop offset="1" stop-color="#172126"></stop></linearGradient>
+<linearGradient id="lab07-experiment-ammeter-meter1-metal"><stop stop-color="#86969a"></stop><stop offset=".17" stop-color="#dfe6e6"></stop><stop offset=".32" stop-color="#f5f7f5"></stop><stop offset=".52" stop-color="#a7b7ba"></stop><stop offset=".78" stop-color="#dbe4e4"></stop><stop offset="1" stop-color="#6d8187"></stop></linearGradient>
+<linearGradient id="lab07-experiment-ammeter-meter1-paper" x2=".2" y2="1"><stop stop-color="#fffef7"></stop><stop offset="1" stop-color="#e8e8dc"></stop></linearGradient>
+<linearGradient id="lab07-experiment-ammeter-meter1-water" x2="0" y2="1"><stop stop-color="#82c7d7" stop-opacity=".6"></stop><stop offset="1" stop-color="#25819b" stop-opacity=".78"></stop></linearGradient>
+<linearGradient id="lab07-experiment-ammeter-meter1-enamel" x2=".4" y2="1"><stop stop-color="#fafaf4"></stop><stop offset=".5" stop-color="#dce3df"></stop><stop offset="1" stop-color="#a1b1b2"></stop></linearGradient>
+<radialGradient id="lab07-experiment-ammeter-meter1-knob" cx=".34" cy=".24"><stop stop-color="#737f80"></stop><stop offset=".35" stop-color="#3c484c"></stop><stop offset="1" stop-color="#152125"></stop></radialGradient>
+<radialGradient id="lab07-experiment-ammeter-meter1-heat"><stop stop-color="#d88a47"></stop><stop offset=".6" stop-color="#a45435"></stop><stop offset="1" stop-color="#3b3c37"></stop></radialGradient>
+</defs><rect x="9" y="10" width="312" height="267" rx="12" fill="#182327"></rect>
+<rect x="10" y="5" width="310" height="266" rx="11" fill="url(#lab07-experiment-ammeter-meter1-case)" stroke="#748287"></rect>
+<path d="M20 16H310" stroke="#9ba6a9" opacity=".4"></path>
+<rect x="29" y="20" width="272" height="175" rx="9" fill="#101b20" stroke="#798689"></rect>
+<rect x="34" y="25" width="262" height="165" rx="6" fill="url(#lab07-experiment-ammeter-meter1-paper)"></rect>
+<path d="M75.82229312124838,110.58337215862502 L87.30061182841443,116.6865024748416" stroke="#303937" stroke-width="1.5"></path><text x="53.74860329977521" y="102.84658308897775" text-anchor="middle" font-size="11" fill="#293432">0</text><path d="M77.95756650226973,106.76900576025092 L82.26659786354351,109.30519359390186" stroke="#303937" stroke-width="0.7"></path><path d="M80.25589007554355,103.05060661743717 L84.4511430421008,105.77087361657394" stroke="#303937" stroke-width="0.7"></path><path d="M82.71295856046788,99.43514013396153 L86.78657447331601,102.33439062237927" stroke="#303937" stroke-width="0.7"></path><path d="M85.32416931126706,95.92937889741748 L89.26851736516473,99.00218192229781" stroke="#303937" stroke-width="0.7"></path><path d="M88.0846309387896,92.53988999262378 L94.93847570662022,98.37296910219196" stroke="#303937" stroke-width="0.7"></path><path d="M90.98917247318795,89.27302269998717 L94.65307482600042,92.67534830889869" stroke="#303937" stroke-width="0.7"></path><path d="M94.03235305031623,86.13489660186218 L97.54560289931048,89.69257498790861" stroke="#303937" stroke-width="0.7"></path><path d="M97.20847210370107,83.13139011918732 L100.56448833619112,86.83775694497012" stroke="#303937" stroke-width="0.7"></path><path d="M100.51158004299366,80.26812949987126 L103.7040760804692,84.11624190086773" stroke="#303937" stroke-width="0.7"></path><path d="M103.93548939890015,77.55047827955617 L111.79527789211102,87.90536721387073" stroke="#303937" stroke-width="1.5"></path><text x="93.65730444623976" y="68.00946967314484" text-anchor="middle" font-size="11" fill="#293432">2</text><path d="M107.4737864137129,74.98352723450076 L110.3216187694697,79.09325360903041" stroke="#303937" stroke-width="0.7"></path><path d="M111.11984305573145,72.5720848454032 L113.78717755792296,76.8011895560268" stroke="#303937" stroke-width="0.7"></path><path d="M114.86682943506693,70.32066829002784 L117.34866956204382,74.66122926576904" stroke="#303937" stroke-width="0.7"></path><path d="M118.70772659757293,68.23349498150804 L120.99942330066338,72.6773813685621" stroke="#303937" stroke-width="0.7"></path><path d="M122.63533967293611,66.31447466817622 L126.41040841495172,74.4844719749724" stroke="#303937" stroke-width="0.7"></path><path d="M126.6423113522981,64.56720210971974 L128.54120682990708,69.19258814389202" stroke="#303937" stroke-width="0.7"></path><path d="M130.72113567016115,62.994950343381745 L132.41810915183635,67.69817062341235" stroke="#303937" stroke-width="0.7"></path><path d="M134.8641720647617,61.60066455282116 L136.35604473482303,66.37290888188942" stroke="#303937" stroke-width="0.7"></path><path d="M139.06365969057302,60.386956551116626 L140.34763693361396,65.21928543472471" stroke="#303937" stroke-width="0.7"></path><path d="M143.3117319561266,59.356099888249034 L146.10329120929845,72.05283950659322" stroke="#303937" stroke-width="1.5"></path><text x="139.66123139428655" y="46.752671156568184" text-anchor="middle" font-size="11" fill="#293432">4</text><path d="M147.60043125991976,58.51002559222752 L148.46179604903264,63.435271850038035" stroke="#303937" stroke-width="0.7"></path><path d="M151.92172389680547,57.850318551836565 L152.5691633078547,62.808223574022875" stroke="#303937" stroke-width="0.7"></path><path d="M156.26751510694177,57.3782145477804 L156.6998163392714,62.35949105531603" stroke="#303937" stroke-width="0.7"></path><path d="M160.62966423911038,57.09459793778586 L160.84601749459998,62.08991487155885" stroke="#303937" stroke-width="0.7"></path><path d="M165,57 L165,66" stroke="#303937" stroke-width="0.7"></path><path d="M169.37033576088962,57.09459793778586 L169.15398250540005,62.08991487155885" stroke="#303937" stroke-width="0.7"></path><path d="M173.7324848930582,57.3782145477804 L173.30018366072858,62.35949105531603" stroke="#303937" stroke-width="0.7"></path><path d="M178.07827610319453,57.850318551836565 L177.4308366921453,62.808223574022875" stroke="#303937" stroke-width="0.7"></path><path d="M182.39956874008024,58.51002559222752 L181.53820395096736,63.435271850038035" stroke="#303937" stroke-width="0.7"></path><path d="M186.6882680438734,59.356099888249034 L183.89670879070158,72.05283950659322" stroke="#303937" stroke-width="1.5"></path><text x="190.33876860571348" y="46.752671156568184" text-anchor="middle" font-size="11" fill="#293432">6</text><path d="M190.93634030942695,60.386956551116626 L189.65236306638602,65.21928543472471" stroke="#303937" stroke-width="0.7"></path><path d="M195.1358279352383,61.60066455282116 L193.64395526517697,66.37290888188942" stroke="#303937" stroke-width="0.7"></path><path d="M199.27886432983885,62.994950343381745 L197.58189084816365,67.69817062341235" stroke="#303937" stroke-width="0.7"></path><path d="M203.3576886477019,64.56720210971973 L201.4587931700929,69.19258814389201" stroke="#303937" stroke-width="0.7"></path><path d="M207.3646603270639,66.31447466817622 L203.58959158504828,74.4844719749724" stroke="#303937" stroke-width="0.7"></path><path d="M211.29227340242707,68.23349498150804 L209.00057669933662,72.6773813685621" stroke="#303937" stroke-width="0.7"></path><path d="M215.13317056493307,70.32066829002785 L212.65133043795618,74.66122926576904" stroke="#303937" stroke-width="0.7"></path><path d="M218.88015694426855,72.5720848454032 L216.21282244207703,76.8011895560268" stroke="#303937" stroke-width="0.7"></path><path d="M222.5262135862871,74.98352723450076 L219.6783812305303,79.09325360903041" stroke="#303937" stroke-width="0.7"></path><path d="M226.06451060109987,77.55047827955617 L218.20472210788898,87.90536721387073" stroke="#303937" stroke-width="1.5"></path><text x="236.34269555376022" y="68.00946967314484" text-anchor="middle" font-size="11" fill="#293432">8</text><path d="M229.48841995700636,80.26812949987126 L226.2959239195308,84.11624190086773" stroke="#303937" stroke-width="0.7"></path><path d="M232.79152789629893,83.13139011918732 L229.43551166380888,86.83775694497012" stroke="#303937" stroke-width="0.7"></path><path d="M235.96764694968377,86.13489660186218 L232.4543971006895,89.69257498790861" stroke="#303937" stroke-width="0.7"></path><path d="M239.01082752681205,89.27302269998717 L235.34692517399958,92.67534830889869" stroke="#303937" stroke-width="0.7"></path><path d="M241.9153690612104,92.53988999262377 L235.06152429337976,98.37296910219195" stroke="#303937" stroke-width="0.7"></path><path d="M244.67583068873296,95.92937889741748 L240.7314826348353,99.00218192229781" stroke="#303937" stroke-width="0.7"></path><path d="M247.28704143953212,99.43514013396153 L243.21342552668398,102.33439062237927" stroke="#303937" stroke-width="0.7"></path><path d="M249.74410992445647,103.05060661743717 L245.5488569578992,105.77087361657394" stroke="#303937" stroke-width="0.7"></path><path d="M252.04243349773026,106.76900576025089 L247.73340213645648,109.30519359390183" stroke="#303937" stroke-width="0.7"></path><path d="M254.17770687875162,110.58337215862502 L242.69938817158555,116.6865024748416" stroke="#303937" stroke-width="1.5"></path><text x="276.2513967002248" y="102.84658308897775" text-anchor="middle" font-size="11" fill="#293432">10</text>
+<text x="165" y="117" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#283330">A</text>
+<text x="275" y="175" text-anchor="end" font-size="8" fill="#63716b">~</text>
+<path d="M40 186H290" stroke="#75807a" stroke-width=".5"></path>
+<g data-needle="current" transform="rotate(-62 165 158)"><path d="M168 169 168 157 166 60 164 157 164 169Z" fill="#151c1b" opacity=".15"></path><path d="M163.5 165 164.1 155 165 59 165.9 155 166.5 165Z" fill="#7e3027"></path><path d="M162 161 168 161 170 175 160 175Z" fill="#394342"></path></g>
+<circle cx="165" cy="158" r="8" fill="#24322f"></circle><circle cx="165" cy="158" r="5" fill="url(#lab07-experiment-ammeter-meter1-metal)"></circle>
+<path d="M37 30H270L100 189H37Z" fill="white" opacity=".1" pointer-events="none"></path>
+<text x="165" y="217" fill="#dce3df" font-size="9" letter-spacing="2" text-anchor="middle">PA · 0–10 A</text>
+<g transform="translate(94 245)"><ellipse cy="4" rx="12" ry="9" fill="#071319" opacity=".3"></ellipse><circle r="11" fill="#19272a" stroke="#63777d"></circle><circle r="8.6" fill="#3e4b50"></circle><circle r="5.3" fill="#9ba8a9"></circle><circle r="3.3" fill="#142024"></circle></g><g transform="translate(236 245)"><ellipse cy="4" rx="12" ry="9" fill="#071319" opacity=".3"></ellipse><circle r="11" fill="#19272a" stroke="#63777d"></circle><circle r="8.6" fill="#995446"></circle><circle r="5.3" fill="#9ba8a9"></circle><circle r="3.3" fill="#142024"></circle></g><g transform="translate(23 18)"><circle r="5" fill="#0f1e24"></circle><circle r="3.9" fill="#a0adaf"></circle><path d="M-2.6 1.4 2.6-1.4" stroke="#38484c" stroke-width="1.3"></path></g><g transform="translate(307 18)"><circle r="5" fill="#0f1e24"></circle><circle r="3.9" fill="#a0adaf"></circle><path d="M-2.6 1.4 2.6-1.4" stroke="#38484c" stroke-width="1.3"></path></g><g transform="translate(23 258)"><circle r="5" fill="#0f1e24"></circle><circle r="3.9" fill="#a0adaf"></circle><path d="M-2.6 1.4 2.6-1.4" stroke="#38484c" stroke-width="1.3"></path></g><g transform="translate(307 258)"><circle r="5" fill="#0f1e24"></circle><circle r="3.9" fill="#a0adaf"></circle><path d="M-2.6 1.4 2.6-1.4" stroke="#38484c" stroke-width="1.3"></path></g>
+<circle cx="165" cy="243" r="8" fill="#1b2529" stroke="#68777b"></circle><path d="M161 243H169" stroke="#99a5a6"></path></svg>
+                    <div class="experiment-instrument-caption">
+                        <strong>Амперметр PA</strong>
+                        <span id="experiment-current-reading">0 А</span>
+                        <small id="experiment-current-note">Струм через конфорку відсутній</small>
+                    </div>
+                </article>
+
+                <article class="experiment-instrument-card experiment-stopwatch-card">
+                    <div class="lab07-stopwatch-device" aria-label="Секундомір">
+                        <span class="lab07-device-heading">Секундомір</span>
+                        <span class="lab07-stopwatch-lcd"><small>ХВ : С</small>
+                            <strong id="experiment-stopwatch-reading">00:00.0</strong></span>
+                    </div>
+                    <div class="experiment-instrument-caption">
+                        <strong>Секундомір</strong>
+                        <small id="experiment-stopwatch-note">Очікування початку інтервалу</small>
+                    </div>
+                </article>
+
+                <article class="experiment-instrument-card experiment-pyrometer-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 265" role="img" aria-label="Безконтактний пірометр" class="svg-label"><defs>
+<linearGradient id="lab07-experiment-pyrometer-s1-case" x2=".8" y2="1"><stop stop-color="#566167"></stop><stop offset=".18" stop-color="#303b40"></stop><stop offset="1" stop-color="#172126"></stop></linearGradient>
+<linearGradient id="lab07-experiment-pyrometer-s1-metal"><stop stop-color="#86969a"></stop><stop offset=".17" stop-color="#dfe6e6"></stop><stop offset=".32" stop-color="#f5f7f5"></stop><stop offset=".52" stop-color="#a7b7ba"></stop><stop offset=".78" stop-color="#dbe4e4"></stop><stop offset="1" stop-color="#6d8187"></stop></linearGradient>
+<linearGradient id="lab07-experiment-pyrometer-s1-paper" x2=".2" y2="1"><stop stop-color="#fffef7"></stop><stop offset="1" stop-color="#e8e8dc"></stop></linearGradient>
+<linearGradient id="lab07-experiment-pyrometer-s1-water" x2="0" y2="1"><stop stop-color="#82c7d7" stop-opacity=".6"></stop><stop offset="1" stop-color="#25819b" stop-opacity=".78"></stop></linearGradient>
+<linearGradient id="lab07-experiment-pyrometer-s1-enamel" x2=".4" y2="1"><stop stop-color="#fafaf4"></stop><stop offset=".5" stop-color="#dce3df"></stop><stop offset="1" stop-color="#a1b1b2"></stop></linearGradient>
+<radialGradient id="lab07-experiment-pyrometer-s1-knob" cx=".34" cy=".24"><stop stop-color="#737f80"></stop><stop offset=".35" stop-color="#3c484c"></stop><stop offset="1" stop-color="#152125"></stop></radialGradient>
+<radialGradient id="lab07-experiment-pyrometer-s1-heat"><stop stop-color="#d88a47"></stop><stop offset=".6" stop-color="#a45435"></stop><stop offset="1" stop-color="#3b3c37"></stop></radialGradient>
+</defs><ellipse cx="86" cy="231" rx="64" ry="8" fill="#263e45" opacity=".12"></ellipse><path d="M96 104 124 121 107 226 68 218 84 143 59 136 41 85 71 57 192 66 212 99 201 128 116 137Z" fill="url(#lab07-experiment-pyrometer-s1-case)" stroke="#65797f" stroke-width="2"></path><path d="M60 86 72 68 191 75 201 96 193 115 99 121 69 112Z" fill="#6e8d8b"></path><rect x="85" y="78" width="95" height="33" rx="4" fill="#152a2b"></rect><rect x="90" y="82" width="85" height="25" rx="2" fill="#afc0ab"></rect><text x="131" y="100" font-family="monospace" font-size="16" text-anchor="middle" fill="#2c4537" data-pyro="">– °C</text><path d="M88 153 112 158 100 211 78 207Z" fill="#172327"></path><rect x="199" y="81" width="19" height="34" rx="4" fill="#16292e"></rect><circle cx="219" cy="98" r="8" fill="#49626b"></circle><path id="lab07-experiment-pyrometer-laser" d="M228 98 292 73" stroke="#a44f41" stroke-width="1" stroke-dasharray="4 3" opacity="0"></path><text x="70" y="43" font-size="10" letter-spacing="1.3" fill="#526d76">ІЧ ПІРОМЕТР</text></svg>
+                    <div class="experiment-instrument-caption">
+                        <strong>Пірометр</strong>
+                        <span><span id="experiment-temperature-reading">–</span> °C</span>
+                        <small id="experiment-temperature-note">Значення ще не зафіксовано</small>
+                        <button id="experiment-pyrometer-button" class="experiment-pyrometer-button" type="button">
+                            Виміряти температуру
+                        </button>
+                    </div>
+                </article>
+            </div>
+
+            <div class="experiment-live-chart">
                         <div class="experiment-live-chart-header">
                             <div>
                                 <strong>Температурна крива режиму</strong>
@@ -364,9 +394,6 @@
                             </span>
                         </div>
                     </div>
-
-                </div>
-            </div>
 
             <div class="experiment-table-panel">
                 <div class="experiment-table-header">

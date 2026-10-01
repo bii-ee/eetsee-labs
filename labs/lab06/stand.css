@@ -677,3 +677,24 @@
         width: 100%;
     }
 }
+/* Розділ 6: опис на всю ширину над трьома характеристиками. */
+#stand .stand-information {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+#stand .stand-information-main > p:not(.stand-information-label) {
+    margin: 0;
+    line-height: 1.55;
+}
+
+#stand .stand-properties {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-width: 0;
+}
+
+@media (max-width: 760px) {
+    #stand .stand-properties {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

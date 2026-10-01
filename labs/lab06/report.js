@@ -499,8 +499,7 @@ export function initializeReport() {
 
     [
         "studentName",
-        "studentGroup",
-        "studentBrigade"
+        "studentGroup"
     ].forEach((name) => {
         const field =
             form.elements.namedItem(
@@ -515,6 +514,10 @@ export function initializeReport() {
                 storedStudent[name];
         }
     });
+
+    panel.querySelector(
+        "#report-form-variant"
+    ).textContent = String(getStudentVariant());
 
     function refreshAvailability() {
         const completed =
@@ -575,44 +578,26 @@ export function initializeReport() {
     function renderSchematic() {
         const source =
             document.querySelector(
-                ".stand-schematic"
+                "#equipment .lab-schematic img"
             );
 
         if (!source) {
             schematic.textContent =
-                "Принципову схему не знайдено.";
+                "Схему розділу 3 не знайдено.";
 
             return;
         }
 
-        const clonedSvg =
-            source.cloneNode(true);
-
-        clonedSvg.removeAttribute(
-            "width"
-        );
-
-        clonedSvg.removeAttribute(
-            "height"
-        );
-
-        clonedSvg.setAttribute(
-            "viewBox",
-            "0 50 1160 520"
-        );
-
-        clonedSvg.setAttribute(
-            "preserveAspectRatio",
-            "xMidYMid meet"
-        );
-
-        clonedSvg.setAttribute(
-            "aria-label",
-            "Принципова схема лабораторної установки"
-        );
+        const image = document.createElement("img");
+        image.src = source.src;
+        image.alt = source.alt;
+        image.width = source.width;
+        image.height = source.height;
+        image.loading = "eager";
+        image.decoding = "async";
 
         schematic.replaceChildren(
-            clonedSvg
+            image
         );
     }
     function renderCharts() {
@@ -690,12 +675,6 @@ export function initializeReport() {
             "#report-student-group"
         ).textContent =
             student.studentGroup;
-
-        panel.querySelector(
-            "#report-student-brigade"
-        ).textContent =
-            student.studentBrigade ||
-            "Не вказано";
 
         panel.querySelector(
             "#report-date"
@@ -1041,9 +1020,19 @@ export function initializeReport() {
                 ? printDocument.fonts.ready
                 : Promise.resolve();
 
-        Promise.resolve(
-            fontsReady
-        ).then(() => {
+        const imagesReady = Promise.all(
+            Array.from(
+                printDocument.images,
+                (image) => image.decode
+                    ? image.decode().catch(() => {})
+                    : Promise.resolve()
+            )
+        );
+
+        Promise.all([
+            fontsReady,
+            imagesReady
+        ]).then(() => {
             window.setTimeout(
                 () => {
                     if (printWindow.closed) {

@@ -221,37 +221,33 @@
                     </div>
 
                     <div class="experiment-simulator">
-                        <div class="experiment-power-chain">
+                        <div class="experiment-power-chain" aria-label="Функціональний ланцюг установки">
                             <article>
-                                <span>~</span>
-                                <strong id="experiment-source-reading">
-                                    220 В
-                                </strong>
+                                <span class="bench-chain-visual" data-bench-visual="source" aria-hidden="true"></span>
+                                <strong id="experiment-source-reading">220 В</strong>
                                 <small>Джерело живлення</small>
                             </article>
-
                             <b aria-hidden="true">→</b>
-
                             <article>
-                                <span>ЛАТР</span>
-                                <strong id="experiment-latr-reading">
-                                    0 В
-                                </strong>
-                                <small>Автотрансформатор</small>
+                                <span class="bench-chain-visual bench-live-switch" data-bench-visual="switch" aria-hidden="true"></span>
+                                <strong id="experiment-switch-reading">Вимкнено</strong>
+                                <small>Вимикач</small>
                             </article>
-
                             <b aria-hidden="true">→</b>
-
                             <article>
-                                <span>A20</span>
-                                <strong>DIRIS</strong>
+                                <span class="bench-chain-visual" data-bench-visual="latr" aria-hidden="true"></span>
+                                <strong id="experiment-latr-reading">0 В</strong>
+                                <small>ЛАТР</small>
+                            </article>
+                            <b aria-hidden="true">→</b>
+                            <article>
+                                <span class="bench-chain-visual" data-bench-visual="diris" aria-hidden="true"></span>
+                                <strong>DIRIS A20</strong>
                                 <small>Аналізатор мережі</small>
                             </article>
-
                             <b aria-hidden="true">→</b>
-
                             <article>
-                                <span>ПП-3</span>
+                                <span class="bench-chain-plate" aria-hidden="true">ПП-3</span>
                                 <strong>МЕРИДІАН</strong>
                                 <small>Індукційна плита</small>
                             </article>
@@ -292,68 +288,17 @@
                         </div>
 
                         <div class="experiment-instruments" aria-label="Поточні покази приладів">
-                            <article>
-                                <span class="instrument-code">U</span>
-
-                                <strong>
-                                    <span id="experiment-voltage-reading">
-                                        0
-                                    </span>
-                                    В
-                                </strong>
-
-                                <small>Напруга</small>
+                            <article class="bench-live-analyzer">
+                                <span class="bench-instrument-visual" data-bench-visual="diris"></span>
+                                <small>Напруга, струм і активна потужність</small>
                             </article>
-
                             <article>
-                                <span class="instrument-code">I</span>
-
-                                <strong>
-                                    <span id="experiment-current-reading">
-                                        0,0
-                                    </span>
-                                    А
-                                </strong>
-
-                                <small>Струм</small>
+                                <span class="bench-instrument-visual" data-bench-visual="stopwatch"></span>
+                                <small>Тривалість інтервалу, с</small>
                             </article>
-
                             <article>
-                                <span class="instrument-code">P</span>
-
-                                <strong>
-                                    <span id="experiment-power-reading">
-                                        0,00
-                                    </span>
-                                    кВт
-                                </strong>
-
-                                <small>Активна потужність</small>
-                            </article>
-
-                            <article>
-                                <span class="instrument-code">t</span>
-
-                                <strong>
-                                    <span id="experiment-time-reading">
-                                        0,00
-                                    </span>
-                                    с
-                                </strong>
-
-                                <small>Тривалість інтервалу</small>
-                            </article>
-
-                            <article>
-                                <span class="instrument-code">°C</span>
-
-                                <strong>
-                                    <span id="experiment-temperature-reading">
-                                        20,0
-                                    </span>
-                                    °C
-                                </strong>
-
+                                <span class="bench-instrument-visual" data-bench-visual="thermometer"></span>
+                                <strong class="bench-temperature-value"><span id="experiment-temperature-reading">20,0</span> °C</strong>
                                 <small>Температура води</small>
                             </article>
                         </div>

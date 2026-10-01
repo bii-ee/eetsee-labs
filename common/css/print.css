@@ -513,3 +513,43 @@
         font-size: 8.7pt !important;
     }
 }
+/* ЛР5: схема з розділу 3 та чотири графіки звіту. */
+@media print {
+    #lab-print-root .report-document-lab05 .report-schematic {
+        display: flex !important;
+        min-height: 0 !important;
+        height: 60mm !important;
+        max-height: 60mm !important;
+        aspect-ratio: auto !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+    }
+
+    #lab-print-root .report-document-lab05 .report-schematic img {
+        display: block !important;
+        width: 100% !important;
+        height: 58mm !important;
+        max-width: 100% !important;
+        max-height: 58mm !important;
+        object-fit: contain !important;
+    }
+
+    #lab-print-root .report-document-lab05 .report-schematic-caption {
+        margin: 0.6mm 0 0 !important;
+        font-size: 6.5pt !important;
+        text-align: center !important;
+    }
+
+    #lab-print-root .report-document-lab05 .report-chart-list {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 2.5mm !important;
+    }
+
+    #lab-print-root .report-document-lab05 .report-chart:nth-child(3) {
+        grid-column: auto !important;
+        width: auto !important;
+        justify-self: stretch !important;
+    }
+}

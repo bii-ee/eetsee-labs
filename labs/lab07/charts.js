@@ -731,7 +731,7 @@ export function initializeAnalysis({
                     )
                 }
             ],
-            yMaximum: getNiceMaximum(durationValues, 10),
+            yMaximum: getNiceMaximum(durationValues, 100),
             unit: "с",
             xTitle: "Положення регулятора",
             ariaLabel:

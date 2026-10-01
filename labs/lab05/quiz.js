@@ -481,9 +481,6 @@ export function initializeQuiz({
             const selectedOption = question.options.find(
                 (option) => option.value === selectedValue
             );
-            const correctOption = question.options.find(
-                (option) => option.value === question.correct
-            );
             const questionElement = elements.list.querySelector(
                 `[data-question-id="${question.id}"]`
             );
@@ -504,8 +501,7 @@ export function initializeQuiz({
                 feedback.textContent = selectedOption.feedback;
             } else {
                 feedback.textContent =
-                    `${selectedOption?.feedback ?? "Відповідь неправильна."} ` +
-                    `Правильна відповідь: ${correctOption.label}.`;
+                    selectedOption?.feedback ?? "Відповідь неправильна.";
             }
         });
 

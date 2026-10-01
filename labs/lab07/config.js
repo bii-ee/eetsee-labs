@@ -13,7 +13,7 @@ export const LAB07_CONFIG = Object.freeze({
 
     number: 7,
 
-    configVersion: 2,
+    configVersion: 3,
 
     title:
         "Дослідження параметрів роботи побутових двоконфоркових електроплит із біметалевим терморезистором",
@@ -39,19 +39,19 @@ export const LAB07_CONFIG = Object.freeze({
             "lab07:stand",
 
         experiment:
-            variantStorageNamespace("lab07:cyclic-experiment.v2"),
+            variantStorageNamespace("lab07:cyclic-experiment.v3"),
 
         calculations:
-            variantStorageNamespace("lab07:calculations.v2"),
+            variantStorageNamespace("lab07:calculations.v3"),
 
         analysis:
-            variantStorageNamespace("lab07:analysis.v2"),
+            variantStorageNamespace("lab07:analysis.v3"),
 
         quiz:
-            variantStorageNamespace("lab07:quiz.v2"),
+            variantStorageNamespace("lab07:quiz.v3"),
 
         report:
-            variantStorageNamespace("lab07:report.v2")
+            variantStorageNamespace("lab07:report.v3")
     }),
 
     variants: Object.freeze({

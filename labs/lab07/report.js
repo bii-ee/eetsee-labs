@@ -298,9 +298,7 @@ export function initializeReport({
         studentName: section.querySelector("#report-student-name"),
         studentVariant: section.querySelector("#report-student-variant"),
         studentGroup: section.querySelector("#report-student-group"),
-        studentBrigade: section.querySelector(
-            "#report-student-brigade"
-        ),
+        formVariant: section.querySelector("#report-form-variant"),
         date: section.querySelector("#report-date"),
         schematic: section.querySelector("#report-schematic"),
         burner: section.querySelector("#report-burner"),
@@ -345,8 +343,7 @@ export function initializeReport({
 
     const studentInputs = {
         name: elements.form.elements.namedItem("studentName"),
-        group: elements.form.elements.namedItem("studentGroup"),
-        brigade: elements.form.elements.namedItem("studentBrigade")
+        group: elements.form.elements.namedItem("studentGroup")
     };
 
     let currentData = null;
@@ -391,7 +388,7 @@ export function initializeReport({
 
         studentInputs.name.value = stored?.student?.name ?? "";
         studentInputs.group.value = stored?.student?.group ?? "";
-        studentInputs.brigade.value = stored?.student?.brigade ?? "";
+        elements.formVariant.textContent = String(getStudentVariant());
     }
 
     function updateStudentFieldValidity(input) {
@@ -520,16 +517,13 @@ export function initializeReport({
 
         const student = {
             name: studentInputs.name.value.trim(),
-            group: studentInputs.group.value.trim(),
-            brigade: studentInputs.brigade.value.trim()
+            group: studentInputs.group.value.trim()
         };
         const data = buildReportData(snapshot.experiment);
 
         elements.studentName.textContent = student.name;
         elements.studentVariant.textContent = String(getStudentVariant());
         elements.studentGroup.textContent = student.group;
-        elements.studentBrigade.textContent =
-            student.brigade || "Не вказано";
         elements.date.textContent = new Intl.DateTimeFormat("uk-UA", {
             day: "2-digit",
             month: "2-digit",

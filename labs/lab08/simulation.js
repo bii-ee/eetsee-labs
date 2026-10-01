@@ -1,4 +1,5 @@
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
+import { mountBenchVisuals } from "./bench-visuals.js";
 import { createThermostatCycle, createParameterTrial, MAXIMUM_CYCLES } from "./thermal-model.js";
 
 import {
@@ -205,6 +206,8 @@ export function initializeExperiment({
         return;
     }
 
+    mountBenchVisuals(section);
+
     const getElement = (selector) =>
         section.querySelector(selector);
 
@@ -300,6 +303,18 @@ export function initializeExperiment({
         ),
         latrReading: getElement(
             "#experiment-latr-reading"
+        ),
+        switchReading: getElement(
+            "#experiment-switch-reading"
+        ),
+        switchVisual: getElement(
+            ".bench-live-switch"
+        ),
+        switchRocker: getElement(
+            ".bench-live-switch [data-switch-rocker]"
+        ),
+        thermometerFill: getElement(
+            "#bench-water-thermometer-fill"
         ),
 
         plateVisual: getElement(
@@ -502,6 +517,11 @@ export function initializeExperiment({
                 ? "Увімкнена"
                 : "Знеструмлена";
 
+        elements.switchReading.textContent = active ? "Увімкнено" : "Вимкнено";
+        elements.switchVisual.classList.toggle("is-on", active);
+        elements.switchRocker.setAttribute("y", active ? "34" : "75");
+        elements.switchRocker.setAttribute("fill", active ? "#3b725f" : "#516369");
+
         elements.powerState.classList.toggle(
             "is-on",
             active
@@ -549,19 +569,19 @@ export function initializeExperiment({
             formatNumber(
                 voltage,
                 voltage === 0 ? 0 : 1
-            );
+            ) + " В";
 
         elements.currentReading.textContent =
             formatNumber(
                 current,
                 1
-            );
+            ) + " А";
 
         elements.powerReading.textContent =
             formatNumber(
                 power,
                 2
-            );
+            ) + " кВт";
 
         elements.timeReading.textContent =
             formatNumber(
@@ -574,6 +594,10 @@ export function initializeExperiment({
                 temperature,
                 1
             );
+
+        const fillHeight = Math.max(5, Math.min(94, (temperature - 20) / 80 * 94));
+        elements.thermometerFill.setAttribute("y", String(122 - fillHeight));
+        elements.thermometerFill.setAttribute("height", String(fillHeight));
     }
 
     function resetVisualState() {
@@ -1124,6 +1148,10 @@ export function initializeExperiment({
                         temperature,
                         1
                     );
+
+                const fillHeight = Math.max(5, Math.min(94, (temperature - 20) / 80 * 94));
+                elements.thermometerFill.setAttribute("y", String(122 - fillHeight));
+                elements.thermometerFill.setAttribute("height", String(fillHeight));
 
                 setIntervalProgress(
                     progress * 100,

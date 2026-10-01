@@ -2,7 +2,10 @@ import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 
 import { createStorage } from "../../common/js/storage.js";
 
-import { LAB07_EXPERIMENT_MODES as EXPERIMENT_MODES } from "./data.js";
+import {
+    LAB07_EXPERIMENT_MODES as EXPERIMENT_MODES,
+    LAB07_THERMAL_MODEL
+} from "./data.js";
 
 import {
     getStudentVariant,
@@ -16,7 +19,10 @@ import {
 } from "./config.js";
 
 const EMPTY_READING = "—";
-const MODEL_MILLISECONDS_PER_SECOND = 70;
+// Модельний секундомір показує повні інтервали; відтворення прискорене.
+const MODEL_MILLISECONDS_PER_SECOND = 6;
+const NOMINAL_VOLTAGE = 220;
+const BURNER_POWER_WATTS = Object.freeze({ 1: 1000, 2: 1200 });
 
 
 
@@ -29,6 +35,13 @@ function formatNumber(value, digits = 0) {
         minimumFractionDigits: 0,
         maximumFractionDigits: digits
     }).format(value);
+}
+
+function formatStopwatch(seconds) {
+    const tenths = Math.floor(Math.max(0, seconds) * 10);
+    const minutes = String(Math.floor(tenths / 600)).padStart(2, "0");
+    const remaining = String(Math.floor(tenths / 10) % 60).padStart(2, "0");
+    return `${minutes}:${remaining}.${tenths % 10}`;
 }
 
 function isFiniteNumber(value) {
@@ -123,6 +136,18 @@ export function initializeExperiment({
 
         actionButton:
             find("#experiment-action-button"),
+
+        pyrometerButton:
+            find("#experiment-pyrometer-button"),
+
+        pyrometerDisplay:
+            find(".experiment-pyrometer-card [data-pyro]"),
+
+        pyrometerLaser:
+            find("#lab07-experiment-pyrometer-laser"),
+
+        ammeterNeedle:
+            find(".experiment-ammeter-card [data-needle='current']"),
 
         message:
             find("#experiment-message"),
@@ -456,17 +481,18 @@ export function initializeExperiment({
     }
 
     function getTemperatureProgress(
-        linearProgress
+        linearProgress,
+        duration,
+        timeConstant
     ) {
         const numerator =
             1 -
             Math.exp(
-                -2.4 * linearProgress
+                -duration * linearProgress / timeConstant
             );
 
         const denominator =
-            1 -
-            Math.exp(-2.4);
+            1 - Math.exp(-duration / timeConstant);
 
         return numerator / denominator;
     }
@@ -478,6 +504,7 @@ export function initializeExperiment({
             startTemperature,
             duration,
             endTemperature,
+            timeConstant,
             progress = 1
         }
     ) {
@@ -505,7 +532,9 @@ export function initializeExperiment({
 
             const temperatureProgress =
                 getTemperatureProgress(
-                    intervalProgress
+                    intervalProgress,
+                    duration,
+                    timeConstant
                 );
 
             points.push({
@@ -537,7 +566,9 @@ export function initializeExperiment({
                     startTemperature
                 ) *
                 getTemperatureProgress(
-                    limitedProgress
+                    limitedProgress,
+                    duration,
+                    timeConstant
                 )
         };
     }
@@ -578,7 +609,10 @@ export function initializeExperiment({
                         cycle.tOn,
 
                     endTemperature:
-                        cycle.tauOn
+                        cycle.tauOn,
+
+                    timeConstant:
+                        LAB07_THERMAL_MODEL.heatingTimeConstant
                 }
             );
 
@@ -595,7 +629,10 @@ export function initializeExperiment({
                         cycle.tOff,
 
                     endTemperature:
-                        cycle.tauOff
+                        cycle.tauOff,
+
+                    timeConstant:
+                        LAB07_THERMAL_MODEL.coolingTimeConstant
                 }
             );
         });
@@ -637,6 +674,9 @@ export function initializeExperiment({
                 endTemperature:
                     cycle.tauOn,
 
+                timeConstant:
+                    LAB07_THERMAL_MODEL.heatingTimeConstant,
+
                 progress:
                     heatingProgress
             }
@@ -670,6 +710,9 @@ export function initializeExperiment({
 
                 endTemperature:
                     cycle.tauOff,
+
+                timeConstant:
+                    LAB07_THERMAL_MODEL.coolingTimeConstant,
 
                 progress:
                     coolingProgress
@@ -1137,6 +1180,13 @@ export function initializeExperiment({
 
         elements.actionButton.disabled =
             task.disabled;
+
+        elements.pyrometerButton.disabled =
+            task.disabled || ![
+                "await-initial",
+                "await-tau-n",
+                "await-tau-o"
+            ].includes(state.phase);
     }
 
     function renderVisualState() {
@@ -1164,10 +1214,16 @@ export function initializeExperiment({
             state.isPowered
         );
 
-        elements.powerButton.textContent =
+        elements.powerButton.setAttribute(
+            "aria-pressed",
+            String(state.isPowered)
+        );
+        elements.powerButton.setAttribute(
+            "aria-label",
             state.isPowered
                 ? "Вимкнути установку"
-                : "Увімкнути установку";
+                : "Увімкнути установку"
+        );
 
         elements.powerButton.classList.toggle(
             "is-on",
@@ -1215,20 +1271,29 @@ export function initializeExperiment({
         elements.switchLabel.textContent =
             `K${state.burner}`;
 
+        // Оціночний струм для нагрівального елемента за U = 220 В.
+        // Регулятор змінює тривалість увімкнення, а не струм
+        // через конфорку під час увімкненого інтервалу.
+        const current = state.circuitOn
+            ? BURNER_POWER_WATTS[state.burner] / NOMINAL_VOLTAGE
+            : 0;
+
         elements.currentReading.textContent =
-            state.circuitOn
-                ? "I > 0"
-                : "0";
+            `${formatNumber(current, 1)} А`;
+
+        const needleAngle = -62 + Math.min(current / 10, 1) * 124;
+        elements.ammeterNeedle.setAttribute(
+            "transform",
+            `rotate(${needleAngle.toFixed(1)} 165 158)`
+        );
 
         elements.currentNote.textContent =
             state.circuitOn
-                ? "Струм проходить через конфорку"
+                ? "Оціночний показ за напруги 220 В"
                 : "Струм через конфорку відсутній";
 
         elements.stopwatchReading.textContent =
-            formatNumber(
-                state.elapsedInterval
-            );
+            formatStopwatch(state.elapsedInterval);
 
         elements.temperatureReading.textContent =
             Number.isFinite(
@@ -1238,6 +1303,9 @@ export function initializeExperiment({
                     state.lastMeasuredTemperature
                 )
                 : EMPTY_READING;
+
+        elements.pyrometerDisplay.textContent =
+            `${elements.temperatureReading.textContent} °C`;
 
         if (
             [
@@ -1477,6 +1545,7 @@ export function initializeExperiment({
     }
 
     function measureInitialTemperature() {
+        flashPyrometer();
         const mode = getMode();
         const record =
             ensureRecord(mode);
@@ -1562,6 +1631,11 @@ export function initializeExperiment({
                 ? cycle.tOn
                 : cycle.tOff;
 
+        const timeConstant =
+            isHeating
+                ? LAB07_THERMAL_MODEL.heatingTimeConstant
+                : LAB07_THERMAL_MODEL.coolingTimeConstant;
+
         const startTemperature =
             state.currentTemperature;
 
@@ -1612,7 +1686,9 @@ export function initializeExperiment({
 
             const temperatureProgress =
                 getTemperatureProgress(
-                    linearProgress
+                    linearProgress,
+                    duration,
+                    timeConstant
                 );
 
             state.elapsedInterval =
@@ -1675,6 +1751,7 @@ export function initializeExperiment({
     }
 
     function measureHeatingEndpoint() {
+        flashPyrometer();
         state.partialCycle.tauOn =
             state.currentTemperature;
 
@@ -1711,6 +1788,7 @@ export function initializeExperiment({
     }
 
     function measureCoolingEndpoint() {
+        flashPyrometer();
         const record =
             ensureRecord();
 
@@ -1855,6 +1933,13 @@ export function initializeExperiment({
         actions[state.phase]?.();
     }
 
+    function flashPyrometer() {
+        elements.pyrometerLaser.setAttribute("opacity", "1");
+        window.setTimeout(() => {
+            elements.pyrometerLaser.setAttribute("opacity", "0");
+        }, 350);
+    }
+
     function resetExperiment({ askConfirmation = true } = {}) {
         const confirmed =
             !askConfirmation || window.confirm(
@@ -1935,6 +2020,11 @@ export function initializeExperiment({
     );
 
     elements.actionButton.addEventListener(
+        "click",
+        handlePrimaryAction
+    );
+
+    elements.pyrometerButton.addEventListener(
         "click",
         handlePrimaryAction
     );

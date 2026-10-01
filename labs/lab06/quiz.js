@@ -473,12 +473,6 @@ export function initializeQuiz() {
                         option.value === selectedValue
                 );
 
-            const correctOption =
-                question.options.find(
-                    (option) =>
-                        option.value === question.correct
-                );
-
             const questionElement =
                 list.querySelector(
                     `[data-question-id="${question.id}"]`
@@ -513,9 +507,7 @@ export function initializeQuiz() {
                     selectedOption.feedback;
             } else {
                 feedback.textContent =
-                    `${selectedOption.feedback} ` +
-                    `Правильна відповідь: ` +
-                    `${correctOption.label}.`;
+                    selectedOption.feedback;
             }
         });
 

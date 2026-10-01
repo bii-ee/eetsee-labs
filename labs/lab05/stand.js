@@ -541,6 +541,16 @@ export function initializeStand({
             event.currentTarget.dataset
                 .standComponent;
 
+        if (componentId === "heaters" && event.currentTarget.dataset.heaterVariant) {
+            const variant = event.currentTarget.dataset.heaterVariant;
+            const first = section.querySelector("#vb-electrodes-electrodes-plate");
+            const second = section.querySelector("#vb-electrodes-electrodes-coax");
+            if (first && second) {
+                first.style.display = variant === "0" ? "" : "none";
+                second.style.display = variant === "1" ? "" : "none";
+            }
+        }
+
         showComponent(
             componentId
         );

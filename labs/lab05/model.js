@@ -5,7 +5,9 @@ import {
 } from "./data.js";
 
 const EPSILON = 1e-9;
-const TEMPERATURE_CURVE_FACTOR = 2.6;
+const WATER_SPECIFIC_HEAT_J_PER_KG_K = 4184;
+const WATER_DENSITY_KG_PER_LITER = 1;
+const curveFactorCache = new Map();
 
 function toFiniteNumber(
     value,
@@ -164,8 +166,44 @@ export function calculateElectricalEnergyKWh(
     );
 }
 
+function getTemperatureCurveFactor(energyRatio) {
+    if (energyRatio >= 1 - 1e-10) {
+        return 0;
+    }
+
+    const cached = curveFactorCache.get(energyRatio);
+    if (cached !== undefined) {
+        return cached;
+    }
+
+    // (1 - exp(-z)) / z = Q_води / (P * t_кипіння).
+    // z задає сумарні втрати теплоти, що зростають із температурою.
+    let lower = 0;
+    let upper = 1;
+
+    while (-Math.expm1(-upper) / upper > energyRatio) {
+        upper *= 2;
+    }
+
+    for (let step = 0; step < 42; step += 1) {
+        const middle = (lower + upper) / 2;
+        const ratioAtMiddle = -Math.expm1(-middle) / middle;
+
+        if (ratioAtMiddle > energyRatio) {
+            lower = middle;
+        } else {
+            upper = middle;
+        }
+    }
+
+    const factor = (lower + upper) / 2;
+    curveFactorCache.set(energyRatio, factor);
+    return factor;
+}
+
 export function calculateTemperatureProgress(
-    progress
+    progress,
+    energyRatio = 1
 ) {
     const normalizedProgress =
         clamp(
@@ -173,6 +211,13 @@ export function calculateTemperatureProgress(
             0,
             1
         );
+
+    const ratio = Number(energyRatio);
+    if (!Number.isFinite(ratio) || ratio <= 0 || ratio > 1 + 1e-6) {
+        throw new RangeError(
+            "Енергії досліду недостатньо для нагрівання заданого об’єму води."
+        );
+    }
 
     if (normalizedProgress === 0) {
         return 0;
@@ -182,30 +227,22 @@ export function calculateTemperatureProgress(
         return 1;
     }
 
-    const numerator =
-        1 -
-        Math.exp(
-            -TEMPERATURE_CURVE_FACTOR *
-            normalizedProgress
-        );
+    if (ratio >= 1 - 1e-10) {
+        return normalizedProgress;
+    }
 
-    const denominator =
-        1 -
-        Math.exp(
-            -TEMPERATURE_CURVE_FACTOR
-        );
-
-    return (
-        numerator /
-        denominator
-    );
+    const factor = getTemperatureCurveFactor(ratio);
+    return -Math.expm1(-factor * normalizedProgress) /
+        -Math.expm1(-factor);
 }
 
 export function calculateTemperatureAtTime({
     initialTemperatureC,
     boilingTemperatureC,
     elapsedSeconds,
-    boilingTimeSeconds
+    boilingTimeSeconds,
+    activePowerW,
+    waterVolumeLiters
 }) {
     const initialTemperature =
         toFiniteNumber(
@@ -248,9 +285,24 @@ export function calculateTemperatureAtTime({
         elapsed /
         duration;
 
+    // 1 л води ~= 1 кг. Приймаємо сталу середню потужність.
+    // За відсутності P або V зберігаємо сумісність старих викликів.
+    const hasPhysicalParameters =
+        activePowerW !== undefined &&
+        waterVolumeLiters !== undefined;
+
+    const energyRatio = hasPhysicalParameters
+        ? toPositiveNumber(waterVolumeLiters, "об’єм води") *
+            WATER_DENSITY_KG_PER_LITER *
+            WATER_SPECIFIC_HEAT_J_PER_KG_K *
+            (boilingTemperature - initialTemperature) /
+            (toPositiveNumber(activePowerW, "активна потужність") * duration)
+        : 1;
+
     const temperatureProgress =
         calculateTemperatureProgress(
-            linearProgress
+            linearProgress,
+            energyRatio
         );
 
     return (
@@ -334,7 +386,13 @@ export function buildTemperatureCurve(
                         elapsedSeconds,
 
                         boilingTimeSeconds:
-                            duration
+                            duration,
+
+                        activePowerW:
+                            experiment.measurements.activePowerW,
+
+                        waterVolumeLiters:
+                            experiment.conditions.waterVolumeLiters
                     })
             });
         }

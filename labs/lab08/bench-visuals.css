@@ -1,0 +1,155 @@
+/* Спільне компонування приладів у розділах 6 і 7 ЛР8. */
+#stand .bench-svg,
+#experiment .bench-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    filter: drop-shadow(0 4px 5px #19353d26);
+}
+
+#stand .bench-device-visual,
+#stand .bench-equipment-visual,
+#stand .bench-tool-visual,
+#experiment .bench-chain-visual,
+#experiment .bench-instrument-visual {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+#stand .stand-device-card:has(.bench-device-visual) {
+    min-height: 166px;
+    padding-top: 28px;
+}
+
+#stand .bench-device-visual { max-width: 125px; margin: auto; }
+#stand .stand-analyzer-card .bench-device-visual { max-width: 160px; }
+
+#stand .stand-equipment-button:has(.bench-equipment-visual) {
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+#stand .bench-equipment-visual { width: 100px; flex: 0 1 100px; }
+#stand .bench-equipment-diris { width: 170px; flex-basis: 170px; }
+#stand .stand-equipment-button > span:last-child { flex: 1 1 125px; }
+
+#stand .stand-tool:has(.bench-tool-visual) {
+    display: grid;
+    grid-template-columns: minmax(65px, 110px) minmax(0, 1fr);
+    min-height: 136px;
+}
+
+#stand .bench-tool-visual { max-width: 105px; margin: auto; }
+#stand .stand-tool:has([data-bench-visual="thermometer"]) .bench-tool-visual {
+    max-width: 64px;
+}
+
+#stand .stand-information {
+    display: block;
+}
+
+#stand .stand-information-main {
+    min-height: 0;
+}
+
+#stand .stand-information-main #stand-component-description {
+    width: 100%;
+    max-width: none;
+}
+
+#stand .stand-properties {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+#experiment .experiment-power-chain {
+    grid-template-columns: repeat(4, minmax(0, 1fr) 16px) minmax(0, 1fr);
+    align-items: center;
+}
+
+#experiment .experiment-power-chain article {
+    min-height: 170px;
+    overflow: visible;
+}
+
+#experiment .experiment-power-chain .bench-chain-visual {
+    width: min(100%, 120px);
+    height: auto;
+    min-width: 0;
+    margin: auto;
+    padding: 0;
+    background: transparent;
+}
+
+#experiment .experiment-power-chain article:has([data-bench-visual="diris"]) .bench-chain-visual {
+    width: min(100%, 145px);
+}
+
+#experiment .experiment-power-chain .bench-chain-plate {
+    display: grid;
+    min-width: 65px;
+    height: 45px;
+    place-items: center;
+    border-radius: 7px;
+    background: #17483f;
+    color: white;
+    font-weight: 800;
+}
+
+#experiment .bench-live-switch.is-on svg {
+    filter: drop-shadow(0 0 8px #3cb98283);
+}
+
+#experiment .experiment-instruments {
+    grid-template-columns: minmax(220px, 1.7fr) repeat(2, minmax(130px, 1fr));
+    align-items: stretch;
+}
+
+#experiment .experiment-instruments article {
+    min-height: 205px;
+}
+
+#experiment .bench-instrument-visual {
+    max-width: 180px;
+    margin: auto;
+}
+
+#experiment .bench-live-analyzer .bench-instrument-visual {
+    max-width: 275px;
+}
+
+#experiment .experiment-instruments [data-bench-visual="thermometer"] {
+    max-width: 72px;
+}
+
+#experiment .experiment-instruments .bench-temperature-value {
+    white-space: normal;
+    font-size: 1rem;
+}
+
+@media (max-width: 1350px) {
+    #experiment .experiment-power-chain {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    #experiment .experiment-power-chain > b { display: none; }
+}
+
+@media (max-width: 850px) {
+    #stand .stand-properties { grid-template-columns: 1fr; }
+    #experiment .experiment-power-chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #experiment .experiment-instruments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #experiment .bench-live-analyzer { grid-column: 1 / -1; }
+}
+
+@media (max-width: 520px) {
+    #experiment .experiment-power-chain,
+    #experiment .experiment-instruments { grid-template-columns: 1fr; }
+    #experiment .bench-live-analyzer { grid-column: auto; }
+    #stand .stand-tool:has(.bench-tool-visual) { grid-template-columns: 90px minmax(0, 1fr); }
+}

@@ -1,109 +1,108 @@
 import { getStudentVariant } from "../../common/js/student-variants.js";
 
-const BASE_EXPERIMENT_MODES = Object.freeze([
+// Тривалості наведено в модельних секундах. Положення регулятора
+// змінює співвідношення часу ввімкнення та вимкнення конфорки.
+const BASE_MODE_SCHEDULES = Object.freeze([
     Object.freeze({
         id: "mode-1",
         position: 1,
-        initialTemperature: 24,
         cycles: Object.freeze([
-            Object.freeze({
-                tOn: 12,
-                tOff: 35,
-                tauOn: 68,
-                tauOff: 49
-            }),
-            Object.freeze({
-                tOn: 13,
-                tOff: 37,
-                tauOn: 74,
-                tauOff: 54
-            }),
-            Object.freeze({
-                tOn: 11,
-                tOff: 34,
-                tauOn: 78,
-                tauOff: 58
-            })
+            Object.freeze({ tOn: 370, tOff: 650 }),
+            Object.freeze({ tOn: 350, tOff: 635 }),
+            Object.freeze({ tOn: 340, tOff: 625 })
         ])
     }),
     Object.freeze({
         id: "mode-2",
         position: 2,
-        initialTemperature: 58,
         cycles: Object.freeze([
-            Object.freeze({
-                tOn: 22,
-                tOff: 23,
-                tauOn: 138,
-                tauOff: 99
-            }),
-            Object.freeze({
-                tOn: 24,
-                tOff: 23,
-                tauOn: 151,
-                tauOff: 109
-            }),
-            Object.freeze({
-                tOn: 23,
-                tOff: 24,
-                tauOn: 160,
-                tauOff: 116
-            })
+            Object.freeze({ tOn: 435, tOff: 440 }),
+            Object.freeze({ tOn: 450, tOff: 425 }),
+            Object.freeze({ tOn: 440, tOff: 430 })
         ])
     }),
     Object.freeze({
         id: "mode-3",
         position: 3,
-        initialTemperature: 116,
         cycles: Object.freeze([
-            Object.freeze({
-                tOn: 36,
-                tOff: 13,
-                tauOn: 245,
-                tauOff: 205
-            }),
-            Object.freeze({
-                tOn: 39,
-                tOff: 12,
-                tauOn: 273,
-                tauOff: 226
-            }),
-            Object.freeze({
-                tOn: 34,
-                tOff: 12,
-                tauOn: 292,
-                tauOff: 241
-            })
+            Object.freeze({ tOn: 500, tOff: 365 }),
+            Object.freeze({ tOn: 515, tOff: 350 }),
+            Object.freeze({ tOn: 510, tOff: 345 })
         ])
     })
 ]);
 
-export function createVariantCycleModes(variant) {
+function checkVariant(variant) {
     if (!Number.isInteger(variant) || variant < 1 || variant > 30) {
         throw new RangeError("Номер варіанта має бути від 1 до 30.");
     }
-
-    // Шість зсувів тривалості та п'ять рівнів теплової інерції.
-    // Однаковий зсув температур у трьох режимах зберігає
-    // безперервність між кінцем попереднього та початком наступного.
-    const timeShift = (variant - 1) % 6;
-    const thermalShift = Math.floor((variant - 1) / 6);
-    const temperatureShift = timeShift + 2 * thermalShift;
-
-    return Object.freeze(BASE_EXPERIMENT_MODES.map((mode, modeIndex) =>
-        Object.freeze({
-            id: mode.id,
-            position: mode.position,
-            initialTemperature: mode.initialTemperature + temperatureShift,
-            cycles: Object.freeze(mode.cycles.map((cycle) => Object.freeze({
-                tOn: cycle.tOn + timeShift + thermalShift * (modeIndex + 1),
-                tOff: cycle.tOff + thermalShift + timeShift % 3,
-                tauOn: cycle.tauOn + temperatureShift,
-                tauOff: cycle.tauOff + temperatureShift
-            })))
-        })
-    ));
 }
 
+export function createVariantThermalModel(variant) {
+    checkVariant(variant);
+
+    const timeShift = (variant - 1) % 6;
+    const inertiaShift = Math.floor((variant - 1) / 6);
+
+    // Спрощена модель теплової інерції однієї відкритої конфорки.
+    // Гранична температура є параметром моделі, а не показом стенда.
+    return Object.freeze({
+        ambientTemperature: 24 + 0.6 * inertiaShift,
+        heatingLimit: 235 + 1.7 * timeShift,
+        heatingTimeConstant: 900 + 30 * inertiaShift,
+        coolingTimeConstant: 1050 + 45 * inertiaShift
+    });
+}
+
+export function createVariantCycleModes(variant) {
+    const model = createVariantThermalModel(variant);
+    const timeShift = (variant - 1) % 6;
+    const inertiaShift = Math.floor((variant - 1) / 6);
+
+    let temperature = Math.round(model.ambientTemperature);
+
+    return Object.freeze(BASE_MODE_SCHEDULES.map((mode) => {
+        const initialTemperature = temperature;
+
+        const cycles = mode.cycles.map(({ tOn, tOff }) => {
+            const heatingTime = tOn + 3 * timeShift + 2 * inertiaShift;
+            const coolingTime = tOff + 2 * timeShift + 3 * inertiaShift;
+
+            const tauOn = Math.round(
+                model.heatingLimit +
+                (temperature - model.heatingLimit) *
+                Math.exp(-heatingTime / model.heatingTimeConstant)
+            );
+
+            const tauOff = Math.round(
+                model.ambientTemperature +
+                (tauOn - model.ambientTemperature) *
+                Math.exp(-coolingTime / model.coolingTimeConstant)
+            );
+
+            temperature = tauOff;
+
+            return Object.freeze({
+                tOn: heatingTime,
+                tOff: coolingTime,
+                tauOn,
+                tauOff
+            });
+        });
+
+        return Object.freeze({
+            id: mode.id,
+            position: mode.position,
+            initialTemperature,
+            cycles: Object.freeze(cycles)
+        });
+    }));
+}
+
+const studentVariant = getStudentVariant();
+
+export const LAB07_THERMAL_MODEL =
+    createVariantThermalModel(studentVariant);
+
 export const LAB07_EXPERIMENT_MODES =
-    createVariantCycleModes(getStudentVariant());
+    createVariantCycleModes(studentVariant);

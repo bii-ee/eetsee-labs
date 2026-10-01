@@ -826,3 +826,153 @@
         gap: 16px 10px;
     }
 }
+
+/* Широкий стенд і картка відомостей після переліку елементів. */
+.stand-layout {
+    display: block;
+}
+
+.stand-information {
+    margin-top: 18px;
+}
+
+.stand-information-main {
+    min-height: 0;
+}
+
+.stand-properties {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stand-meter-svg {
+    display: grid;
+    width: min(100%, 280px);
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 4px;
+    padding: 8px;
+}
+
+.stand-meter-svg svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 228px;
+}
+
+.stand-tool {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+}
+
+.stand-tool svg {
+    display: block;
+    width: min(100%, 240px);
+    height: auto;
+    max-height: 218px;
+}
+
+.stand-instrument-caption {
+    color: var(--color-primary);
+    font-weight: 750;
+}
+
+.lab07-stopwatch-device {
+    display: grid;
+    width: min(100%, 265px);
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid #a4b1b6;
+    border-radius: 6px;
+    background: linear-gradient(125deg, #f9faf8, #d3d9d8);
+    box-shadow: 0 4px 7px #18303b15, inset 0 1px 0 white;
+}
+
+.lab07-device-heading {
+    color: #425762;
+    font-size: 0.67rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.lab07-stopwatch-lcd {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+    padding: 12px 8px;
+    border: 4px solid #273536;
+    border-radius: 4px;
+    background: #aebdad;
+    color: #263e36;
+    box-shadow: inset 2px 3px 4px #27352b50;
+    font-family: "Courier New", monospace;
+    text-align: center;
+}
+
+.lab07-stopwatch-lcd small {
+    font: 0.6rem Arial, sans-serif;
+    letter-spacing: 0.1em;
+}
+
+.lab07-stopwatch-lcd strong {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+    .stand-properties {
+        grid-template-columns: 1fr;
+    }
+
+    .stand-electrical-panel {
+        align-items: center;
+    }
+
+    .stand-meter-svg {
+        width: min(100%, 280px);
+    }
+
+    .stand-instruments {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .stand-instruments {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Три вимірювальні прилади розміщено під електроплитою. */
+.stand-instruments {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+}
+
+.stand-instruments .stand-meter-svg {
+    width: 100%;
+    min-width: 0;
+    align-content: center;
+    border: 1px solid #b9c9d0;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.stand-instruments .stand-meter-svg svg {
+    max-height: 218px;
+}
+
+@media (max-width: 760px) {
+    .stand-instruments {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .stand-instruments {
+        grid-template-columns: 1fr;
+    }
+}

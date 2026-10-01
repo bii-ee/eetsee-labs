@@ -1,4 +1,5 @@
 import { renderStandProgress } from "../../common/js/stand-progress.js";
+import { mountBenchVisuals } from "./bench-visuals.js";
 
 import {
     createStorage
@@ -111,6 +112,8 @@ export function initializeStand({
     ) {
         return;
     }
+
+    mountBenchVisuals(section);
 
     const elements = {
         interactiveArea: section.querySelector(

@@ -707,19 +707,6 @@
     box-shadow: 0 5px 12px rgba(20, 47, 63, 0.08);
 }
 
-#experiment .instrument-code {
-    grid-row: 1 / 3;
-    display: grid;
-    width: 38px;
-    height: 38px;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: #ffffff;
-    font-size: 0.78rem;
-    font-weight: 800;
-}
-
 #experiment .experiment-meter-card strong {
     min-width: 0;
     color: var(--color-primary);
@@ -763,150 +750,20 @@
     align-content: center;
 }
 
-#experiment .experiment-vessel {
-    position: relative;
-    display: block;
-    width: 136px;
-    height: 164px;
-    overflow: hidden;
-    border: 5px solid #667983;
-    border-top: 0;
-    border-radius: 6px 6px 28px 28px;
-    background: #f6fbfd;
-    box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 0.7),
-        0 8px 16px rgba(32, 70, 89, 0.16);
-}
-
-#experiment .experiment-vessel::before {
-    position: absolute;
-    top: 0;
-    left: -5px;
-    z-index: 4;
-    width: calc(100% + 10px);
-    height: 6px;
-    border-radius: 999px;
-    background: #667983;
-    content: "";
-}
-
-#experiment .experiment-water {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 68%;
-    background:
-        linear-gradient(
-            180deg,
-            var(--experiment-water-light),
-            var(--experiment-water)
-        );
-    transition:
-        height 180ms ease,
-        background-color 180ms ease;
-}
-
-#experiment .experiment-water::before {
-    position: absolute;
-    top: -5px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--experiment-water-light);
-    content: "";
-}
-
-#experiment .experiment-electrode {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    z-index: 3;
-    width: 17px;
-    height: 112px;
-    border-radius: 5px 5px 10px 10px;
-    background:
-        linear-gradient(
-            90deg,
-            #7f4229,
-            #c17b53 48%,
-            #6b3825
-        );
-    transform: translateX(-50%);
-}
-
-#experiment .experiment-electrode::after {
-    position: absolute;
-    bottom: -13px;
-    left: 50%;
-    width: 40px;
-    height: 27px;
-    background: var(--experiment-copper);
-    clip-path: polygon(50% 100%, 0 0, 100% 0);
-    content: "";
-    transform: translateX(-50%);
-}
-
-#experiment .experiment-bubble-field {
-    position: absolute;
-    inset: 28% 10% 8%;
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 180ms ease;
-}
-
-#experiment .experiment-bubble-field::before,
-#experiment .experiment-bubble-field::after {
-    position: absolute;
-    bottom: 4px;
-    width: 6px;
-    height: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-radius: 50%;
-    content: "";
-}
-
-#experiment .experiment-bubble-field::before {
-    left: 24%;
-    box-shadow:
-        25px -18px 0 -1px rgba(255, 255, 255, 0.72),
-        49px -6px 0 0 rgba(255, 255, 255, 0.65),
-        64px -34px 0 -1px rgba(255, 255, 255, 0.76);
-}
-
-#experiment .experiment-bubble-field::after {
-    right: 25%;
-    box-shadow:
-        -18px -35px 0 -1px rgba(255, 255, 255, 0.7),
-        18px -54px 0 0 rgba(255, 255, 255, 0.72),
-        -39px -68px 0 -1px rgba(255, 255, 255, 0.68);
-}
-
-#experiment .experiment-heating-system.is-heating
-.experiment-bubble-field {
-    opacity: 0.58;
-}
-
-#experiment .experiment-heating-system.is-boiling
-.experiment-bubble-field {
-    opacity: 1;
-}
-
 #experiment .experiment-heating-workspace {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
-    width: min(100%, 760px);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     align-content: center;
     justify-self: start;
 }
 
 #experiment .experiment-heating-topline {
     display: grid;
-    grid-template-columns:
-        minmax(240px, 320px)
-        minmax(280px, 360px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     align-items: stretch;
     justify-content: start;
@@ -944,7 +801,7 @@
 
 #experiment .experiment-heating-progress {
     display: grid;
-    width: min(100%, 360px);
+    width: 100%;
     min-width: 0;
     align-content: center;
     padding: 12px 14px;
@@ -955,7 +812,8 @@
 
 #experiment .experiment-heating-progress > div:first-child {
     display: flex;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 4px 12px;
     align-items: center;
     justify-content: space-between;
     color: var(--color-text-muted);
@@ -991,9 +849,7 @@
 
 #experiment .experiment-heating-controls {
     display: grid;
-    grid-template-columns:
-        minmax(180px, 220px)
-        minmax(340px, 472px);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
     gap: 12px;
     align-items: stretch;
     justify-content: start;
@@ -1024,52 +880,29 @@
 
 #experiment .experiment-stopwatch {
     display: grid;
-    grid-template-columns:
-        minmax(105px, 125px)
-        minmax(0, 1fr);
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
     min-width: 0;
-    align-items: center;
-    padding: 12px 14px;
-    overflow: hidden;
+    justify-items: center;
+    align-content: center;
+    padding: 8px;
     border: 1px solid #b9cbd4;
     border-radius: 10px;
     background: #ffffff;
 }
 
-#experiment .experiment-stopwatch-display {
-    display: grid;
-    width: 100%;
-    min-width: 0;
-    height: 58px;
-    place-items: center;
-    padding: 0 10px;
-    border-radius: 9px;
-    background: #173c55;
-    color: #ffffff;
-    font-family: "Roboto Mono", Consolas, monospace;
-    font-size: 0.96rem;
-    font-weight: 850;
-    white-space: nowrap;
+#experiment .experiment-stopwatch-svg {
+    display: block;
+    width: min(100%, 180px);
+    height: auto;
 }
 
-#experiment .experiment-stopwatch-description {
-    display: grid;
-    min-width: 0;
-    gap: 4px;
-}
-
-#experiment .experiment-stopwatch-description strong {
-    color: var(--color-primary);
-    font-size: 1rem;
-    line-height: 1.3;
-    white-space: nowrap;
-}
-
-#experiment .experiment-stopwatch-description small {
+#experiment .experiment-stopwatch-note {
     color: var(--color-text-muted);
     font-size: 0.74rem;
     line-height: 1.4;
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 
 #experiment .experiment-live-chart {
@@ -1101,12 +934,27 @@
     line-height: 1.3;
 }
 
-#experiment .experiment-live-chart-header > span {
-    flex: 0 0 auto;
+#experiment .experiment-chart-summary {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+    justify-items: end;
+    text-align: right;
+}
+
+#experiment .experiment-chart-summary > span {
     color: var(--color-text-muted);
     font-family: "Cambria Math", Cambria, serif;
     font-size: 1.15rem;
     font-style: italic;
+}
+
+#experiment .experiment-chart-summary > strong {
+    color: var(--experiment-copper-dark);
+    font-family: "Roboto Mono", Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
 #experiment #experiment-chart-status {
@@ -1123,6 +971,18 @@
     height: clamp(250px, 24vw, 310px);
     min-height: 0;
     overflow: visible;
+}
+
+#experiment .experiment-chart-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+#experiment .experiment-chart-scroll-hint {
+    display: none;
+    color: var(--color-text-muted);
+    font-size: 0.74rem;
 }
 
 #experiment .temperature-plot-background {
@@ -1154,6 +1014,23 @@
     font-family: inherit;
     font-size: 15px;
     font-weight: 800;
+}
+
+#experiment .temperature-area {
+    fill: #c57045;
+    opacity: 0.1;
+}
+
+#experiment .temperature-guide {
+    stroke: #a85835;
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+    opacity: 0.72;
+    vector-effect: non-scaling-stroke;
+}
+
+#experiment .temperature-guide[hidden] {
+    display: none;
 }
 
 #experiment .temperature-line {
@@ -1398,15 +1275,11 @@
     }
 
     #experiment .experiment-heating-topline {
-        grid-template-columns:
-            minmax(220px, 0.9fr)
-            minmax(260px, 1.1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     #experiment .experiment-heating-controls {
-        grid-template-columns:
-            minmax(170px, 0.55fr)
-            minmax(280px, 1.45fr);
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
     }
 
     #experiment .experiment-heating-progress {
@@ -1478,13 +1351,22 @@
     }
 
     #experiment .experiment-heating-controls {
-        grid-template-columns:
-            minmax(160px, 0.55fr)
-            minmax(250px, 1.45fr);
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
     }
 }
 
 @media (max-width: 620px) {
+    #experiment .experiment-chart-scroll svg {
+        min-width: 600px;
+        height: auto;
+        min-height: 0;
+    }
+
+    #experiment .experiment-chart-scroll-hint {
+        display: block;
+        margin: 2px 0 12px;
+    }
+
     #experiment .experiment-lock-overlay {
         padding: 14px;
     }
@@ -1535,10 +1417,6 @@
         text-align: center;
     }
 
-    #experiment .experiment-stopwatch-description {
-        justify-items: center;
-    }
-
     #experiment .experiment-live-chart {
         padding: 15px 10px;
     }
@@ -1548,12 +1426,13 @@
         gap: 6px;
     }
 
-    #experiment .experiment-live-chart-header > span {
-        justify-self: start;
+    #experiment .experiment-chart-summary {
+        justify-items: start;
+        text-align: left;
     }
 
     #experiment .experiment-live-chart svg {
-        height: 220px;
+        height: auto;
     }
 
     #experiment .experiment-reset-button {
@@ -1565,9 +1444,224 @@
     #experiment #experiment-interactive-area,
     #experiment .experiment-heater-button,
     #experiment .experiment-voltage-button,
-    #experiment .experiment-water,
-    #experiment .experiment-bubble-field,
     #experiment .experiment-heating-track span {
         transition: none;
+    }
+}
+
+/* Розділ 7 ЛР5: прилади, регулятор і нагрівач із набору компонентів. */
+#experiment .experiment-status-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#experiment .experiment-switch-card.experiment-power-button {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 2px solid #9aadb6;
+    background: #f8faf9;
+    color: var(--color-primary);
+}
+
+#experiment .experiment-switch-card.experiment-power-button.is-on {
+    border-color: #36866b;
+    background: #eaf5ef;
+}
+
+#experiment .experiment-switch-card:focus-visible,
+#experiment .experiment-latr-card input:focus-visible {
+    outline: 3px solid #197e98;
+    outline-offset: 3px;
+}
+
+#experiment .experiment-switch-rocker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 47px;
+    height: 59px;
+    border: 4px solid #28363a;
+    border-radius: 6px;
+    background: linear-gradient(#485459, #152127);
+    box-shadow: inset 0 2px 4px #0005, 0 3px 4px #0003;
+    color: #e2e9e7;
+    font: 800 17px Arial, sans-serif;
+}
+
+#experiment .experiment-switch-card.is-on .experiment-switch-rocker {
+    box-shadow: inset 0 2px 4px #0005, 0 0 0 3px #74bda0;
+}
+
+#experiment .experiment-latr-visual {
+    display: block;
+    width: min(100%, 132px);
+    touch-action: none;
+    cursor: ns-resize;
+}
+
+#experiment .experiment-latr-svg,
+#experiment .experiment-meter-svg,
+#experiment .experiment-vessel-svg,
+#experiment .experiment-thermometer-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#experiment .experiment-latr-card:has(input:disabled) .experiment-latr-visual {
+    cursor: not-allowed;
+}
+
+#experiment .experiment-latr-svg {
+    filter: drop-shadow(0 3px 5px #18303b28);
+}
+
+#experiment .experiment-meter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: stretch;
+    min-height: 0;
+    padding: 10px;
+    border: 1px solid #a3b4bb;
+    background: linear-gradient(#e8eeef, #dce4e5);
+}
+
+#experiment .experiment-meter-svg {
+    filter: drop-shadow(0 4px 4px #263a4030);
+}
+
+#experiment .experiment-meter-card strong {
+    align-self: flex-end;
+    padding-inline: 4px;
+    font-size: 0.9rem;
+}
+
+#experiment .experiment-meter-card small {
+    order: -1;
+    padding-inline: 4px;
+    font-size: 0.75rem;
+}
+
+#experiment .experiment-heating-system {
+    grid-template-columns: minmax(170px, 250px) minmax(0, 1fr);
+}
+
+#experiment .experiment-power-chain .experiment-device-card {
+    gap: 5px;
+    padding: 12px;
+}
+
+#experiment .experiment-vessel-area {
+    place-items: center;
+}
+
+#experiment .experiment-vessel-svg {
+    max-width: 280px;
+}
+
+#experiment #experiment-electrodes-bubbles {
+    opacity: 0;
+}
+
+#experiment .experiment-heating-system.is-heating #experiment-electrodes-bubbles {
+    opacity: 0.58;
+}
+
+#experiment .experiment-heating-system.is-boiling #experiment-electrodes-bubbles {
+    opacity: 1;
+}
+
+#experiment .experiment-temperature-display {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+}
+
+#experiment .experiment-temperature-display > span:first-child {
+    grid-column: 1;
+    align-self: end;
+}
+
+#experiment .experiment-thermometer-visual {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 33px;
+    height: 105px;
+    align-self: center;
+}
+
+#experiment .experiment-temperature-display strong {
+    grid-column: 1;
+    align-self: start;
+}
+
+@media (max-width: 900px) {
+    #experiment .experiment-status-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-measurement-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #experiment .experiment-meter-card:last-child {
+        grid-column: 1 / -1;
+        width: min(100%, 330px);
+        justify-self: center;
+    }
+}
+
+@media (max-width: 1100px) {
+    #experiment .experiment-heating-system {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    #experiment .experiment-power-chain {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-power-chain .experiment-connection-arrow {
+        display: none;
+    }
+}
+
+@media (max-width: 620px) {
+    #experiment .experiment-measurement-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #experiment .experiment-meter-card,
+    #experiment .experiment-meter-card:last-child {
+        grid-column: 1;
+        width: min(100%, 330px);
+        justify-self: center;
+    }
+}
+
+/* Умови досліду займають один рядок над поточним завданням. */
+#experiment .experiment-control-panel > .experiment-conditions,
+#experiment .experiment-control-panel > .experiment-current-task {
+    grid-column: 1 / -1;
+}
+
+#experiment .experiment-conditions dl {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    #experiment .experiment-conditions dl {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    #experiment .experiment-conditions dl {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

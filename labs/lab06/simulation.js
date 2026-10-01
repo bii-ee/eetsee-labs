@@ -156,6 +156,10 @@ export function initializeExperiment({
         "#experiment-power-button"
     );
 
+    const powerButtonLabel = powerButton.querySelector(
+        ".experiment-power-button-label"
+    );
+
     const powerState = experimentSection.querySelector(
         "#experiment-power-state"
     );
@@ -228,6 +232,45 @@ export function initializeExperiment({
         )
     };
 
+    const meterScales = { u1: 250, current: 5, power: 1000, u2: 250 };
+    const meterNeedles = Object.fromEntries(
+        Object.keys(meterScales).map((key) => [
+            key,
+            experimentSection.querySelector(`[data-needle="${key}"]`)
+        ])
+    );
+    const meterPositions = Object.fromEntries(
+        Object.keys(meterScales).map((key) => [key, 0])
+    );
+    const meterFrames = {};
+
+    function updateMeterNeedles(measurement) {
+        Object.entries(meterScales).forEach(([key, maximum]) => {
+            const needle = meterNeedles[key];
+            if (!needle) return;
+
+            window.cancelAnimationFrame(meterFrames[key]);
+            const initial = meterPositions[key];
+            const target = Math.min(maximum, Math.max(0, Number(measurement?.[key]) || 0));
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                needle.setAttribute("transform", `rotate(${-62 + 124 * target / maximum} 165 158)`);
+                meterPositions[key] = target;
+                return;
+            }
+
+            const start = performance.now();
+            function frame(now) {
+                const progress = Math.min(1, Math.max(0, (now - start) / 680));
+                const eased = 1 - (1 - progress) ** 3;
+                const value = initial + (target - initial) * eased;
+                needle.setAttribute("transform", `rotate(${-62 + 124 * value / maximum} 165 158)`);
+                meterPositions[key] = value;
+                if (progress < 1) meterFrames[key] = window.requestAnimationFrame(frame);
+            }
+            meterFrames[key] = window.requestAnimationFrame(frame);
+        });
+    }
+
     const state = {
         isPowered: false,
         selectedModeId: LAB06_EXPERIMENT_MODES[0].id,
@@ -287,6 +330,7 @@ export function initializeExperiment({
         });
 
         recordButton.disabled = true;
+        updateMeterNeedles(null);
     }
 
     function renderPowerState() {
@@ -299,9 +343,12 @@ export function initializeExperiment({
             state.isPowered
         );
 
-        powerButton.textContent = state.isPowered
+        const powerAction = state.isPowered
             ? "Вимкнути установку"
             : "Увімкнути установку";
+        powerButtonLabel.textContent = powerAction;
+        powerButton.setAttribute("aria-label", powerAction);
+        powerButton.setAttribute("aria-pressed", String(state.isPowered));
 
         powerButton.classList.toggle(
             "is-on",
@@ -391,6 +438,7 @@ export function initializeExperiment({
         readingOutputs.u2.textContent = formatReading(
             measurement.u2
         );
+        updateMeterNeedles(measurement);
 
         recordButton.disabled = false;
     }

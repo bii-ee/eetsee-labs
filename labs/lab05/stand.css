@@ -734,9 +734,8 @@
 
 #stand .stand-information {
     display: grid;
-    grid-template-columns:
-        minmax(250px, 0.75fr) minmax(0, 1.75fr);
-    gap: 22px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
     width: 100%;
     min-width: 0;
     align-items: start;
@@ -1148,4 +1147,58 @@
     #stand .stand-progress-track span {
         transition: none;
     }
+}
+
+/* Розділ 6 ЛР5: адаптація елементів з virtual-bench-components */
+#stand .stand-bench-kit {
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #b6c3c9;
+    border-radius: 9px;
+    background: linear-gradient(120deg, #e4e8e9, #f7f8f7 45%, #dfe5e7);
+    box-shadow: inset 0 1px 0 white, 0 15px 30px #19334012;
+}
+#stand .stand-kit-instruments { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(10px,2vw,24px); padding: clamp(12px,2vw,22px); border-bottom: 1px solid #c3cdd1; background: linear-gradient(110deg,#dbe1e3,#edf0ef 50%,#d5dde0); }
+#stand .stand-meter.stand-part-meter { display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; padding: 0; border: 0; border-radius: 5px; background: transparent; box-shadow: none; color: #173649; }
+#stand .stand-part-meter .svg-label { display: block; width: 100%; height: auto; filter: drop-shadow(0 5px 4px #263a4030); }
+#stand .stand-part-caption { display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%; gap: 3px 8px; font-size: .72rem; }
+#stand .stand-part-caption strong { font: bold .74rem 'Courier New',monospace; white-space: nowrap; }
+#stand .stand-meter.stand-part-meter:hover, #stand .stand-meter.stand-part-meter:focus-visible, #stand .stand-meter.stand-part-meter.is-selected { outline: 3px solid #368ea4; outline-offset: 2px; box-shadow: none; transform: none; }
+#stand .stand-kit-lower { display: grid; grid-template-columns: minmax(150px,.8fr) minmax(0,2fr) minmax(150px,.8fr); gap: clamp(10px,2vw,24px); padding: clamp(12px,2vw,26px); align-items: start; }
+#stand .stand-kit-controls, #stand .stand-kit-aux { display: flex; flex-direction: column; min-width: 0; gap: 15px; }
+#stand .stand-control-device.stand-kit-device, #stand .stand-water-system.stand-kit-thermometer, #stand .stand-tool.stand-kit-stopwatch { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; width: 100%; min-width: 0; min-height: 0; gap: 12px; padding: 14px; border: 1px solid #a4b1b6; border-radius: 6px; background: linear-gradient(125deg,#f9faf8,#d3d9d8); box-shadow: 0 4px 7px #18303b15,inset 0 1px 0 white; text-align: left; }
+#stand .stand-kit-label { display: block; color: #425762; font-size: .68rem; font-weight: 800; letter-spacing: .09em; line-height: 1.4; text-transform: uppercase; }
+#stand .stand-kit-power { display: flex; align-items: center; gap: 12px; font-size: .78rem; }
+#stand .stand-kit-power small { display: block; margin-top: 4px; color: #697a80; font-size: .7rem; }
+#stand .stand-kit-rocker { display: flex; flex: 0 0 54px; flex-direction: column; align-items: center; justify-content: space-around; width: 54px; height: 66px; border: 4px solid #2c3639; border-radius: 5px; background: linear-gradient(#4a5356,#131b1d); box-shadow: 0 2px 3px #19292f70; color: #cfdadb; font: bold 16px Arial,sans-serif; }
+#stand .stand-kit-latr .knob-wrap { width: min(100%,170px); margin: 0 auto; }
+#stand .stand-kit-latr .svg-label { display: block; width: 100%; height: auto; }
+#stand .stand-kit-latr-readout { align-self: center; font: bold .86rem 'Courier New',monospace; }
+#stand .stand-kit-scene { min-width: 0; }
+#stand .stand-water-system.stand-kit-water { display: block; width: 100%; min-width: 0; height: auto; padding: 0; border: 0; background: transparent; box-shadow: none; }
+#stand .stand-kit-water .svg-label { display: block; width: 100%; height: auto; max-height: 350px; }
+#stand .stand-water-system.stand-kit-water:hover, #stand .stand-water-system.stand-kit-water:focus-visible, #stand .stand-water-system.stand-kit-water.is-selected { outline: 3px solid #368ea4; outline-offset: 2px; box-shadow: none; transform: none; }
+#stand .stand-kit-heater-choices { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#stand .stand-heater-type { width: auto; min-width: 110px; min-height: 0; padding: 9px 12px; border: 1px solid #b5c3c7; border-radius: 4px; background: #f7faf9; font-size: .77rem; }
+#stand .stand-kit-thermo-face { display: flex; align-items: center; justify-content: center; gap: 8px; font: bold .83rem 'Courier New',monospace; }
+#stand .stand-kit-thermo-face svg { display: block; width: 40px; height: 115px; }
+#stand .stand-kit-lcd { display: block; padding: 10px 4px; border: 4px solid #273536; border-radius: 4px; background: #aebdad; box-shadow: inset 2px 3px 4px #27352b50; color: #263e36; text-align: center; }
+#stand .stand-kit-lcd small { display: block; margin-bottom: 6px; font: 9px Arial,sans-serif; letter-spacing: 1.2px; }
+#stand .stand-kit-lcd strong { font: bold 1.3rem 'Courier New',monospace; }
+@media(max-width:950px) {
+    #stand .stand-kit-lower { grid-template-columns: minmax(170px,.7fr) minmax(0,1.3fr); }
+    #stand .stand-kit-aux { grid-column: 1/-1; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:650px) {
+    #stand .stand-kit-instruments { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #stand .stand-part-meter:last-child { grid-column: 1/-1; width: min(100%,270px); justify-self: center; }
+    #stand .stand-kit-lower { grid-template-columns: minmax(0,1fr); }
+    #stand .stand-kit-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #stand .stand-kit-aux { grid-column: auto; }
+}
+@media(max-width:450px) {
+    #stand .stand-kit-instruments { grid-template-columns: minmax(0,1fr); justify-items: center; }
+    #stand .stand-part-meter, #stand .stand-part-meter:last-child { grid-column: auto; width: min(100%,285px); }
+    #stand .stand-kit-controls, #stand .stand-kit-aux { grid-template-columns: minmax(0,1fr); }
 }

@@ -328,11 +328,15 @@ function renderQuestion(question, number, selectedAnswer) {
     `).join("");
 
     return `
-        <fieldset
+        <div
             class="quiz-question"
             data-question-id="${question.id}"
+            role="group"
+            aria-labelledby="quiz-question-title-${question.id}"
         >
-            <legend>${number}. ${question.text}</legend>
+            <h3 id="quiz-question-title-${question.id}" class="quiz-question-title">
+                ${number}. ${question.text}
+            </h3>
 
             <div class="quiz-options">
                 ${options}
@@ -344,7 +348,7 @@ function renderQuestion(question, number, selectedAnswer) {
             </details>
 
             <p class="quiz-feedback" hidden></p>
-        </fieldset>
+        </div>
     `;
 }
 
@@ -502,9 +506,6 @@ export function initializeQuiz({
             const selectedOption = question.options.find(
                 (option) => option.value === selectedValue
             );
-            const correctOption = question.options.find(
-                (option) => option.value === question.correct
-            );
             const questionElement = elements.list.querySelector(
                 `[data-question-id="${question.id}"]`
             );
@@ -525,8 +526,7 @@ export function initializeQuiz({
                 feedback.textContent = selectedOption.feedback;
             } else {
                 feedback.textContent =
-                    `${selectedOption?.feedback ?? "Відповідь неправильна."} ` +
-                    `Правильна відповідь: ${correctOption.label}.`;
+                    selectedOption?.feedback ?? "Відповідь неправильна.";
             }
         });
 

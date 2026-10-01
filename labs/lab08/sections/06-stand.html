@@ -59,7 +59,7 @@
                             <button class="stand-device-card" type="button" data-stand-component="source"
                                 aria-label="Джерело живлення 220 вольт">
                                 <span class="stand-device-number">1</span>
-                                <span class="stand-device-symbol">~</span>
+                                <span class="bench-device-visual" data-bench-visual="source" aria-hidden="true"></span>
                                 <strong>220 В</strong>
                                 <small>Джерело живлення</small>
                             </button>
@@ -67,7 +67,7 @@
                             <button class="stand-device-card" type="button" data-stand-component="switch"
                                 aria-label="Вимикач лабораторної установки">
                                 <span class="stand-device-number">2</span>
-                                <span class="stand-device-symbol">Q</span>
+                                <span class="bench-device-visual" data-bench-visual="switch" aria-hidden="true"></span>
                                 <strong>Вимкнено</strong>
                                 <small>Вимикач</small>
                             </button>
@@ -75,7 +75,7 @@
                             <button class="stand-device-card" type="button" data-stand-component="autotransformer"
                                 aria-label="Лабораторний автотрансформатор">
                                 <span class="stand-device-number">3</span>
-                                <span class="stand-device-symbol">ЛАТР</span>
+                                <span class="bench-device-visual" data-bench-visual="latr" aria-hidden="true"></span>
                                 <strong>0 В</strong>
                                 <small>Автотрансформатор</small>
                             </button>
@@ -83,7 +83,7 @@
                             <button class="stand-device-card stand-analyzer-card" type="button"
                                 data-stand-component="analyzer" aria-label="Аналізатор параметрів мережі DIRIS A20">
                                 <span class="stand-device-number">4</span>
-                                <span class="stand-device-symbol">A20</span>
+                                <span class="bench-device-visual" data-bench-visual="diris" aria-hidden="true"></span>
                                 <strong>DIRIS</strong>
                                 <small>Аналізатор мережі</small>
                             </button>
@@ -105,9 +105,7 @@
                             <div class="stand-measurement-devices">
                                 <button class="stand-equipment-button" type="button"
                                     data-stand-component="current-transformer" aria-label="Трансформатор струму">
-                                    <span class="stand-equipment-icon">
-                                        TA
-                                    </span>
+                                    <span class="bench-equipment-visual" data-bench-visual="transformer" aria-hidden="true"></span>
 
                                     <span>
                                         <strong>
@@ -126,10 +124,7 @@
 
                                 <button class="stand-equipment-button" type="button" data-stand-component="analyzer"
                                     aria-label="Вимірювальні покази аналізатора DIRIS A20">
-                                    <span class="stand-meter-screen">
-                                        <b>0</b>
-                                        <small>U · I · P</small>
-                                    </span>
+                                    <span class="bench-equipment-visual bench-equipment-diris" data-bench-visual="diris" aria-hidden="true"></span>
 
                                     <span>
                                         <strong>DIRIS A20</strong>
@@ -178,9 +173,7 @@
 
                         <div class="stand-instruments">
                             <button class="stand-tool" type="button" data-stand-component="measuring-tools">
-                                <span class="stand-tool-icon" aria-hidden="true">
-                                    °C
-                                </span>
+                                <span class="bench-tool-visual" data-bench-visual="thermometer" aria-hidden="true"></span>
 
                                 <span>
                                     <strong>Термометр</strong>
@@ -192,9 +185,7 @@
                             </button>
 
                             <button class="stand-tool" type="button" data-stand-component="measuring-tools">
-                                <span class="stand-tool-icon" aria-hidden="true">
-                                    kg
-                                </span>
+                                <span class="bench-tool-visual" data-bench-visual="scale" aria-hidden="true"></span>
 
                                 <span>
                                     <strong>Засіб визначення маси</strong>
@@ -206,9 +197,7 @@
                             </button>
 
                             <button class="stand-tool" type="button" data-stand-component="measuring-tools">
-                                <span class="stand-tool-icon" aria-hidden="true">
-                                    00:00
-                                </span>
+                                <span class="bench-tool-visual" data-bench-visual="stopwatch" aria-hidden="true"></span>
 
                                 <span>
                                     <strong>Секундомір</strong>
