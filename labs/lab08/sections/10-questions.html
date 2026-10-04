@@ -31,7 +31,62 @@
         </div>
 
         <div id="quiz-interactive-area">
-            <!-- Формування звіту розташоване над питаннями -->
+            <div class="quiz-heading">
+                <div>
+                    <p class="section-number">
+                        Підсумковий тест
+                    </p>
+
+                    <h3>
+                        8 запитань з однією правильною відповіддю
+                    </h3>
+                </div>
+
+                <span>
+                    Прохідний результат: 6 із 8
+                </span>
+            </div>
+
+            <div class="quiz-progress-panel">
+                <div>
+                    <span>
+                        Надано відповідей
+                    </span>
+
+                    <strong id="quiz-answered-count">
+                        0 із 8
+                    </strong>
+                </div>
+
+                <div class="quiz-progress-track" role="progressbar" aria-label="Заповнення контрольного тесту"
+                    aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
+                    <span id="quiz-progress-bar"></span>
+                </div>
+            </div>
+
+            <form id="quiz-form" novalidate>
+                <div id="quiz-list" class="quiz-list"></div>
+
+                <div class="quiz-actions">
+                    <button id="quiz-check-button" class="
+                            quiz-button
+                            quiz-button-primary
+                        " type="submit">
+                        Перевірити відповіді
+                    </button>
+
+                    <button id="reset-quiz" class="
+                            quiz-button
+                            quiz-button-danger
+                        " type="button">
+                        Почати тест заново
+                    </button>
+                </div>
+
+                <div id="quiz-result" class="quiz-result" data-state="default" role="status" aria-live="polite">
+                    Дайте відповідь на всі 8 запитань.
+                </div>
+            </form>
 
             <section id="final-report-panel" class="final-report-panel" hidden>
                 <div class="report-introduction">
@@ -71,13 +126,10 @@
                         <input type="text" name="studentGroup" required>
                     </label>
 
-                    <label class="report-field">
-                        <span>
-                            Номер бригади
-                        </span>
-
-                        <input type="text" name="studentBrigade">
-                    </label>
+                    <div class="report-field">
+                        <span>Варіант роботи</span>
+                        <strong id="report-form-variant" class="report-variant-value"></strong>
+                    </div>
 
                     <div class="report-controls">
                         <div class="report-control-group">
@@ -123,10 +175,6 @@
 
                     <dl class="report-meta">
                         <div>
-                            <dt>Варіант</dt>
-                            <dd id="report-student-variant"></dd>
-                        </div>
-                        <div>
                             <dt>Студент</dt>
 
                             <dd id="report-student-name"></dd>
@@ -139,9 +187,8 @@
                         </div>
 
                         <div>
-                            <dt>Бригада</dt>
-
-                            <dd id="report-student-brigade"></dd>
+                            <dt>Варіант роботи</dt>
+                            <dd id="report-student-variant"></dd>
                         </div>
 
                         <div>
@@ -172,6 +219,12 @@
                             Вихідні параметри
                         </h3>
 
+                        <p class="report-section-note">
+                            Результати отримано у навчальній моделі «посуд + вода»
+                            з урахуванням теплообміну з повітрям. Характеристики
+                            плити потребують калібрування для відтворення реального стенда.
+                        </p>
+
                         <div class="report-summary-values">
                             <p>
                                 Маса води
@@ -192,7 +245,7 @@
                             report-scheme-section
                         ">
                         <h3>
-                            Функціональна схема установки
+                            Електрична схема лабораторної установки
                         </h3>
 
                         <div id="report-schematic" class="report-schematic"></div>
@@ -346,6 +399,11 @@
                         <p class="report-section-note">
                             Дослід 2. Нагрівання води за різних
                             значень заданої температури та напруги.
+                            P та I наведено для увімкненого стану;
+                            час до кипіння включає паузи й поданий
+                            у десяткових хвилинах. Температурні
+                            налаштування позначають режими плити;
+                            вода в кожному досліді нагрівається до 100 °C.
                         </p>
 
                         <div class="report-table-wrapper">
@@ -430,64 +488,6 @@
                 </article>
             </section>
 
-            <!-- Контрольні питання розташовані після звіту -->
-
-            <div class="quiz-heading">
-                <div>
-                    <p class="section-number">
-                        Підсумковий тест
-                    </p>
-
-                    <h3>
-                        8 запитань з однією правильною відповіддю
-                    </h3>
-                </div>
-
-                <span>
-                    Прохідний результат: 6 із 8
-                </span>
-            </div>
-
-            <div class="quiz-progress-panel">
-                <div>
-                    <span>
-                        Надано відповідей
-                    </span>
-
-                    <strong id="quiz-answered-count">
-                        0 із 8
-                    </strong>
-                </div>
-
-                <div class="quiz-progress-track" role="progressbar" aria-label="Заповнення контрольного тесту"
-                    aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
-                    <span id="quiz-progress-bar"></span>
-                </div>
-            </div>
-
-            <form id="quiz-form" novalidate>
-                <div id="quiz-list" class="quiz-list"></div>
-
-                <div class="quiz-actions">
-                    <button id="quiz-check-button" class="
-                            quiz-button
-                            quiz-button-primary
-                        " type="submit">
-                        Перевірити відповіді
-                    </button>
-
-                    <button id="reset-quiz" class="
-                            quiz-button
-                            quiz-button-danger
-                        " type="button">
-                        Почати тест заново
-                    </button>
-                </div>
-
-                <div id="quiz-result" class="quiz-result" data-state="default" role="status" aria-live="polite">
-                    Дайте відповідь на всі 8 запитань.
-                </div>
-            </form>
         </div>
     </div>
 </section>

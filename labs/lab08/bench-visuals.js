@@ -91,13 +91,19 @@ function scale() {
 }
 
 function stopwatch({live = false} = {}) {
-    return svg("0 0 200 150", "Секундомір", `
-        <defs><linearGradient id="lab08-bench-watch-case" x2=".9" y2="1"><stop stop-color="#5d7277"/><stop offset="1" stop-color="#1c333a"/></linearGradient></defs>
-        <rect x="82" y="3" width="36" height="18" rx="4" fill="#859a9d" stroke="#435c60"/>
-        <rect x="46" y="21" width="108" height="123" rx="25" fill="url(#lab08-bench-watch-case)" stroke="#9aadb3" stroke-width="3"/>
-        <rect x="57" y="52" width="86" height="59" rx="6" fill="#a9beb4" stroke="#647c78" stroke-width="2"/>
-        <text ${live ? 'id="experiment-time-reading"' : ""} x="100" y="89" text-anchor="middle" fill="#253e36" font-size="23" font-family="monospace">0,00</text>
-        <circle cx="75" cy="125" r="6" fill="#889fa0"/><circle cx="125" cy="125" r="6" fill="#889fa0"/>
+    const prefix = live ? "lab08-experiment-watch" : "lab08-stand-watch";
+    return svg("0 0 200 146", "Секундомір, хвилини та секунди", `
+        <defs>
+            <linearGradient id="${prefix}-case" x2=".9" y2="1"><stop stop-color="#fafbf9"/><stop offset="1" stop-color="#cdd6d5"/></linearGradient>
+            <linearGradient id="${prefix}-screen" x2="0" y2="1"><stop stop-color="#b9cbb6"/><stop offset="1" stop-color="#9cae9d"/></linearGradient>
+        </defs>
+        <rect x="5" y="6" width="190" height="133" rx="8" fill="#273b4250"/>
+        <rect x="3" y="3" width="190" height="133" rx="7" fill="url(#${prefix}-case)" stroke="#9aadb3"/>
+        <text x="18" y="28" fill="#425762" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="1.4">СЕКУНДОМІР</text>
+        <rect x="16" y="40" width="164" height="81" rx="5" fill="#263436" stroke="#829393"/>
+        <rect x="21" y="45" width="154" height="71" rx="2" fill="url(#${prefix}-screen)"/>
+        <text x="98" y="69" text-anchor="middle" fill="#344d42" font-family="Arial, sans-serif" font-size="9" letter-spacing="2">ХВ : С</text>
+        <text ${live ? 'id="experiment-time-reading"' : ""} x="98" y="102" text-anchor="middle" fill="#20382f" font-family="'Courier New', monospace" font-size="27" font-weight="700">00:00.0</text>
     `);
 }
 
@@ -107,6 +113,10 @@ export function mountBenchVisuals(section) {
     section.querySelectorAll("[data-bench-visual]").forEach((slot) => {
         const type = slot.dataset.benchVisual;
         const make = visuals[type];
-        if (make) slot.innerHTML = make({live: section.id === "experiment"});
+        // Динамічні покази має лише основна панель приладів.
+        // Мініатюри у схемі залишаються без ідентифікаторів показів.
+        const live = section.id === "experiment" &&
+            slot.classList.contains("bench-instrument-visual");
+        if (make) slot.innerHTML = make({live});
     });
 }

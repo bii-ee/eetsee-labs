@@ -1,24 +1,13 @@
 #final-report-panel {
     min-width: 0;
-    margin: 24px 0 28px;
-    padding: 0 0 28px;
+    margin-top: 32px;
+    padding-top: 28px;
     scroll-margin-top: 20px;
-    border-top: 0;
-    border-bottom: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
 }
 
 #final-report-panel[hidden] {
     display: none;
-}
-
-/*
- * Після програмного переміщення панелі у report.js
- * заголовок тесту розташовується без зайвого
- * верхнього відступу.
- */
-
-#final-report-panel:not([hidden]) + .quiz-heading {
-    margin-top: 0;
 }
 
 #final-report-panel *,
@@ -113,6 +102,19 @@
     background: #ffffff;
     color: var(--color-text);
     font: inherit;
+}
+
+/* Номер обраного варіанта заповнюється автоматично. */
+.report-variant-value {
+    display: flex;
+    min-height: 43px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #b9ccd7;
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text);
+    font-size: 1rem;
 }
 
 .report-field input:hover {
@@ -338,28 +340,27 @@
 }
 
 
-/* Функціональна схема */
+/* Електрична схема з розділу 3 */
 
 .report-schematic {
-    display: grid;
+    display: block;
     width: 100%;
     min-width: 0;
-    min-height: 250px;
-    place-items: center;
+    min-height: 0;
     padding: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     border: 1px solid #cfdee6;
     border-radius: 10px;
     background: #fbfdfe;
 }
 
-.report-schematic svg {
+.report-schematic img {
     display: block;
     width: 100%;
-    min-width: 760px;
+    min-width: 0;
     height: auto;
-    max-height: 330px;
+    max-height: 380px;
+    object-fit: contain;
 }
 
 
@@ -701,9 +702,6 @@
         grid-template-columns: 1fr;
     }
 
-    .report-schematic svg {
-        width: 760px;
-    }
 }
 
 @media (max-width: 620px) {
@@ -837,9 +835,11 @@
     #lab-print-root
         .report-document-lab08
         .report-schematic {
+        display: block !important;
+        aspect-ratio: auto !important;
         box-sizing: border-box !important;
         width: 100% !important;
-        height: 52mm !important;
+        height: auto !important;
         min-width: 0 !important;
         min-height: 0 !important;
         padding: 0.75mm !important;
@@ -849,13 +849,14 @@
     #lab-print-root
         .report-document-lab08
         .report-schematic
-        svg {
+        img {
         display: block !important;
         width: 100% !important;
         min-width: 0 !important;
-        height: 49mm !important;
+        height: auto !important;
         max-width: 100% !important;
-        max-height: 49mm !important;
+        max-height: 65mm !important;
+        object-fit: contain !important;
         margin: 0 auto !important;
     }
 

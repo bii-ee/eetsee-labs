@@ -11,14 +11,31 @@
         нагрівання води.
     </p>
 
+    <div class="simulation-time-notice">
+        <strong>Модельний час досліду</strong>
+
+        <p>
+            Для скорочення тривалості навчальної роботи віртуальний дослід
+            відтворюється за прискореною часовою шкалою. Час відтворення
+            на екрані є умовним і не дорівнює тривалості реального досліду.
+        </p>
+
+        <p>
+            Для таблиць і розрахунків використовуйте модельну тривалість,
+            яку показує секундомір і зберігає симуляція.
+        </p>
+    </div>
+
     <div class="experiment-model-notice">
         <strong>Навчальна модель</strong>
 
         <p>
-            Час виконання дослідів прискорено. Значення є
-            відтворюваними модельними даними, сформованими
-            за спрощеною тепловою моделлю з урахуванням маси води,
-            початкової температури та потужності плити.
+            Значення є відтворюваними модельними даними, сформованими
+            за тепловою моделлю системи «посуд + вода» з урахуванням
+            маси води, нагрівання посуду та теплообміну з повітрям.
+            Обидва досліди враховують увімкнені й вимкнені інтервали.
+            Покази приладів і результати розрахунків відповідають
+            однаковій точності вимірювань.
         </p>
     </div>
 
@@ -178,8 +195,11 @@
 
                         <p>
                             Послідовно виконайте дев’ять режимів для
-                            температур 110, 160 і 240 °C та заданих
-                            напруг 200, 220 і 240 В.
+                            налаштувань плити 110, 160 і 240 °C та заданих
+                            напруг 200, 220 і 240 В. У кожному режимі
+                            використовується нова порція води з однаковими
+                            вихідними параметрами. Температура води
+                            підвищується до 100 °C.
                         </p>
 
                         <div class="experiment-task-card">
@@ -221,38 +241,6 @@
                     </div>
 
                     <div class="experiment-simulator">
-                        <div class="experiment-power-chain" aria-label="Функціональний ланцюг установки">
-                            <article>
-                                <span class="bench-chain-visual" data-bench-visual="source" aria-hidden="true"></span>
-                                <strong id="experiment-source-reading">220 В</strong>
-                                <small>Джерело живлення</small>
-                            </article>
-                            <b aria-hidden="true">→</b>
-                            <article>
-                                <span class="bench-chain-visual bench-live-switch" data-bench-visual="switch" aria-hidden="true"></span>
-                                <strong id="experiment-switch-reading">Вимкнено</strong>
-                                <small>Вимикач</small>
-                            </article>
-                            <b aria-hidden="true">→</b>
-                            <article>
-                                <span class="bench-chain-visual" data-bench-visual="latr" aria-hidden="true"></span>
-                                <strong id="experiment-latr-reading">0 В</strong>
-                                <small>ЛАТР</small>
-                            </article>
-                            <b aria-hidden="true">→</b>
-                            <article>
-                                <span class="bench-chain-visual" data-bench-visual="diris" aria-hidden="true"></span>
-                                <strong>DIRIS A20</strong>
-                                <small>Аналізатор мережі</small>
-                            </article>
-                            <b aria-hidden="true">→</b>
-                            <article>
-                                <span class="bench-chain-plate" aria-hidden="true">ПП-3</span>
-                                <strong>МЕРИДІАН</strong>
-                                <small>Індукційна плита</small>
-                            </article>
-                        </div>
-
                         <div class="experiment-heating-zone">
                             <div id="experiment-plate-visual" class="experiment-plate"
                                 aria-label="Індукційна плита МЕРИДІАН ПП-3">
@@ -294,7 +282,7 @@
                             </article>
                             <article>
                                 <span class="bench-instrument-visual" data-bench-visual="stopwatch"></span>
-                                <small>Тривалість інтервалу, с</small>
+                                <small>Час інтервалу, хв:с</small>
                             </article>
                             <article>
                                 <span class="bench-instrument-visual" data-bench-visual="thermometer"></span>
@@ -433,6 +421,12 @@
                             <tbody id="experiment-two-table-body"></tbody>
                         </table>
                     </div>
+
+                    <p class="experiment-model-note">
+                        P та I у таблиці відповідають увімкненому стану плити.
+                        Час до кипіння включає паузи нагрівання й подається
+                        в десяткових хвилинах; секундомір показує хвилини та секунди.
+                    </p>
 
                     <div id="experiment-two-summary" class="experiment-table-summary">
                         <strong>Дослід ще не розпочато</strong>

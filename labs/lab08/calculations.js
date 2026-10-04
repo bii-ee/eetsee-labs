@@ -771,11 +771,8 @@ export function initializeCalculations({
             value !== null;
 
         const correct =
-            isClose(
-                value,
-                expected,
-                tolerance
-            );
+            (Array.isArray(expected) ? expected : [expected]).some((target) =>
+                isClose(value, target, tolerance));
 
         input.classList.toggle(
             "is-correct",
@@ -897,11 +894,16 @@ export function initializeCalculations({
             }
         );
 
+        const roundedCycleSum = expectedResults.cycles.reduce((sum, cycle, index) => {
+            const value = parseStudentNumber(section.querySelector(
+                `[data-calculation-field="${cycleEnergyField(index)}"]`).value);
+            return sum + (value ?? cycle.energy);
+        }, 0);
         const totalEnergyResult =
             validateInput(
                 elements.totalEnergyInput,
-                expectedResults
-                    .totalElectricalEnergy,
+                allCorrect ? [expectedResults.totalElectricalEnergy, roundedCycleSum]
+                    : expectedResults.totalElectricalEnergy,
                 ENERGY_TOLERANCE
             );
 
@@ -915,8 +917,10 @@ export function initializeCalculations({
         const efficiencyResult =
             validateInput(
                 elements.efficiencyInput,
-                expectedResults
-                    .thermalEfficiency,
+                totalEnergyResult.correct && usefulHeatResult.correct
+                    ? [expectedResults.thermalEfficiency,
+                        usefulHeatResult.value / totalEnergyResult.value * 100]
+                    : expectedResults.thermalEfficiency,
                 EFFICIENCY_TOLERANCE
             );
 

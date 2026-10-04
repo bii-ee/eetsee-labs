@@ -467,285 +467,6 @@ function normalizeCalculationResults(
     };
 }
 
-function createFunctionalScheme() {
-    return `
-        <svg
-            viewBox="0 0 1040 330"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-label="Функціональна схема лабораторної установки"
-        >
-            <defs>
-                <marker
-                    id="report-flow-arrow"
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="7"
-                    markerHeight="7"
-                    orient="auto-start-reverse"
-                >
-                    <path
-                        d="M 0 0 L 10 5 L 0 10 z"
-                        fill="#397a95"
-                    />
-                </marker>
-            </defs>
-
-            <style>
-                .report-scheme-box {
-                    fill: #f3f8fa;
-                    stroke: #397a95;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-load {
-                    fill: #edf8f2;
-                    stroke: #2f8260;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-meter {
-                    fill: #ffffff;
-                    stroke: #0e87a8;
-                    stroke-width: 2;
-                }
-
-                .report-scheme-line {
-                    fill: none;
-                    stroke: #397a95;
-                    stroke-width: 3;
-                    marker-end: url(#report-flow-arrow);
-                }
-
-                .report-scheme-branch {
-                    fill: none;
-                    stroke: #7896a4;
-                    stroke-width: 2;
-                    stroke-dasharray: 7 6;
-                    marker-end: url(#report-flow-arrow);
-                }
-                .report-scheme-title {
-                    fill: #15384d;
-                    font: 700 19px Arial, sans-serif;
-                    text-anchor: middle;
-                }
-
-                .report-scheme-label {
-                    fill: #526b7b;
-                    font: 16px Arial, sans-serif;
-                    text-anchor: middle;
-                }
-            </style>
-
-            <rect
-                class="report-scheme-box"
-                x="25"
-                y="65"
-                width="170"
-                height="92"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="110"
-                y="103"
-            >
-                Мережа 220 В
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="110"
-                y="132"
-            >
-                джерело живлення
-            </text>
-
-            <rect
-                class="report-scheme-box"
-                x="240"
-                y="65"
-                width="170"
-                height="92"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="325"
-                y="103"
-            >
-                ЛАТР
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="325"
-                y="132"
-            >
-                регулювання напруги
-            </text>
-
-            <rect
-                class="report-scheme-meter"
-                x="455"
-                y="65"
-                width="190"
-                height="92"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="550"
-                y="103"
-            >
-                Аналізатор мережі
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="550"
-                y="132"
-            >
-                U, I, P
-            </text>
-
-            <rect
-                class="report-scheme-load"
-                x="690"
-                y="65"
-                width="170"
-                height="92"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="775"
-                y="103"
-            >
-                Плита ПП-3
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="775"
-                y="132"
-            >
-                нагрівання
-            </text>
-
-            <rect
-                class="report-scheme-load"
-                x="900"
-                y="65"
-                width="115"
-                height="92"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="957"
-                y="103"
-            >
-                Вода
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="957"
-                y="132"
-            >
-                m, t
-            </text>
-
-            <path
-                class="report-scheme-line"
-                d="M 195 111 H 232"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 410 111 H 447"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 645 111 H 682"
-            />
-
-            <path
-                class="report-scheme-line"
-                d="M 860 111 H 892"
-            />
-
-            <rect
-                class="report-scheme-meter"
-                x="315"
-                y="235"
-                width="180"
-                height="65"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="405"
-                y="263"
-            >
-                Секундомір
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="405"
-                y="286"
-            >
-                tувімк, tвимк
-            </text>
-
-            <rect
-                class="report-scheme-meter"
-                x="650"
-                y="235"
-                width="190"
-                height="65"
-                rx="12"
-            />
-
-            <text
-                class="report-scheme-title"
-                x="745"
-                y="263"
-            >
-                Вимірювання
-            </text>
-
-            <text
-                class="report-scheme-label"
-                x="745"
-                y="286"
-            >
-                tкип і температура
-            </text>
-
-            <path
-                class="report-scheme-branch"
-                d="M 550 157 V 202 H 405 V 227"
-            />
-
-            <path
-                class="report-scheme-branch"
-                d="M 957 157 V 202 H 745 V 227"
-            />
-        </svg>
-    `;
-}
-
 function cloneReportCharts(target) {
     target.replaceChildren();
 
@@ -914,9 +635,9 @@ export function initializeReport({
                 "#report-student-group"
             ),
 
-        studentBrigade:
+        formVariant:
             section.querySelector(
-                "#report-student-brigade"
+                "#report-form-variant"
             ),
 
         date:
@@ -1003,32 +724,12 @@ export function initializeReport({
     section.dataset.reportInitialized =
         "true";
 
-    /*
-     * У HTML панель звіту може залишатися після форми тесту.
-     * Після ініціалізації переміщуємо її над заголовком
-     * контрольного тесту, як у попередніх лабораторних роботах.
-     */
-    const quizHeading =
-        section.querySelector(
-            ".quiz-heading"
-        );
-
-    const quizInteractiveArea =
-        section.querySelector(
-            "#quiz-interactive-area"
-        );
-
-    if (
-        quizHeading &&
-        quizInteractiveArea &&
-        elements.panel.parentElement ===
-        quizInteractiveArea
-    ) {
-        quizInteractiveArea.insertBefore(
-            elements.panel,
-            quizHeading
-        );
+    // Як у ЛР5–7: підсумковий звіт розташований після тесту.
+    const quizForm = section.querySelector("#quiz-form");
+    if (quizForm && elements.panel.parentElement === quizForm.parentElement) {
+        quizForm.insertAdjacentElement("afterend", elements.panel);
     }
+    elements.formVariant.textContent = String(getStudentVariant());
 
     const experimentStorage =
         createStorage(
@@ -1064,11 +765,6 @@ export function initializeReport({
         group:
             elements.form.elements.namedItem(
                 "studentGroup"
-            ),
-
-        brigade:
-            elements.form.elements.namedItem(
-                "studentBrigade"
             )
     };
 
@@ -1184,9 +880,6 @@ export function initializeReport({
             stored?.student?.group ??
             "";
 
-        studentInputs.brigade.value =
-            stored?.student?.brigade ??
-            "";
     }
 
     function updateStudentFieldValidity(
@@ -1536,9 +1229,6 @@ export function initializeReport({
         elements.studentGroup.textContent =
             student.group;
 
-        elements.studentBrigade.textContent =
-            student.brigade ||
-            "Не вказано";
 
         elements.date.textContent =
             new Intl.DateTimeFormat(
@@ -1572,6 +1262,18 @@ export function initializeReport({
             `${snapshot.quiz.score} із ${QUIZ_TOTAL}`;
     }
 
+    function renderSchematic() {
+        const source = root.querySelector("#equipment .lab-schematic img");
+        if (!source) {
+            elements.schematic.textContent = "Схему розділу 3 не знайдено.";
+            return;
+        }
+        const image = source.cloneNode(false);
+        image.loading = "eager";
+        image.decoding = "async";
+        elements.schematic.replaceChildren(image);
+    }
+
     function generateReport() {
         const snapshot =
             getStateSnapshot();
@@ -1595,10 +1297,7 @@ export function initializeReport({
             group:
                 studentInputs.group.value
                     .trim(),
-
-            brigade:
-                studentInputs.brigade.value
-                    .trim()
+            variant: getStudentVariant()
         };
 
         fillReportMetadata(
@@ -1606,8 +1305,7 @@ export function initializeReport({
             snapshot
         );
 
-        elements.schematic.innerHTML =
-            createFunctionalScheme();
+        renderSchematic();
 
         renderExperimentOneTable(
             snapshot.experiment

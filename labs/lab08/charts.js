@@ -816,6 +816,9 @@ function calculatePointLabelPositions(
             };
         })
         .filter(Boolean)
+        // Спільна точка кількох режимів має один числовий підпис.
+        .filter((label, index, labels) => labels.findIndex((other) =>
+            other.point.x === label.point.x && other.point.y === label.point.y) === index)
         .sort(
             (first, second) =>
                 first.preferredY -
@@ -1022,6 +1025,7 @@ function renderLineChart(
                 plot
             );
 
+        const labelledValues = new Set();
         series.forEach(
             (item, seriesIndex) => {
                 const point =
@@ -1093,8 +1097,11 @@ function renderLineChart(
                  * до віддаленого підпису.
                  */
 
+                const labelKey = `${point.x}:${point.y}`;
+                const showLabel = !labelledValues.has(labelKey);
+                labelledValues.add(labelKey);
                 if (
-                    Math.abs(
+                    showLabel && Math.abs(
                         labelY -
                         pointY
                     ) > 17
@@ -1163,7 +1170,7 @@ function renderLineChart(
                 circle.append(title);
                 svg.append(circle);
 
-                appendSvgText(
+                if (showLabel) appendSvgText(
                     svg,
                     formatNumber(
                         point.y,

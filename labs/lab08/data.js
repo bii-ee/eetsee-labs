@@ -5,7 +5,7 @@ export const LAB08_EXPERIMENT_STORAGE_KEY =
     LAB08_CONFIG.storage.experiment;
 
 export const LAB08_VERIFIED_CALCULATIONS_STORAGE_KEY =
-    variantStorageNamespace("eetsee.lab08.calculations.verified.v3");
+    variantStorageNamespace("eetsee.lab08.calculations.verified.v4");
 
 
 /* Фізичні величини, використані в методиці */

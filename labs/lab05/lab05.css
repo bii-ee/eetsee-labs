@@ -1,25 +1,3 @@
-/* Окрема шапка лабораторної роботи №5 */
-
-.site-header {
-    background:
-        linear-gradient(
-            135deg,
-            #3b2118 0%,
-            #6b3825 58%,
-            #915238 100%
-        );
-}
-
-.course-label {
-    color: #ffd39b;
-}
-
-.header-status {
-    border-color: rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.11);
-}
-
-
 /* Кольорові позначення розділів */
 
 #overview {

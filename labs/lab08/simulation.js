@@ -1,6 +1,6 @@
 import { isLaboratoryPrepared } from "../../common/js/access-state.js";
 import { mountBenchVisuals } from "./bench-visuals.js";
-import { createThermostatCycle, createParameterTrial, MAXIMUM_CYCLES } from "./thermal-model.js";
+import { createThermostatCycle, createParameterTrial, temperatureAfterInterval, MAXIMUM_CYCLES } from "./thermal-model.js";
 
 import {
     getStudentVariant,
@@ -23,12 +23,12 @@ const PARAMETER_TRIALS = Object.freeze(
     )
 );
 
-const STATE_VERSION = 2;
+const STATE_VERSION = 3;
 
 const SIMULATION_TIMING = Object.freeze({
     thermostatMillisecondsPerSecond: 230,
     thermostatMinimumInterval: 1800,
-    parameterTrialDuration: 3500,
+    parameterTrialDuration: 12000,
     measurementPause: 700,
     reducedMotionDuration: 900
 });
@@ -174,6 +174,14 @@ function formatTableValue(
     );
 }
 
+function formatStopwatch(seconds) {
+    const tenths = Math.max(0, Math.round((Number(seconds) || 0) * 10));
+    const minutes = Math.floor(tenths / 600);
+    const remainingSeconds = Math.floor(tenths % 600 / 10);
+    return `${String(minutes).padStart(2, "0")}:` +
+        `${String(remainingSeconds).padStart(2, "0")}.${tenths % 10}`;
+}
+
 function clamp(
     value,
     minimum,
@@ -297,21 +305,6 @@ export function initializeExperiment({
         ),
         modeBadge: getElement(
             "#experiment-mode-badge"
-        ),
-        sourceReading: getElement(
-            "#experiment-source-reading"
-        ),
-        latrReading: getElement(
-            "#experiment-latr-reading"
-        ),
-        switchReading: getElement(
-            "#experiment-switch-reading"
-        ),
-        switchVisual: getElement(
-            ".bench-live-switch"
-        ),
-        switchRocker: getElement(
-            ".bench-live-switch [data-switch-rocker]"
         ),
         thermometerFill: getElement(
             "#bench-water-thermometer-fill"
@@ -515,12 +508,7 @@ export function initializeExperiment({
         elements.powerState.textContent =
             active
                 ? "Увімкнена"
-                : "Знеструмлена";
-
-        elements.switchReading.textContent = active ? "Увімкнено" : "Вимкнено";
-        elements.switchVisual.classList.toggle("is-on", active);
-        elements.switchRocker.setAttribute("y", active ? "34" : "75");
-        elements.switchRocker.setAttribute("fill", active ? "#3b725f" : "#516369");
+                : cooling ? "Пауза нагрівання" : "Знеструмлена";
 
         elements.powerState.classList.toggle(
             "is-on",
@@ -584,10 +572,7 @@ export function initializeExperiment({
             ) + " кВт";
 
         elements.timeReading.textContent =
-            formatNumber(
-                elapsedTime,
-                2
-            );
+            formatStopwatch(elapsedTime);
 
         elements.temperatureReading.textContent =
             formatNumber(
@@ -608,11 +593,6 @@ export function initializeExperiment({
             lastFirstRecord?.finalTemperature ??
             state.setup.initialTemperature;
 
-        elements.sourceReading.textContent =
-            "220 В";
-        elements.latrReading.textContent =
-            "0 В";
-
         elements.currentCondition.textContent =
             state.completed
                 ? "Усі досліди завершено"
@@ -626,7 +606,9 @@ export function initializeExperiment({
         setInstallationState();
 
         updateInstrumentReadings({
-            temperature
+            temperature,
+            elapsedTime: state.experimentTwo.records.at(-1)?.boilingTimeSeconds ??
+                (lastFirstRecord?.offTime || lastFirstRecord?.onTime || 0)
         });
 
         setIntervalProgress(
@@ -1098,17 +1080,20 @@ export function initializeExperiment({
         animationDuration,
         startTemperature,
         endTemperature,
-        label
+        label,
+        intervalPower,
+        segments
     }) {
         const animationVersion = operationVersion;
         return new Promise((resolve) => {
             const effectiveDuration =
                 prefersReducedMotion()
-                    ? SIMULATION_TIMING.reducedMotionDuration
+                    ? segments ? 4500 : SIMULATION_TIMING.reducedMotionDuration
                     : animationDuration;
 
             const startTime =
                 performance.now();
+            let lastSegment = null;
 
             function frame(currentTime) {
                 if (animationVersion !== operationVersion || !isStandReady()) {
@@ -1129,7 +1114,7 @@ export function initializeExperiment({
                     laboratoryDuration *
                     progress;
 
-                const temperature =
+                let temperature =
                     startTemperature +
                     (
                         endTemperature -
@@ -1137,11 +1122,35 @@ export function initializeExperiment({
                     ) *
                     progress;
 
+                let currentLabel = label;
+                if (segments) {
+                    const segment = segments.find((part) =>
+                        laboratoryElapsed < part.startTime + part.duration) ?? segments.at(-1);
+                    const segmentElapsed = clamp(laboratoryElapsed - segment.startTime,
+                        0, segment.duration);
+                    temperature = progress === 1 ? endTemperature : Math.min(100,
+                        temperatureAfterInterval(state.setup, segment.startTemperature,
+                            segment.power, segmentElapsed));
+                    currentLabel = segment.state === "on" ? "Увімкнений стан" : "Вимкнений стан";
+                    if (segment !== lastSegment) {
+                        lastSegment = segment;
+                        setInstallationState({active: segment.state === "on",
+                            cooling: segment.state === "off",
+                            mode: segment.state === "on" ? "HEAT" : "PAUSE",
+                            setting: currentLabel});
+                        updateInstrumentReadings({voltage: segment.voltage,
+                            current: segment.current, power: segment.power,
+                            elapsedTime: laboratoryElapsed, temperature});
+                    }
+                } else if (intervalPower !== undefined) {
+                    temperature = progress === 1 ? endTemperature : Math.min(100,
+                        temperatureAfterInterval(state.setup, startTemperature,
+                            intervalPower, laboratoryElapsed));
+                }
+                elements.phaseLabel.textContent = currentLabel;
+
                 elements.timeReading.textContent =
-                    formatNumber(
-                        laboratoryElapsed,
-                        2
-                    );
+                    formatStopwatch(laboratoryElapsed);
 
                 elements.temperatureReading.textContent =
                     formatNumber(
@@ -1155,7 +1164,7 @@ export function initializeExperiment({
 
                 setIntervalProgress(
                     progress * 100,
-                    label
+                    currentLabel
                 );
 
                 if (progress < 1) {
@@ -1198,19 +1207,13 @@ export function initializeExperiment({
             previousRecord?.finalTemperature ??
             state.setup.initialTemperature;
 
-        const heatingEndTemperature = cycle.finalTemperature;
+        const heatingEndTemperature = cycle.heatingEndTemperature;
 
         elements.currentCondition.textContent =
             `Режим «Термостат», цикл ${cycleIndex + 1}`;
 
         elements.modeBadge.textContent =
             "Термостат";
-
-        elements.sourceReading.textContent =
-            "220 В";
-
-        elements.latrReading.textContent =
-            `${formatNumber(cycle.voltage, 1)} В`;
 
         setMessage(
             elements.experimentOneMessage,
@@ -1251,7 +1254,8 @@ export function initializeExperiment({
             endTemperature:
                 heatingEndTemperature,
 
-            label: "Увімкнений стан"
+            label: "Увімкнений стан",
+            intervalPower: cycle.power
         });
 
         if (runVersion !== operationVersion || !isStandReady()) return;
@@ -1304,7 +1308,8 @@ export function initializeExperiment({
                 endTemperature:
                     cycle.finalTemperature,
 
-                label: "Вимкнений стан"
+                label: "Вимкнений стан",
+                intervalPower: 0
             });
 
             if (runVersion !== operationVersion || !isStandReady()) return;
@@ -1324,6 +1329,7 @@ export function initializeExperiment({
             power: cycle.power,
             onTime: cycle.onTime,
             offTime: cycle.offTime,
+            heatingEndTemperature: cycle.heatingEndTemperature,
             finalTemperature:
                 cycle.finalTemperature
         });
@@ -1382,12 +1388,6 @@ export function initializeExperiment({
         elements.modeBadge.textContent =
             `${trial.setTemperature} °C`;
 
-        elements.sourceReading.textContent =
-            "220 В";
-
-        elements.latrReading.textContent =
-            `${trial.setVoltage} В`;
-
         setMessage(
             elements.experimentTwoMessage,
             `Режим ${trialIndex + 1}: виконується нагрівання води до кипіння.`,
@@ -1414,7 +1414,7 @@ export function initializeExperiment({
 
         await animateInterval({
             laboratoryDuration:
-                trial.boilingTime * 60,
+                trial.boilingTimeSeconds,
 
             animationDuration:
                 SIMULATION_TIMING
@@ -1425,7 +1425,8 @@ export function initializeExperiment({
 
             endTemperature: 100,
 
-            label: "Нагрівання до кипіння"
+            label: "Нагрівання до кипіння",
+            segments: trial.intervals
         });
 
         if (runVersion !== operationVersion || !isStandReady()) return;
@@ -1451,7 +1452,10 @@ export function initializeExperiment({
             power:
                 trial.power,
             boilingTime:
-                trial.boilingTime
+                trial.boilingTime,
+            boilingTimeSeconds: trial.boilingTimeSeconds,
+            electricalEnergy: trial.electricalEnergy,
+            dutyCycle: trial.dutyCycle
         });
 
         state.experimentTwo.completed =

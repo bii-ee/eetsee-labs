@@ -13,7 +13,7 @@ export const LAB08_CONFIG = Object.freeze({
 
     number: 8,
 
-    configVersion: 3,
+    configVersion: 4,
 
     title:
         "Дослідження електричних та енергетичних характеристик індукційної плити «МЕРИДІАН ПП-3» у різних режимах роботи",
@@ -39,19 +39,19 @@ export const LAB08_CONFIG = Object.freeze({
             "lab08:stand",
 
         experiment:
-            variantStorageNamespace("lab08:experiment.v3"),
+            variantStorageNamespace("lab08:experiment.v4"),
 
         calculations:
-            variantStorageNamespace("lab08:calculations.v3"),
+            variantStorageNamespace("lab08:calculations.v4"),
 
         analysis:
-            variantStorageNamespace("lab08:analysis.v3"),
+            variantStorageNamespace("lab08:analysis.v4"),
 
         quiz:
-            variantStorageNamespace("lab08:quiz.v3"),
+            variantStorageNamespace("lab08:quiz.v4"),
 
         report:
-            variantStorageNamespace("lab08:report.v3")
+            variantStorageNamespace("lab08:report.v4")
     }),
 
     variants: Object.freeze({

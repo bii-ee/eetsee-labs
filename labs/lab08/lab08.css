@@ -1,37 +1,5 @@
 /* Оформлення лабораторної роботи №8 */
 
-
-/* Шапка */
-
-.site-header {
-    background:
-        linear-gradient(
-            135deg,
-            #123b37 0%,
-            #1b5a4f 58%,
-            #277465 100%
-        );
-}
-
-.site-header h1 {
-    max-width: 1180px;
-    overflow-wrap: anywhere;
-}
-
-.course-label {
-    color: #c8eedc;
-}
-
-.lab-title {
-    max-width: 1050px;
-}
-
-.header-status {
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-
 /* Основний макет */
 
 .lab-layout {

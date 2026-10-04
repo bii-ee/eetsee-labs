@@ -218,6 +218,9 @@ export function calculateThermalEfficiency(
             "спожита електрична енергія Wел"
         );
 
+    if (heat > energy * (1 + 1e-6)) {
+        throw new Error("Теплота води перевищує спожиту енергію. Перевірте повноту циклів і одиниці вимірювання.");
+    }
     return (
         heat /
         energy *
@@ -369,6 +372,10 @@ export function calculateCyclicExperimentResults({
                         power,
                         onTime
                     );
+
+                if (power * 1000 > voltage * current * (1 + 1e-6)) {
+                    throw new Error(`Активна потужність циклу ${cycleNumber} перевищує U·I. Перевірте покази приладів.`);
+                }
 
                 return {
                     cycleNumber,
