@@ -20,11 +20,11 @@ export const LAB08_PHYSICAL_CONSTANTS =
     });
 
 
-/* Технічні характеристики плити «МЕРИДІАН ПП-3» */
+/* Технічні характеристики плити «МЕРИДІАН ПІ-3» */
 
 export const LAB08_PLATE_SPECIFICATIONS =
     Object.freeze({
-        model: "МЕРИДІАН ПП-3",
+        model: "МЕРИДІАН ПІ-3",
 
         supplyVoltage: Object.freeze({
             minimum: 180,

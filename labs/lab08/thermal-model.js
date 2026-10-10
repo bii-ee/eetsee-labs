@@ -64,17 +64,25 @@ export function createThermostatCycle(setup, records, parameters = THERMAL_VARIA
         throw new Error("Перевищено допустиму кількість циклів нагрівання.");
     }
     capacity(setup, parameters);
+    const setTemperature = Number(setup.setTemperature ?? 240);
+    if (![110, 160, 240].includes(setTemperature)) {
+        throw new RangeError("Температурний режим має бути 110, 160 або 240 °C.");
+    }
+    // Режим плити керує тривалістю пауз і потужністю активного нагрівання.
+    // За 240 °C зберігається початковий навчальний цикл.
+    const modeFactor = { 110: 0.83, 160: 0.92, 240: 1 }[setTemperature];
+    const pauseFactor = { 110: 2.7, 160: 1.6, 240: 1 }[setTemperature];
     const index = records.length;
     const startTemperature = records.at(-1)?.finalTemperature ?? Number(setup.initialTemperature);
     if (startTemperature >= BOILING_TEMPERATURE) throw new Error("Нагрівання вже завершено.");
     const voltage = round(219.6 + (index * 7 % 9) * 0.1 + parameters.voltageOffsetV, 1);
     const readings = electricalReadings(voltage,
-        (1.32 + (index * 3 % 7) * 0.035) * parameters.powerScale, parameters);
+        (1.32 + (index * 3 % 7) * 0.035) * parameters.powerScale * modeFactor, parameters);
     const scheduledOnTime = round(8.8 + (index * 5 % 9) * 0.4, 2);
     const requiredTime = timeToBoiling(setup, startTemperature, readings.power, parameters);
     const boiling = requiredTime <= scheduledOnTime;
     const onTime = boiling ? Math.max(0.01, roundDurationUp(requiredTime)) : scheduledOnTime;
-    const offTime = boiling ? 0 : round(6.4 + (index * 3 % 7) * 0.55, 2);
+    const offTime = boiling ? 0 : round((6.4 + (index * 3 % 7) * 0.55) * pauseFactor, 2);
     const heatingEndTemperature = boiling ? BOILING_TEMPERATURE :
         temperatureAfterInterval(setup, startTemperature, readings.power, onTime, parameters);
     const finalTemperature = boiling ? BOILING_TEMPERATURE :

@@ -760,13 +760,13 @@ function groupTrialsByTemperature(
                             first,
                             second
                         ) =>
-                            first.setVoltage -
-                            second.setVoltage
+                            first.voltage -
+                            second.voltage
                     )
                     .map(
                         (trial) => ({
                             x:
-                                trial.setVoltage,
+                                trial.voltage,
 
                             y:
                                 trial[
@@ -1085,7 +1085,7 @@ function renderLineChart(
                     `${item.name}, ` +
                     `${formatNumber(
                         point.x,
-                        0
+                        1
                     )} В: ` +
                     `${formatNumber(
                         point.y,
@@ -1687,8 +1687,8 @@ export function initializeAnalysis({
                 series:
                     powerSeries,
 
-                xMinimum: 200,
-                xMaximum: 240,
+                xMinimum: 195,
+                xMaximum: 245,
 
                 yMinimum:
                     powerMinimum,
@@ -1697,13 +1697,13 @@ export function initializeAnalysis({
                     powerMaximum,
 
                 xUnit:
-                    "Uзад, В",
+                    "U, В",
 
                 yUnit:
                     "P, кВт",
 
                 ariaLabel:
-                    "Залежність активної потужності від заданої напруги",
+                    "Залежність активної потужності від виміряної напруги",
 
                 valueDigits: 2,
                 yDigits: 2
@@ -1732,8 +1732,8 @@ export function initializeAnalysis({
                 series:
                     timeSeries,
 
-                xMinimum: 200,
-                xMaximum: 240,
+                xMinimum: 195,
+                xMaximum: 245,
 
                 yMinimum: 0,
 
@@ -1745,13 +1745,13 @@ export function initializeAnalysis({
                     ),
 
                 xUnit:
-                    "Uзад, В",
+                    "U, В",
 
                 yUnit:
                     "tкип, хв",
 
                 ariaLabel:
-                    "Залежність тривалості нагрівання води до кипіння від заданої напруги",
+                    "Залежність тривалості нагрівання води до кипіння від виміряної напруги",
 
                 valueDigits: 2,
                 yDigits: 1

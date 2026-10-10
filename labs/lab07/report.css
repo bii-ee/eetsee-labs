@@ -274,11 +274,19 @@
     background: #fbfdfe;
 }
 
-.report-schematic svg {
+.report-schematic img {
     display: block;
     width: 100%;
     height: auto;
     max-height: 330px;
+    object-fit: contain;
+}
+
+.report-schematic-caption {
+    margin: 7px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    text-align: center;
 }
 
 .report-table-wrapper {
@@ -484,13 +492,13 @@
 /* Компактне компонування друкованого звіту ЛР7 */
 
 @media print {
-    /* Компактна функціональна схема */
+    /* Схема стенда з розділу 3 */
 
     #lab-print-root
         .report-document-lab07
         .report-schematic {
         box-sizing: border-box !important;
-        height: 52mm !important;
+        height: 82mm !important;
         min-height: 0 !important;
         padding: 0.75mm !important;
     }
@@ -498,10 +506,11 @@
     #lab-print-root
         .report-document-lab07
         .report-schematic
-        svg {
+        img {
         width: 100% !important;
-        height: 49mm !important;
-        max-height: 49mm !important;
+        height: 79mm !important;
+        max-height: 79mm !important;
+        object-fit: contain !important;
     }
 
     /* Без примусового переходу на нову сторінку */

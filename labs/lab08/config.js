@@ -16,7 +16,7 @@ export const LAB08_CONFIG = Object.freeze({
     configVersion: 4,
 
     title:
-        "Дослідження електричних та енергетичних характеристик індукційної плити «МЕРИДІАН ПП-3» у різних режимах роботи",
+        "Дослідження параметрів роботи побутових індукційних плит",
 
     sectionFiles: Object.freeze([
         "./sections/01-overview.html",

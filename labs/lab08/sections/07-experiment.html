@@ -5,7 +5,7 @@
 
     <p class="lead">
         Проведіть два досліди з індукційною плитою
-        «МЕРИДІАН ПП-3». Спочатку дослідіть циклічну роботу
+        «МЕРИДІАН ПІ-3». Спочатку дослідіть циклічну роботу
         плити в режимі «Термостат», а потім визначте вплив
         напруги живлення та заданої температури на параметри
         нагрівання води.
@@ -107,8 +107,8 @@
 
                         <p>
                             Перевірте об’єм води, введіть визначену
-                            масу та початкову температуру перед
-                            початком першого досліду.
+                            масу та початкову температуру, а також
+                            оберіть заданий температурний режим плити.
                         </p>
 
                         <div class="experiment-input-grid">
@@ -142,6 +142,18 @@
                                         value="20.0">
 
                                     <small>°C</small>
+                                </span>
+                            </label>
+                            <label class="experiment-field">
+                                <span>Режим плити T<sub>зад</sub></span>
+
+                                <span class="experiment-input">
+                                    <select id="experiment-set-temperature"
+                                        aria-label="Заданий температурний режим першого досліду">
+                                        <option value="110">110 °C</option>
+                                        <option value="160">160 °C</option>
+                                        <option value="240" selected>240 °C</option>
+                                    </select>
                                 </span>
                             </label>
                         </div>
@@ -243,7 +255,7 @@
                     <div class="experiment-simulator">
                         <div class="experiment-heating-zone">
                             <div id="experiment-plate-visual" class="experiment-plate"
-                                aria-label="Індукційна плита МЕРИДІАН ПП-3">
+                                aria-label="Індукційна плита МЕРИДІАН ПІ-3">
                                 <div class="experiment-plate-surface">
                                     <span id="experiment-heating-indicator" class="experiment-heating-indicator"></span>
 
@@ -313,7 +325,7 @@
             <section id="experiment-one-panel" class="experiment-table-panel">
                 <div class="experiment-table-header">
                     <div>
-                        <p class="section-number">Таблиця 8.3</p>
+                        <p class="section-number">Таблиця 8.2</p>
 
                         <h3>
                             Дослід 1. Параметри циклічного режиму
@@ -376,7 +388,7 @@
                 <div id="experiment-two-content">
                     <div class="experiment-table-header">
                         <div>
-                            <p class="section-number">Таблиця 8.4</p>
+                            <p class="section-number">Таблиця 8.3</p>
 
                             <h3>
                                 Дослід 2. Вплив заданих параметрів

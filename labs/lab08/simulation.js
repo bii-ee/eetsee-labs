@@ -50,7 +50,8 @@ function createInitialState() {
             confirmed: false,
             waterVolume: 200,
             waterMass: 0.2,
-            initialTemperature: 20
+            initialTemperature: 20,
+            setTemperature: 240
         },
 
         experimentOne: {
@@ -91,18 +92,23 @@ function normalizeState(savedState) {
         const initialTemperature = Number(
             savedState.setup.initialTemperature
         );
+        const setTemperature = Number(
+            savedState.setup.setTemperature ?? 240
+        );
 
         if (
             Number.isFinite(waterVolume) &&
             Number.isFinite(waterMass) &&
-            Number.isFinite(initialTemperature)
+            Number.isFinite(initialTemperature) &&
+            [110, 160, 240].includes(setTemperature)
         ) {
             state.setup = {
                 confirmed:
                     savedState.setup.confirmed === true,
                 waterVolume,
                 waterMass,
-                initialTemperature
+                initialTemperature,
+                setTemperature
             };
         }
     }
@@ -245,6 +251,9 @@ export function initializeExperiment({
         ),
         initialTemperatureInput: getElement(
             "#experiment-initial-temperature"
+        ),
+        setTemperatureInput: getElement(
+            "#experiment-set-temperature"
         ),
         setupButton: getElement(
             "#experiment-setup-button"
@@ -918,7 +927,7 @@ export function initializeExperiment({
 
             <p>
                 Наступна комбінація буде виконана
-                відповідно до таблиці 8.4.
+                відповідно до таблиці 8.3.
             </p>
         `;
     }
@@ -946,6 +955,8 @@ export function initializeExperiment({
             state.setup.waterMass.toFixed(3);
         elements.initialTemperatureInput.value =
             state.setup.initialTemperature.toFixed(1);
+        elements.setTemperatureInput.value =
+            String(state.setup.setTemperature);
 
         elements.waterVolumeInput.disabled =
             state.setup.confirmed ||
@@ -956,6 +967,9 @@ export function initializeExperiment({
             operationInProgress;
 
         elements.initialTemperatureInput.disabled =
+            state.setup.confirmed ||
+            operationInProgress;
+        elements.setTemperatureInput.disabled =
             state.setup.confirmed ||
             operationInProgress;
 
@@ -980,7 +994,7 @@ export function initializeExperiment({
 
         if (!state.setup.confirmed) {
             elements.experimentOneTask.textContent =
-                "Зафіксуйте вихідні параметри води";
+                "Зафіксуйте параметри води та режим плити";
 
             elements.experimentOneDescription.textContent =
                 "Після підтвердження параметрів стане доступним запуск першого циклу.";
@@ -1210,7 +1224,7 @@ export function initializeExperiment({
         const heatingEndTemperature = cycle.heatingEndTemperature;
 
         elements.currentCondition.textContent =
-            `Режим «Термостат», цикл ${cycleIndex + 1}`;
+            `Термостат ${state.setup.setTemperature} °C, цикл ${cycleIndex + 1}`;
 
         elements.modeBadge.textContent =
             "Термостат";
@@ -1527,6 +1541,9 @@ export function initializeExperiment({
             const initialTemperature = Number(
                 elements.initialTemperatureInput.value
             );
+            const setTemperature = Number(
+                elements.setTemperatureInput.value
+            );
 
             const isValid =
                 Number.isFinite(waterVolume) &&
@@ -1539,12 +1556,13 @@ export function initializeExperiment({
                     Math.max(0.03, waterVolume / 10000) &&
                 Number.isFinite(initialTemperature) &&
                 initialTemperature >= 5 &&
-                initialTemperature <= 40;
+                initialTemperature <= 40 &&
+                [110, 160, 240].includes(setTemperature);
 
             if (!isValid) {
                 setMessage(
                     elements.experimentOneMessage,
-                    "Перевірте параметри: об’єм 100-1000 мл, маса 0,1-1 кг (приблизно 1 кг на літр води), температура 5-40 °C.",
+                    "Перевірте параметри: об’єм 100–1000 мл, маса 0,1–1 кг, початкова температура 5–40 °C, режим плити 110, 160 або 240 °C.",
                     "warning"
                 );
 
@@ -1555,7 +1573,8 @@ export function initializeExperiment({
                 confirmed: true,
                 waterVolume,
                 waterMass,
-                initialTemperature
+                initialTemperature,
+                setTemperature
             };
 
             saveState();

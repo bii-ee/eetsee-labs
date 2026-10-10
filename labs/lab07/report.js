@@ -187,69 +187,18 @@ function buildReportData(progress) {
     });
 }
 
-function createFunctionalScheme() {
-    return `
-        <svg
-            viewBox="0 45 920 245"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-label="Функціональна схема лабораторної установки"
-        >
-            <defs>
-                <marker
-                    id="report-arrow"
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="7"
-                    markerHeight="7"
-                    orient="auto-start-reverse"
-                >
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#397a95" />
-                </marker>
-            </defs>
+function renderSchematic(root, target) {
+    const source = root.querySelector("#equipment .lab-schematic img");
 
-            <style>
-                .scheme-box { fill: #f3f8fa; stroke: #397a95; stroke-width: 2; }
-                .scheme-meter { fill: #ffffff; stroke: #0e87a8; stroke-width: 2; }
-                .scheme-line { fill: none; stroke: #397a95; stroke-width: 3; marker-end: url(#report-arrow); }
-                .scheme-branch { fill: none; stroke: #7896a4; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#report-arrow); }
-                .scheme-title { fill: #15384d; font: 700 18px Arial, sans-serif; text-anchor: middle; }
-                .scheme-label { fill: #526b7b; font: 14px Arial, sans-serif; text-anchor: middle; }
-            </style>
+    if (!source) {
+        target.textContent = "Схему розділу 3 не знайдено.";
+        return;
+    }
 
-            <rect class="scheme-box" x="30" y="70" width="150" height="86" rx="12" />
-            <text class="scheme-title" x="105" y="106">Мережа 220 В</text>
-            <text class="scheme-label" x="105" y="133">живлення стенда</text>
-
-            <rect class="scheme-box" x="245" y="70" width="170" height="86" rx="12" />
-            <text class="scheme-title" x="330" y="106">K1 / K2</text>
-            <text class="scheme-label" x="330" y="133">вимикач конфорки</text>
-
-            <rect class="scheme-box" x="480" y="70" width="180" height="86" rx="12" />
-            <text class="scheme-title" x="570" y="106">R1, B1 / R2, B2</text>
-            <text class="scheme-label" x="570" y="133">біметалевий регулятор</text>
-
-            <rect class="scheme-box" x="725" y="70" width="165" height="86" rx="12" />
-            <text class="scheme-title" x="807" y="106">ТЕН1 / ТЕН2</text>
-            <text class="scheme-label" x="807" y="133">нагрівання конфорки</text>
-
-            <path class="scheme-line" d="M 180 113 H 237" />
-            <path class="scheme-line" d="M 415 113 H 472" />
-            <path class="scheme-line" d="M 660 113 H 717" />
-
-            <rect class="scheme-meter" x="260" y="218" width="160" height="58" rx="12" />
-            <text class="scheme-title" x="340" y="243">PA, секундомір</text>
-            <text class="scheme-label" x="340" y="265">струм і тривалість</text>
-
-            <rect class="scheme-meter" x="620" y="218" width="160" height="58" rx="12" />
-            <text class="scheme-title" x="700" y="243">Пірометр</text>
-            <text class="scheme-label" x="700" y="265">температура τ</text>
-
-            <path class="scheme-branch" d="M 570 156 V 190 H 340 V 210" />
-            <path class="scheme-branch" d="M 807 156 V 190 H 700 V 210" />
-        </svg>
-    `;
+    const image = source.cloneNode(false);
+    image.loading = "eager";
+    image.decoding = "async";
+    target.replaceChildren(image);
 }
 
 function cloneReportCharts(target) {
@@ -530,7 +479,7 @@ export function initializeReport({
             year: "numeric"
         }).format(new Date());
         elements.burner.textContent = `Конфорка ${snapshot.experiment.burner}`;
-        elements.schematic.innerHTML = createFunctionalScheme();
+        renderSchematic(root, elements.schematic);
         elements.quizScore.textContent =
             `${snapshot.quiz.score} із ${QUIZ_TOTAL}`;
 

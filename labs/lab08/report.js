@@ -30,12 +30,12 @@ const CHARTS = [
     {
         selector: "#chart-power-voltage",
         caption:
-            "Рисунок 2. Залежність активної потужності від заданої напруги"
+            "Рисунок 2. Залежність активної потужності від виміряної напруги"
     },
     {
         selector: "#chart-boiling-time",
         caption:
-            "Рисунок 3. Залежність тривалості нагрівання води до кипіння від заданої напруги"
+            "Рисунок 3. Залежність тривалості нагрівання води до кипіння від виміряної напруги"
     }
 ];
 
@@ -262,6 +262,8 @@ function normalizeExperiment(value) {
         Number(
             setupSource.initialTemperature
         );
+    const setTemperature =
+        Number(setupSource.setTemperature ?? 240);
 
     const setupValid =
         setupSource.confirmed === true &&
@@ -270,7 +272,8 @@ function normalizeExperiment(value) {
         Number.isFinite(
             initialTemperature
         ) &&
-        initialTemperature < 100;
+        initialTemperature < 100 &&
+        [110, 160, 240].includes(setTemperature);
 
     return {
         setup: {
@@ -279,7 +282,8 @@ function normalizeExperiment(value) {
 
             waterMass,
 
-            initialTemperature
+            initialTemperature,
+            setTemperature
         },
 
         firstRecords,
@@ -305,6 +309,8 @@ function createExperimentSignature(
         initialTemperature:
             progress.setup
                 .initialTemperature,
+        setTemperature:
+            progress.setup.setTemperature,
 
         cycles:
             progress.firstRecords.map(
@@ -658,6 +664,10 @@ export function initializeReport({
         initialTemperature:
             section.querySelector(
                 "#report-initial-temperature"
+            ),
+        setTemperature:
+            section.querySelector(
+                "#report-set-temperature"
             ),
 
         experimentOneBody:
@@ -1257,6 +1267,8 @@ export function initializeReport({
                     .initialTemperature,
                 1
             )} °C`;
+        elements.setTemperature.textContent =
+            `${snapshot.experiment.setup.setTemperature} °C`;
 
         elements.quizScore.textContent =
             `${snapshot.quiz.score} із ${QUIZ_TOTAL}`;
