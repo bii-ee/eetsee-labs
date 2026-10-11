@@ -1,4 +1,4 @@
-// User-entered numbers accept both Ukrainian comma and decimal point.
+// Числа можна вводити з десятковою комою або крапкою.
 export function parseStudentNumber(value) {
     const normalized = String(value ?? "")
         .trim()

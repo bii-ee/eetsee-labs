@@ -193,11 +193,7 @@ export const LAB08_COMPARATIVE_EXPERIMENT =
     });
 
 
-/*
- * Тимчасові сумісні назви.
- * Вони не дають старим імпортам з інших модулів
- * зупинити завантаження сторінки.
- */
+/* Попередні назви експортів збережено для сумісності модулів. */
 
 export const lab08_EXPERIMENT_STORAGE_KEY =
     LAB08_EXPERIMENT_STORAGE_KEY;

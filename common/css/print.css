@@ -190,9 +190,7 @@
         overflow: visible !important;
     }
 
-    /*
-     * Таблиці залишаються на першій сторінці
-     */
+    
 
     #lab-print-root .report-data-section {
         break-before: auto !important;
@@ -251,9 +249,7 @@
         font-weight: 700;
     }
 
-    /*
-     * Графіки починають другу сторінку
-     */
+    
 
     #lab-print-root .report-charts-section {
         break-before: page !important;
@@ -305,9 +301,7 @@
         overflow: visible !important;
     }
 
-    /*
-     * Висновки розміщуються під графіками
-     */
+    
 
     #lab-print-root .report-conclusions-section {
         break-before: auto !important;

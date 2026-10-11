@@ -321,8 +321,8 @@ export const LAB05_EXPERIMENT_RUNS =
         })
     ]);
 
-// Покази варіанта: опір нагрівача і втрати теплоти змінюються,
-// задані напруги, об’єм та температури залишаються з методички.
+// Варіанти відрізняються опором нагрівача та тепловими втратами.
+// Задані напруги, об’єм води й температури визначені практикумом.
 export function createVariantExperiment(experiment, variantNumber) {
     if (!experiment) return null;
     if (!Number.isInteger(variantNumber) || variantNumber < 1 || variantNumber > 30) {

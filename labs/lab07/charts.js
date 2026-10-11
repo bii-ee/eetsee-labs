@@ -152,7 +152,7 @@ function buildAnalysisData(progress) {
     });
 }
 
-// Each mode starts at its own measured temperature and its own time zero.
+// Кожен режим починається з виміряної для нього температури та нульового відліку часу.
 export function buildTemperatureTimeline(mode) {
     const points = [{
         time: 0,

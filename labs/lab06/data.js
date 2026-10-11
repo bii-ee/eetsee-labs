@@ -12,8 +12,8 @@ export const LAB06_EXPERIMENT_STORAGE_KEY =
 export const LAB06_VERIFIED_CALCULATIONS_STORAGE_KEY =
     LAB06_CONFIG.storage.calculationsVerified;
 
-// The old methodology identifies a 500 W load; the updated one refers
-// to the stand passport. This value is an explicit teaching baseline.
+// У попередній методиці зазначено навантаження 500 Вт; у чинній
+// потужність визначають за паспортом стенда. У моделі застосовано навчальні значення.
 export function createVariantLoadModel(variant) {
     if (!Number.isInteger(variant) || variant < 1 || variant > 30) {
         throw new RangeError("Номер варіанта має бути від 1 до 30.");
@@ -39,7 +39,7 @@ function round(value, digits) {
     return Math.round(value * scale) / scale;
 }
 
-// One resistive load produces U2, I and P at every firing angle.
+// За сталого опору навантаження визначають U₂, I та P для кожного кута керування.
 function createMode(position, alphaDegrees) {
     const alpha = alphaDegrees * Math.PI / 180;
     const voltageFraction =
@@ -54,7 +54,7 @@ function createMode(position, alphaDegrees) {
         u2 / LAB06_LOAD_MODEL.resistanceOhms,
         2
     );
-    // P uses displayed readings, so calculations need no hidden digits.
+    // P обчислюють за показаними значеннями без прихованих розрядів.
     // За α = 0° округлення не повинно давати P > U₁I.
     const power = Math.floor(u2 * current * 10 + 1e-8) / 10;
 
