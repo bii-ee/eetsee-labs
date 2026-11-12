@@ -309,8 +309,6 @@ function createExperimentSignature(
         initialTemperature:
             progress.setup
                 .initialTemperature,
-        setTemperature:
-            progress.setup.setTemperature,
 
         cycles:
             progress.firstRecords.map(
@@ -342,8 +340,17 @@ function createAnalysisSignature(
     results
 ) {
     return JSON.stringify({
-        setup:
-            progress.setup,
+        setup: {
+            confirmed:
+                progress.setup.confirmed,
+
+            waterMass:
+                progress.setup.waterMass,
+
+            initialTemperature:
+                progress.setup
+                    .initialTemperature
+        },
 
         cycles:
             progress.firstRecords,
